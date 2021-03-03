@@ -53,6 +53,7 @@ kramdown:
     span:
       line_numbers: false
     block:
+    block:
       line_numbers: true
       start_line: 1
 
