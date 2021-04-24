@@ -1,15 +1,10 @@
 ---
-title: MyBatis逆向工程
-date: 2019-09-06 12:30:11
-tags: ['mybatis', 'java']
-categories: Mybatis
 layout:     post
 title:      "MyBatis Generator"
 subtitle:   "MyBatis逆向工程"
 date:       2019-09-06 12:30:11
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - mybatis
     - java

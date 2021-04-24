@@ -5,7 +5,6 @@ subtitle:   ""
 date:       2018-03-13 14:30:11
 author:     "Balbo"
 header-img: "img/post-bg-2018.jpg"
-catalog: true
 tags:
     - json
     - PHP

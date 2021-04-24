@@ -5,7 +5,6 @@ subtitle:   ""
 date:       2019-05-13 12:30:11
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - thymeleaf
 ---

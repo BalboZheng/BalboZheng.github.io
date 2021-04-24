@@ -5,7 +5,6 @@ subtitle:   "什么是不可变映射类型"
 date:       2019-10-05 16:45:30
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - python
 ---

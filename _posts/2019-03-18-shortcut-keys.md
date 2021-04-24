@@ -5,7 +5,6 @@ subtitle:   "IntelliJ IDEA常用快捷键汇总"
 date:       2019-03-18 12:30:11
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - idea
     - pycharm

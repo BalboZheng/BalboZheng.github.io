@@ -1,14 +1,12 @@
 ---
-
-categories: software-designer
 layout:     post
 title:      "数据结构与算法习题"
+subtitle:   ""
 date:       2021-03-30 21:36:54
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"
-catalog: true
 tags:
-    - 软件设计师
+    - software-designer
 ---
 
 1. 以下关于线性表采用链式存储时删除结点运算的描述，正确的是 $\underline{}$ 。

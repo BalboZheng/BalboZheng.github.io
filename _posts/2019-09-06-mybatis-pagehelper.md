@@ -1,15 +1,10 @@
 ---
-title: Mybatis-PageHelper 使用方法
-date: 2019-09-06 12:30:11
-tags: ['mybatis', 'pagehelper']
-categories: Mybatis
 layout:     post
 title:      "Mybatis-PageHelper"
 subtitle:   "Mybatis-PageHelper 使用方法"
 date:       2019-09-06 12:30:11
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - pagehelper
 ---

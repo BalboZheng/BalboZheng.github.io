@@ -1,14 +1,12 @@
 ---
-
-categories: software-designer
 layout:     post
 title:      "程序语言习题"
+subtitle:   ""
 date:       2021-04-02 13:44:05
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"
-catalog: true
 tags:
-    - 软件设计师
+    - software-designer
 ---
 
 1. 下面关于编程语言的各种说法中，$\underline{}$ 是不正确的。

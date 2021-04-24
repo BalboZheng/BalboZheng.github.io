@@ -5,7 +5,6 @@ subtitle:   "验证码在很多地方都会用到"
 date:       2019-11-25 16:38:20
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - reptile
     - python

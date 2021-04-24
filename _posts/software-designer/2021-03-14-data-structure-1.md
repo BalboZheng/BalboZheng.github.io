@@ -1,16 +1,12 @@
 ---
-
-categories: software-designer
 layout:     post
 title:      "数据结构（上）"
+subtitle:   ""
 date:       2021-03-14 10:37:54
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"
-page-mathjax: true
-catalog: true
 tags:
-    - 软件设计师
-
+    - software-designer
 ---
 
 # 3.1 线性结构

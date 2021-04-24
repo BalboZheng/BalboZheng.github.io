@@ -5,7 +5,6 @@ subtitle:   "SpringBoot页面展示Thymeleaf"
 date:       2019-09-06 12:30:11
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - springboot
     - thymeleaf

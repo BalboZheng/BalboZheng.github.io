@@ -1,15 +1,10 @@
 ---
-title: 数据库存储（十）
-date: 2019-11-22 11:54:02
-tags: ['reptile', 'python']
-categories: Reptile
 layout:     post
 title:      "数据库存储"
 subtitle:   "数据库存储"
 date:       2019-11-22 11:54:02
 author:     "Balbo"
 header-img: "img/post-bg-2019.jpg"
-catalog: true
 tags:
     - reptile
 ---

@@ -1,14 +1,12 @@
 ---
-
-categories: software-designer
 layout:     post
 title:      "操作系统习题"
+subtitle:   ""
 date:       2021-04-02 15:32:15
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"
-catalog: true
 tags:
-    - 软件设计师
+    - software-designer
 ---
 
 1. 以下描述，不正确都是$\underline{}$。

@@ -1,15 +1,12 @@
 ---
-
-categories: software-designer
 layout:     post
 title:      "数据结构（下）"
+subtitle:   ""
 date:       2021-03-16 08:37:54
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"
-catalog: true
 tags:
-    - 软件设计师
-
+    - software-designer
 ---
 
 # 3.4 图
