@@ -13,11 +13,11 @@ future: true
 
 # SNS settings
 RSS: false
-weibo_username: balbo
-zhihu_username: balbo
-github_username: balbo
-twitter_username: balbo
-#facebook_username:  huxpro
+weibo_username:     balbo
+zhihu_username:     balbo
+github_username:    balbo
+twitter_username:   balbo
+#facebook_username:  balbo
 #linkedin_username:  firstname-lastname-idxxxx
 
 
@@ -30,7 +30,7 @@ paginate: 10
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md","README.zh.md"]
 anchorjs: true                          # if you want to customize anchor. check out line:181 of `post.html`
 # If you have timezone issue (e.g. #68) in China, uncomment to use this:
-#timezone: CN
+#timezone: CN  
 
 
 
@@ -53,14 +53,13 @@ kramdown:
     span:
       line_numbers: false
     block:
-    block:
       line_numbers: true
       start_line: 1
 
 
 
 # Disqus settings
-disqus_username: Man Eagle
+disqus_username: Balbo
 
 # Netease settings
 netease_comment: false
@@ -68,11 +67,11 @@ netease_comment: false
 
 
 # Analytics settings
-# Baidu Analytics
+# Baidu Analytics 
 # ba_track_id: [your track id]
 
 # Google Analytics
-ga_track_id:             # Format: UA-xxxxxx-xx
+ga_track_id: 'G-Y4Y9NFWY4H'            # Format: UA-xxxxxx-xx
 ga_domain: balbozheng.com
 
 
@@ -80,7 +79,7 @@ ga_domain: balbozheng.com
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
 sidebar-about-description: "常与同好争高低</br>不与傻瓜论长短"
-sidebar-avatar: /img/avatar.gif     # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: /img/avatar.gif      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
 
@@ -104,11 +103,13 @@ page-mathjax: true
 # Friends
 friends: [
     {
-      title: "Foo Blog",
-      href: "http://foo.github.io/"
-    },
-    {
-      title: "Bar Blog",
-      href: "http://bar.github.io"
+    #     title: "Su",
+    #     href: "http://su.gallery/"
+    # },{
+        title: "Foo Blog",
+        href: "http://foo.github.io/"
+    },{
+        title: "Bar Blog",
+        href: "http://bar.github.io"
     }
 ]
