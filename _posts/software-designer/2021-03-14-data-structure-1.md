@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "数据结构（上）"
-subtitle:   ""
+subtitle:   "数据结构基础知识"
 date:       2021-03-14 10:37:54
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"

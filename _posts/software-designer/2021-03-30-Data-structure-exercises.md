@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "数据结构与算法习题"
-subtitle:   ""
+subtitle:   "本章考点在综合知识考试平均分数为10分，约总分的13.33%"
 date:       2021-03-30 21:36:54
 author:     "Balbo"
 header-img: "img/post-bg-2021.jpg"
@@ -9,108 +9,108 @@ tags:
     - software-designer
 ---
 
-1. 以下关于线性表采用链式存储时删除结点运算的描述，正确的是 $\underline{}$ 。
+1. 以下关于线性表采用链式存储时删除结点运算的描述，正确的是 $\underline{A}$ 。
 
-   <font color="green">A.</font> 带头结点的线性链表删除结点时，不需要更改头指针
+   A. 带头结点的线性链表删除结点时，不需要更改头指针
 
    B. 带头结点的线性链表删除第一个结点时，需要更改头结点
 
    C. 不带头结点的线性链表删除结点时，需要更改头指针
 
-   <font color="red">D.</font> 不带头结点的线性链表删除第一个结点时，不需要更改头指针
+   $\bcancel{D}$. 不带头结点的线性链表删除第一个结点时，不需要更改头指针
 
-2. 给定一个有 $n$ 个元素的有序线性表。若采用顺序存储结构，则再等概率前提下，删除其中的一个元素平均需要移动 $\underline{}$ 个元素。
+2. 给定一个有 $n$ 个元素的有序线性表。若采用顺序存储结构，则再等概率前提下，删除其中的一个元素平均需要移动 $\underline{C}$ 个元素。
 
-   A. $$\frac{n+1}{2}$$	<font color="red">B.</font> $$\frac n2$$	<font color="green">C. </font>$$\frac{n-1}{2}$$	D. $1$
+   A. $$\frac{n+1}{2}$$	$\bcancel{B}$. $$\frac n2$$	C. </font>$$\frac{n-1}{2}$$	D. $1$
 
-3. 下列叙述中，不正确的是 $\underline{}$ 。
+3. 下列叙述中，不正确的是 $\underline{C}$ 。
 
    A. 线性表在链式存储时，查找第 $i$ 个元素的时间与 $i$ 的值成正比
 
    B. 线性表在链式存储时，查找第 $i$ 个元素的时间与 $i$ 的值有关
 
-   <font color="green">C.</font> 线性表在顺序存储时，查找第 $i$ 个元素的时间与 $i$ 的值成正比
+   C. 线性表在顺序存储时，查找第 $i$ 个元素的时间与 $i$ 的值成正比
 
-   <font color="red">D.</font> 线性表在顺序存储时，查找第 $i$ 个元素的时间与 $i$ 的值无关
+   $\bcancel{D}$. 线性表在顺序存储时，查找第 $i$ 个元素的时间与 $i$ 的值无关
 
-4. 在一棵度为 $4$ 的树 $T$ 中，若有 $20$ 个度为 $4$ 的结点，$10$ 个度为 $3$ 的结点，$1$ 个度为 $2$ 的结点，$10$ 个度为 $1$ 的结点，则树 $T$ 的叶子结点的个数是 $\underline{}$ 。
+4. 在一棵度为 $4$ 的树 $T$ 中，若有 $20$ 个度为 $4$ 的结点，$10$ 个度为 $3$ 的结点，$1$ 个度为 $2$ 的结点，$10$ 个度为 $1$ 的结点，则树 $T$ 的叶子结点的个数是 $\underline{B}$ 。
 
-   A. $41$	<font color="green">B.</font> $82$	C. $113$	<font color="red">D.</font> $122$
+   A. $41$	B. $82$	C. $113$	$\bcancel{D}$. $122$
 
-5. 一棵度为 $3$ 的树中，有 $3$ 度结点 $100$ 个，有 $2$ 度结点 $200$ 个，有叶子结点 $\underline{}$ 个。
+5. 一棵度为 $3$ 的树中，有 $3$ 度结点 $100$ 个，有 $2$ 度结点 $200$ 个，有叶子结点 $\underline{C}$ 个。
 
-   A. $399$	<font color="red">D.</font> $400$	<font color="green">C.</font> $401$	D. $402$
+   A. $399$	 $\bcancel{B}$. $400$	C. $401$	D. $402$
 
-6. 二叉树在线索化后，任不能有效解决的问题是 $\underline{}$ 。
+6. 二叉树在线索化后，任不能有效解决的问题是 $\underline{D}$ 。
 
    A. 先序线索二叉树中求先序后继
 
-   <font color="red">B.</font> 中序线索二叉树中求中序后继
+   $\bcancel{B}$. 中序线索二叉树中求中序后继
 
    C. 中序线索二叉树中求中序前驱
 
-   <font color="green">D.</font> 后序线索二叉树中求后序后继
+   D. 后序线索二叉树中求后序后继
 
-7. 由元素序列 $(27,16，75，38，51)$ 构造平衡二叉树，则首次出现的最小不平衡子树的根（即离插入结点最近且平衡因子的绝对值为 $2$ 的结点）为 $\underline{}$ 。
+7. 由元素序列 $(27,16，75，38，51)$ 构造平衡二叉树，则首次出现的最小不平衡子树的根（即离插入结点最近且平衡因子的绝对值为 $2$ 的结点）为 $\underline{D}$ 。
 
-   A. $27$	B. $38$	C. $51$	<font color="green">D.</font> $75$
+   A. $27$	B. $38$	C. $51$	D. $75$
 
-8. 若 $G$ 是一个具有 $36$ 条边的非连通无向图（不含自回路和多重边），则图 $G$ 至少由 $\underline{}$ 个顶点。
+8. 若 $G$ 是一个具有 $36$ 条边的非连通无向图（不含自回路和多重边），则图 $G$ 至少由 $\underline{C}$ 个顶点。
 
-   A. 11	<font color="green">B.</font> 10	<font color="red">C.</font> 9	D. 8
+   A. 11	$\bcancel{B}$. 10	C. 9	D. 8
 
-9. 设下三角矩阵（上三角部分的元素值都为 0）$A[0..n, 0..n]$ ，将改三角矩阵的所有非零元素（即行下标不小于列下标的元素）按行优先压缩存储在容量足够大的数组 $M[]$ 中（下标从 1 开始），则元素 $A[i,j](0\leq i\leq n,j\leq i)$ 存储在数组 $M$ 的 $\underline{}$ 中。
+9. 设下三角矩阵（上三角部分的元素值都为 0）$A[0..n, 0..n]$ ，将改三角矩阵的所有非零元素（即行下标不小于列下标的元素）按行优先压缩存储在容量足够大的数组 $M[]$ 中（下标从 1 开始），则元素 $A[i,j](0\leq i\leq n,j\leq i)$ 存储在数组 $M$ 的 $\underline{A}$ 中。
 
    $$\begin{bmatrix} A_{0,0} \\ A_{1,0}&A_{1,1}&&&0 \\ ·&&· \\ ·&&&· \\ ·&&&&·& \\ A_{7,0}&A_{7,1}&A_{7,2}&\cdots&&A_{7,7} \\ A_{8,0}&A_{8,1}&A_{8,2}&A_{8,3}&\cdots&&A_{8,8} \\ \end{bmatrix} $$
 
-   <font color="green">A.</font> $$M[\frac{i(i+1)}{2}+j+1]$$	 <font color="red">B.</font> $$M[\frac{i(i+1)}{2}+j]$$	C. $$M[\frac{i(i-1)}{2}+j]$$	D. $$M[\frac{i(i-1)}{2}+j+1]$$
+   A. $$M[\frac{i(i+1)}{2}+j+1]$$	$\bcancel{B}$. $$M[\frac{i(i+1)}{2}+j]$$	C. $$M[\frac{i(i-1)}{2}+j]$$	D. $$M[\frac{i(i-1)}{2}+j+1]$$
 
-10. 用插入排序和归并排序算法对数组 $<3,1,4,1,5,9,6,5>$ 进行从小到大排序，则分别需要进行 $\underline{}$ 次数组元素之间的比较。
+10. 用插入排序和归并排序算法对数组 $<3,1,4,1,5,9,6,5>$ 进行从小到大排序，则分别需要进行 $\underline{A}$ 次数组元素之间的比较。
 
-    <font color="green">A.</font> $12,14$	B. $10,14$	<font color="red">C.</font> $12,16$	D. $10,16$
+    A. $12,14$	B. $10,14$	$\bcancel{C}$. $12,16$	D. $10,16$
 
-11. 递归算法的执行过程，一般来说，可先后分成 $\underline{}$ 两个阶段。
+11. 递归算法的执行过程，一般来说，可先后分成 $\underline{B}$ 两个阶段。
 
-    A. 试探和回归	<font color="green">B.</font> 递推和回归
+    A. 试探和回归	B. 递推和回归
 
-    C. 试探和返回	<font color="red">D.</font> 递推和返回
+    C. 试探和返回	$\bcancel{D}$. 递推和返回
 
-12. 一个具有 $967$ 个结点的完全二叉树，其叶子结点个数为 $\underline{}$ 。
+12. 一个具有 $967$ 个结点的完全二叉树，其叶子结点个数为 $\underline{B}$ 。
 
-    A. 483	<font color="green">B.</font> 484	C. 485	<font color="red">D.</font> 486
+    A. 483	B. 484	C. 485	$\bcancel{D}$. 486
 
-13. 若循环队列以数组 $Q[0,\cdots,m-1]$ 作为其存储结构，变量 $rear$ 表示循环队列中队尾元素的实际位置，其移动按 $rear=(rear+1)$mod m 进行，变量 $length$ 表示当前循环队列中的元素个数，则循环队列的队首元素的实际位置是 $\underline{}$ 。
+13. 若循环队列以数组 $Q[0,\cdots,m-1]$ 作为其存储结构，变量 $rear$ 表示循环队列中队尾元素的实际位置，其移动按 $rear=(rear+1)$mod m 进行，变量 $length$ 表示当前循环队列中的元素个数，则循环队列的队首元素的实际位置是 $\underline{C}$ 。
 
     A. $rear-length$
 
-    <font color="red">B.</font> $(rear-length+m)$mod m
+    $\bcancel{B}$. $(rear-length+m)$mod m
 
-    <font color="green">C.</font> $(1+rear+m-length)$mod m
+    C. $(1+rear+m-length)$mod m
 
     D. $m-length$
 
-14. 若一棵哈夫曼树共有 $13$ 个顶点，则其叶子结点的个数为 $\underline{}$ 。
+14. 若一棵哈夫曼树共有 $13$ 个顶点，则其叶子结点的个数为 $\underline{C}$ 。
 
-    A. 5	B. 6	<font color="green">C.</font> 7	D. 8
+    A. 5	B. 6	C. 7	D. 8
 
-15. 若广义表 $L=((a,b,c),e)$，则 $L$ 的长度和深度分别为 $\underline{}$ 。
+15. 若广义表 $L=((a,b,c),e)$，则 $L$ 的长度和深度分别为 $\underline{B}$ 。
 
-    <font color="red">A.</font> 2和1	<font color="green">B.</font> 2和2	C. 4和2	D. 4和1
+    $\bcancel{A}$. 2和1	B. 2和2	C. 4和2	D. 4和1
 
-16. 若二叉树的先序遍历序列为 $ABDECF$,中序遍历序列为 $DBEAFC$,则其后序遍历序列为 $\underline{}$ 。
+16. 若二叉树的先序遍历序列为 $ABDECF$,中序遍历序列为 $DBEAFC$,则其后序遍历序列为 $\underline{D}$ 。
 
-    A. $DEBAFC$	B. $DEFBCA$	C. $DEBCFA$	<font color="green">D.</font> $DEBFCA$
+    A. $DEBAFC$	B. $DEFBCA$	C. $DEBCFA$	D. $DEBFCA$
 
-17. 已知一个线性表 $(38,25,74,63,52,48)$，假定采用散列函数 $h(key)=key$%$7$ 计算散列地址，并散列存储在散列表 $A[0,\cdots,6]$ 中，若采用线性探测方法解决冲突，则在改散列表上进行等概率成功查找的平均查找长度为 $\underline{}$ 。
+17. 已知一个线性表 $(38,25,74,63,52,48)$，假定采用散列函数 $h(key)=key$%$7$ 计算散列地址，并散列存储在散列表 $A[0,\cdots,6]$ 中，若采用线性探测方法解决冲突，则在改散列表上进行等概率成功查找的平均查找长度为 $\underline{C}$ 。
 
-    A. $1.5$	B. $1.7$	<font color="green">C.</font> $2.0$	D. $2.3$
+    A. $1.5$	B. $1.7$	C. $2.0$	D. $2.3$
 
-18. $\underline{}$ 算法策略与递归基数的联系最弱。
+18. $\underline{C}$ 算法策略与递归基数的联系最弱。
 
-    <font color="red">A.</font> 分治	B. 动态规划	<font color="green">C.</font> 贪心	D. 回溯
+    $\bcancel{A}$. 分治	B. 动态规划	C. 贪心	D. 回溯
 
-19. 对于具有 $n$ 个元素的一个数据序列，若只需得到其中第 $k$ 个元素之前的部分排序，最好采用 $\underline{}$ 。
+19. 对于具有 $n$ 个元素的一个数据序列，若只需得到其中第 $k$ 个元素之前的部分排序，最好采用 $\underline{D}$ 。
 
     A. 直接插入排序	B. 希尔排序
 
-    <font color="red">C.</font> 快速排序	<font color="green">D.</font> 堆排序
+    $\bcancel{C}$. 快速排序	D. 堆排序
