@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "；网络安全习题"
+title:      "网络安全习题"
 subtitle:   "本章考点在综合知识考试平均分数为3分，约总分的4%"
 date:       2021-05-03 11:34:05
 author:     "Balbo"

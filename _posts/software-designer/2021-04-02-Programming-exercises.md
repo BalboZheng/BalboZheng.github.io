@@ -13,7 +13,7 @@ tags:
 
    A. 逻辑型语言适用于书写自动定理证明
 
-   $\cancel{B}$. Smalltalk、C++、Java、C#都是面向对象语言
+   ~~B~~. Smalltalk、C++、Java、C#都是面向对象语言
 
    C. 函数型语言适用于人工智能领域
 
@@ -21,7 +21,7 @@ tags:
 
 2. 传值调用和引用调用时常用的函数调用方式，下列描述正确的是$\underline{C}$。
 
-   $\cancel{A}$. 在传值调用方式下，是将形参的值传给实参
+   ~~A~~. 在传值调用方式下，是将形参的值传给实参
 
    B. 在传值调用方式下，形参可以是任意形式的表达式
 
@@ -31,7 +31,7 @@ tags:
 
 3. 高级语言编译的过程可以分成若干个阶段，其中把单词符号分解成句子属于$\underline{B}$ 阶段的工作
 
-   $\cancel{A}$. 词法分析	B. 语法分析
+   ~~A~~. 词法分析	B. 语法分析
 
    C. 语义分析	D. 代码生成
 
@@ -71,7 +71,7 @@ tags:
 
    ![DFA transfont_1.png](https://i.loli.net/2021/04/02/p1htwxB5nT8W9u6.png)
 
-   $\cancel{A}$. 0 和 1	B. 2 和 3	C. 1 和 2	D. 0 和 3
+   ~~A~~. 0 和 1	B. 2 和 3	C. 1 和 2	D. 0 和 3
 
 8. 已知函数 f1()、f2() 的定义如下所示，设调用函数 f1 时传递给形参 x 的值是 10，若函数调用 f2(a) 以引用调用（Call By Reference)方式传递信息和以值调用（Call By Value）方式传递信息，则函数 f1 的返回值分别是$\underline{B}$。
 
@@ -87,7 +87,7 @@ tags:
    }
    ```
 
-   $\cancel{A}$. 20 和 20	B.. 59 和 20	C. 59 和 95	D. 20 和 95
+   ~~A~~. 20 和 20	B.. 59 和 20	C. 59 和 95	D. 20 和 95
 
 9. 某一确定性有限自动化（DFA）的状态如图，则以下字符串中，不能被该 DFA 接受的是$\underline{C}$。
 
@@ -95,13 +95,13 @@ tags:
 
    ![DFA transfont_2.png](https://i.loli.net/2021/04/02/MjANiPsaoGheTVF.png)
 
-   A. F、S	$\cancel{B}$. F、T	C. S、T	D. F、S、T
+   A. F、S	~~B~~. F、T	C. S、T	D. F、S、T
 
 10. 下列叙述中正确的是$\underline{D}$。
 
     A. 算法的时间、空间复杂性与实现该算法所采用的程序射击语言相关
 
-    $\cancel{B}$. 面向对象程序射击语言不支持对一个对象的成员变脸经行直接访问
+    ~~B~~. 面向对象程序射击语言不支持对一个对象的成员变脸经行直接访问
 
     C. 与汇编语言相比，采用脚本语言编程可或i的更高的运行效率
 
@@ -109,11 +109,11 @@ tags:
 
 11. 若程序中存在死循环，那么这属于$\underline{C}$错误。
 
-    $\cancel{A}$. 语法	B. 语用	C. 语义	D. 语境
+    ~~A~~. 语法	B. 语用	C. 语义	D. 语境
 
 12. 表达式 $a\ast(b+c)-d$ 的后缀表达式为 $\underline{B}$。
 
-    $\cancel{A}$. $abcd\ast+-$	B. $abc+\ast d-$	C. $abc\ast +d-$	D. $-+\ast abcd$
+    ~~A~~. $abcd\ast+-$	B. $abc+\ast d-$	C. $abc\ast +d-$	D. $-+\ast abcd$
 
 13. 已知某文法 $D[S]:S\to aSa,S\to b$，从 S 推导除的符号串可用$\underline{B}(n\geq 0)$ 描述。
 
@@ -125,7 +125,7 @@ tags:
 
     B. 1 必须出现奇数次
 
-    $\cancel{C}$ 0 不能连续出现
+    ~~C~~ 0 不能连续出现
 
     D. 1 不能连续出现
 
@@ -137,4 +137,4 @@ tags:
     {i=i+1;}
     ```
 
-    $\cancel{A}$ 语法	B. 类型不匹配	C. 变量定义	D. 动态语义
+    ~~A~~ 语法	B. 类型不匹配	C. 变量定义	D. 动态语义
