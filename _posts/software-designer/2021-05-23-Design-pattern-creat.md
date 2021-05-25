@@ -42,7 +42,7 @@ tags:
    3. 抽象产品（Product）：定义了产品的规范，描述了产品的主要特性和功能。
    4. 具体产品（ConcreteProduct）：实现了抽象产品角色所定义的接口，由具体工厂来创建，它同具体工厂之间一一对应。
 
-   ![工厂方法模式的结构图](http://c.biancheng.net/uploads/allimg/181114/3-1Q114135A2M3.gif)
+   ![Factory.jpg](https://i.loli.net/2021/05/25/yKwcleaIdvZ6FtY.png)
 
    <center>图1 工厂方法模式的结构图</center>
 
@@ -166,7 +166,7 @@ tags:
    - 单例类：包含一个实例且能自行创建这个实例的类。
    - 访问类：使用单例的类。
 
-   ![单例模式的结构图](http://c.biancheng.net/uploads/allimg/181113/3-1Q1131K441K2.gif)
+   ![Singleton.jpg](https://i.loli.net/2021/05/25/WIKFZcpq5f8naB1.png)
 
    <center>图1 单例模式的结构图</center>
 
@@ -252,7 +252,7 @@ tags:
 
    
 
-   ![建造者模式的结构图](http://c.biancheng.net/uploads/allimg/181114/3-1Q1141H441X4.gif)
+   ![Builder.jpg](https://i.loli.net/2021/05/25/cgf31QZWpwhOxVe.png)
 
    <center>图1 建造者模式的结构图</center>
 
@@ -396,7 +396,7 @@ tags:
 
    
 
-   ![原型模式的结构图](http://c.biancheng.net/uploads/allimg/181114/3-1Q114101Fa22.gif)
+   ![Prototype.jpg](https://i.loli.net/2021/05/25/V4tY6ZWhMjTXBs5.png)
 
    <center>图1 原型模式的结构图</center>
 

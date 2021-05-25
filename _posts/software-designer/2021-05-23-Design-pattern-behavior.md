@@ -41,11 +41,7 @@ tags:
    3. 环境（Context）类：持有一个策略类的引用，最终给客户端调用。
 
 
-   其结构图如图 1 所示。
-
-   
-
-   ![策略模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q116103K1205.gif)
+   其结构图如图 1 所示。   ![Strategy.jpg](https://i.loli.net/2021/05/25/rBQGaz4c5bNjt7H.png)
 
    <center>图1 策略模式的结构图</center>
 
@@ -159,7 +155,7 @@ tags:
 
    
 
-   ![模板方法模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q116095405308.gif)
+   ![Template.jpg](https://i.loli.net/2021/05/25/i2RWZTzqw1I8EC7.png)
 
    <center>图1 模板方法模式的结构图</center>
 
@@ -251,7 +247,7 @@ tags:
 
    
 
-   ![观察者模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q1161A6221S.gif)
+   ![Observer.jpg](https://i.loli.net/2021/05/25/dEBcjQgzwfSsWLa.png)
 
    <center>图1 观察者模式的结构图</center>
 
@@ -369,7 +365,7 @@ tags:
 
    
 
-   ![迭代器模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q1161PU9528.gif)
+   ![Iterator.jpg](https://i.loli.net/2021/05/25/MQxhizICBVAEvo4.png)
 
    <center>图1 迭代器模式的结构图</center>
 
@@ -519,13 +515,13 @@ tags:
 
    
 
-   ![责任链模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q116135Z11C.gif)
+   ![Chain of Responsibility1.jpg](https://i.loli.net/2021/05/25/R34Bu7qHJVtzcIP.png)
 
    <center>图1 责任链模式的结构图</center>
 
    
 
-   ![责任链](http://c.biancheng.net/uploads/allimg/181116/3-1Q11613592TF.gif)
+   ![Chain of Responsibility2.jpg](https://i.loli.net/2021/05/25/2oGITb7PiYsVnqc.png)
 
    <center>图2 责任链</center>
 
@@ -639,7 +635,7 @@ tags:
 
    
 
-   ![命令模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q11611335E44.gif)
+   ![Command.jpg](https://i.loli.net/2021/05/25/yvgqzDZsiHIVUna.png)
 
    <center>图1 命令模式的结构图</center>
 
@@ -743,7 +739,7 @@ tags:
 
    
 
-   ![备忘录模式的结构图](http://c.biancheng.net/uploads/allimg/181119/3-1Q119130413927.gif)
+   ![Memento.jpg](https://i.loli.net/2021/05/25/LeJEn1zupNMO9Qx.png)
 
    <center>图1 备忘录模式的结构图</center>
 
@@ -863,7 +859,7 @@ tags:
 
    其结构图如图 1 所示。
 
-   ![状态模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q11615412U55.gif)
+   ![State.jpg](https://i.loli.net/2021/05/25/5n2y46ieZfUQA9N.png)
 
    <center>图1 状态模式的结构图</center>
 
@@ -979,7 +975,7 @@ tags:
 
    
 
-   [![访问者（Visitor）模式的结构图](http://c.biancheng.net/uploads/allimg/181119/3-1Q11910135Y25.gif)](http://c.biancheng.net/uploads/allimg/181119/3-1Q119101429D6.gif)
+   ![Visitor.jpg](https://i.loli.net/2021/05/25/5N3qfAlj1wad6Mc.png)
 
    <center>图1 访问者（Visitor）模式的结构图</center>
 
@@ -1125,7 +1121,7 @@ tags:
 
    
 
-   ![中介者模式的结构图](http://c.biancheng.net/uploads/allimg/181116/3-1Q1161I532V0.gif)
+   ![Mediator.jpg](https://i.loli.net/2021/05/25/TpylciXG1CQEOV5.png)
 
    <center>图1 中介者模式的结构图</center>
 
@@ -1279,9 +1275,9 @@ tags:
 
 
 
-![句子“我是大学生”的语法树](http://c.biancheng.net/uploads/allimg/181119/3-1Q119150550114.gif)
+![Grammar.jpg](https://i.loli.net/2021/05/25/cj9ovBCAiIGHMxp.png)
 
-<center>图1 句子“我是大学生”的语法树</center>
+<center>图1 句子“我是学生”的语法树</center>
 
 
 有了以上基础知识，现在来介绍解释器模式的结构就简单了。解释器模式的结构与[组合模式](http://c.biancheng.net/view/1373.html)相似，不过其包含的组成元素比组合模式多，而且组合模式是对象结构型模式，而解释器模式是类行为型模式。
@@ -1301,7 +1297,7 @@ tags:
 
    
 
-   ![解释器模式的结构图](http://c.biancheng.net/uploads/allimg/181119/3-1Q119150626422.gif)
+![Interpreter.jpg](https://i.loli.net/2021/05/25/3CynW6wYUvD9cJH.png)
 
    <center>图2 解释器模式的结构图</center>
 
