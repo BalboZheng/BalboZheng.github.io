@@ -41,11 +41,11 @@ tags:
    2. 适配者（Adaptee）类：它是被访问和适配的现存组件库中的组件接口。
    3. 适配器（Adapter）类：它是一个转换器，通过继承或引用适配者的对象，把适配者接口转换成目标接口，让客户按目标接口的格式访问适配者。
 
-   ![类适配器模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q1151045351c.gif)
+   ![Adapter1.jpg](https://i.loli.net/2021/05/27/VuOcMb2yJzSNYgt.png)
 
    <center>图1 类适配器模式的结构图</center>
 
-   ![对象适配器模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q1151046105A.gif)
+   ![Adapter2.jpg](https://i.loli.net/2021/05/27/Fhq7WCAXoz4PZdc.png)
 
    <center>图2 对象适配器模式的结构图</center>
 
@@ -170,7 +170,7 @@ tags:
 
    
 
-   ![装饰模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q115142115M2.gif)
+   ![Decorator.jpg](https://i.loli.net/2021/05/27/nKMl5ijm9JDNZyt.png)
 
    <center>图1 装饰器模式的结构图</center>
 
@@ -283,7 +283,7 @@ tags:
 
    
 
-   ![代理模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q115093011523.gif)
+   ![Proxy.jpg](https://i.loli.net/2021/05/27/2oqtvfkbUM6x8zR.png)
 
    <center>图1 代理模式的结构图</center>
 
@@ -386,7 +386,7 @@ tags:
 
    
 
-   ![桥接模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q115125253H1.gif)
+   ![Bridge.jpg](https://i.loli.net/2021/05/27/KVgB2xXrj6qMWSk.png)
 
    <center>图1 桥接模式的结构图</center>
 
@@ -486,7 +486,7 @@ tags:
 
    
 
-   ![外观模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q115152143509.gif)
+   ![Facade.jpg](https://i.loli.net/2021/05/27/jwsvPmUQYH3Zugz.png)
 
    <center>图2 外观（Facade）模式的结构图</center>
 
@@ -557,7 +557,7 @@ tags:
 
 组合模式一般用来描述整体与部分的关系，它将对象组织到树形结构中，顶层的节点被称为根节点，根节点下面可以包含树枝节点和叶子节点，树枝节点下面又可以包含树枝节点和叶子节点，树形结构图如下。
 
-![组合模式树形结构图](http://c.biancheng.net/uploads/allimg/201019/5-201019124253553.png)
+![node.jpg](https://i.loli.net/2021/05/27/3hNwa6nSEGAudrT.png)
 
 
 由上图可以看出，其实根节点和树枝节点本质上属于同一种数据类型，可以作为容器使用；而叶子节点与树枝节点在语义上不属于用一种类型。但是在组合模式中，会把树枝节点和叶子节点看作属于同一种数据类型（用统一接口定义），让它们具备一致行为。
@@ -596,7 +596,7 @@ tags:
 
    
 
-   ![透明式的组合模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q1151G62L17.gif)
+   ![Composite Pattern1.jpg](https://i.loli.net/2021/05/27/J4HzNAvhKSgyklR.png)
 
    <center>图1 透明式的组合模式的结构图</center>
 
@@ -608,7 +608,7 @@ tags:
 
    
 
-   ![安全式的组合模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q1151GF5221.gif)
+   ![Composite Pattern2.jpg](https://i.loli.net/2021/05/27/FCGBnb7LeU9mhfI.png)
 
    <center>图2 安全式的组合模式的结构图</center>
 
@@ -618,7 +618,7 @@ tags:
 
    
 
-   ![集合c0的树状图](http://c.biancheng.net/uploads/allimg/181115/3-1Q1151GUH32.gif)
+   ![gather.jpg](https://i.loli.net/2021/05/27/jaPRAwXLGBu3Vly.png)
 
    <center>图3 集合c0的树状图</center>
 
@@ -785,7 +785,7 @@ tags:
 
    
 
-   ![享元模式的结构图](http://c.biancheng.net/uploads/allimg/181115/3-1Q115161342242.gif)
+   ![Flyweight.jpg](https://i.loli.net/2021/05/27/9tfi1AmGXQzEBbL.png)
 
    <center>图1 享元模式的结构图</center>
 
