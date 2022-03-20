@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "数据结构（上）"
+title:      "数据结构"
 subtitle:   "数据结构基础知识"
 date:       2021-03-14 10:37:54
 author:     "Balbo"
