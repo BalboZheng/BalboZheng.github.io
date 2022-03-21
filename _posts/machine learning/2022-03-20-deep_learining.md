@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 机器学习
+title: 深度学习
 subtitle: 
 author: Balbo Cheng
 categories: python
