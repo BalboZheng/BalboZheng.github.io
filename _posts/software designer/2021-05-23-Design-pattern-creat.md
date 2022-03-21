@@ -1,21 +1,10 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "设计模式-创建模式"
-subtitle:   
-date:       2021-05-23 20:00:00
-author:     "Balbo"
-header-img: "img/post-bg-2021.jpg"
-tags:
-    - software-designer
-=======
 layout: post
 title: 设计模式-创建模式
 subtitle: 
 author: Balbo Cheng
 categories: software_designer
 tags: []
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 工厂方法模式

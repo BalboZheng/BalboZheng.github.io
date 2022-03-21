@@ -1,21 +1,10 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "数据结构"
-subtitle:   "数据结构基础知识"
-date:       2021-03-14 10:37:54
-author:     "Balbo"
-header-img: "img/post-bg-2021.jpg"
-tags:
-    - software-designer
-=======
 layout: post
 title: 数据结构基础知识
 subtitle: 
 author: Balbo Cheng
 categories: software_designer
 tags: []
->>>>>>> e5c77ca (新页面)
 ---
 
 # 3.1 线性结构

@@ -1,21 +1,10 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "软件过程模型"
-subtitle:   
-date:       2021-05-27 10:22:13
-author:     "Balbo"
-header-img: "img/post-bg-2021.jpg"
-tags:
-    - software-designer
-=======
 layout: post
 title: 软件过程模型
 subtitle: 
 author: Balbo Cheng
 categories: software_designer
 tags: []
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 瀑布模型(Waterfall Model)
