@@ -1,0 +1,331 @@
+I"�e<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2019-04-16-shiro.md
+—
+layout:     post
+title:      “shiro配置”
+subtitle:   “基于spring的shiro配置”
+date:       2019-04-16 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - spring
+    - shiro
+    - java
+—
+shiro是一个特别简单，易用的框架，在此记录一下shiro的使用配置。</p>
+
+<p>首先，创建四张表：user  role  user_role  permission，分别为用户、角色、用户与角色关系表和权限表。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>表结构</th>
+      <th>图</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>user表结构</td>
+      <td>id/username/password</td>
+    </tr>
+    <tr>
+      <td>role表结构</td>
+      <td>id/rolename</td>
+    </tr>
+    <tr>
+      <td>user_role</td>
+      <td>user_id/role_id</td>
+    </tr>
+    <tr>
+      <td>permission</td>
+      <td>id/permissionname/role_id</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>当然，表结构如何设计是没有关系的，你可以根据自己偏好设计。</p>
+
+<p>web.xml中加入shiro的过滤器：</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;filter&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>shiroFilter<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;filter-class&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="nt">&lt;/filter-class&gt;</span>
+<span class="nt">&lt;/filter&gt;</span>
+<span class="nt">&lt;filter-mapping&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>shiroFilter<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+<span class="nt">&lt;/filter-mapping&gt;</span>
+</code></pre></div></div>
+
+<p>然后配置shiro,可以写在spring的配置文件中，也可以另起一个配置文件，配置内容如下：</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- 配置权限管理器 --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"myShiro"</span> <span class="na">class=</span><span class="s">"com.itmayong.util.MyShrio"</span><span class="nt">&gt;&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"securityManager"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.web.mgt.DefaultWebSecurityManager"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 我们自定义的realm --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"realm"</span> <span class="na">ref=</span><span class="s">"myShiro"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 缓存管理器 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"cacheManager"</span> <span class="na">ref=</span><span class="s">"cacheManager"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"shiroFilter"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.spring.web.ShiroFilterFactoryBean"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 权限管理器 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"securityManager"</span> <span class="na">ref=</span><span class="s">"securityManager"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 登录地址 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"loginUrl"</span> <span class="na">value=</span><span class="s">"/login.jsp"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 登录后跳转到业务页面 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"successUrl"</span> <span class="na">value=</span><span class="s">"/main.jsp"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 错误页面 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"unauthorizedUrl"</span> <span class="na">value=</span><span class="s">"/error.jsp"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 权限配置 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"filterChainDefinitions"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;value&gt;</span>
+            <span class="c">&lt;!-- anon无权限访问请求，此处是登录页面和登录请求 --&gt;</span>
+            /login.do = anon
+            /static/**=anon
+            <span class="c">&lt;!-- 需要权限为add的用户才能访问此请求--&gt;</span>
+            /user=perms[user:add]
+            <span class="c">&lt;!-- 需要管理员角色才能访问此页面 --&gt;</span>
+            /user/add=roles[admin]
+            <span class="c">&lt;!--拦截非静态资源的所有请求--&gt;</span>
+            /** = authc
+        <span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"cacheManager"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.cache.MemoryConstrainedCacheManager"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"lifecycleBeanPostProcessor"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.spring.LifecycleBeanPostProcessor"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>上面的配置文件我们指定了自定义的realm，内容如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyShrio</span> <span class="kd">extends</span> <span class="nc">AuthorizingRealm</span><span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">UserServiceIf</span> <span class="n">userService</span><span class="o">;</span>
+    <span class="cm">/**
+    * 权限认证，获取登录用户的权限
+    */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">AuthorizationInfo</span> <span class="nf">doGetAuthorizationInfo</span><span class="o">(</span><span class="nc">PrincipalCollection</span> <span class="n">principalCollection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">loginName</span><span class="o">=(</span><span class="nc">String</span><span class="o">)</span> <span class="n">principalCollection</span><span class="o">.</span><span class="na">fromRealm</span><span class="o">(</span><span class="n">getName</span><span class="o">()).</span><span class="na">iterator</span><span class="o">().</span><span class="na">next</span><span class="o">();</span>
+        <span class="c1">//此处连库匹配了登录用户的数据，具体怎么做，需要根据个人需求而定</span>
+        <span class="nc">User</span> <span class="n">user</span><span class="o">=</span><span class="n">userService</span><span class="o">.</span><span class="na">findByName</span><span class="o">(</span><span class="n">loginName</span><span class="o">);</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Role</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getRoleList</span><span class="o">();</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">user</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+            <span class="nc">SimpleAuthorizationInfo</span> <span class="n">info</span><span class="o">=</span><span class="k">new</span> <span class="nc">SimpleAuthorizationInfo</span><span class="o">();</span>
+            <span class="c1">//获取用户的角色名称</span>
+            <span class="n">info</span><span class="o">.</span><span class="na">setRoles</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getRolesName</span><span class="o">());</span>
+            <span class="c1">//获取用户的权限</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Role</span><span class="o">&gt;</span> <span class="n">roleList</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="na">getRoleList</span><span class="o">();</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Role</span> <span class="n">role</span> <span class="o">:</span> <span class="n">roleList</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">info</span><span class="o">.</span><span class="na">addStringPermissions</span><span class="o">(</span><span class="n">role</span><span class="o">.</span><span class="na">getPermissionsName</span><span class="o">());</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">info</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+    * 登录认证，创建用户的登录信息
+    */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">AuthenticationInfo</span> <span class="nf">doGetAuthenticationInfo</span><span class="o">(</span>
+    <span class="nc">AuthenticationToken</span> <span class="n">authenticationToken</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">AuthenticationException</span> <span class="o">{</span>
+        <span class="nc">UsernamePasswordToken</span> <span class="n">token</span><span class="o">=(</span><span class="nc">UsernamePasswordToken</span><span class="o">)</span> <span class="n">authenticationToken</span><span class="o">;</span>
+        <span class="c1">//判断用户登录状态</span>
+        <span class="nc">User</span> <span class="n">user</span><span class="o">=</span><span class="n">userService</span><span class="o">.</span><span class="na">findByName</span><span class="o">(</span><span class="n">token</span><span class="o">.</span><span class="na">getUsername</span><span class="o">());</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">user</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+            <span class="c1">//保存用户登录信息到认证中</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleAuthenticationInfo</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">(),</span> <span class="n">getName</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>最后，你可以写一个页面和Controller进行测试了，当然也可以细分一下权限和角色，以应用到实际更复杂的场景中。</p>
+
+<p>页面内容可以使用下边的方式对需要角色和权限控制的内容进行包裹，以达到权限控制的目的。</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;shiro:hasRole</span> <span class="na">name=</span><span class="s">"admin"</span><span class="nt">&gt;</span>需要管理员角色<span class="nt">&lt;/shiro:hasRole&gt;</span>
+<span class="nt">&lt;shiro:hasPermission</span> <span class="na">name=</span><span class="s">"add"</span><span class="nt">&gt;</span>需要add权限<span class="nt">&lt;/shiro:hasPermission&gt;</span>
+</code></pre></div></div>
+<p>=======
+—
+layout:     post
+title:      “shiro配置”
+subtitle:   “基于spring的shiro配置”
+date:       2019-04-16 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+catalog: true
+tags:
+    - spring
+    - shiro
+    - java
+—
+=======
+—
+layout: post
+title: shiro配置
+subtitle: 基于spring的shiro配置
+author: Balbo Cheng
+categories: java
+tags: [spring, shiro]
+sidebar: []
+—</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+shiro是一个特别简单，易用的框架，在此记录一下shiro的使用配置。</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<p>首先，创建四张表：user  role  user_role  permission，分别为用户、角色、用户与角色关系表和权限表。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>表结构</th>
+      <th>图</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>user表结构</td>
+      <td>id/username/password</td>
+    </tr>
+    <tr>
+      <td>role表结构</td>
+      <td>id/rolename</td>
+    </tr>
+    <tr>
+      <td>user_role</td>
+      <td>user_id/role_id</td>
+    </tr>
+    <tr>
+      <td>permission</td>
+      <td>id/permissionname/role_id</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>当然，表结构如何设计是没有关系的，你可以根据自己偏好设计。</p>
+
+<p>web.xml中加入shiro的过滤器：</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;filter&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>shiroFilter<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;filter-class&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="nt">&lt;/filter-class&gt;</span>
+<span class="nt">&lt;/filter&gt;</span>
+<span class="nt">&lt;filter-mapping&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>shiroFilter<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
+<span class="nt">&lt;/filter-mapping&gt;</span>
+</code></pre></div></div>
+
+<p>然后配置shiro,可以写在spring的配置文件中，也可以另起一个配置文件，配置内容如下：</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- 配置权限管理器 --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"myShiro"</span> <span class="na">class=</span><span class="s">"com.itmayong.util.MyShrio"</span><span class="nt">&gt;&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"securityManager"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.web.mgt.DefaultWebSecurityManager"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 我们自定义的realm --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"realm"</span> <span class="na">ref=</span><span class="s">"myShiro"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 缓存管理器 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"cacheManager"</span> <span class="na">ref=</span><span class="s">"cacheManager"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"shiroFilter"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.spring.web.ShiroFilterFactoryBean"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 权限管理器 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"securityManager"</span> <span class="na">ref=</span><span class="s">"securityManager"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 登录地址 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"loginUrl"</span> <span class="na">value=</span><span class="s">"/login.jsp"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 登录后跳转到业务页面 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"successUrl"</span> <span class="na">value=</span><span class="s">"/main.jsp"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 错误页面 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"unauthorizedUrl"</span> <span class="na">value=</span><span class="s">"/error.jsp"</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 权限配置 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"filterChainDefinitions"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;value&gt;</span>
+            <span class="c">&lt;!-- anon无权限访问请求，此处是登录页面和登录请求 --&gt;</span>
+            /login.do = anon
+            /static/**=anon
+            <span class="c">&lt;!-- 需要权限为add的用户才能访问此请求--&gt;</span>
+            /user=perms[user:add]
+            <span class="c">&lt;!-- 需要管理员角色才能访问此页面 --&gt;</span>
+            /user/add=roles[admin]
+            <span class="c">&lt;!--拦截非静态资源的所有请求--&gt;</span>
+            /** = authc
+        <span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"cacheManager"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.cache.MemoryConstrainedCacheManager"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">"lifecycleBeanPostProcessor"</span> <span class="na">class=</span><span class="s">"org.apache.shiro.spring.LifecycleBeanPostProcessor"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>上面的配置文件我们指定了自定义的realm，内容如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyShrio</span> <span class="kd">extends</span> <span class="nc">AuthorizingRealm</span><span class="o">{</span>
+    <span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">UserServiceIf</span> <span class="n">userService</span><span class="o">;</span>
+    <span class="cm">/**
+    * 权限认证，获取登录用户的权限
+    */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">AuthorizationInfo</span> <span class="nf">doGetAuthorizationInfo</span><span class="o">(</span><span class="nc">PrincipalCollection</span> <span class="n">principalCollection</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">loginName</span><span class="o">=(</span><span class="nc">String</span><span class="o">)</span> <span class="n">principalCollection</span><span class="o">.</span><span class="na">fromRealm</span><span class="o">(</span><span class="n">getName</span><span class="o">()).</span><span class="na">iterator</span><span class="o">().</span><span class="na">next</span><span class="o">();</span>
+        <span class="c1">//此处连库匹配了登录用户的数据，具体怎么做，需要根据个人需求而定</span>
+        <span class="nc">User</span> <span class="n">user</span><span class="o">=</span><span class="n">userService</span><span class="o">.</span><span class="na">findByName</span><span class="o">(</span><span class="n">loginName</span><span class="o">);</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Role</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="na">getRoleList</span><span class="o">();</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">user</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+            <span class="nc">SimpleAuthorizationInfo</span> <span class="n">info</span><span class="o">=</span><span class="k">new</span> <span class="nc">SimpleAuthorizationInfo</span><span class="o">();</span>
+            <span class="c1">//获取用户的角色名称</span>
+            <span class="n">info</span><span class="o">.</span><span class="na">setRoles</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getRolesName</span><span class="o">());</span>
+            <span class="c1">//获取用户的权限</span>
+            <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Role</span><span class="o">&gt;</span> <span class="n">roleList</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="na">getRoleList</span><span class="o">();</span>
+            <span class="k">for</span> <span class="o">(</span><span class="nc">Role</span> <span class="n">role</span> <span class="o">:</span> <span class="n">roleList</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">info</span><span class="o">.</span><span class="na">addStringPermissions</span><span class="o">(</span><span class="n">role</span><span class="o">.</span><span class="na">getPermissionsName</span><span class="o">());</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">info</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="cm">/**
+    * 登录认证，创建用户的登录信息
+    */</span>
+    <span class="nd">@Override</span>
+    <span class="kd">protected</span> <span class="nc">AuthenticationInfo</span> <span class="nf">doGetAuthenticationInfo</span><span class="o">(</span>
+    <span class="nc">AuthenticationToken</span> <span class="n">authenticationToken</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">AuthenticationException</span> <span class="o">{</span>
+        <span class="nc">UsernamePasswordToken</span> <span class="n">token</span><span class="o">=(</span><span class="nc">UsernamePasswordToken</span><span class="o">)</span> <span class="n">authenticationToken</span><span class="o">;</span>
+        <span class="c1">//判断用户登录状态</span>
+        <span class="nc">User</span> <span class="n">user</span><span class="o">=</span><span class="n">userService</span><span class="o">.</span><span class="na">findByName</span><span class="o">(</span><span class="n">token</span><span class="o">.</span><span class="na">getUsername</span><span class="o">());</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">user</span><span class="o">!=</span><span class="kc">null</span><span class="o">){</span>
+            <span class="c1">//保存用户登录信息到认证中</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">SimpleAuthenticationInfo</span><span class="o">(</span><span class="n">user</span><span class="o">.</span><span class="na">getUsername</span><span class="o">(),</span> <span class="n">user</span><span class="o">.</span><span class="na">getPassword</span><span class="o">(),</span> <span class="n">getName</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>最后，你可以写一个页面和Controller进行测试了，当然也可以细分一下权限和角色，以应用到实际更复杂的场景中。</p>
+
+<p>页面内容可以使用下边的方式对需要角色和权限控制的内容进行包裹，以达到权限控制的目的。</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;shiro:hasRole</span> <span class="na">name=</span><span class="s">"admin"</span><span class="nt">&gt;</span>需要管理员角色<span class="nt">&lt;/shiro:hasRole&gt;</span>
+<span class="nt">&lt;shiro:hasPermission</span> <span class="na">name=</span><span class="s">"add"</span><span class="nt">&gt;</span>需要add权限<span class="nt">&lt;/shiro:hasPermission&gt;</span>
+<span class="err">&lt;&lt;&lt;&lt;&lt;&lt;</span><span class="nt">&lt; HEAD</span>
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <h1 id="f0bfe13-new-update_posts知识点2019-04-16-shiromd">f0bfe13 (new update):_posts/知识点/2019-04-16-shiro.md</h1>
+              <p>```
+e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

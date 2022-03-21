@@ -1,0 +1,618 @@
+I"��<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2019-09-06-mybatis-generator.md
+—
+layout:     post
+title:      “MyBatis Generator”
+subtitle:   “MyBatis逆向工程”
+date:       2019-09-06 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - mybatis
+    - java
+=======
+—
+layout: post
+title: MyBatis Generator
+subtitle: MyBatis逆向工程
+author: Balbo Cheng
+categories: java
+tags: [mybatis]</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <h2 id="e5c77ca-新页面">e5c77ca (新页面)</h2>
+              <h2 id="什么是mybatis的逆向工程">什么是MyBatis的逆向工程？</h2>
+              <p>MyBatis逆向工程是指用数据库的表直接生成Java代码，利用MyBatis官方提供的逆向工程，可以针对单表自动生MyBatis执行所需要的代码（如po类，mapper.java和mapper.xml）</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h2 id="生成逆向工程">生成逆向工程</h2>
+<p>生成逆向工程的方式有多种，推荐使用Java程序和XML配置文件的方式进行实现。</p>
+
+<h2 id="mybatis逆向工程">MyBatis逆向工程</h2>
+<h3 id="数据库配置文件dbproperties">数据库配置文件db.properties</h3>
+
+<p>这里为了解耦，将数据库信息和要生成的表的信息放到一个db.properties文件里</p>
+
+<p>jdbc连接数据库配置信息</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jdbc</span><span class="o">.</span><span class="na">driver</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="na">mysql</span><span class="o">.</span><span class="na">jdbc</span><span class="o">.</span><span class="na">Driver</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="nl">jdbc:mysql:</span><span class="c1">//localhost:3306/mybatis?characterEncoding=utf-8</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">username</span> <span class="o">=</span> <span class="n">root</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">password</span> <span class="o">=</span> <span class="mi">123456</span>
+
+<span class="err">#</span><span class="n">数据库中要生成的表</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">items</span> <span class="o">=</span> <span class="n">items</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">orders</span> <span class="o">=</span> <span class="n">orders</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">orderdetail</span> <span class="o">=</span> <span class="n">orderdetail</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">user</span> <span class="o">=</span> <span class="n">user</span>
+</code></pre></div></div>
+<h3 id="生成代码配置文件generateconfigxml">生成代码配置文件generateConfig.xml</h3>
+<p>在该文件中配置要生成哪些表的信息，以及生成的PO类，mapper.xml和mapper.java所在的包，这里为了今后能用MyBatis的代理进行开发，让mapper.xml和mapper.java在同一个包中。</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;!DOCTYPE generatorConfiguration
+PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"&gt;</span>
+<span class="nt">&lt;generatorConfiguration&gt;</span>
+
+<span class="c">&lt;!-- mybatis的配置文件 --&gt;</span>
+
+<span class="nt">&lt;properties</span> <span class="na">resource=</span><span class="s">"db.properties"</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--指定特定数据库的jdbc驱动jar包的位置 --&gt;</span>
+<span class="nt">&lt;classPathEntry</span> <span class="na">location=</span><span class="s">"${jdbc.driverLocation}"</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--classPathEntry 
+location="D:\zngkpt\m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar" 
+--&gt;</span>
+<span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">"context1"</span> <span class="na">targetRuntime=</span><span class="s">"MyBatis3"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;commentGenerator&gt;</span>
+<span class="c">&lt;!-- 去除自动生成的注释 --&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"suppressAllComments"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/commentGenerator&gt;</span>
+
+<span class="c">&lt;!-- 数据库连接配置 --&gt;</span>
+<span class="nt">&lt;jdbcConnection</span> <span class="na">driverClass=</span><span class="s">"${jdbc.driverClass}"</span>
+<span class="na">connectionURL=</span><span class="s">"${jdbc.connectionURL}"</span>
+<span class="na">userId=</span><span class="s">"${jdbc.userId}"</span>
+<span class="na">password=</span><span class="s">"${jdbc.password}"</span> <span class="nt">/&gt;</span>
+<span class="c">&lt;!--jdbcConnection driverClass="com.mysql.jdbc.Driver"
+connectionURL="jdbc:mysql://localhost:3306/test"
+userId="root"
+password="mysql" /--&gt;</span>
+
+<span class="c">&lt;!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制--&gt;</span>
+<span class="nt">&lt;javaTypeResolver&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"forceBigDecimals"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/javaTypeResolver&gt;</span>
+
+<span class="c">&lt;!--配置生成的实体包
+targetPackage：生成的实体包位置，默认存放在src目录下
+targetProject：目标工程名
+--&gt;</span>
+<span class="c">&lt;!-- 指定javabean生成的位置 --&gt;</span>
+<span class="nt">&lt;javaModelGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.maven.bean"</span> <span class="na">targetProject=</span><span class="s">"..\ssm_crud\src\main\java"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"trimStrings"</span> <span class="na">value=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/javaModelGenerator&gt;</span>
+
+<span class="nt">&lt;sqlMapGenerator</span> <span class="na">targetPackage=</span><span class="s">"mapper"</span> <span class="na">targetProject=</span><span class="s">"..\ssm_crud\src\main\resources"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/sqlMapGenerator&gt;</span>
+
+<span class="nt">&lt;javaClientGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.maven.dao"</span> <span class="na">type=</span><span class="s">"XMLMAPPER"</span>
+ <span class="na">targetProject=</span><span class="s">"..\ssm_crud\src\main\java"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/javaClientGenerator&gt;</span>
+
+<span class="c">&lt;!-- 配置表
+schema：不用填写
+tableName: 表名
+enableCountByExample、enableSelectByExample、enableDeleteByExample、
+enableUpdateByExample、selectByExampleQueryId：
+去除自动生成的例子
+--&gt;</span>
+
+<span class="nt">&lt;table</span> <span class="na">tableName=</span><span class="s">"tbl_emp"</span> <span class="na">domainObjectName=</span><span class="s">"Employee"</span> 
+<span class="na">enableCountByExample=</span><span class="s">"true"</span> <span class="na">enableDeleteByExample=</span><span class="s">"true"</span>
+<span class="na">enableSelectByExample=</span><span class="s">"true"</span> <span class="na">enableUpdateByExample=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;table</span> <span class="na">tableName=</span><span class="s">"tbl_dept"</span> <span class="na">domainObjectName=</span><span class="s">"Department"</span> 
+<span class="na">enableCountByExample=</span><span class="s">"true"</span> <span class="na">enableDeleteByExample=</span><span class="s">"true"</span>
+<span class="na">enableSelectByExample=</span><span class="s">"true"</span> <span class="na">enableUpdateByExample=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/context&gt;</span>
+<span class="nt">&lt;/generatorConfiguration&gt;</span>
+</code></pre></div></div>
+<h3 id="执行生成程序generatesqlmapjava">执行生成程序GenerateSqlMap.java</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.api.MyBatisGenerator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.config.Configuration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.config.xml.ConfigurationParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.internal.DefaultShellCallback</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeneratorSqlmap</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">generator</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">warnings</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;();</span>
+        <span class="kt">boolean</span> <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="c1">//指定 逆向工程配置文件</span>
+        <span class="nc">File</span> <span class="n">configFile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"config/generatorConfig.xml"</span><span class="o">);</span>
+        <span class="nc">ConfigurationParser</span> <span class="n">cp</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationParser</span><span class="o">(</span><span class="n">warnings</span><span class="o">);</span>
+        <span class="nc">Configuration</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="na">parseConfiguration</span><span class="o">(</span><span class="n">configFile</span><span class="o">);</span>
+        <span class="nc">DefaultShellCallback</span> <span class="n">callback</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultShellCallback</span><span class="o">(</span><span class="n">overwrite</span><span class="o">);</span>
+        <span class="nc">MyBatisGenerator</span> <span class="n">myBatisGenerator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyBatisGenerator</span><span class="o">(</span><span class="n">config</span><span class="o">,</span>
+        <span class="n">callback</span><span class="o">,</span> <span class="n">warnings</span><span class="o">);</span>
+        <span class="n">myBatisGenerator</span><span class="o">.</span><span class="na">generate</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">GeneratorSqlmap</span> <span class="n">generatorSqlmap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GeneratorSqlmap</span><span class="o">();</span>
+        <span class="n">generatorSqlmap</span><span class="o">.</span><span class="na">generator</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>在实际开发中，建议另写一个project来实现MyBatis的逆向工程</strong></p>
+
+<p>然后再从中挑选出实际需要的POJO类和mapper.xml，千万不要在原有项目中直接生成，那样会比较乱。</p>
+
+<p>MyBatis逆向工程比较简单，可以直接做为模板工程进行应用，只需要改一下数据库名，表名和包的路径就行了，这里提供项目下载地址，可以直接使用。</p>
+
+<h2 id="在maven工程中的resource中创建generatorconfigxml">在maven工程中的resource中创建generatorConfig.xml</h2>
+
+<h3 id="配置">配置</h3>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"&gt;</span>
+
+<span class="nt">&lt;generatorConfiguration&gt;</span>
+   <span class="c">&lt;!--mysql 连接数据库jar 这里选择自己本地位置--&gt;</span>
+   <span class="nt">&lt;classPathEntry</span> <span class="na">location=</span><span class="s">"D:/mysql-connector-java-5.1.20-bin.jar"</span> <span class="nt">/&gt;</span>
+   <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">"testTables"</span> <span class="na">targetRuntime=</span><span class="s">"MyBatis3"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;commentGenerator&gt;</span>
+         <span class="c">&lt;!-- 是否去除自动生成的注释 true：是 ： false:否 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"suppressAllComments"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/commentGenerator&gt;</span>
+      <span class="c">&lt;!--数据库连接的信息：驱动类、连接地址、用户名、密码 --&gt;</span>
+      <span class="nt">&lt;jdbcConnection</span> <span class="na">driverClass=</span><span class="s">"com.mysql.jdbc.Driver"</span>
+         <span class="na">connectionURL=</span><span class="s">"jdbc:mysql://localhost:3306/ecps"</span> <span class="na">userId=</span><span class="s">"root"</span>
+         <span class="na">password=</span><span class="s">"root"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;/jdbcConnection&gt;</span>
+      <span class="c">&lt;!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+         NUMERIC 类型解析为java.math.BigDecimal --&gt;</span>
+      <span class="nt">&lt;javaTypeResolver&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"forceBigDecimals"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/javaTypeResolver&gt;</span>
+
+      <span class="c">&lt;!-- targetProject:生成PO类的位置 --&gt;</span>
+      <span class="nt">&lt;javaModelGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.ecps.seckill.pojo"</span>
+         <span class="na">targetProject=</span><span class="s">"src/main/java"</span><span class="nt">&gt;</span>
+         <span class="c">&lt;!-- enableSubPackages:是否让schema作为包的后缀 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+         <span class="c">&lt;!-- 从数据库返回的值被清理前后的空格 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"trimStrings"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/javaModelGenerator&gt;</span>
+        <span class="c">&lt;!-- targetProject:mapper映射文件生成的位置
+           如果maven工程只是单独的一个工程，targetProject="src/main/java"
+           若果maven工程是分模块的工程，targetProject="所属模块的名称"，例如：
+           targetProject="ecps-manager-mapper"，下同--&gt;</span>
+      <span class="nt">&lt;sqlMapGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.ecps.seckill.mapper"</span>
+         <span class="na">targetProject=</span><span class="s">"src/main/java"</span><span class="nt">&gt;</span>
+         <span class="c">&lt;!-- enableSubPackages:是否让schema作为包的后缀 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/sqlMapGenerator&gt;</span>
+      <span class="c">&lt;!-- targetPackage：mapper接口生成的位置 --&gt;</span>
+      <span class="nt">&lt;javaClientGenerator</span> <span class="na">type=</span><span class="s">"XMLMAPPER"</span>
+         <span class="na">targetPackage=</span><span class="s">"com.ecps.seckill.mapper"</span>
+         <span class="na">targetProject=</span><span class="s">"src/main/java"</span><span class="nt">&gt;</span>
+         <span class="c">&lt;!-- enableSubPackages:是否让schema作为包的后缀 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/javaClientGenerator&gt;</span>
+      <span class="c">&lt;!-- 指定数据库表 --&gt;</span>
+      <span class="nt">&lt;table</span> <span class="na">schema=</span><span class="s">""</span> <span class="na">tableName=</span><span class="s">"seckill"</span><span class="nt">&gt;&lt;/table&gt;</span>
+      <span class="nt">&lt;table</span> <span class="na">schema=</span><span class="s">""</span> <span class="na">tableName=</span><span class="s">"success_killed"</span><span class="nt">&gt;&lt;/table&gt;</span>   
+   <span class="nt">&lt;/context&gt;</span>
+<span class="nt">&lt;/generatorConfiguration&gt;</span>
+</code></pre></div></div>
+
+<h3 id="配置pomxml">配置pom.xml</h3>
+
+<p>在pom.xml中位置mybatis-generator的插件</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+        <span class="nt">&lt;plugin&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.mybatis.generator<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>mybatis-generator-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>1.3.2<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+            <span class="c">&lt;!--配置文件的位置--&gt;</span>      
+            <span class="nt">&lt;configurationFile&gt;</span>src/main/resources/generatorConfig.xml<span class="nt">&lt;/configurationFile&gt;</span>
+                <span class="nt">&lt;verbose&gt;</span>true<span class="nt">&lt;/verbose&gt;</span>
+                <span class="nt">&lt;overwrite&gt;</span>true<span class="nt">&lt;/overwrite&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+            <span class="nt">&lt;executions&gt;</span>
+                <span class="nt">&lt;execution&gt;</span>
+                    <span class="nt">&lt;id&gt;</span>Generate MyBatis Artifacts<span class="nt">&lt;/id&gt;</span>
+                    <span class="nt">&lt;goals&gt;</span>
+                        <span class="nt">&lt;goal&gt;</span>generate<span class="nt">&lt;/goal&gt;</span>
+                    <span class="nt">&lt;/goals&gt;</span>
+                <span class="nt">&lt;/execution&gt;</span>
+            <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;dependencies&gt;</span>
+                <span class="nt">&lt;dependency&gt;</span>
+                    <span class="nt">&lt;groupId&gt;</span>org.mybatis.generator<span class="nt">&lt;/groupId&gt;</span>
+                    <span class="nt">&lt;artifactId&gt;</span>mybatis-generator-core<span class="nt">&lt;/artifactId&gt;</span>
+                    <span class="nt">&lt;version&gt;</span>1.3.2<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;/dependencies&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
+</code></pre></div></div>
+
+<h3 id="生成对象的两种方式">生成对象的两种方式</h3>
+
+<p><strong># 使用idea的maven插件直接快速生成</strong></p>
+
+<ol>
+  <li>在完成以上两步之后。就会在idea中看到：直接点击mybatis-generator:generate就可生成</li>
+</ol>
+
+<p><strong># 在Intellij IDEA添加一个“Run运行”选项，使用maven运行mybatis-generator-maven-plugin插件</strong></p>
+
+<ol>
+  <li>
+    <p>选择配置edit configuration</p>
+  </li>
+  <li>
+    <p>创建maven运行项</p>
+  </li>
+  <li>
+    <p>配置命令 mybatis-generator:generate -e</p>
+  </li>
+</ol>
+
+<p>«««&lt; HEAD</p>
+<ol>
+  <li>
+    <h1 id="运行">运行</h1>
+    <hr />
+    <p>title: MyBatis逆向工程
+date: 2019-09-06 12:30:11
+tags: [‘mybatis’, ‘java’]
+categories: Mybatis
+layout:     post
+title:      “MyBatis Generator”
+subtitle:   “MyBatis逆向工程”
+date:       2019-09-06 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+catalog: true
+tags:</p>
+    <ul>
+      <li>mybatis</li>
+      <li>
+        <h2 id="java">java</h2>
+        <h2 id="什么是mybatis的逆向工程-1">什么是MyBatis的逆向工程？</h2>
+        <p>MyBatis逆向工程是指用数据库的表直接生成Java代码，利用MyBatis官方提供的逆向工程，可以针对单表自动生MyBatis执行所需要的代码（如po类，mapper.java和mapper.xml）</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="生成逆向工程-1">生成逆向工程</h2>
+<p>生成逆向工程的方式有多种，推荐使用Java程序和XML配置文件的方式进行实现。</p>
+
+<h2 id="mybatis逆向工程-1">MyBatis逆向工程</h2>
+<h3 id="数据库配置文件dbproperties-1">数据库配置文件db.properties</h3>
+
+<p>这里为了解耦，将数据库信息和要生成的表的信息放到一个db.properties文件里</p>
+
+<p>jdbc连接数据库配置信息</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">jdbc</span><span class="o">.</span><span class="na">driver</span> <span class="o">=</span> <span class="n">com</span><span class="o">.</span><span class="na">mysql</span><span class="o">.</span><span class="na">jdbc</span><span class="o">.</span><span class="na">Driver</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">url</span> <span class="o">=</span> <span class="nl">jdbc:mysql:</span><span class="c1">//localhost:3306/mybatis?characterEncoding=utf-8</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">username</span> <span class="o">=</span> <span class="n">root</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">password</span> <span class="o">=</span> <span class="mi">123456</span>
+
+<span class="err">#</span><span class="n">数据库中要生成的表</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">items</span> <span class="o">=</span> <span class="n">items</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">orders</span> <span class="o">=</span> <span class="n">orders</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">orderdetail</span> <span class="o">=</span> <span class="n">orderdetail</span>
+<span class="n">jdbc</span><span class="o">.</span><span class="na">table</span><span class="o">.</span><span class="na">user</span> <span class="o">=</span> <span class="n">user</span>
+</code></pre></div></div>
+<h3 id="生成代码配置文件generateconfigxml-1">生成代码配置文件generateConfig.xml</h3>
+<p>在该文件中配置要生成哪些表的信息，以及生成的PO类，mapper.xml和mapper.java所在的包，这里为了今后能用MyBatis的代理进行开发，让mapper.xml和mapper.java在同一个包中。</p>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;!DOCTYPE generatorConfiguration
+PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"&gt;</span>
+<span class="nt">&lt;generatorConfiguration&gt;</span>
+
+<span class="c">&lt;!-- mybatis的配置文件 --&gt;</span>
+
+<span class="nt">&lt;properties</span> <span class="na">resource=</span><span class="s">"db.properties"</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--指定特定数据库的jdbc驱动jar包的位置 --&gt;</span>
+<span class="nt">&lt;classPathEntry</span> <span class="na">location=</span><span class="s">"${jdbc.driverLocation}"</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!--classPathEntry 
+location="D:\zngkpt\m2\repository\mysql\mysql-connector-java\5.1.40\mysql-connector-java-5.1.40.jar" 
+--&gt;</span>
+<span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">"context1"</span> <span class="na">targetRuntime=</span><span class="s">"MyBatis3"</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;commentGenerator&gt;</span>
+<span class="c">&lt;!-- 去除自动生成的注释 --&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"suppressAllComments"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/commentGenerator&gt;</span>
+
+<span class="c">&lt;!-- 数据库连接配置 --&gt;</span>
+<span class="nt">&lt;jdbcConnection</span> <span class="na">driverClass=</span><span class="s">"${jdbc.driverClass}"</span>
+<span class="na">connectionURL=</span><span class="s">"${jdbc.connectionURL}"</span>
+<span class="na">userId=</span><span class="s">"${jdbc.userId}"</span>
+<span class="na">password=</span><span class="s">"${jdbc.password}"</span> <span class="nt">/&gt;</span>
+<span class="c">&lt;!--jdbcConnection driverClass="com.mysql.jdbc.Driver"
+connectionURL="jdbc:mysql://localhost:3306/test"
+userId="root"
+password="mysql" /--&gt;</span>
+
+<span class="c">&lt;!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制--&gt;</span>
+<span class="nt">&lt;javaTypeResolver&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"forceBigDecimals"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/javaTypeResolver&gt;</span>
+
+<span class="c">&lt;!--配置生成的实体包
+targetPackage：生成的实体包位置，默认存放在src目录下
+targetProject：目标工程名
+--&gt;</span>
+<span class="c">&lt;!-- 指定javabean生成的位置 --&gt;</span>
+<span class="nt">&lt;javaModelGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.maven.bean"</span> <span class="na">targetProject=</span><span class="s">"..\ssm_crud\src\main\java"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"trimStrings"</span> <span class="na">value=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/javaModelGenerator&gt;</span>
+
+<span class="nt">&lt;sqlMapGenerator</span> <span class="na">targetPackage=</span><span class="s">"mapper"</span> <span class="na">targetProject=</span><span class="s">"..\ssm_crud\src\main\resources"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/sqlMapGenerator&gt;</span>
+
+<span class="nt">&lt;javaClientGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.maven.dao"</span> <span class="na">type=</span><span class="s">"XMLMAPPER"</span>
+ <span class="na">targetProject=</span><span class="s">"..\ssm_crud\src\main\java"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/javaClientGenerator&gt;</span>
+
+<span class="c">&lt;!-- 配置表
+schema：不用填写
+tableName: 表名
+enableCountByExample、enableSelectByExample、enableDeleteByExample、
+enableUpdateByExample、selectByExampleQueryId：
+去除自动生成的例子
+--&gt;</span>
+
+<span class="nt">&lt;table</span> <span class="na">tableName=</span><span class="s">"tbl_emp"</span> <span class="na">domainObjectName=</span><span class="s">"Employee"</span> 
+<span class="na">enableCountByExample=</span><span class="s">"true"</span> <span class="na">enableDeleteByExample=</span><span class="s">"true"</span>
+<span class="na">enableSelectByExample=</span><span class="s">"true"</span> <span class="na">enableUpdateByExample=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;table</span> <span class="na">tableName=</span><span class="s">"tbl_dept"</span> <span class="na">domainObjectName=</span><span class="s">"Department"</span> 
+<span class="na">enableCountByExample=</span><span class="s">"true"</span> <span class="na">enableDeleteByExample=</span><span class="s">"true"</span>
+<span class="na">enableSelectByExample=</span><span class="s">"true"</span> <span class="na">enableUpdateByExample=</span><span class="s">"true"</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/context&gt;</span>
+<span class="nt">&lt;/generatorConfiguration&gt;</span>
+</code></pre></div></div>
+<h3 id="执行生成程序generatesqlmapjava-1">执行生成程序GenerateSqlMap.java</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.io.File</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.api.MyBatisGenerator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.config.Configuration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.config.xml.ConfigurationParser</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.mybatis.generator.internal.DefaultShellCallback</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GeneratorSqlmap</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">generator</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span><span class="o">{</span>
+
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">warnings</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;();</span>
+        <span class="kt">boolean</span> <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="c1">//指定 逆向工程配置文件</span>
+        <span class="nc">File</span> <span class="n">configFile</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">File</span><span class="o">(</span><span class="s">"config/generatorConfig.xml"</span><span class="o">);</span>
+        <span class="nc">ConfigurationParser</span> <span class="n">cp</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConfigurationParser</span><span class="o">(</span><span class="n">warnings</span><span class="o">);</span>
+        <span class="nc">Configuration</span> <span class="n">config</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="na">parseConfiguration</span><span class="o">(</span><span class="n">configFile</span><span class="o">);</span>
+        <span class="nc">DefaultShellCallback</span> <span class="n">callback</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">DefaultShellCallback</span><span class="o">(</span><span class="n">overwrite</span><span class="o">);</span>
+        <span class="nc">MyBatisGenerator</span> <span class="n">myBatisGenerator</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MyBatisGenerator</span><span class="o">(</span><span class="n">config</span><span class="o">,</span>
+        <span class="n">callback</span><span class="o">,</span> <span class="n">warnings</span><span class="o">);</span>
+        <span class="n">myBatisGenerator</span><span class="o">.</span><span class="na">generate</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+        <span class="nc">GeneratorSqlmap</span> <span class="n">generatorSqlmap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GeneratorSqlmap</span><span class="o">();</span>
+        <span class="n">generatorSqlmap</span><span class="o">.</span><span class="na">generator</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>在实际开发中，建议另写一个project来实现MyBatis的逆向工程</strong></p>
+
+<p>然后再从中挑选出实际需要的POJO类和mapper.xml，千万不要在原有项目中直接生成，那样会比较乱。</p>
+
+<p>MyBatis逆向工程比较简单，可以直接做为模板工程进行应用，只需要改一下数据库名，表名和包的路径就行了，这里提供项目下载地址，可以直接使用。</p>
+
+<h2 id="在maven工程中的resource中创建generatorconfigxml-1">在maven工程中的resource中创建generatorConfig.xml</h2>
+
+<h3 id="配置-1">配置</h3>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="cp">&lt;!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"&gt;</span>
+
+<span class="nt">&lt;generatorConfiguration&gt;</span>
+   <span class="c">&lt;!--mysql 连接数据库jar 这里选择自己本地位置--&gt;</span>
+   <span class="nt">&lt;classPathEntry</span> <span class="na">location=</span><span class="s">"D:/mysql-connector-java-5.1.20-bin.jar"</span> <span class="nt">/&gt;</span>
+   <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">"testTables"</span> <span class="na">targetRuntime=</span><span class="s">"MyBatis3"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;commentGenerator&gt;</span>
+         <span class="c">&lt;!-- 是否去除自动生成的注释 true：是 ： false:否 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"suppressAllComments"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/commentGenerator&gt;</span>
+      <span class="c">&lt;!--数据库连接的信息：驱动类、连接地址、用户名、密码 --&gt;</span>
+      <span class="nt">&lt;jdbcConnection</span> <span class="na">driverClass=</span><span class="s">"com.mysql.jdbc.Driver"</span>
+         <span class="na">connectionURL=</span><span class="s">"jdbc:mysql://localhost:3306/ecps"</span> <span class="na">userId=</span><span class="s">"root"</span>
+         <span class="na">password=</span><span class="s">"root"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;/jdbcConnection&gt;</span>
+      <span class="c">&lt;!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+         NUMERIC 类型解析为java.math.BigDecimal --&gt;</span>
+      <span class="nt">&lt;javaTypeResolver&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"forceBigDecimals"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/javaTypeResolver&gt;</span>
+
+      <span class="c">&lt;!-- targetProject:生成PO类的位置 --&gt;</span>
+      <span class="nt">&lt;javaModelGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.ecps.seckill.pojo"</span>
+         <span class="na">targetProject=</span><span class="s">"src/main/java"</span><span class="nt">&gt;</span>
+         <span class="c">&lt;!-- enableSubPackages:是否让schema作为包的后缀 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+         <span class="c">&lt;!-- 从数据库返回的值被清理前后的空格 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"trimStrings"</span> <span class="na">value=</span><span class="s">"true"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/javaModelGenerator&gt;</span>
+        <span class="c">&lt;!-- targetProject:mapper映射文件生成的位置
+           如果maven工程只是单独的一个工程，targetProject="src/main/java"
+           若果maven工程是分模块的工程，targetProject="所属模块的名称"，例如：
+           targetProject="ecps-manager-mapper"，下同--&gt;</span>
+      <span class="nt">&lt;sqlMapGenerator</span> <span class="na">targetPackage=</span><span class="s">"com.ecps.seckill.mapper"</span>
+         <span class="na">targetProject=</span><span class="s">"src/main/java"</span><span class="nt">&gt;</span>
+         <span class="c">&lt;!-- enableSubPackages:是否让schema作为包的后缀 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/sqlMapGenerator&gt;</span>
+      <span class="c">&lt;!-- targetPackage：mapper接口生成的位置 --&gt;</span>
+      <span class="nt">&lt;javaClientGenerator</span> <span class="na">type=</span><span class="s">"XMLMAPPER"</span>
+         <span class="na">targetPackage=</span><span class="s">"com.ecps.seckill.mapper"</span>
+         <span class="na">targetProject=</span><span class="s">"src/main/java"</span><span class="nt">&gt;</span>
+         <span class="c">&lt;!-- enableSubPackages:是否让schema作为包的后缀 --&gt;</span>
+         <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">"enableSubPackages"</span> <span class="na">value=</span><span class="s">"false"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/javaClientGenerator&gt;</span>
+      <span class="c">&lt;!-- 指定数据库表 --&gt;</span>
+      <span class="nt">&lt;table</span> <span class="na">schema=</span><span class="s">""</span> <span class="na">tableName=</span><span class="s">"seckill"</span><span class="nt">&gt;&lt;/table&gt;</span>
+      <span class="nt">&lt;table</span> <span class="na">schema=</span><span class="s">""</span> <span class="na">tableName=</span><span class="s">"success_killed"</span><span class="nt">&gt;&lt;/table&gt;</span>   
+   <span class="nt">&lt;/context&gt;</span>
+<span class="nt">&lt;/generatorConfiguration&gt;</span>
+</code></pre></div></div>
+
+<h3 id="配置pomxml-1">配置pom.xml</h3>
+
+<p>在pom.xml中位置mybatis-generator的插件</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;build&gt;</span>
+    <span class="nt">&lt;plugins&gt;</span>
+        <span class="nt">&lt;plugin&gt;</span>
+            <span class="nt">&lt;groupId&gt;</span>org.mybatis.generator<span class="nt">&lt;/groupId&gt;</span>
+            <span class="nt">&lt;artifactId&gt;</span>mybatis-generator-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+            <span class="nt">&lt;version&gt;</span>1.3.2<span class="nt">&lt;/version&gt;</span>
+            <span class="nt">&lt;configuration&gt;</span>
+            <span class="c">&lt;!--配置文件的位置--&gt;</span>      
+            <span class="nt">&lt;configurationFile&gt;</span>src/main/resources/generatorConfig.xml<span class="nt">&lt;/configurationFile&gt;</span>
+                <span class="nt">&lt;verbose&gt;</span>true<span class="nt">&lt;/verbose&gt;</span>
+                <span class="nt">&lt;overwrite&gt;</span>true<span class="nt">&lt;/overwrite&gt;</span>
+            <span class="nt">&lt;/configuration&gt;</span>
+            <span class="nt">&lt;executions&gt;</span>
+                <span class="nt">&lt;execution&gt;</span>
+                    <span class="nt">&lt;id&gt;</span>Generate MyBatis Artifacts<span class="nt">&lt;/id&gt;</span>
+                    <span class="nt">&lt;goals&gt;</span>
+                        <span class="nt">&lt;goal&gt;</span>generate<span class="nt">&lt;/goal&gt;</span>
+                    <span class="nt">&lt;/goals&gt;</span>
+                <span class="nt">&lt;/execution&gt;</span>
+            <span class="nt">&lt;/executions&gt;</span>
+            <span class="nt">&lt;dependencies&gt;</span>
+                <span class="nt">&lt;dependency&gt;</span>
+                    <span class="nt">&lt;groupId&gt;</span>org.mybatis.generator<span class="nt">&lt;/groupId&gt;</span>
+                    <span class="nt">&lt;artifactId&gt;</span>mybatis-generator-core<span class="nt">&lt;/artifactId&gt;</span>
+                    <span class="nt">&lt;version&gt;</span>1.3.2<span class="nt">&lt;/version&gt;</span>
+                <span class="nt">&lt;/dependency&gt;</span>
+            <span class="nt">&lt;/dependencies&gt;</span>
+        <span class="nt">&lt;/plugin&gt;</span>
+    <span class="nt">&lt;/plugins&gt;</span>
+<span class="nt">&lt;/build&gt;</span>
+</code></pre></div></div>
+
+<h3 id="生成对象的两种方式-1">生成对象的两种方式</h3>
+
+<p><strong># 使用idea的maven插件直接快速生成</strong></p>
+
+<ol>
+  <li>在完成以上两步之后。就会在idea中看到：直接点击mybatis-generator:generate就可生成</li>
+</ol>
+
+<p><strong># 在Intellij IDEA添加一个“Run运行”选项，使用maven运行mybatis-generator-maven-plugin插件</strong></p>
+
+<ol>
+  <li>
+    <p>选择配置edit configuration</p>
+  </li>
+  <li>
+    <p>创建maven运行项</p>
+  </li>
+  <li>
+    <p>配置命令 mybatis-generator:generate -e</p>
+  </li>
+  <li>运行
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <h1 id="f0bfe13-new-update_posts知识点2019-09-06-mybatis-generatormd">f0bfe13 (new update):_posts/知识点/2019-09-06-mybatis-generator.md</h1>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </li>
+  <li>运行
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <p>e5c77ca (新页面)</p>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </li>
+</ol>
+:ET

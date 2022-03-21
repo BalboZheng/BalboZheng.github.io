@@ -1,0 +1,2166 @@
+I"��<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “Splash”
+subtitle:   “”
+date:       2019-11-25 10:02:20
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - reptile
+—</p>
+<h2 id="splash-的使用">Splash 的使用</h2>
+<h3 id="功能介绍">功能介绍</h3>
+
+<ol>
+  <li>异步方式处理多个网页渲染过程</li>
+  <li>获取渲染后的页面的源代码或截图</li>
+  <li>通过关闭图片渲染或者使用 Adblock 规则来加快页面渲染速度</li>
+  <li>可执行特定的 JavaScript 脚本</li>
+  <li>可通过 Lua 脚本来控制页面渲染过程</li>
+  <li>获取渲染的详细过程并通过 HAR（HTTP Archive）格式呈现</li>
+</ol>
+
+<h3 id="示例引入">示例引入</h3>
+
+<p>首先，通过Splash提供的Web页面来测试其渲染过程。例如，我们在本机8050端口上运行了Splash服务，打开http://localhost:8050/即可看到其Web页面</p>
+
+<p>在图7-6右侧，呈现的是一个渲染示例。可以看到，上方有一个输入框，默认是http://google.com，这里换成百度测试一下，将内容更改为https://www.baidu.com，然后点击Render me按钮开始渲染</p>
+
+<p>可以看到，网页的返回结果呈现了渲染截图、HAR加载统计数据、网页的源代码。</p>
+
+<p>通过HAR的结果可以看到，Splash执行了整个网页的渲染过程，包括CSS、JavaScript的加载等过程，呈现的页面和我们在浏览器中得到的结果完全一致。</p>
+
+<p>那么，这个过程由什么来控制呢？重新返回首页，可以看到实际上是有一段脚本，内容如下：</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+  <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">url</span><span class="p">))</span>
+  <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">html</span> <span class="o">=</span> <span class="na">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">(),</span>
+    <span class="nx">png</span> <span class="o">=</span> <span class="na">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">(),</span>
+    <span class="nx">har</span> <span class="o">=</span> <span class="na">splash</span><span class="p">:</span><span class="nx">har</span><span class="p">(),</span>
+  <span class="p">}</span>
+<span class="nx">end</span>
+</code></pre></div></div>
+<p>这个脚本实际上是用Lua语言写的脚本。即使不懂这个语言的语法，但从脚本的表面意思，我们也可以大致了解到它首先调用go()方法去加载页面，然后调用wait()方法等待了一定时间，最后返回了页面的源码、截图和HAR信息。</p>
+
+<p>到这里，我们大体了解了Splash是通过Lua脚本来控制了页面的加载过程的，加载过程完全模拟浏览器，最后可返回各种格式的结果，如网页源码和截图等。</p>
+
+<h3 id="splash-lua脚本">Splash Lua脚本</h3>
+
+<p>Splash可以通过Lua脚本执行一系列渲染操作，这样我们就可以用Splash来模拟类似Chrome、PhantomJS的操作了。</p>
+
+<p>首先，我们来了解一下Splash Lua脚本的入口和执行方式。</p>
+
+<ul>
+  <li>
+    <p>人口及返回值</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+  <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+  <span class="nx">local</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">document.title</span><span class="dl">"</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">{</span><span class="nx">title</span><span class="o">=</span><span class="nx">title</span><span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>我们将代码粘贴到刚才打开的http://localhost:8050/的代码编辑区域，然后点击Render me!按钮来测试一下。</p>
+
+    <p>我们看到它返回了网页的标题，如图7-8所示。这里我们通过evaljs()方法传入JavaScript脚本，而document.title的执行结果就是返回网页标题，执行完毕后将其赋值给一个title变量，随后将其返回。</p>
+
+    <p>注意，我们在这里定义的方法名称叫作main()。这个名称必须是固定的，Splash会默认调用这个方法。</p>
+
+    <p>该方法的返回值既可以是字典形式，也可以是字符串形式，最后都会转化为Splash HTTP Response</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">hello</span><span class="o">=</span><span class="dl">"</span><span class="s2">world!</span><span class="dl">"</span><span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>返回了一个字典形式的内容</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="k">return</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>返回了一个字符串形式的内容</p>
+  </li>
+  <li>
+    <p>异步处理</p>
+
+    <p>Splash支持异步处理，但是这里并没有显式指明回调方法，其回调的跳转是在Splash内部完成的</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">example_urls</span> <span class="o">=</span> <span class="p">{</span><span class="dl">"</span><span class="s2">www.baidu.com</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">www.taobao.com</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">www.zhihu.com</span><span class="dl">"</span><span class="p">}</span>
+      <span class="nx">local</span> <span class="nx">urls</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">urls</span> <span class="nx">or</span> <span class="nx">example_urls</span>
+      <span class="nx">local</span> <span class="nx">results</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">url</span> <span class="k">in</span> <span class="nx">ipairs</span><span class="p">(</span><span class="nx">urls</span><span class="p">)</span> <span class="k">do</span>
+          <span class="nx">local</span> <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://</span><span class="dl">"</span> <span class="p">..</span> <span class="nx">url</span><span class="p">)</span>
+          <span class="k">if</span> <span class="nx">ok</span> <span class="nx">then</span>
+          <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+          <span class="nx">results</span><span class="p">[</span><span class="nx">url</span><span class="p">]</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+          <span class="nx">end</span>
+      <span class="nx">end</span>
+      <span class="k">return</span> <span class="nx">results</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+
+    <p>在脚本内调用的wait()方法类似于Python中的sleep()，其参数为等待的秒数。当Splash执行到此方法时，它会转而去处理其他任务，然后在指定的时间过后再回来继续处理。</p>
+
+    <p>这里值得注意的是，Lua脚本中的字符串拼接和Python不同，它使用的是..操作符，而不是+。如果有必要，可以简单了解一下Lua脚本的语法，详见http://www.runoob.com/lua/lua-basic-syntax.html。</p>
+
+    <p>另外，这里做了加载时的异常检测。go()方法会返回加载页面的结果状态，如果页面出现4xx或5xx状态码，ok变量就为空，就不会返回加载后的图片</p>
+  </li>
+</ul>
+
+<h3 id="splash-对象属性">Splash 对象属性</h3>
+
+<ul>
+  <li>
+    <p>args</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">url</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里第二个参数args就相当于splash.args属性，以上代码等价于:</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">url</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>js_enabled</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">js_enabled</span> <span class="o">=</span> <span class="kc">false</span>
+      <span class="nx">local</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">document.title</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">title</span><span class="o">=</span><span class="nx">title</span><span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>重新调用了evaljs()方法执行JavaScript代码，此时运行结果就会抛出异常：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+      "error": 400,
+      "type": "ScriptError",
+      "info": {
+          "type": "JS_ERROR",
+          "js_error_message": null,
+          "source": "[string \"function main(splash, args)\r...\"]",
+          "message": "[string \"function main(splash, args)\r...\"]:4: unknown JS error: None",
+          "line_number": 4,
+          "error": "unknown JS error: None",
+          "splash_method": "evaljs"
+      },
+      "description": "Error happened while executing Lua script"
+  }
+</code></pre></div>    </div>
+    <p>一般来说，不用设置此属性，默认开启即可。</p>
+  </li>
+  <li>
+    <p>resource_timeout</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">resource_timeout</span> <span class="o">=</span> <span class="mf">0.1</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://www.taobao.com</span><span class="dl">'</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里将超时时间设置为0.1秒。如果在0.1秒之内没有得到响应，就会抛出异常</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+      "error": 400,
+      "type": "ScriptError",
+      "info": {
+          "error": "network5",
+          "type": "LUA_ERROR",
+          "line_number": 3,
+          "source": "[string \"function main(splash)\r...\"]",
+          "message": "Lua error: [string \"function main(splash)\r...\"]:3: network5"
+      },
+      "description": "Error happened while executing Lua script"
+  }
+</code></pre></div>    </div>
+    <p>此属性适合在网页加载速度较慢的情况下设置。如果超过了某个时间无响应，则直接抛出异常并忽略即可。</p>
+  </li>
+  <li>
+    <p>images_enable</p>
+
+    <p>此属性可以设置图片是否加载，默认情况下是加载的。禁用该属性后，可以节省网络流量并提高网页加载速度。但是需要注意的是，禁用图片加载可能会影响JavaScript渲染。因为禁用图片之后，它的外层DOM节点的高度会受影响，进而影响DOM节点的位置。因此，如果JavaScript对图片节点有操作的话，其执行就会受到影响。</p>
+
+    <p>另外值得注意的是，Splash使用了缓存。如果一开始加载出来了网页图片，然后禁用了图片加载，再重新加载页面，之前加载好的图片可能还会显示出来，这时直接重启Splash即可。</p>
+
+    <p>禁用图片加载的示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">images_enabled</span> <span class="o">=</span> <span class="kc">false</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://www.jd.com</span><span class="dl">'</span><span class="p">))</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">png</span><span class="o">=</span><span class="na">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这样返回的页面截图就不会带有任何图片，加载速度也会快很多。</p>
+  </li>
+  <li>
+    <p>plugins_enable</p>
+
+    <p>此属性可以控制浏览器插件（如Flash插件）是否开启。</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">splash</span><span class="p">.</span><span class="nx">plugins_enabled</span> <span class="o">=</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>scroll_position</p>
+
+    <p>通过设置此属性，我们可以控制页面上下或左右滚动</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://www.taobao.com</span><span class="dl">'</span><span class="p">))</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">scroll_position</span> <span class="o">=</span> <span class="p">{</span><span class="nx">y</span><span class="o">=</span><span class="mi">400</span><span class="p">}</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">png</span><span class="o">=</span><span class="na">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+
+    <p>如果要让页面左右滚动，可以传入x参数</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">splash</span><span class="p">.</span><span class="nx">scroll_position</span> <span class="o">=</span> <span class="p">{</span><span class="nx">x</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nx">y</span><span class="o">=</span><span class="mi">200</span><span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="splash-对象的方法">Splash 对象的方法</h3>
+
+<ul>
+  <li>
+    <p>go()</p>
+
+    <p>该方法用来请求某个链接，而且它可以模拟GET和POST请求，同时支持传入请求头、表单等数据</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">{</span><span class="nx">url</span><span class="p">,</span> <span class="nx">baseurl</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">headers</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">http_method</span><span class="o">=</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="nx">body</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">formdata</span><span class="o">=</span><span class="nx">nil</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>url: 请求的URL</li>
+      <li>baseurl: 可选参数，默认为空，表示资源加载相对路径</li>
+      <li>headers: 可选参数，默认为空，表示请求头</li>
+      <li>http_method: 可选参数，默认为GET，同时支持POST</li>
+      <li>body: 可选参数，默认为空，发POST请求时的表单数据，使用的Content-type为application/json</li>
+      <li>formdata: 可选参数，默认为空，POST的时候的表单数据，使用的Content-type为application/x-www-form-urlencoded</li>
+    </ul>
+
+    <p>该方法的返回结果是结果ok和原因reason的组合，如果ok为空，代表网页加载出现了错误，此时reason变量中包含了错误的原因，否则证明页面加载成功</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">{</span><span class="dl">"</span><span class="s2">http://httpbin.org/post</span><span class="dl">"</span><span class="p">,</span> <span class="nx">http_method</span><span class="o">=</span><span class="dl">"</span><span class="s2">POST</span><span class="dl">"</span><span class="p">,</span> <span class="nx">body</span><span class="o">=</span><span class="dl">"</span><span class="s2">name=Germey</span><span class="dl">"</span><span class="p">}</span>
+      <span class="k">if</span> <span class="nx">ok</span> <span class="nx">then</span>
+              <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+      <span class="nx">end</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们模拟了一个POST请求，并传入了POST的表单数据，如果成功，则返回页面的源代码</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "data": "", 
+  "files": {}, 
+  "form": {
+      "name": "Germey"
+  }, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Content-Length": "11", 
+      "Content-Type": "application/x-www-form-urlencoded", 
+      "Host": "httpbin.org", 
+      "Origin": "null", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "json": null, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/post"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>wait()</p>
+
+    <p>此方法可以控制页面的等待时间</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">{</span><span class="nx">time</span><span class="p">,</span> <span class="nx">cancel_on_redirect</span><span class="o">=</span><span class="kc">false</span><span class="p">,</span> <span class="nx">cancel_on_error</span><span class="o">=</span><span class="kc">true</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>time: 等待的秒数</li>
+      <li>cancel_on_redirect: 可选参数，默认为false，表示如果发生了重定向就停止等待，并返回重定向结果</li>
+      <li>cancel_on_error: 可选参数，默认为false，表示如果发生了加载错误，就停止等待</li>
+    </ul>
+
+    <p>返回结果同样是结果ok和原因reason的组合</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">html</span><span class="o">=</span><span class="na">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>jsfunc()</p>
+
+    <p>此方法可以直接调用JavaScript定义的方法，但是所调用的方法需要用双中括号包围，这相当于实现了JavaScript方法到Lua脚本的转换</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">get_div_count</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">jsfunc</span><span class="p">([[</span>
+      <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">divs</span> <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">divs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="p">]])</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">(</span><span class="dl">"</span><span class="s2">There are %s DIVs</span><span class="dl">"</span><span class="p">):</span><span class="nx">format</span><span class="p">(</span>
+          <span class="nx">get_div_count</span><span class="p">())</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  There are 21 DIVs
+</code></pre></div>    </div>
+    <p>首先，我们声明了一个JavaScript定义的方法，然后在页面加载成功后调用了此方法计算出了页面中div节点的个数。</p>
+
+    <p>关于JavaScript到Lua脚本的更多转换细节，可以参考官方文档：https://splash.readthedocs.io/en/stable/scripting-ref.html#splash-jsfunc</p>
+  </li>
+  <li>
+    <p>evaljs()</p>
+
+    <p>此方法可以执行JavaScript代码并返回最后一条JavaScript语句的返回结果</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">evaljs</span><span class="p">(</span><span class="n">js</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>比如</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">local</span> <span class="n">title</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">evaljs</span><span class="p">(</span><span class="s">"document.title"</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>runjs()</p>
+
+    <p>此方法可以执行JavaScript代码，它与evaljs()的功能类似，但是更偏向于执行某些动作或声明某些方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">runjs</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo = function() { return 'bar' }</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo()</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">result</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们用runjs()先声明了一个JavaScript定义的方法，然后通过evaljs()来调用得到的结果</p>
+
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  bar
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>autoload()</p>
+
+    <p>此方法可以设置每个页面访问时自动加载的对象</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">ok</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">autoload</span><span class="p">{</span><span class="n">source_or_url</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">nil</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">nil</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>source_or_url: JavaScript代码或者JavaScript库链接</li>
+      <li>source: JavaScript代码</li>
+      <li>url: JavaScript库链接</li>
+    </ul>
+
+    <p>但是此方法只负责加载JavaScript代码或库，不执行任何操作。如果要执行操作，可以调用evaljs()或runjs()方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">autoload</span><span class="p">([[</span>
+          <span class="kd">function</span> <span class="nx">get_document_title</span><span class="p">(){</span>
+          <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+          <span class="p">}</span>
+      <span class="p">]])</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">get_document_title()</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们调用autoload()方法声明了一个JavaScript方法，然后通过evaljs()方法来执行此JavaScript方法</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  百度一下，你就知道
+</code></pre></div>    </div>
+    <p>另外，我们也可以使用autoload()方法加载某些方法库，如jQuery</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">autoload</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://code.jquery.com/jquery-2.1.3.min.js</span><span class="dl">"</span><span class="p">))</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">))</span>
+      <span class="nx">local</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">$.fn.jquery</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="dl">'</span><span class="s1">JQuery version: </span><span class="dl">'</span> <span class="p">..</span> <span class="nx">version</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  JQuery version: 2.1.3
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>call_later()</p>
+
+    <p>此方法可以通过设置定时任务和延迟时间来实现任务延时执行，并且可以在执行前通过cancel()方法重新执行定时任务</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">snapshots</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="nx">local</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">call_later</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span>
+          <span class="nx">snapshots</span><span class="p">[</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+          <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+          <span class="nx">snapshots</span><span class="p">[</span><span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+      <span class="nx">end</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">snapshots</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们设置了一个定时任务，0.2秒的时候获取网页截图，然后等待1秒，1.2秒时再次获取网页截图，访问的页面是淘宝，最后将截图结果返回</p>
+  </li>
+  <li>
+    <p>http_get()</p>
+
+    <p>此方法可以模拟发送HTTP的GET请求</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">response</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">http_get</span><span class="p">{</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">nil</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="n">true</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>url: 请求URL</li>
+      <li>headers: 可选参数，默认为空，请求头</li>
+      <li>follow_redirects: 可选参数，表示是否启动自动重定向，默认为true</li>
+    </ul>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">treat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">treat</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">http_get</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+          <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">html</span><span class="o">=</span><span class="nx">treat</span><span class="p">.</span><span class="nx">as_string</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">),</span>
+          <span class="nx">url</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+          <span class="nx">status</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span>
+          <span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Object
+  html: String (length 355)
+  {
+  "args": {}, 
+  "headers": {
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/get"
+  }
+  status: 200
+  url: "http://httpbin.org/get"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>http_post()</p>
+
+    <p>和http_get()方法类似，此方法用来模拟发送POST请求，不过多了一个参数body</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  response = splash:http_post{url, headers=nil, follow_redirects=true, body=nil}
+</code></pre></div>    </div>
+
+    <ul>
+      <li>url: 请求URL</li>
+      <li>headers: 可选参数，默认为空，请求头</li>
+      <li>follow_redirects: 可选参数，表示是否启动自动重定向，默认为true</li>
+      <li>body: 可选参数，即表单数据，默认为空</li>
+    </ul>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">treat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">treat</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">json</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">http_post</span><span class="p">{</span><span class="dl">"</span><span class="s2">http://httpbin.org/post</span><span class="dl">"</span><span class="p">,</span>     
+          <span class="nx">body</span><span class="o">=</span><span class="nx">json</span><span class="p">.</span><span class="nx">encode</span><span class="p">({</span><span class="nx">name</span><span class="o">=</span><span class="dl">"</span><span class="s2">Germey</span><span class="dl">"</span><span class="p">}),</span>
+          <span class="nx">headers</span><span class="o">=</span><span class="p">{[</span><span class="dl">"</span><span class="s2">content-type</span><span class="dl">"</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">application/json</span><span class="dl">"</span><span class="p">}</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">html</span><span class="o">=</span><span class="nx">treat</span><span class="p">.</span><span class="nx">as_string</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">),</span>
+          <span class="nx">url</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+          <span class="nx">status</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span>
+          <span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Object
+  html: String (length 533)
+  {
+  "args": {}, 
+  "data": "{\"name\": \"Germey\"}", 
+  "files": {}, 
+  "form": {}, 
+  "headers": {
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Content-Length": "18", 
+      "Content-Type": "application/json", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "json": {
+      "name": "Germey"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/post"
+  }
+  status: 200
+  url: "http://httpbin.org/post"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_content()</p>
+
+    <p>此方法用来设置页面的内容</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">set_content</span><span class="p">(</span><span class="dl">"</span><span class="s2">&lt;html&gt;&lt;body&gt;&lt;h1&gt;hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><span class="dl">"</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>html()</p>
+
+    <p>此方法用来获取网页的源代码，它是非常简单又常用的方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "https://httpbin.org/get"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>png()</p>
+
+    <p>此方法用来获取PNG格式的网页截图</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>jpeg()</p>
+
+    <p>此方法用来获取JPEG格式的网页截图</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">jpeg</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>har()</p>
+
+    <p>此方法用来获取页面加载过程描述</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">har</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>url()</p>
+
+    <p>此方法可以获取当前正在访问的URL</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">url</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  https://www.baidu.com/
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>get_cookies()</p>
+
+    <p>此方法可以获取当前页面的Cookies</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">get_cookies</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[2]
+  0: Object
+  domain: ".baidu.com"
+  expires: "2085-08-21T20:13:23Z"
+  httpOnly: false
+  name: "BAIDUID"
+  path: "/"
+  secure: false
+  value: "C1263A470B02DEF45593B062451C9722:FG=1"
+  1: Object
+  domain: ".baidu.com"
+  expires: "2085-08-21T20:13:23Z"
+  httpOnly: false
+  name: "BIDUPSID"
+  path: "/"
+  secure: false
+  value: "C1263A470B02DEF45593B062451C9722"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>add_cookies()</p>
+
+    <p>此方法可以为当前页面添加Cookie</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">cookies</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">add_cookie</span><span class="p">{</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">path</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">domain</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">expires</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">httpOnly</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">secure</span><span class="o">=</span><span class="nx">nil</span><span class="p">}</span>
+</code></pre></div>    </div>
+    <p>该方法的各个参数代表Cookie的各个属性</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">add_cookie</span><span class="p">{</span><span class="dl">"</span><span class="s2">sessionid</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">237465ghgfsd</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">,</span> <span class="nx">domain</span><span class="o">=</span><span class="dl">"</span><span class="s2">http://example.com</span><span class="dl">"</span><span class="p">}</span>
+      <span class="nl">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://example.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>clear_cookies()</p>
+
+    <p>此方法可以清除所有的Cookies</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">clear_cookies</span><span class="p">()</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">get_cookies</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们清除了所有的Cookies，然后调用get_cookies()将结果返回</p>
+
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[0]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>get_viewport_size()</p>
+
+    <p>此方法可以获取当前浏览器页面的大小，即宽高</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">get_viewport_size</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[2]
+  0: 1024
+  1: 768
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_viewport_size()</p>
+
+    <p>此方法可以设置当前浏览器页面的大小，即宽高</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">splash</span><span class="p">:</span><span class="nx">set_viewport_size</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>例如，这里访问一个宽度自适应的页面</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_viewport_size</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">700</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://balbozheng.com</span><span class="dl">"</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_viewport_full()</p>
+
+    <p>此方法可以设置浏览器全屏显示</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_viewport_full</span><span class="p">()</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://cuiqingcai.com</span><span class="dl">"</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_user_agent()</p>
+
+    <p>此方法可以设置浏览器的User-Agent</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_user_agent</span><span class="p">(</span><span class="dl">'</span><span class="s1">Splash</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们将浏览器的User-Agent设置为Splash,运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Splash"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/get"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_custom_headers()</p>
+
+    <p>此方法可以设置请求头</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_custom_headers</span><span class="p">({</span>
+          <span class="p">[</span><span class="dl">"</span><span class="s2">User-Agent</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Splash</span><span class="dl">"</span><span class="p">,</span>
+          <span class="p">[</span><span class="dl">"</span><span class="s2">Site</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Splash</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">})</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们设置了请求头中的User-Agent和Site属性，运行结果</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "Site": "Splash", 
+      "User-Agent": "Splash"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/get"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>select()</p>
+
+    <p>该方法可以选中符合条件的第一个节点，如果有多个节点符合条件，则只会返回一个，其参数是CSS选择器</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#kw</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span><span class="p">:</span><span class="nx">send_text</span><span class="p">(</span><span class="dl">'</span><span class="s1">Splash</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们首先访问了百度，然后选中了搜索框，随后调用了send_text()方法填写了文本，然后返回网页截图。</p>
+  </li>
+  <li>
+    <p>select_all()</p>
+
+    <p>此方法可以选中所有符合条件的节点，其参数是CSS选择器</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">treat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">treat</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://quotes.toscrape.com/</span><span class="dl">"</span><span class="p">))</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+      <span class="nx">local</span> <span class="nx">texts</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select_all</span><span class="p">(</span><span class="dl">'</span><span class="s1">.quote .text</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">results</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">text</span> <span class="k">in</span> <span class="nx">ipairs</span><span class="p">(</span><span class="nx">texts</span><span class="p">)</span> <span class="k">do</span>
+          <span class="nx">results</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">innerHTML</span>
+      <span class="nx">end</span>
+      <span class="k">return</span> <span class="nx">treat</span><span class="p">.</span><span class="nx">as_array</span><span class="p">(</span><span class="nx">results</span><span class="p">)</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们通过CSS选择器选中了节点的正文内容，随后遍历了所有节点，将其中的文本获取下来,运行结果</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[10]
+  0: "“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”"
+  1: "“It is our choices, Harry, that show what we truly are, far more than our abilities.”"
+  2: “There are only two ways to live your life. One is as though nothing is a miracle. The other is as though everything is a miracle.”
+  3: "“The person, be it gentleman or lady, who has not pleasure in a good novel, must be intolerably stupid.”"
+  4: "“Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring.”"
+  5: "“Try not to become a man of success. Rather become a man of value.”"
+  6: "“It is better to be hated for what you are than to be loved for what you are not.”"
+  7: "“I have not failed. I've just found 10,000 ways that won't work.”"
+  8: "“A woman is like a tea bag; you never know how strong it is until it's in hot water.”"
+  9: "“A day without sunshine is like, you know, night.”"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>mouse_click()</p>
+
+    <p>此方法可以模拟鼠标点击操作，传入的参数为坐标值x和y。此外，也可以直接选中某个节点，然后调用此方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#kw</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span><span class="p">:</span><span class="nx">send_text</span><span class="p">(</span><span class="dl">'</span><span class="s1">Splash</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">submit</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select</span><span class="p">(</span><span class="dl">'</span><span class="s1">#su</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">submit</span><span class="p">:</span><span class="nx">mouse_click</span><span class="p">()</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们首先选中页面的输入框，输入了文本，然后选中“提交”按钮，调用了mouse_click()方法提交查询，然后页面等待三秒，返回截图</p>
+  </li>
+</ul>
+
+<h3 id="splash-api-调用">Splash API 调用</h3>
+
+<ul>
+  <li>
+    <p>render.html</p>
+
+    <p>此接口用于获取JavaScript渲染的页面的HTML代码，接口地址就是Splash的运行地址加此接口名称，例如http://localhost:8050/render.html。可以用curl来测试一下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.html?url=https://www.baidu.com</span>
+</code></pre></div>    </div>
+    <p>我们给此接口传递了一个url参数来指定渲染的URL，返回结果即页面渲染后的源代码。</p>
+
+    <p>如果用Python实现的话，代码如下：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/render.html?url=https://www.baidu.com'</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>这样就可以成功输出百度页面渲染后的源代码了。</p>
+
+    <p>另外，此接口还可以指定其他参数，比如通过wait指定等待秒数。如果要确保页面完全加载出来，可以增加等待时间，例如：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/render.html?url=https://www.taobao.com&amp;wait=5'</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>此时得到响应的时间就会相应变长，比如这里会等待5秒多钟才能获取淘宝页面的源代码。</p>
+
+    <p>另外，此接口还支持代理设置、图片加载设置、Headers设置、请求方法设置，具体的用法可以参见官方文档https://splash.readthedocs.io/en/stable/api.html#render-html</p>
+  </li>
+  <li>
+    <p>render.png</p>
+
+    <p>此接口可以获取网页截图，其参数比render.html多了几个，比如通过width和height来控制宽高，它返回的是PNG格式的图片二进制数据。示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.png?url=https://www.taobao.com&amp;wait=5&amp;width=1000&amp;height=700</span>
+</code></pre></div>    </div>
+    <p>这里我们传入了width和height来设置页面大小为1000×700像素。</p>
+
+    <p>如果用Python实现，可以将返回的二进制数据保存为PNG格式的图片，具体如下：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/render.png?url=https://www.jd.com&amp;wait=5&amp;width=1000&amp;height=700'</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'taobao.png'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>这样我们就成功获取了京东首页渲染完成后的页面截图，详细的参数设置可以参考官网文档 https://splash.readthedocs.io/en/stable/api.html#render-png</p>
+  </li>
+  <li>
+    <p>render.jpeg</p>
+
+    <p>此接口和render.png类似，不过它返回的是JPEG格式的图片二进制数据。</p>
+
+    <p>另外，此接口比render.png多了参数quality，它用来设置图片质量。</p>
+  </li>
+  <li>
+    <p>render.har</p>
+
+    <p>此接口用于获取页面加载的HAR数据，示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.har?url=https://www.jd.com&amp;wait=5</span>
+</code></pre></div>    </div>
+    <p>它的返回结果（如图7-18所示）非常多，是一个JSON格式的数据，其中包含页面加载过程中的HAR数据</p>
+  </li>
+  <li>
+    <p>render.json</p>
+
+    <p>此接口包含了前面接口的所有功能，返回结果是JSON格式，示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.json?url=https://httpbin.org</span>
+</code></pre></div>    </div>
+    <p>结果如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {"title": "httpbin(1): HTTP Client Testing Service", "url": "https://httpbin.org/", "requestedUrl": "https://httpbin.org/", "geometry": [0, 0, 1024, 768]}
+</code></pre></div>    </div>
+    <p>可以看到，这里以JSON形式返回了相应的请求数据。</p>
+
+    <p>我们可以通过传入不同参数控制其返回结果。比如，传入html=1，返回结果即会增加源代码数据；传入png=1，返回结果即会增加页面PNG截图数据；传入har=1，则会获得页面HAR数据。例如：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.json?url=https://httpbin.org&amp;html=1&amp;har=1</span>
+</code></pre></div>    </div>
+    <p>这样返回的JSON结果会包含网页源代码和HAR数据。</p>
+
+    <p>此外还有更多参数设置，具体可以参考官方文档：https://splash.readthedocs.io/en/stable/api.html#render-json</p>
+  </li>
+  <li>
+    <p>execute</p>
+
+    <p>此接口才是最为强大的接口。前面说了很多Splash Lua脚本的操作，用此接口便可实现与Lua脚本的对接。</p>
+
+    <p>前面的render.html和render.png等接口对于一般的JavaScript渲染页面是足够了，但是如果要实现一些交互操作的话，它们还是无能为力，这里就需要使用execute接口了。</p>
+
+    <p>我们先实现一个最简单的脚本，直接返回数据：</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="k">return</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+
+    <p>然后将此脚本转化为URL编码后的字符串，拼接到execute接口后面，示例如下：</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/execute?lua_source=function+main%28splash%29%0D%0A++return+%27hello%27%0D%0Aend</span>
+</code></pre></div>    </div>
+
+    <p>运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  hello
+</code></pre></div>    </div>
+
+    <p>这里我们通过lua_source参数传递了转码后的Lua脚本，通过execute接口获取了最终脚本的执行结果。</p>
+
+    <p>这里我们更加关心的肯定是如何用Python来实现，上例用Python实现的话，代码如下：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+     
+  <span class="n">lua</span> <span class="o">=</span> <span class="s">'''
+  function main(splash)
+      return 'hello'
+  end
+  '''</span>
+     
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/execute?lua_source='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">lua</span><span class="p">)</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  hello
+</code></pre></div>    </div>
+
+    <p>这里我们用Python中的三引号将Lua脚本包括起来，然后用urllib.parse模块里的quote()方法将脚本进行URL转码，随后构造了Splash请求URL，将其作为lua_source参数传递，这样运行结果就会显示Lua脚本执行后的结果。</p>
+
+    <p>我们再通过实例看一下：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+     
+  <span class="n">lua</span> <span class="o">=</span> <span class="s">'''
+  function main(splash, args)
+    local treat = require("treat")
+    local response = splash:http_get("http://httpbin.org/get")
+      return {
+      html=treat.as_string(response.body),
+      url=response.url,
+      status=response.status
+      }
+  end
+  '''</span>
+     
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/execute?lua_source='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">lua</span><span class="p">)</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {"url": "http://httpbin.org/get", "status": 200, "html": "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Accept-Language\": \"en,*\", \n    \"Connection\": \"close\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1\"\n  }, \n  \"origin\": \"60.207.237.85\", \n  \"url\": \"http://httpbin.org/get\"\n}\n"}
+</code></pre></div>    </div>
+
+    <p>可以看到，返回结果是JSON形式，我们成功获取了请求的URL、状态码和网页源代码。</p>
+
+    <p>如此一来，我们之前所说的Lua脚本均可以用此方式与Python进行对接，所有网页的动态渲染、模拟点击、表单提交、页面滑动、延时等待后的一些结果均可以自由控制，获取页面源码和截图也都不在话下</p>
+  </li>
+</ul>
+
+<h3 id="splash-负载均衡配置">Splash 负载均衡配置</h3>
+
+<ol>
+  <li>
+    <p>配置 Splash 服务</p>
+
+    <p>要搭建Splash负载均衡，首先要有多个Splash服务。假如这里在4台远程主机的8050端口上都开启了Splash服务，它们的服务地址分别为41.159.27.223:8050、41.159.27.221:8050、41.159.27.9:8050和41.159.117.119:8050，这4个服务完全一致，都是通过Docker的Splash镜像开启的。访问其中任何一个服务时，都可以使用Splash服务</p>
+  </li>
+  <li>
+    <p>配置负载均衡</p>
+
+    <p>接下来，可以选用任意一台带有公网IP的主机来配置负载均衡。首先，在这台主机上装好Nginx，然后修改Nginx的配置文件nginx.conf，添加如下内容：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> http {
+ upstream splash {
+         least_conn;
+         server 41.159.27.223:8050;
+         server 41.159.27.221:8050;
+         server 41.159.27.9:8050;
+         server 41.159.117.119:8050;
+     }
+     server {
+         listen 8050;
+         location / {
+             proxy_pass http://splash;
+         }
+     }
+ }
+</code></pre></div>    </div>
+    <p>这样我们通过upstream字段定义了一个名字叫作splash的服务集群配置。其中least_conn代表最少链接负载均衡，它适合处理请求处理时间长短不一造成服务器过载的情况。</p>
+
+    <p>当然，我们也可以不指定配置，具体如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> upstream splash {
+     server 41.159.27.223:8050;
+     server 41.159.27.221:8050;
+     server 41.159.27.9:8050;
+     server 41.159.117.119:8050;
+ }
+</code></pre></div>    </div>
+    <p>这样默认以轮询策略实现负载均衡，每个服务器的压力相同。此策略适合服务器配置相当、无状态且短平快的服务使用。</p>
+
+    <p>另外，我们还可以指定权重，配置如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> upstream splash {
+     server 41.159.27.223:8050 weight=4;
+     server 41.159.27.221:8050 weight=2;
+     server 41.159.27.9:8050 weight=2;
+     server 41.159.117.119:8050 weight=1;
+ }
+</code></pre></div>    </div>
+    <p>服务器根据请求客户端的IP地址进行散列计算，确保使用同一个服务器响应请求，这种策略适合有状态的服务，比如用户登录后访问某个页面的情形。对于Splash来说，不需要应用此设置。</p>
+
+    <p>我们可以根据不同的情形选用不同的配置，配置完成后重启一下Nginx服务：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo nginx -s reload
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置认证</p>
+
+    <p>现在Splash是可以公开访问的，如果不想让其公开访问，还可以配置认证，这仍然借助于Nginx。可以在server的location字段中添加auth_basic和auth_basic_user_file字段，具体配置如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> http {
+     upstream splash {
+         least_conn;
+         server 41.159.27.223:8050;
+         server 41.159.27.221:8050;
+         server 41.159.27.9:8050;
+         server 41.159.117.119:8050;
+     }
+     server {
+         listen 8050;
+         location / {
+             proxy_pass http://splash;
+             auth_basic "Restricted";
+             auth_basic_user_file /etc/nginx/conf.d/.htpasswd;
+         }
+     }
+ }
+</code></pre></div>    </div>
+    <p>这里使用的用户名和密码配置放置在/etc/nginx/conf.d目录下，我们需要使用htpasswd命令创建。例如，创建一个用户名为admin的文件，相关命令如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> htpasswd -c .htpasswd admin
+</code></pre></div>    </div>
+    <p>接下来就会提示我们输入密码，输入两次之后，就会生成密码文件，其内容如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat .htpasswd 
+ admin:5ZBxQr0rCqwbc
+</code></pre></div>    </div>
+    <p>配置完成后，重启一下Nginx服务：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo nginx -s reload
+</code></pre></div>    </div>
+    <p>这样访问认证就成功配置好了。</p>
+  </li>
+  <li>
+    <p>测试</p>
+
+    <p>最后，我们可以用代码来测试一下负载均衡的配置，看看到底是不是每次请求会切换IP。利用http://httpbin.org/get测试即可，实现代码如下：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">requests</span>
+ <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+ <span class="kn">import</span> <span class="nn">re</span>
+
+ <span class="n">lua</span> <span class="o">=</span> <span class="s">'''
+ function main(splash, args)
+ local treat = require("treat")
+ local response = splash:http_get("http://httpbin.org/get")
+ return treat.as_string(response.body)
+ end
+ '''</span>
+
+ <span class="n">url</span> <span class="o">=</span> <span class="s">'http://splash:8050/execute?lua_source='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">lua</span><span class="p">)</span>
+ <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="s">'admin'</span><span class="p">,</span> <span class="s">'admin'</span><span class="p">))</span>
+ <span class="n">ip</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'(\d+\.\d+\.\d+\.\d+)'</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">).</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>这里URL中的splash字符串请自行替换成自己的Nginx服务器IP。这里我修改了Hosts，设置了splash为Nginx服务器IP。</p>
+
+    <p>多次运行代码之后，可以发现每次请求的IP都会变化，比如第一次的结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 41.159.27.223
+</code></pre></div>    </div>
+    <p>第二次的结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 41.159.27.9
+</code></pre></div>    </div>
+    <p>这就说明负载均衡已经成功实现了。
+=======
+—
+layout: post
+title: Splash 的使用
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [reptile]
+—</p>
+    <h2 id="splash-的使用-1">Splash 的使用</h2>
+    <h3 id="功能介绍-1">功能介绍</h3>
+  </li>
+  <li>异步方式处理多个网页渲染过程</li>
+  <li>获取渲染后的页面的源代码或截图</li>
+  <li>通过关闭图片渲染或者使用 Adblock 规则来加快页面渲染速度</li>
+  <li>可执行特定的 JavaScript 脚本</li>
+  <li>可通过 Lua 脚本来控制页面渲染过程</li>
+  <li>获取渲染的详细过程并通过 HAR（HTTP Archive）格式呈现</li>
+</ol>
+
+<h3 id="示例引入-1">示例引入</h3>
+
+<p>首先，通过Splash提供的Web页面来测试其渲染过程。例如，我们在本机8050端口上运行了Splash服务，打开http://localhost:8050/即可看到其Web页面</p>
+
+<p>在图7-6右侧，呈现的是一个渲染示例。可以看到，上方有一个输入框，默认是http://google.com，这里换成百度测试一下，将内容更改为https://www.baidu.com，然后点击Render me按钮开始渲染</p>
+
+<p>可以看到，网页的返回结果呈现了渲染截图、HAR加载统计数据、网页的源代码。</p>
+
+<p>通过HAR的结果可以看到，Splash执行了整个网页的渲染过程，包括CSS、JavaScript的加载等过程，呈现的页面和我们在浏览器中得到的结果完全一致。</p>
+
+<p>那么，这个过程由什么来控制呢？重新返回首页，可以看到实际上是有一段脚本，内容如下：</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+  <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="nx">args</span><span class="p">.</span><span class="nx">url</span><span class="p">))</span>
+  <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+  <span class="k">return</span> <span class="p">{</span>
+    <span class="nx">html</span> <span class="o">=</span> <span class="na">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">(),</span>
+    <span class="nx">png</span> <span class="o">=</span> <span class="na">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">(),</span>
+    <span class="nx">har</span> <span class="o">=</span> <span class="na">splash</span><span class="p">:</span><span class="nx">har</span><span class="p">(),</span>
+  <span class="p">}</span>
+<span class="nx">end</span>
+</code></pre></div></div>
+<p>这个脚本实际上是用Lua语言写的脚本。即使不懂这个语言的语法，但从脚本的表面意思，我们也可以大致了解到它首先调用go()方法去加载页面，然后调用wait()方法等待了一定时间，最后返回了页面的源码、截图和HAR信息。</p>
+
+<p>到这里，我们大体了解了Splash是通过Lua脚本来控制了页面的加载过程的，加载过程完全模拟浏览器，最后可返回各种格式的结果，如网页源码和截图等。</p>
+
+<h3 id="splash-lua脚本-1">Splash Lua脚本</h3>
+
+<p>Splash可以通过Lua脚本执行一系列渲染操作，这样我们就可以用Splash来模拟类似Chrome、PhantomJS的操作了。</p>
+
+<p>首先，我们来了解一下Splash Lua脚本的入口和执行方式。</p>
+
+<ul>
+  <li>
+    <p>人口及返回值</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+  <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+  <span class="nx">local</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">document.title</span><span class="dl">"</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">{</span><span class="nx">title</span><span class="o">=</span><span class="nx">title</span><span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>我们将代码粘贴到刚才打开的http://localhost:8050/的代码编辑区域，然后点击Render me!按钮来测试一下。</p>
+
+    <p>我们看到它返回了网页的标题，如图7-8所示。这里我们通过evaljs()方法传入JavaScript脚本，而document.title的执行结果就是返回网页标题，执行完毕后将其赋值给一个title变量，随后将其返回。</p>
+
+    <p>注意，我们在这里定义的方法名称叫作main()。这个名称必须是固定的，Splash会默认调用这个方法。</p>
+
+    <p>该方法的返回值既可以是字典形式，也可以是字符串形式，最后都会转化为Splash HTTP Response</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">hello</span><span class="o">=</span><span class="dl">"</span><span class="s2">world!</span><span class="dl">"</span><span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>返回了一个字典形式的内容</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="k">return</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>返回了一个字符串形式的内容</p>
+  </li>
+  <li>
+    <p>异步处理</p>
+
+    <p>Splash支持异步处理，但是这里并没有显式指明回调方法，其回调的跳转是在Splash内部完成的</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">example_urls</span> <span class="o">=</span> <span class="p">{</span><span class="dl">"</span><span class="s2">www.baidu.com</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">www.taobao.com</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">www.zhihu.com</span><span class="dl">"</span><span class="p">}</span>
+      <span class="nx">local</span> <span class="nx">urls</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">urls</span> <span class="nx">or</span> <span class="nx">example_urls</span>
+      <span class="nx">local</span> <span class="nx">results</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">url</span> <span class="k">in</span> <span class="nx">ipairs</span><span class="p">(</span><span class="nx">urls</span><span class="p">)</span> <span class="k">do</span>
+          <span class="nx">local</span> <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://</span><span class="dl">"</span> <span class="p">..</span> <span class="nx">url</span><span class="p">)</span>
+          <span class="k">if</span> <span class="nx">ok</span> <span class="nx">then</span>
+          <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+          <span class="nx">results</span><span class="p">[</span><span class="nx">url</span><span class="p">]</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+          <span class="nx">end</span>
+      <span class="nx">end</span>
+      <span class="k">return</span> <span class="nx">results</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+
+    <p>在脚本内调用的wait()方法类似于Python中的sleep()，其参数为等待的秒数。当Splash执行到此方法时，它会转而去处理其他任务，然后在指定的时间过后再回来继续处理。</p>
+
+    <p>这里值得注意的是，Lua脚本中的字符串拼接和Python不同，它使用的是..操作符，而不是+。如果有必要，可以简单了解一下Lua脚本的语法，详见http://www.runoob.com/lua/lua-basic-syntax.html。</p>
+
+    <p>另外，这里做了加载时的异常检测。go()方法会返回加载页面的结果状态，如果页面出现4xx或5xx状态码，ok变量就为空，就不会返回加载后的图片</p>
+  </li>
+</ul>
+
+<h3 id="splash-对象属性-1">Splash 对象属性</h3>
+
+<ul>
+  <li>
+    <p>args</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">args</span><span class="p">.</span><span class="nx">url</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里第二个参数args就相当于splash.args属性，以上代码等价于:</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">url</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>js_enabled</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">js_enabled</span> <span class="o">=</span> <span class="kc">false</span>
+      <span class="nx">local</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">document.title</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">title</span><span class="o">=</span><span class="nx">title</span><span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>重新调用了evaljs()方法执行JavaScript代码，此时运行结果就会抛出异常：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+      "error": 400,
+      "type": "ScriptError",
+      "info": {
+          "type": "JS_ERROR",
+          "js_error_message": null,
+          "source": "[string \"function main(splash, args)\r...\"]",
+          "message": "[string \"function main(splash, args)\r...\"]:4: unknown JS error: None",
+          "line_number": 4,
+          "error": "unknown JS error: None",
+          "splash_method": "evaljs"
+      },
+      "description": "Error happened while executing Lua script"
+  }
+</code></pre></div>    </div>
+    <p>一般来说，不用设置此属性，默认开启即可。</p>
+  </li>
+  <li>
+    <p>resource_timeout</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">resource_timeout</span> <span class="o">=</span> <span class="mf">0.1</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://www.taobao.com</span><span class="dl">'</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里将超时时间设置为0.1秒。如果在0.1秒之内没有得到响应，就会抛出异常</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
+      "error": 400,
+      "type": "ScriptError",
+      "info": {
+          "error": "network5",
+          "type": "LUA_ERROR",
+          "line_number": 3,
+          "source": "[string \"function main(splash)\r...\"]",
+          "message": "Lua error: [string \"function main(splash)\r...\"]:3: network5"
+      },
+      "description": "Error happened while executing Lua script"
+  }
+</code></pre></div>    </div>
+    <p>此属性适合在网页加载速度较慢的情况下设置。如果超过了某个时间无响应，则直接抛出异常并忽略即可。</p>
+  </li>
+  <li>
+    <p>images_enable</p>
+
+    <p>此属性可以设置图片是否加载，默认情况下是加载的。禁用该属性后，可以节省网络流量并提高网页加载速度。但是需要注意的是，禁用图片加载可能会影响JavaScript渲染。因为禁用图片之后，它的外层DOM节点的高度会受影响，进而影响DOM节点的位置。因此，如果JavaScript对图片节点有操作的话，其执行就会受到影响。</p>
+
+    <p>另外值得注意的是，Splash使用了缓存。如果一开始加载出来了网页图片，然后禁用了图片加载，再重新加载页面，之前加载好的图片可能还会显示出来，这时直接重启Splash即可。</p>
+
+    <p>禁用图片加载的示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">images_enabled</span> <span class="o">=</span> <span class="kc">false</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://www.jd.com</span><span class="dl">'</span><span class="p">))</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">png</span><span class="o">=</span><span class="na">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这样返回的页面截图就不会带有任何图片，加载速度也会快很多。</p>
+  </li>
+  <li>
+    <p>plugins_enable</p>
+
+    <p>此属性可以控制浏览器插件（如Flash插件）是否开启。</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">splash</span><span class="p">.</span><span class="nx">plugins_enabled</span> <span class="o">=</span> <span class="kc">true</span><span class="o">/</span><span class="kc">false</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>scroll_position</p>
+
+    <p>通过设置此属性，我们可以控制页面上下或左右滚动</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://www.taobao.com</span><span class="dl">'</span><span class="p">))</span>
+      <span class="nx">splash</span><span class="p">.</span><span class="nx">scroll_position</span> <span class="o">=</span> <span class="p">{</span><span class="nx">y</span><span class="o">=</span><span class="mi">400</span><span class="p">}</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">png</span><span class="o">=</span><span class="na">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+
+    <p>如果要让页面左右滚动，可以传入x参数</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">splash</span><span class="p">.</span><span class="nx">scroll_position</span> <span class="o">=</span> <span class="p">{</span><span class="nx">x</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="nx">y</span><span class="o">=</span><span class="mi">200</span><span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="splash-对象的方法-1">Splash 对象的方法</h3>
+
+<ul>
+  <li>
+    <p>go()</p>
+
+    <p>该方法用来请求某个链接，而且它可以模拟GET和POST请求，同时支持传入请求头、表单等数据</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">{</span><span class="nx">url</span><span class="p">,</span> <span class="nx">baseurl</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">headers</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">http_method</span><span class="o">=</span><span class="dl">"</span><span class="s2">GET</span><span class="dl">"</span><span class="p">,</span> <span class="nx">body</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">formdata</span><span class="o">=</span><span class="nx">nil</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>url: 请求的URL</li>
+      <li>baseurl: 可选参数，默认为空，表示资源加载相对路径</li>
+      <li>headers: 可选参数，默认为空，表示请求头</li>
+      <li>http_method: 可选参数，默认为GET，同时支持POST</li>
+      <li>body: 可选参数，默认为空，发POST请求时的表单数据，使用的Content-type为application/json</li>
+      <li>formdata: 可选参数，默认为空，POST的时候的表单数据，使用的Content-type为application/x-www-form-urlencoded</li>
+    </ul>
+
+    <p>该方法的返回结果是结果ok和原因reason的组合，如果ok为空，代表网页加载出现了错误，此时reason变量中包含了错误的原因，否则证明页面加载成功</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">{</span><span class="dl">"</span><span class="s2">http://httpbin.org/post</span><span class="dl">"</span><span class="p">,</span> <span class="nx">http_method</span><span class="o">=</span><span class="dl">"</span><span class="s2">POST</span><span class="dl">"</span><span class="p">,</span> <span class="nx">body</span><span class="o">=</span><span class="dl">"</span><span class="s2">name=Germey</span><span class="dl">"</span><span class="p">}</span>
+      <span class="k">if</span> <span class="nx">ok</span> <span class="nx">then</span>
+              <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+      <span class="nx">end</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们模拟了一个POST请求，并传入了POST的表单数据，如果成功，则返回页面的源代码</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "data": "", 
+  "files": {}, 
+  "form": {
+      "name": "Germey"
+  }, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Content-Length": "11", 
+      "Content-Type": "application/x-www-form-urlencoded", 
+      "Host": "httpbin.org", 
+      "Origin": "null", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "json": null, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/post"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>wait()</p>
+
+    <p>此方法可以控制页面的等待时间</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">ok</span><span class="p">,</span> <span class="nx">reason</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">{</span><span class="nx">time</span><span class="p">,</span> <span class="nx">cancel_on_redirect</span><span class="o">=</span><span class="kc">false</span><span class="p">,</span> <span class="nx">cancel_on_error</span><span class="o">=</span><span class="kc">true</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>time: 等待的秒数</li>
+      <li>cancel_on_redirect: 可选参数，默认为false，表示如果发生了重定向就停止等待，并返回重定向结果</li>
+      <li>cancel_on_error: 可选参数，默认为false，表示如果发生了加载错误，就停止等待</li>
+    </ul>
+
+    <p>返回结果同样是结果ok和原因reason的组合</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">{</span><span class="nx">html</span><span class="o">=</span><span class="na">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>jsfunc()</p>
+
+    <p>此方法可以直接调用JavaScript定义的方法，但是所调用的方法需要用双中括号包围，这相当于实现了JavaScript方法到Lua脚本的转换</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">get_div_count</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">jsfunc</span><span class="p">([[</span>
+      <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+          <span class="kd">var</span> <span class="nx">body</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">divs</span> <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">divs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="p">]])</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="p">(</span><span class="dl">"</span><span class="s2">There are %s DIVs</span><span class="dl">"</span><span class="p">):</span><span class="nx">format</span><span class="p">(</span>
+          <span class="nx">get_div_count</span><span class="p">())</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  There are 21 DIVs
+</code></pre></div>    </div>
+    <p>首先，我们声明了一个JavaScript定义的方法，然后在页面加载成功后调用了此方法计算出了页面中div节点的个数。</p>
+
+    <p>关于JavaScript到Lua脚本的更多转换细节，可以参考官方文档：https://splash.readthedocs.io/en/stable/scripting-ref.html#splash-jsfunc</p>
+  </li>
+  <li>
+    <p>evaljs()</p>
+
+    <p>此方法可以执行JavaScript代码并返回最后一条JavaScript语句的返回结果</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">evaljs</span><span class="p">(</span><span class="n">js</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>比如</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">local</span> <span class="n">title</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">evaljs</span><span class="p">(</span><span class="s">"document.title"</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>runjs()</p>
+
+    <p>此方法可以执行JavaScript代码，它与evaljs()的功能类似，但是更偏向于执行某些动作或声明某些方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">runjs</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo = function() { return 'bar' }</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">foo()</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">result</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们用runjs()先声明了一个JavaScript定义的方法，然后通过evaljs()来调用得到的结果</p>
+
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  bar
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>autoload()</p>
+
+    <p>此方法可以设置每个页面访问时自动加载的对象</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">ok</span><span class="p">,</span> <span class="n">reason</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">autoload</span><span class="p">{</span><span class="n">source_or_url</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">nil</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">nil</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>source_or_url: JavaScript代码或者JavaScript库链接</li>
+      <li>source: JavaScript代码</li>
+      <li>url: JavaScript库链接</li>
+    </ul>
+
+    <p>但是此方法只负责加载JavaScript代码或库，不执行任何操作。如果要执行操作，可以调用evaljs()或runjs()方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">autoload</span><span class="p">([[</span>
+          <span class="kd">function</span> <span class="nx">get_document_title</span><span class="p">(){</span>
+          <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+          <span class="p">}</span>
+      <span class="p">]])</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">get_document_title()</span><span class="dl">"</span><span class="p">)</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们调用autoload()方法声明了一个JavaScript方法，然后通过evaljs()方法来执行此JavaScript方法</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  百度一下，你就知道
+</code></pre></div>    </div>
+    <p>另外，我们也可以使用autoload()方法加载某些方法库，如jQuery</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">autoload</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://code.jquery.com/jquery-2.1.3.min.js</span><span class="dl">"</span><span class="p">))</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">))</span>
+      <span class="nx">local</span> <span class="nx">version</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">evaljs</span><span class="p">(</span><span class="dl">"</span><span class="s2">$.fn.jquery</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="dl">'</span><span class="s1">JQuery version: </span><span class="dl">'</span> <span class="p">..</span> <span class="nx">version</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  JQuery version: 2.1.3
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>call_later()</p>
+
+    <p>此方法可以通过设置定时任务和延迟时间来实现任务延时执行，并且可以在执行前通过cancel()方法重新执行定时任务</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">snapshots</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="nx">local</span> <span class="nx">timer</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">call_later</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span>
+          <span class="nx">snapshots</span><span class="p">[</span><span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+          <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+          <span class="nx">snapshots</span><span class="p">[</span><span class="dl">"</span><span class="s2">b</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+      <span class="nx">end</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">snapshots</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们设置了一个定时任务，0.2秒的时候获取网页截图，然后等待1秒，1.2秒时再次获取网页截图，访问的页面是淘宝，最后将截图结果返回</p>
+  </li>
+  <li>
+    <p>http_get()</p>
+
+    <p>此方法可以模拟发送HTTP的GET请求</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">response</span> <span class="o">=</span> <span class="n">splash</span><span class="p">:</span><span class="n">http_get</span><span class="p">{</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">nil</span><span class="p">,</span> <span class="n">follow_redirects</span><span class="o">=</span><span class="n">true</span><span class="p">}</span>
+</code></pre></div>    </div>
+
+    <ul>
+      <li>url: 请求URL</li>
+      <li>headers: 可选参数，默认为空，请求头</li>
+      <li>follow_redirects: 可选参数，表示是否启动自动重定向，默认为true</li>
+    </ul>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">treat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">treat</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">http_get</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+          <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">html</span><span class="o">=</span><span class="nx">treat</span><span class="p">.</span><span class="nx">as_string</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">),</span>
+          <span class="nx">url</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+          <span class="nx">status</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span>
+          <span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Object
+  html: String (length 355)
+  {
+  "args": {}, 
+  "headers": {
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/get"
+  }
+  status: 200
+  url: "http://httpbin.org/get"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>http_post()</p>
+
+    <p>和http_get()方法类似，此方法用来模拟发送POST请求，不过多了一个参数body</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  response = splash:http_post{url, headers=nil, follow_redirects=true, body=nil}
+</code></pre></div>    </div>
+
+    <ul>
+      <li>url: 请求URL</li>
+      <li>headers: 可选参数，默认为空，请求头</li>
+      <li>follow_redirects: 可选参数，表示是否启动自动重定向，默认为true</li>
+      <li>body: 可选参数，即表单数据，默认为空</li>
+    </ul>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">treat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">treat</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">json</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">json</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">http_post</span><span class="p">{</span><span class="dl">"</span><span class="s2">http://httpbin.org/post</span><span class="dl">"</span><span class="p">,</span>     
+          <span class="nx">body</span><span class="o">=</span><span class="nx">json</span><span class="p">.</span><span class="nx">encode</span><span class="p">({</span><span class="nx">name</span><span class="o">=</span><span class="dl">"</span><span class="s2">Germey</span><span class="dl">"</span><span class="p">}),</span>
+          <span class="nx">headers</span><span class="o">=</span><span class="p">{[</span><span class="dl">"</span><span class="s2">content-type</span><span class="dl">"</span><span class="p">]</span><span class="o">=</span><span class="dl">"</span><span class="s2">application/json</span><span class="dl">"</span><span class="p">}</span>
+          <span class="p">}</span>
+          <span class="k">return</span> <span class="p">{</span>
+          <span class="nx">html</span><span class="o">=</span><span class="nx">treat</span><span class="p">.</span><span class="nx">as_string</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">),</span>
+          <span class="nx">url</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">url</span><span class="p">,</span>
+          <span class="nx">status</span><span class="o">=</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span>
+          <span class="p">}</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Object
+  html: String (length 533)
+  {
+  "args": {}, 
+  "data": "{\"name\": \"Germey\"}", 
+  "files": {}, 
+  "form": {}, 
+  "headers": {
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Content-Length": "18", 
+      "Content-Type": "application/json", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "json": {
+      "name": "Germey"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/post"
+  }
+  status: 200
+  url: "http://httpbin.org/post"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_content()</p>
+
+    <p>此方法用来设置页面的内容</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">set_content</span><span class="p">(</span><span class="dl">"</span><span class="s2">&lt;html&gt;&lt;body&gt;&lt;h1&gt;hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><span class="dl">"</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>html()</p>
+
+    <p>此方法用来获取网页的源代码，它是非常简单又常用的方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "https://httpbin.org/get"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>png()</p>
+
+    <p>此方法用来获取PNG格式的网页截图</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>jpeg()</p>
+
+    <p>此方法用来获取JPEG格式的网页截图</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.taobao.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">jpeg</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>har()</p>
+
+    <p>此方法用来获取页面加载过程描述</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">har</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>url()</p>
+
+    <p>此方法可以获取当前正在访问的URL</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">url</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  https://www.baidu.com/
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>get_cookies()</p>
+
+    <p>此方法可以获取当前页面的Cookies</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">get_cookies</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[2]
+  0: Object
+  domain: ".baidu.com"
+  expires: "2085-08-21T20:13:23Z"
+  httpOnly: false
+  name: "BAIDUID"
+  path: "/"
+  secure: false
+  value: "C1263A470B02DEF45593B062451C9722:FG=1"
+  1: Object
+  domain: ".baidu.com"
+  expires: "2085-08-21T20:13:23Z"
+  httpOnly: false
+  name: "BIDUPSID"
+  path: "/"
+  secure: false
+  value: "C1263A470B02DEF45593B062451C9722"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>add_cookies()</p>
+
+    <p>此方法可以为当前页面添加Cookie</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">cookies</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">add_cookie</span><span class="p">{</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">path</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">domain</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">expires</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">httpOnly</span><span class="o">=</span><span class="nx">nil</span><span class="p">,</span> <span class="nx">secure</span><span class="o">=</span><span class="nx">nil</span><span class="p">}</span>
+</code></pre></div>    </div>
+    <p>该方法的各个参数代表Cookie的各个属性</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">add_cookie</span><span class="p">{</span><span class="dl">"</span><span class="s2">sessionid</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">237465ghgfsd</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">/</span><span class="dl">"</span><span class="p">,</span> <span class="nx">domain</span><span class="o">=</span><span class="dl">"</span><span class="s2">http://example.com</span><span class="dl">"</span><span class="p">}</span>
+      <span class="nl">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://example.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>clear_cookies()</p>
+
+    <p>此方法可以清除所有的Cookies</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">clear_cookies</span><span class="p">()</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">get_cookies</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们清除了所有的Cookies，然后调用get_cookies()将结果返回</p>
+
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[0]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>get_viewport_size()</p>
+
+    <p>此方法可以获取当前浏览器页面的大小，即宽高</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">get_viewport_size</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[2]
+  0: 1024
+  1: 768
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_viewport_size()</p>
+
+    <p>此方法可以设置当前浏览器页面的大小，即宽高</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">splash</span><span class="p">:</span><span class="nx">set_viewport_size</span><span class="p">(</span><span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>例如，这里访问一个宽度自适应的页面</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_viewport_size</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">700</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://balbozheng.com</span><span class="dl">"</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_viewport_full()</p>
+
+    <p>此方法可以设置浏览器全屏显示</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_viewport_full</span><span class="p">()</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://cuiqingcai.com</span><span class="dl">"</span><span class="p">))</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_user_agent()</p>
+
+    <p>此方法可以设置浏览器的User-Agent</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_user_agent</span><span class="p">(</span><span class="dl">'</span><span class="s1">Splash</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们将浏览器的User-Agent设置为Splash,运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "User-Agent": "Splash"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/get"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>set_custom_headers()</p>
+
+    <p>此方法可以设置请求头</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">set_custom_headers</span><span class="p">({</span>
+          <span class="p">[</span><span class="dl">"</span><span class="s2">User-Agent</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Splash</span><span class="dl">"</span><span class="p">,</span>
+          <span class="p">[</span><span class="dl">"</span><span class="s2">Site</span><span class="dl">"</span><span class="p">]</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">Splash</span><span class="dl">"</span><span class="p">,</span>
+      <span class="p">})</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://httpbin.org/get</span><span class="dl">"</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">html</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们设置了请求头中的User-Agent和Site属性，运行结果</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;pre style="word-wrap: break-word; white-space: pre-wrap;"&gt;{
+  "args": {}, 
+  "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", 
+      "Accept-Encoding": "gzip, deflate", 
+      "Accept-Language": "en,*", 
+      "Connection": "close", 
+      "Host": "httpbin.org", 
+      "Site": "Splash", 
+      "User-Agent": "Splash"
+  }, 
+  "origin": "60.207.237.85", 
+  "url": "http://httpbin.org/get"
+  }
+  &lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>select()</p>
+
+    <p>该方法可以选中符合条件的第一个节点，如果有多个节点符合条件，则只会返回一个，其参数是CSS选择器</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#kw</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span><span class="p">:</span><span class="nx">send_text</span><span class="p">(</span><span class="dl">'</span><span class="s1">Splash</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们首先访问了百度，然后选中了搜索框，随后调用了send_text()方法填写了文本，然后返回网页截图。</p>
+  </li>
+  <li>
+    <p>select_all()</p>
+
+    <p>此方法可以选中所有符合条件的节点，其参数是CSS选择器</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">treat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">treat</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">http://quotes.toscrape.com/</span><span class="dl">"</span><span class="p">))</span>
+      <span class="nx">assert</span><span class="p">(</span><span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+      <span class="nx">local</span> <span class="nx">texts</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select_all</span><span class="p">(</span><span class="dl">'</span><span class="s1">.quote .text</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">local</span> <span class="nx">results</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">for</span> <span class="nx">index</span><span class="p">,</span> <span class="nx">text</span> <span class="k">in</span> <span class="nx">ipairs</span><span class="p">(</span><span class="nx">texts</span><span class="p">)</span> <span class="k">do</span>
+          <span class="nx">results</span><span class="p">[</span><span class="nx">index</span><span class="p">]</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">innerHTML</span>
+      <span class="nx">end</span>
+      <span class="k">return</span> <span class="nx">treat</span><span class="p">.</span><span class="nx">as_array</span><span class="p">(</span><span class="nx">results</span><span class="p">)</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们通过CSS选择器选中了节点的正文内容，随后遍历了所有节点，将其中的文本获取下来,运行结果</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  Splash Response: Array[10]
+  0: "“The world as we have created it is a process of our thinking. It cannot be changed without changing our thinking.”"
+  1: "“It is our choices, Harry, that show what we truly are, far more than our abilities.”"
+  2: “There are only two ways to live your life. One is as though nothing is a miracle. The other is as though everything is a miracle.”
+  3: "“The person, be it gentleman or lady, who has not pleasure in a good novel, must be intolerably stupid.”"
+  4: "“Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring.”"
+  5: "“Try not to become a man of success. Rather become a man of value.”"
+  6: "“It is better to be hated for what you are than to be loved for what you are not.”"
+  7: "“I have not failed. I've just found 10,000 ways that won't work.”"
+  8: "“A woman is like a tea bag; you never know how strong it is until it's in hot water.”"
+  9: "“A day without sunshine is like, you know, night.”"
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>mouse_click()</p>
+
+    <p>此方法可以模拟鼠标点击操作，传入的参数为坐标值x和y。此外，也可以直接选中某个节点，然后调用此方法</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">go</span><span class="p">(</span><span class="dl">"</span><span class="s2">https://www.baidu.com/</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select</span><span class="p">(</span><span class="dl">"</span><span class="s2">#kw</span><span class="dl">"</span><span class="p">)</span>
+      <span class="nx">input</span><span class="p">:</span><span class="nx">send_text</span><span class="p">(</span><span class="dl">'</span><span class="s1">Splash</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">submit</span> <span class="o">=</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">select</span><span class="p">(</span><span class="dl">'</span><span class="s1">#su</span><span class="dl">'</span><span class="p">)</span>
+      <span class="nx">submit</span><span class="p">:</span><span class="nx">mouse_click</span><span class="p">()</span>
+      <span class="nx">splash</span><span class="p">:</span><span class="nx">wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+      <span class="k">return</span> <span class="nx">splash</span><span class="p">:</span><span class="nx">png</span><span class="p">()</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+    <p>这里我们首先选中页面的输入框，输入了文本，然后选中“提交”按钮，调用了mouse_click()方法提交查询，然后页面等待三秒，返回截图</p>
+  </li>
+</ul>
+
+<h3 id="splash-api-调用-1">Splash API 调用</h3>
+
+<ul>
+  <li>
+    <p>render.html</p>
+
+    <p>此接口用于获取JavaScript渲染的页面的HTML代码，接口地址就是Splash的运行地址加此接口名称，例如http://localhost:8050/render.html。可以用curl来测试一下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.html?url=https://www.baidu.com</span>
+</code></pre></div>    </div>
+    <p>我们给此接口传递了一个url参数来指定渲染的URL，返回结果即页面渲染后的源代码。</p>
+
+    <p>如果用Python实现的话，代码如下：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/render.html?url=https://www.baidu.com'</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>这样就可以成功输出百度页面渲染后的源代码了。</p>
+
+    <p>另外，此接口还可以指定其他参数，比如通过wait指定等待秒数。如果要确保页面完全加载出来，可以增加等待时间，例如：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/render.html?url=https://www.taobao.com&amp;wait=5'</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>此时得到响应的时间就会相应变长，比如这里会等待5秒多钟才能获取淘宝页面的源代码。</p>
+
+    <p>另外，此接口还支持代理设置、图片加载设置、Headers设置、请求方法设置，具体的用法可以参见官方文档https://splash.readthedocs.io/en/stable/api.html#render-html</p>
+  </li>
+  <li>
+    <p>render.png</p>
+
+    <p>此接口可以获取网页截图，其参数比render.html多了几个，比如通过width和height来控制宽高，它返回的是PNG格式的图片二进制数据。示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.png?url=https://www.taobao.com&amp;wait=5&amp;width=1000&amp;height=700</span>
+</code></pre></div>    </div>
+    <p>这里我们传入了width和height来设置页面大小为1000×700像素。</p>
+
+    <p>如果用Python实现，可以将返回的二进制数据保存为PNG格式的图片，具体如下：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/render.png?url=https://www.jd.com&amp;wait=5&amp;width=1000&amp;height=700'</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'taobao.png'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+      <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>这样我们就成功获取了京东首页渲染完成后的页面截图，详细的参数设置可以参考官网文档 https://splash.readthedocs.io/en/stable/api.html#render-png</p>
+  </li>
+  <li>
+    <p>render.jpeg</p>
+
+    <p>此接口和render.png类似，不过它返回的是JPEG格式的图片二进制数据。</p>
+
+    <p>另外，此接口比render.png多了参数quality，它用来设置图片质量。</p>
+  </li>
+  <li>
+    <p>render.har</p>
+
+    <p>此接口用于获取页面加载的HAR数据，示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.har?url=https://www.jd.com&amp;wait=5</span>
+</code></pre></div>    </div>
+    <p>它的返回结果（如图7-18所示）非常多，是一个JSON格式的数据，其中包含页面加载过程中的HAR数据</p>
+  </li>
+  <li>
+    <p>render.json</p>
+
+    <p>此接口包含了前面接口的所有功能，返回结果是JSON格式，示例如下：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.json?url=https://httpbin.org</span>
+</code></pre></div>    </div>
+    <p>结果如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {"title": "httpbin(1): HTTP Client Testing Service", "url": "https://httpbin.org/", "requestedUrl": "https://httpbin.org/", "geometry": [0, 0, 1024, 768]}
+</code></pre></div>    </div>
+    <p>可以看到，这里以JSON形式返回了相应的请求数据。</p>
+
+    <p>我们可以通过传入不同参数控制其返回结果。比如，传入html=1，返回结果即会增加源代码数据；传入png=1，返回结果即会增加页面PNG截图数据；传入har=1，则会获得页面HAR数据。例如：</p>
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/render.json?url=https://httpbin.org&amp;html=1&amp;har=1</span>
+</code></pre></div>    </div>
+    <p>这样返回的JSON结果会包含网页源代码和HAR数据。</p>
+
+    <p>此外还有更多参数设置，具体可以参考官方文档：https://splash.readthedocs.io/en/stable/api.html#render-json</p>
+  </li>
+  <li>
+    <p>execute</p>
+
+    <p>此接口才是最为强大的接口。前面说了很多Splash Lua脚本的操作，用此接口便可实现与Lua脚本的对接。</p>
+
+    <p>前面的render.html和render.png等接口对于一般的JavaScript渲染页面是足够了，但是如果要实现一些交互操作的话，它们还是无能为力，这里就需要使用execute接口了。</p>
+
+    <p>我们先实现一个最简单的脚本，直接返回数据：</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">function</span> <span class="nx">main</span><span class="p">(</span><span class="nx">splash</span><span class="p">)</span>
+      <span class="k">return</span> <span class="dl">'</span><span class="s1">hello</span><span class="dl">'</span>
+  <span class="nx">end</span>
+</code></pre></div>    </div>
+
+    <p>然后将此脚本转化为URL编码后的字符串，拼接到execute接口后面，示例如下：</p>
+
+    <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nx">curl</span> <span class="nx">http</span><span class="p">:</span><span class="c1">//localhost:8050/execute?lua_source=function+main%28splash%29%0D%0A++return+%27hello%27%0D%0Aend</span>
+</code></pre></div>    </div>
+
+    <p>运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  hello
+</code></pre></div>    </div>
+
+    <p>这里我们通过lua_source参数传递了转码后的Lua脚本，通过execute接口获取了最终脚本的执行结果。</p>
+
+    <p>这里我们更加关心的肯定是如何用Python来实现，上例用Python实现的话，代码如下：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+     
+  <span class="n">lua</span> <span class="o">=</span> <span class="s">'''
+  function main(splash)
+      return 'hello'
+  end
+  '''</span>
+     
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/execute?lua_source='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">lua</span><span class="p">)</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  hello
+</code></pre></div>    </div>
+
+    <p>这里我们用Python中的三引号将Lua脚本包括起来，然后用urllib.parse模块里的quote()方法将脚本进行URL转码，随后构造了Splash请求URL，将其作为lua_source参数传递，这样运行结果就会显示Lua脚本执行后的结果。</p>
+
+    <p>我们再通过实例看一下：</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">requests</span>
+  <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+     
+  <span class="n">lua</span> <span class="o">=</span> <span class="s">'''
+  function main(splash, args)
+    local treat = require("treat")
+    local response = splash:http_get("http://httpbin.org/get")
+      return {
+      html=treat.as_string(response.body),
+      url=response.url,
+      status=response.status
+      }
+  end
+  '''</span>
+     
+  <span class="n">url</span> <span class="o">=</span> <span class="s">'http://localhost:8050/execute?lua_source='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">lua</span><span class="p">)</span>
+  <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {"url": "http://httpbin.org/get", "status": 200, "html": "{\n  \"args\": {}, \n  \"headers\": {\n    \"Accept-Encoding\": \"gzip, deflate\", \n    \"Accept-Language\": \"en,*\", \n    \"Connection\": \"close\", \n    \"Host\": \"httpbin.org\", \n    \"User-Agent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/602.1 (KHTML, like Gecko) splash Version/9.0 Safari/602.1\"\n  }, \n  \"origin\": \"60.207.237.85\", \n  \"url\": \"http://httpbin.org/get\"\n}\n"}
+</code></pre></div>    </div>
+
+    <p>可以看到，返回结果是JSON形式，我们成功获取了请求的URL、状态码和网页源代码。</p>
+
+    <p>如此一来，我们之前所说的Lua脚本均可以用此方式与Python进行对接，所有网页的动态渲染、模拟点击、表单提交、页面滑动、延时等待后的一些结果均可以自由控制，获取页面源码和截图也都不在话下</p>
+  </li>
+</ul>
+
+<h3 id="splash-负载均衡配置-1">Splash 负载均衡配置</h3>
+
+<ol>
+  <li>
+    <p>配置 Splash 服务</p>
+
+    <p>要搭建Splash负载均衡，首先要有多个Splash服务。假如这里在4台远程主机的8050端口上都开启了Splash服务，它们的服务地址分别为41.159.27.223:8050、41.159.27.221:8050、41.159.27.9:8050和41.159.117.119:8050，这4个服务完全一致，都是通过Docker的Splash镜像开启的。访问其中任何一个服务时，都可以使用Splash服务</p>
+  </li>
+  <li>
+    <p>配置负载均衡</p>
+
+    <p>接下来，可以选用任意一台带有公网IP的主机来配置负载均衡。首先，在这台主机上装好Nginx，然后修改Nginx的配置文件nginx.conf，添加如下内容：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> http {
+ upstream splash {
+         least_conn;
+         server 41.159.27.223:8050;
+         server 41.159.27.221:8050;
+         server 41.159.27.9:8050;
+         server 41.159.117.119:8050;
+     }
+     server {
+         listen 8050;
+         location / {
+             proxy_pass http://splash;
+         }
+     }
+ }
+</code></pre></div>    </div>
+    <p>这样我们通过upstream字段定义了一个名字叫作splash的服务集群配置。其中least_conn代表最少链接负载均衡，它适合处理请求处理时间长短不一造成服务器过载的情况。</p>
+
+    <p>当然，我们也可以不指定配置，具体如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> upstream splash {
+     server 41.159.27.223:8050;
+     server 41.159.27.221:8050;
+     server 41.159.27.9:8050;
+     server 41.159.117.119:8050;
+ }
+</code></pre></div>    </div>
+    <p>这样默认以轮询策略实现负载均衡，每个服务器的压力相同。此策略适合服务器配置相当、无状态且短平快的服务使用。</p>
+
+    <p>另外，我们还可以指定权重，配置如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> upstream splash {
+     server 41.159.27.223:8050 weight=4;
+     server 41.159.27.221:8050 weight=2;
+     server 41.159.27.9:8050 weight=2;
+     server 41.159.117.119:8050 weight=1;
+ }
+</code></pre></div>    </div>
+    <p>服务器根据请求客户端的IP地址进行散列计算，确保使用同一个服务器响应请求，这种策略适合有状态的服务，比如用户登录后访问某个页面的情形。对于Splash来说，不需要应用此设置。</p>
+
+    <p>我们可以根据不同的情形选用不同的配置，配置完成后重启一下Nginx服务：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo nginx -s reload
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>配置认证</p>
+
+    <p>现在Splash是可以公开访问的，如果不想让其公开访问，还可以配置认证，这仍然借助于Nginx。可以在server的location字段中添加auth_basic和auth_basic_user_file字段，具体配置如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> http {
+     upstream splash {
+         least_conn;
+         server 41.159.27.223:8050;
+         server 41.159.27.221:8050;
+         server 41.159.27.9:8050;
+         server 41.159.117.119:8050;
+     }
+     server {
+         listen 8050;
+         location / {
+             proxy_pass http://splash;
+             auth_basic "Restricted";
+             auth_basic_user_file /etc/nginx/conf.d/.htpasswd;
+         }
+     }
+ }
+</code></pre></div>    </div>
+    <p>这里使用的用户名和密码配置放置在/etc/nginx/conf.d目录下，我们需要使用htpasswd命令创建。例如，创建一个用户名为admin的文件，相关命令如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> htpasswd -c .htpasswd admin
+</code></pre></div>    </div>
+    <p>接下来就会提示我们输入密码，输入两次之后，就会生成密码文件，其内容如下：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cat .htpasswd 
+ admin:5ZBxQr0rCqwbc
+</code></pre></div>    </div>
+    <p>配置完成后，重启一下Nginx服务：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo nginx -s reload
+</code></pre></div>    </div>
+    <p>这样访问认证就成功配置好了。</p>
+  </li>
+  <li>
+    <p>测试</p>
+
+    <p>最后，我们可以用代码来测试一下负载均衡的配置，看看到底是不是每次请求会切换IP。利用http://httpbin.org/get测试即可，实现代码如下：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">requests</span>
+ <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+ <span class="kn">import</span> <span class="nn">re</span>
+
+ <span class="n">lua</span> <span class="o">=</span> <span class="s">'''
+ function main(splash, args)
+ local treat = require("treat")
+ local response = splash:http_get("http://httpbin.org/get")
+ return treat.as_string(response.body)
+ end
+ '''</span>
+
+ <span class="n">url</span> <span class="o">=</span> <span class="s">'http://splash:8050/execute?lua_source='</span> <span class="o">+</span> <span class="n">quote</span><span class="p">(</span><span class="n">lua</span><span class="p">)</span>
+ <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="p">(</span><span class="s">'admin'</span><span class="p">,</span> <span class="s">'admin'</span><span class="p">))</span>
+ <span class="n">ip</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="s">'(\d+\.\d+\.\d+\.\d+)'</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">).</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>这里URL中的splash字符串请自行替换成自己的Nginx服务器IP。这里我修改了Hosts，设置了splash为Nginx服务器IP。</p>
+
+    <p>多次运行代码之后，可以发现每次请求的IP都会变化，比如第一次的结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 41.159.27.223
+</code></pre></div>    </div>
+    <p>第二次的结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 41.159.27.9
+</code></pre></div>    </div>
+    <p>这就说明负载均衡已经成功实现了。</p>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <p>e5c77ca (新页面)</p>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </li>
+</ol>
+:ET

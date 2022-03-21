@@ -1,0 +1,700 @@
+I"�H<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2019-09-06-thymeleaf.md
+—
+layout:     post
+title:      “Thymeleaf”
+subtitle:   “SpringBoot页面展示Thymeleaf”
+date:       2019-09-06 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - springboot
+    - thymeleaf
+—</p>
+
+<p>开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言</p>
+<ul>
+  <li>Thymeleaf</li>
+  <li>FreeMarker</li>
+  <li>Velocity</li>
+  <li>Groovy</li>
+  <li>JSP</li>
+</ul>
+
+<p>上面并没有列举所有SpringBoot支持的页面模板技术。其中Thymeleaf是SpringBoot官方所推荐使用的，下面来谈谈Thymeleaf一些常用的语法规则。</p>
+<h2 id="添加thymeleaf依赖">添加Thymeleaf依赖</h2>
+<p>要想使用Thhymeleaf，首先要在pom.xml文件中单独添加Thymeleaf依赖。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">thymeleaf</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</code></pre></div></div>
+<p>Spring Boot默认存放模板页面的路径在&lt;font color=#FF0000 &gt;src/main/resources/templates&lt;/font&gt;或者&lt;font color=#FF0000 &gt;src/main/view/templates&lt;/font&gt;，这个无论是使用什么模板语言都一样，当然默认路径是可以自定义的，不过一般不推荐这样做。另外Thymeleaf默认的页面文件后缀是&lt;font color=#FF0000 &gt;.html&lt;/font&gt;。</p>
+<h2 id="数据显示">数据显示</h2>
+<p>在MVC的开发过程中，我们经常需要通过&lt;font color=#FF0000 &gt;Controller&lt;/font&gt;将数据传递到页面中，让页面进行动态展示。</p>
+<h3 id="显示普通文本">显示普通文本</h3>
+<p>创建一个Controller对象，在其中进行参数的传递</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThymeleafController</span> <span class="o">{</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"show"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">show</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"uid"</span><span class="o">,</span><span class="s">"123456789"</span><span class="o">);</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"Jerry"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"show"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>在SpringBoot默认的页面路径下创建show.html文件，内容如下</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SpringBoot模版渲染<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户ID：' + ${uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户名称：' + ${name}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>可以看到在&lt;font color=#FF0000 &gt;p&lt;/font&gt;标签中有&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;属性，这个就是thymeleaf的语法，它表示显示一个普通的文本信息。
+如果我们要显示的信息是存在资源文件中的，同样可以在页面中显示，例如资源文件中定义了内容&lt;font color=#FF0000 &gt;welcome.msg=欢迎{0}光临！&lt;/font&gt;。可以在页面中将其显示</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h2</span> <span class="na">th:text=</span><span class="s">"#{welcome.msg('admin')}"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>另外，在&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;中还能做一些基础的数学运算</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'数学计算：1+2=' + (1 + 2)"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<h3 id="显示带有样式的普通文本">显示带有样式的普通文本</h3>
+<p>如果我们想要传递到的页面的信息，它本身是带有CSS样式的，这个时候如何在页面中将携带的样式信息也显示出来？此时我们的控制器方法这样写。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"showStyle"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">showStyle</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"uid"</span><span class="o">,</span><span class="s">"123456789"</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"&lt;span style='color:red'&gt;Jerry&lt;/span&gt;"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"show_style"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>此时页面中需要借助&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;属性进行显示</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">th:utext=</span><span class="s">"'用户名称：' + ${name}"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>通过浏览器查看页面源码可以看出&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;和&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;的区别是：&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;会对&lt;font color=#FF0000 &gt;«/font&gt;和&lt;font color=#FF0000 »&lt;/font&gt;进行转义，而&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;不会转义。</p>
+<h3 id="显示对象">显示对象</h3>
+<p>我们常常需要将一个bean信息展示在前端页面当中。</p>
+
+<p>1.用于前端展示的VO类</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="nc">Serializable</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">uid</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">birthday</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Double</span> <span class="n">salary</span> <span class="o">;</span>
+    <span class="c1">//省略get/set方法</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.控制器方法</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/message/member_show"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">memberShow</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">12345678L</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"尼古拉丁.赵四"</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">59</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">1000.00</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"member"</span><span class="o">,</span> <span class="n">vo</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"message/member_show"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>3.页面展示</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户编号：' + ${member.uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户姓名：' + ${member.name}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户年龄：' + ${member.age}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户工资：' + ${member.salary}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + ${member.birthday}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + ${#dates.format(member.birthday,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;hr/&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">th:object=</span><span class="s">"${member}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户编号：' + *{uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户姓名：' + *{name}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户年龄：' + *{age}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户工资：' + *{salary}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + *{birthday}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + *{#dates.format(birthday,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>上面给出了两种展现方式，一种是通过${属性}，另外一种是通过{属性}。
+<strong>关于“${属性}”和“{属性}”的区别？</strong>
+$访问完整信息，而访问指定对象中的属性内容， 如果访问的只是普通的内容两者没有区别</p>
+<h2 id="数据处理">数据处理</h2>
+<p>在 thymeleaf 之中提供有相应的集合的处理方法，例如：在使用 List 集合的时候可以考虑采用 get()方法获取指定索引的数据，那么在使用 Set 集合的时候会考虑使用 contains()来判断某个数据是否存在，使用 Map 集合的时候也希望可以使用 containsKey()判断某个 key 是否存在，以及使用get()根据 key 获取对应的 value，而这些功能在之前并不具备，下面来观察如何在页面中使用此类操作</p>
+
+<p>1.控制器方法向页面传递一些数据，以供操作</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/set"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">set</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">allNames</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;()</span> <span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">allIds</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="o">;</span> <span class="n">x</span> <span class="o">++)</span> <span class="o">{</span>
+        <span class="n">allNames</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"boot-"</span> <span class="o">+</span> <span class="n">x</span><span class="o">)</span> <span class="o">;</span>
+        <span class="n">allIds</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"names"</span><span class="o">,</span> <span class="n">allNames</span><span class="o">)</span> <span class="o">;</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"ids"</span><span class="o">,</span> <span class="n">allIds</span><span class="o">)</span> <span class="o">;</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"mydate"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">())</span> <span class="o">;</span>
+    <span class="k">return</span> <span class="s">"user_set"</span> <span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.数据处理</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#dates.format(mydate,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#dates.format(mydate,'yyyy-MM-dd HH:mm:ss.SSS')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.replace('www.baidu.cn','.','$')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.toUpperCase('www.baidu.cn')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.trim('www.baidu.cn')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(names,'boot-0')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(names,'boot-9')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.size(names)}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(ids,0)}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${ids[1]}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${names[1]}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<h2 id="路径处理">路径处理</h2>
+<p>在传统WEB工程开发时，路径的处理操作是有点麻烦的。SpringBoot中为我们简化了路径的处理。
+1.在”src/main/view/static/js”中创建一个js文件</p>
+
+<p>2.然后在页面中可以通过“@{路径}”来引用</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">th:src=</span><span class="s">"@{/js/main.js}"</span><span class="nt">&gt;&lt;/script&gt;</span> 
+</code></pre></div></div>
+<p>页面之间的跳转也能通过@{}来实现</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/show}"</span><span class="nt">&gt;</span>访问controller方法<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/static_index.html}"</span><span class="nt">&gt;</span>访问静态页面<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+<h2 id="操作内置对象">操作内置对象</h2>
+<p>虽然在这种模版开发框架里面是不提倡使用内置对象的，但是很多情况下依然需要使用内置对象进行处理，所以下面来看下如何在页面中使用JSP内置对象。</p>
+
+<p>1.在控制器里面增加一个方法，这个方法将采用内置对象的形式传递属性。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/inner"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">inner</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"requestMessage"</span><span class="o">,</span> <span class="s">"springboot-request"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">getSession</span><span class="o">().</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"sessionMessage"</span><span class="o">,</span> <span class="s">"springboot-session"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">getServletContext</span><span class="o">().</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"applicationMessage"</span><span class="o">,</span>
+        <span class="s">"springboot-application"</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="s">"www.baidu.cn"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"url2"</span><span class="o">,</span>
+        <span class="s">"&lt;span style='color:red'&gt;www.baidu.cn&lt;/span&gt;"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"show_inner"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.在页面之中如果要想访问不同属性范围中的内容，则可以采用如下的做法完成：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SpringBoot模版渲染<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">th:src=</span><span class="s">"@{/js/main.js}"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getRemoteAddr()}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getAttribute('requestMessage')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpSession.getId()}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getServletContext().getRealPath('/')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'requestMessage = ' + ${requestMessage}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'sessionMessage = ' + ${session.sessionMessage}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'applicationMessage = ' + ${application.applicationMessage}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>thymeleaf 考虑到了实际的开发情况，因为 request 传递属性是最为常用的，但是 session 也有可能使用</p>
+
+<p>例如：用户登录之后需要显示用户id，那么就一定要使用到session，所以现在必须增加属性范围的形式后才能够正常使用。在 thymeleaf 里面也支持有 JSP 内置对象的获取操作，不过一般很少这样使用。</p>
+<h2 id="逻辑处理">逻辑处理</h2>
+<p>所有的页面模版都存在各种基础逻辑处理，例如：判断、循环处理操作。在 Thymeleaf 之中对于逻辑可以使用如下的一些运算符来完成，例如：and、or、关系比较（&gt;、&lt;、&gt;=、&lt;=、==、!=、lt、gt、le、ge、eq、ne）。</p>
+
+<p>通过控制器传递一些属性内容到页面之中：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:if=</span><span class="s">"${member.age lt 18}"</span><span class="nt">&gt;</span>
+未成年人！
+<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">th:if=</span><span class="s">"${member.name eq '啊三'}"</span><span class="nt">&gt;</span>
+欢迎小三来访问！
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+<p>不满足条件的判断</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:unless=</span><span class="s">"${member.age gt 18}"</span><span class="nt">&gt;</span>
+你还不满18岁，不能够看电影！
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+<p>通过swith进行分支判断</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:switch=</span><span class="s">"${member.uid}"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"100"</span><span class="nt">&gt;</span>uid为101的员工来了<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"99"</span><span class="nt">&gt;</span>uid为102的员工来了<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"*"</span><span class="nt">&gt;</span>没有匹配成功的数据！<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+<h2 id="数据遍历">数据遍历</h2>
+<p>在实际开发过程中常常需要对数据进行遍历展示，一般会将数据封装成list或map传递到页面进行遍历操作。</p>
+
+<p>1.定义控制器类，向页面传递List数据和Map数据</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/map"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">map</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">allMembers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">User</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">101L</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"赵四 - "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">99999.99</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+            <span class="n">allMembers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"mldn-"</span> <span class="o">+</span> <span class="n">x</span><span class="o">,</span> <span class="n">vo</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"allUsers"</span><span class="o">,</span> <span class="n">allMembers</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"user_map"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/list"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">list</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">allMembers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">101L</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"赵四 - "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">99999.99</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+            <span class="n">allMembers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vo</span><span class="o">)</span> <span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"allUsers"</span><span class="o">,</span> <span class="n">allMembers</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"user_list"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.list类型数据遍历</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;&lt;td&gt;</span>No.<span class="nt">&lt;/td&gt;&lt;td&gt;</span>UID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>姓名<span class="nt">&lt;/td&gt;&lt;td&gt;</span>年龄<span class="nt">&lt;/td&gt;&lt;td&gt;</span>偶数<span class="nt">&lt;/td&gt;&lt;td&gt;</span>奇数<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"user,memberStat:${allUsers}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.index + 1}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.uid}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.name}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.age}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.even}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.odd}"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<p>3.map类型数据遍历</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;&lt;td&gt;</span>No.<span class="nt">&lt;/td&gt;&lt;td&gt;</span>KEY<span class="nt">&lt;/td&gt;&lt;td&gt;</span>UID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>姓名<span class="nt">&lt;/td&gt;&lt;td&gt;</span>年龄<span class="nt">&lt;/td&gt;&lt;td&gt;</span>偶数<span class="nt">&lt;/td&gt;&lt;td&gt;</span>奇数<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"memberEntry,memberStat:${allUsers}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.index + 1}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.key}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.uid}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.name}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.age}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.even}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.odd}"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<h2 id="页面引入">页面引入</h2>
+<p>我们常常需要在一个页面当中引入另一个页面，例如，公用的导航栏以及页脚页面。thymeleaf中提供了两种方式进行页面引入。</p>
+<ul>
+  <li>th:replace</li>
+  <li>th:include</li>
+</ul>
+
+<p>1.新建需要被引入的页面文件，路径为”src/main/view/templates/commons/footer.html”</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;footer</span> <span class="na">th:fragment=</span><span class="s">"companyInfo"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>设为首页 ©2018 SpringBoot 使用<span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${projectName}"</span><span class="nt">/&gt;</span>前必读
+        意见反馈 京ICP证030173号 <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/footer&gt;</span>
+</code></pre></div></div>
+<p>可以看到页面当中还存在一个变量projectName，这个变量的值可以在引入页面中通过&lt;font color=#FF0000 &gt;th:with=”projectName=百度”&lt;/font&gt;传过来。</p>
+
+<p>2.引入页面中只需要添加如下代码即可</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:include=</span><span class="s">"@{/commons/footer} :: companyInfo"</span> <span class="na">th:with=</span><span class="s">"projectName=百度"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>=======
+—
+layout:     post
+title:      “Thymeleaf”
+subtitle:   “SpringBoot页面展示Thymeleaf”
+date:       2019-09-06 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+catalog: true
+tags:
+    - springboot
+    - thymeleaf
+—</p>
+
+<h2>=======</h2>
+<p>layout: post
+title: Thymeleaf
+subtitle: SpringBoot页面展示Thymeleaf
+author: Balbo Cheng
+categories: java
+tags: [thymeleaf, springboot]
+—</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言</p>
+              <ul>
+                <li>Thymeleaf</li>
+                <li>FreeMarker</li>
+                <li>Velocity</li>
+                <li>Groovy</li>
+                <li>JSP</li>
+              </ul>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<p>上面并没有列举所有SpringBoot支持的页面模板技术。其中Thymeleaf是SpringBoot官方所推荐使用的，下面来谈谈Thymeleaf一些常用的语法规则。</p>
+<h2 id="添加thymeleaf依赖-1">添加Thymeleaf依赖</h2>
+<p>要想使用Thhymeleaf，首先要在pom.xml文件中单独添加Thymeleaf依赖。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">thymeleaf</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</code></pre></div></div>
+<p>Spring Boot默认存放模板页面的路径在&lt;font color=#FF0000 &gt;src/main/resources/templates&lt;/font&gt;或者&lt;font color=#FF0000 &gt;src/main/view/templates&lt;/font&gt;，这个无论是使用什么模板语言都一样，当然默认路径是可以自定义的，不过一般不推荐这样做。另外Thymeleaf默认的页面文件后缀是&lt;font color=#FF0000 &gt;.html&lt;/font&gt;。</p>
+<h2 id="数据显示-1">数据显示</h2>
+<p>在MVC的开发过程中，我们经常需要通过&lt;font color=#FF0000 &gt;Controller&lt;/font&gt;将数据传递到页面中，让页面进行动态展示。</p>
+<h3 id="显示普通文本-1">显示普通文本</h3>
+<p>创建一个Controller对象，在其中进行参数的传递</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThymeleafController</span> <span class="o">{</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"show"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">show</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"uid"</span><span class="o">,</span><span class="s">"123456789"</span><span class="o">);</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"Jerry"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"show"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>在SpringBoot默认的页面路径下创建show.html文件，内容如下</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SpringBoot模版渲染<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户ID：' + ${uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户名称：' + ${name}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>可以看到在&lt;font color=#FF0000 &gt;p&lt;/font&gt;标签中有&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;属性，这个就是thymeleaf的语法，它表示显示一个普通的文本信息。
+如果我们要显示的信息是存在资源文件中的，同样可以在页面中显示，例如资源文件中定义了内容&lt;font color=#FF0000 &gt;welcome.msg=欢迎{0}光临！&lt;/font&gt;。可以在页面中将其显示</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h2</span> <span class="na">th:text=</span><span class="s">"#{welcome.msg('admin')}"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>另外，在&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;中还能做一些基础的数学运算</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'数学计算：1+2=' + (1 + 2)"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<h3 id="显示带有样式的普通文本-1">显示带有样式的普通文本</h3>
+<p>如果我们想要传递到的页面的信息，它本身是带有CSS样式的，这个时候如何在页面中将携带的样式信息也显示出来？此时我们的控制器方法这样写。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"showStyle"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">showStyle</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"uid"</span><span class="o">,</span><span class="s">"123456789"</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"&lt;span style='color:red'&gt;Jerry&lt;/span&gt;"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"show_style"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>此时页面中需要借助&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;属性进行显示</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">th:utext=</span><span class="s">"'用户名称：' + ${name}"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>通过浏览器查看页面源码可以看出&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;和&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;的区别是：&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;会对&lt;font color=#FF0000 &gt;«/font&gt;和&lt;font color=#FF0000 »&lt;/font&gt;进行转义，而&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;不会转义。</p>
+<h3 id="显示对象-1">显示对象</h3>
+<p>我们常常需要将一个bean信息展示在前端页面当中。</p>
+
+<p>1.用于前端展示的VO类</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="nc">Serializable</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">uid</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">birthday</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Double</span> <span class="n">salary</span> <span class="o">;</span>
+    <span class="c1">//省略get/set方法</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.控制器方法</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/message/member_show"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">memberShow</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">12345678L</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"尼古拉丁.赵四"</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">59</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">1000.00</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"member"</span><span class="o">,</span> <span class="n">vo</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"message/member_show"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>3.页面展示</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户编号：' + ${member.uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户姓名：' + ${member.name}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户年龄：' + ${member.age}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户工资：' + ${member.salary}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + ${member.birthday}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + ${#dates.format(member.birthday,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;hr/&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">th:object=</span><span class="s">"${member}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户编号：' + *{uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户姓名：' + *{name}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户年龄：' + *{age}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户工资：' + *{salary}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + *{birthday}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + *{#dates.format(birthday,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>上面给出了两种展现方式，一种是通过${属性}，另外一种是通过{属性}。
+<strong>关于“${属性}”和“{属性}”的区别？</strong>
+$访问完整信息，而访问指定对象中的属性内容， 如果访问的只是普通的内容两者没有区别</p>
+<h2 id="数据处理-1">数据处理</h2>
+<p>在 thymeleaf 之中提供有相应的集合的处理方法，例如：在使用 List 集合的时候可以考虑采用 get()方法获取指定索引的数据，那么在使用 Set 集合的时候会考虑使用 contains()来判断某个数据是否存在，使用 Map 集合的时候也希望可以使用 containsKey()判断某个 key 是否存在，以及使用get()根据 key 获取对应的 value，而这些功能在之前并不具备，下面来观察如何在页面中使用此类操作</p>
+
+<p>1.控制器方法向页面传递一些数据，以供操作</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/set"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">set</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">allNames</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;()</span> <span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">allIds</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="o">;</span> <span class="n">x</span> <span class="o">++)</span> <span class="o">{</span>
+        <span class="n">allNames</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"boot-"</span> <span class="o">+</span> <span class="n">x</span><span class="o">)</span> <span class="o">;</span>
+        <span class="n">allIds</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"names"</span><span class="o">,</span> <span class="n">allNames</span><span class="o">)</span> <span class="o">;</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"ids"</span><span class="o">,</span> <span class="n">allIds</span><span class="o">)</span> <span class="o">;</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"mydate"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">())</span> <span class="o">;</span>
+    <span class="k">return</span> <span class="s">"user_set"</span> <span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.数据处理</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#dates.format(mydate,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#dates.format(mydate,'yyyy-MM-dd HH:mm:ss.SSS')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.replace('www.baidu.cn','.','$')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.toUpperCase('www.baidu.cn')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.trim('www.baidu.cn')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(names,'boot-0')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(names,'boot-9')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.size(names)}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(ids,0)}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${ids[1]}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${names[1]}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<h2 id="路径处理-1">路径处理</h2>
+<p>在传统WEB工程开发时，路径的处理操作是有点麻烦的。SpringBoot中为我们简化了路径的处理。
+1.在”src/main/view/static/js”中创建一个js文件</p>
+
+<p>2.然后在页面中可以通过“@{路径}”来引用</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">th:src=</span><span class="s">"@{/js/main.js}"</span><span class="nt">&gt;&lt;/script&gt;</span> 
+</code></pre></div></div>
+<p>页面之间的跳转也能通过@{}来实现</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/show}"</span><span class="nt">&gt;</span>访问controller方法<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/static_index.html}"</span><span class="nt">&gt;</span>访问静态页面<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+<h2 id="操作内置对象-1">操作内置对象</h2>
+<p>虽然在这种模版开发框架里面是不提倡使用内置对象的，但是很多情况下依然需要使用内置对象进行处理，所以下面来看下如何在页面中使用JSP内置对象。</p>
+
+<p>1.在控制器里面增加一个方法，这个方法将采用内置对象的形式传递属性。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/inner"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">inner</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"requestMessage"</span><span class="o">,</span> <span class="s">"springboot-request"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">getSession</span><span class="o">().</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"sessionMessage"</span><span class="o">,</span> <span class="s">"springboot-session"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">getServletContext</span><span class="o">().</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"applicationMessage"</span><span class="o">,</span>
+        <span class="s">"springboot-application"</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="s">"www.baidu.cn"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"url2"</span><span class="o">,</span>
+        <span class="s">"&lt;span style='color:red'&gt;www.baidu.cn&lt;/span&gt;"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"show_inner"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.在页面之中如果要想访问不同属性范围中的内容，则可以采用如下的做法完成：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SpringBoot模版渲染<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">th:src=</span><span class="s">"@{/js/main.js}"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getRemoteAddr()}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getAttribute('requestMessage')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpSession.getId()}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getServletContext().getRealPath('/')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'requestMessage = ' + ${requestMessage}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'sessionMessage = ' + ${session.sessionMessage}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'applicationMessage = ' + ${application.applicationMessage}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>thymeleaf 考虑到了实际的开发情况，因为 request 传递属性是最为常用的，但是 session 也有可能使用</p>
+
+<p>例如：用户登录之后需要显示用户id，那么就一定要使用到session，所以现在必须增加属性范围的形式后才能够正常使用。在 thymeleaf 里面也支持有 JSP 内置对象的获取操作，不过一般很少这样使用。</p>
+<h2 id="逻辑处理-1">逻辑处理</h2>
+<p>所有的页面模版都存在各种基础逻辑处理，例如：判断、循环处理操作。在 Thymeleaf 之中对于逻辑可以使用如下的一些运算符来完成，例如：and、or、关系比较（&gt;、&lt;、&gt;=、&lt;=、==、!=、lt、gt、le、ge、eq、ne）。</p>
+
+<p>通过控制器传递一些属性内容到页面之中：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:if=</span><span class="s">"${member.age lt 18}"</span><span class="nt">&gt;</span>
+未成年人！
+<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">th:if=</span><span class="s">"${member.name eq '啊三'}"</span><span class="nt">&gt;</span>
+欢迎小三来访问！
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+<p>不满足条件的判断</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:unless=</span><span class="s">"${member.age gt 18}"</span><span class="nt">&gt;</span>
+你还不满18岁，不能够看电影！
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+<p>通过swith进行分支判断</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:switch=</span><span class="s">"${member.uid}"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"100"</span><span class="nt">&gt;</span>uid为101的员工来了<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"99"</span><span class="nt">&gt;</span>uid为102的员工来了<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"*"</span><span class="nt">&gt;</span>没有匹配成功的数据！<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+<h2 id="数据遍历-1">数据遍历</h2>
+<p>在实际开发过程中常常需要对数据进行遍历展示，一般会将数据封装成list或map传递到页面进行遍历操作。</p>
+
+<p>1.定义控制器类，向页面传递List数据和Map数据</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/map"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">map</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">allMembers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">User</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">101L</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"赵四 - "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">99999.99</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+            <span class="n">allMembers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"mldn-"</span> <span class="o">+</span> <span class="n">x</span><span class="o">,</span> <span class="n">vo</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"allUsers"</span><span class="o">,</span> <span class="n">allMembers</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"user_map"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/list"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">list</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">allMembers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">101L</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"赵四 - "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">99999.99</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+            <span class="n">allMembers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vo</span><span class="o">)</span> <span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"allUsers"</span><span class="o">,</span> <span class="n">allMembers</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"user_list"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>2.list类型数据遍历</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;&lt;td&gt;</span>No.<span class="nt">&lt;/td&gt;&lt;td&gt;</span>UID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>姓名<span class="nt">&lt;/td&gt;&lt;td&gt;</span>年龄<span class="nt">&lt;/td&gt;&lt;td&gt;</span>偶数<span class="nt">&lt;/td&gt;&lt;td&gt;</span>奇数<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"user,memberStat:${allUsers}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.index + 1}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.uid}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.name}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.age}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.even}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.odd}"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<p>3.map类型数据遍历</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;&lt;td&gt;</span>No.<span class="nt">&lt;/td&gt;&lt;td&gt;</span>KEY<span class="nt">&lt;/td&gt;&lt;td&gt;</span>UID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>姓名<span class="nt">&lt;/td&gt;&lt;td&gt;</span>年龄<span class="nt">&lt;/td&gt;&lt;td&gt;</span>偶数<span class="nt">&lt;/td&gt;&lt;td&gt;</span>奇数<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"memberEntry,memberStat:${allUsers}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.index + 1}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.key}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.uid}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.name}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.age}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.even}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.odd}"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+<h2 id="页面引入-1">页面引入</h2>
+<p>我们常常需要在一个页面当中引入另一个页面，例如，公用的导航栏以及页脚页面。thymeleaf中提供了两种方式进行页面引入。</p>
+<ul>
+  <li>th:replace</li>
+  <li>th:include</li>
+</ul>
+
+<p>1.新建需要被引入的页面文件，路径为”src/main/view/templates/commons/footer.html”</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;footer</span> <span class="na">th:fragment=</span><span class="s">"companyInfo"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>设为首页 ©2018 SpringBoot 使用<span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${projectName}"</span><span class="nt">/&gt;</span>前必读
+        意见反馈 京ICP证030173号 <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/footer&gt;</span>
+</code></pre></div></div>
+<p>可以看到页面当中还存在一个变量projectName，这个变量的值可以在引入页面中通过&lt;font color=#FF0000 &gt;th:with=”projectName=百度”&lt;/font&gt;传过来。</p>
+
+<p>2.引入页面中只需要添加如下代码即可</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:include=</span><span class="s">"@{/commons/footer} :: companyInfo"</span> <span class="na">th:with=</span><span class="s">"projectName=百度"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;</span><span class="err">&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="na">HEAD</span>
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <h1 id="f0bfe13-new-update_posts知识点2019-09-06-thymeleafmd">f0bfe13 (new update):_posts/知识点/2019-09-06-thymeleaf.md</h1>
+              <p>```
+e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

@@ -1,0 +1,266 @@
+I"�t<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2018-03-13-json-analysis.md
+—
+layout:     post
+title:      “Json解析代码”
+subtitle:   “”
+date:       2018-03-13 14:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2018.jpg”
+tags:
+    - json
+    - PHP
+    - java
+    - C#
+    - python
+=======
+—
+layout: post
+title: Json解析代码
+subtitle: 
+author: Balbo Cheng
+categories: 
+tags: [json, PHP, java, C#, python]</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <h2 id="e5c77ca-新页面">e5c77ca (新页面)</h2>
+              <h2 id="javascript">Javascript:</h2>
+              <h3 id="使用eval">使用eval</h3>
+              <div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parse_json_by_eval</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="dl">'</span><span class="s1">(</span><span class="dl">'</span><span class="o">+</span><span class="nx">str</span><span class="o">+</span><span class="dl">'</span><span class="s1">)</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jsonstr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">{"name":"jifeng","company":"taobao","value":++value}</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">json1</span> <span class="o">=</span> <span class="nx">parse_json_by_eval</span><span class="p">(</span><span class="nx">jsonstr</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">json1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">value: </span><span class="dl">'</span><span class="o">+</span> <span class="nx">value</span><span class="p">);</span>
+</code></pre></div>              </div>
+              <p>«««&lt; HEAD
+<strong>執行結果：</strong>
+=======
+<strong>执行结果：</strong>
+e5c77ca (新页面)
+{ name: ‘jifeng’, company: ‘taobao’, value: 2 }
+value: 2</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="使用jsonparse">使用JSON.parse</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parse_json_by_JSON_parse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jsonstr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">{"name":"jifeng","company":"taobao"}</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">json2</span> <span class="o">=</span> <span class="nx">parse_json_by_JSON_parse</span><span class="p">(</span><span class="nx">jsonstr</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">json2</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="nx">From</span><span class="err">：</span><span class="nx">http</span><span class="p">:</span><span class="c1">//www.cnblogs.com/lengyuhong/archive/2012/01/07/2262390.html</span>
+</code></pre></div></div>
+<h2 id="php">PHP:</h2>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$json_string</span><span class="o">=</span><span class="s1">'{"id":1,"name":"jb51","email":"admin@jb51.net","interest":["wordpress","php"]} '</span><span class="p">;</span>
+<span class="nv">$obj</span><span class="o">=</span><span class="nb">json_decode</span><span class="p">(</span><span class="nv">$json_string</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span> <span class="c1">//prints foo</span>
+<span class="k">echo</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">interest</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1">//prints php</span>
+</code></pre></div></div>
+<h2 id="java">Java:</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JSONObject</span> <span class="n">dataJson</span><span class="o">=</span><span class="k">new</span> <span class="nc">JSONObject</span><span class="o">(</span><span class="s">"你的Json数据“);
+JSONObject response=dataJson.getJSONObject("</span><span class="n">response</span><span class="s">");
+JSONArray data=response.getJSONArray("</span><span class="n">data</span><span class="s">");
+JSONObject info=data.getJSONObject(0);
+String province=info.getString("</span><span class="n">province</span><span class="s">");
+String city=info.getString("</span><span class="n">city</span><span class="s">");
+String district=info.getString("</span><span class="n">district</span><span class="s">");
+String address=info.getString("</span><span class="n">address</span><span class="err">"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">province</span><span class="o">+</span><span class="n">city</span><span class="o">+</span><span class="n">district</span><span class="o">+</span><span class="n">address</span><span class="o">);</span>
+</code></pre></div></div>
+<h2 id="c">C#</h2>
+<p>使用开源的类库<a href="http://json.codeplex.com/">Newtonsoft.Json</a>。下载后加入工程就能用。</p>
+
+<p>通常可以使用JObject, JsonReader, JsonWriter处理。这种方式最通用，也最灵活，可以随时修改不爽的地方。</p>
+<h3 id="使用jsonreader读json字符串">使用JsonReader读Json字符串：</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="kt">string</span> <span class="n">jsonText</span> <span class="p">=</span><span class="s">@"{""input"" : ""value"",""output"" : ""result""}"</span><span class="p">;</span>
+<span class="n">JsonReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">JsonTextReader</span><span class="p">(</span><span class="nf">newStringReader</span><span class="p">(</span><span class="n">jsonText</span><span class="p">));</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="nf">Read</span><span class="p">())</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">TokenType</span> <span class="p">+</span> <span class="s">"\t\t"</span> <span class="p">+</span> <span class="n">reader</span><span class="p">.</span><span class="n">ValueType</span><span class="p">+</span> <span class="s">"\t\t"</span> <span class="p">+</span> <span class="n">reader</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="使用jsonwriter写字符串">使用JsonWriter写字符串：</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="n">StringWriter</span> <span class="n">sw</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">StringWriter</span><span class="p">();</span>
+<span class="n">JsonWriter</span> <span class="n">writer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">JsonTextWriter</span><span class="p">(</span><span class="n">sw</span><span class="p">);</span>
+
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteStartObject</span><span class="p">();</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WritePropertyName</span><span class="p">(</span><span class="s">"input"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteValue</span><span class="p">(</span><span class="s">"value"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WritePropertyName</span><span class="p">(</span><span class="s">"output"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteValue</span><span class="p">(</span><span class="s">"result"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteEndObject</span><span class="p">();</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">Flush</span><span class="p">();</span>
+
+<span class="kt">string</span> <span class="n">jsonText</span> <span class="p">=</span><span class="n">sw</span><span class="p">.</span><span class="nf">GetStringBuilder</span><span class="p">().</span><span class="nf">ToString</span><span class="p">();</span>
+<span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">jsonText</span><span class="p">);</span>
+</code></pre></div></div>
+<h3 id="使用jobject读写字符串">使用JObject读写字符串：</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="n">JObject</span> <span class="n">jo</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="n">jsonText</span><span class="p">);</span>
+<span class="kt">string</span><span class="p">[]</span> <span class="n">values</span> <span class="p">=</span><span class="n">jo</span><span class="p">.</span><span class="nf">Properties</span><span class="p">().</span><span class="nf">Select</span><span class="p">(</span><span class="n">item</span> <span class="p">=&gt;</span> <span class="n">item</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="nf">ToString</span><span class="p">()).</span><span class="nf">ToArray</span><span class="p">();</span>
+</code></pre></div></div>
+<h3 id="使用jsonserializer读写对象基于jsonwriter与jsonreader数组型数据">使用JsonSerializer读写对象(基于JsonWriter与JsonReader):数组型数据</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="kt">string</span> <span class="n">jsonArrayText1</span> <span class="p">=</span><span class="s">"[{'a':'a1','b':'b1'},{'a':'a2','b':'b2'}]"</span><span class="p">;</span>
+<span class="n">JArray</span> <span class="n">ja</span> <span class="p">=(</span><span class="n">JArray</span><span class="p">)</span><span class="n">JsonConvert</span><span class="p">.</span><span class="nf">DeserializeObject</span><span class="p">(</span><span class="n">jsonArrayText1</span><span class="p">);</span>
+<span class="kt">string</span> <span class="n">ja1a</span> <span class="p">=</span><span class="n">ja</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s">"a"</span><span class="p">].</span><span class="nf">ToString</span><span class="p">();</span>
+<span class="c1">//或者</span>
+<span class="n">JObject</span> <span class="n">o</span> <span class="p">=</span> <span class="p">(</span><span class="n">JObject</span><span class="p">)</span><span class="n">ja</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+<span class="kt">string</span> <span class="n">oa</span> <span class="p">=</span> <span class="n">o</span><span class="p">[</span><span class="s">"a"</span><span class="p">].</span><span class="nf">ToString</span><span class="p">();</span>
+</code></pre></div></div>
+<h2 id="python">Python:</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="n">data</span><span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="s">'{"ID": "2", "IP":"12.12.12.12", "Port": "3000"}'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span><span class="p">[</span><span class="s">'ID'</span><span class="p">]</span>
+<span class="n">输出结果</span><span class="p">:</span><span class="s">"2"</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+<span class="n">输出结果</span><span class="p">:{</span><span class="s">"ID"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="s">"IP"</span><span class="p">:</span><span class="s">"12.12.12.12"</span><span class="p">,</span> <span class="s">"Port"</span><span class="p">:</span> <span class="s">"3000"</span><span class="p">}</span>
+</code></pre></div></div>
+<p>«««&lt; HEAD
+=======
+—
+layout:     post
+title:      “Json解析代码”
+subtitle:   “”
+date:       2018-03-13 14:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2018.jpg”
+catalog: true
+tags:
+    - json
+    - PHP
+    - java
+    - C#
+    - python
+—</p>
+<h2 id="javascript-1">Javascript:</h2>
+<h3 id="使用eval-1">使用eval</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parse_json_by_eval</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nb">eval</span><span class="p">(</span><span class="dl">'</span><span class="s1">(</span><span class="dl">'</span><span class="o">+</span><span class="nx">str</span><span class="o">+</span><span class="dl">'</span><span class="s1">)</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jsonstr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">{"name":"jifeng","company":"taobao","value":++value}</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">json1</span> <span class="o">=</span> <span class="nx">parse_json_by_eval</span><span class="p">(</span><span class="nx">jsonstr</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">json1</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">value: </span><span class="dl">'</span><span class="o">+</span> <span class="nx">value</span><span class="p">);</span>
+</code></pre></div></div>
+<p><strong>執行結果：</strong>
+{ name: ‘jifeng’, company: ‘taobao’, value: 2 }
+value: 2</p>
+
+<h3 id="使用jsonparse-1">使用JSON.parse</h3>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">parse_json_by_JSON_parse</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">str</span><span class="p">){</span>
+    <span class="k">return</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">str</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">jsonstr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">{"name":"jifeng","company":"taobao"}</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">json2</span> <span class="o">=</span> <span class="nx">parse_json_by_JSON_parse</span><span class="p">(</span><span class="nx">jsonstr</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">json2</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+<span class="nx">From</span><span class="err">：</span><span class="nx">http</span><span class="p">:</span><span class="c1">//www.cnblogs.com/lengyuhong/archive/2012/01/07/2262390.html</span>
+</code></pre></div></div>
+<h2 id="php-1">PHP:</h2>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$json_string</span><span class="o">=</span><span class="s1">'{"id":1,"name":"jb51","email":"admin@jb51.net","interest":["wordpress","php"]} '</span><span class="p">;</span>
+<span class="nv">$obj</span><span class="o">=</span><span class="nb">json_decode</span><span class="p">(</span><span class="nv">$json_string</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">;</span> <span class="c1">//prints foo</span>
+<span class="k">echo</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">interest</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="c1">//prints php</span>
+</code></pre></div></div>
+<h2 id="java-1">Java:</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JSONObject</span> <span class="n">dataJson</span><span class="o">=</span><span class="k">new</span> <span class="nc">JSONObject</span><span class="o">(</span><span class="s">"你的Json数据“);
+JSONObject response=dataJson.getJSONObject("</span><span class="n">response</span><span class="s">");
+JSONArray data=response.getJSONArray("</span><span class="n">data</span><span class="s">");
+JSONObject info=data.getJSONObject(0);
+String province=info.getString("</span><span class="n">province</span><span class="s">");
+String city=info.getString("</span><span class="n">city</span><span class="s">");
+String district=info.getString("</span><span class="n">district</span><span class="s">");
+String address=info.getString("</span><span class="n">address</span><span class="err">"</span><span class="o">);</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">province</span><span class="o">+</span><span class="n">city</span><span class="o">+</span><span class="n">district</span><span class="o">+</span><span class="n">address</span><span class="o">);</span>
+</code></pre></div></div>
+<h2 id="c-1">C#</h2>
+<p>使用开源的类库<a href="http://json.codeplex.com/">Newtonsoft.Json</a>。下载后加入工程就能用。</p>
+
+<p>通常可以使用JObject, JsonReader, JsonWriter处理。这种方式最通用，也最灵活，可以随时修改不爽的地方。</p>
+<h3 id="使用jsonreader读json字符串-1">使用JsonReader读Json字符串：</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="kt">string</span> <span class="n">jsonText</span> <span class="p">=</span><span class="s">@"{""input"" : ""value"",""output"" : ""result""}"</span><span class="p">;</span>
+<span class="n">JsonReader</span> <span class="n">reader</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">JsonTextReader</span><span class="p">(</span><span class="nf">newStringReader</span><span class="p">(</span><span class="n">jsonText</span><span class="p">));</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="nf">Read</span><span class="p">())</span>
+<span class="p">{</span>
+    <span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">reader</span><span class="p">.</span><span class="n">TokenType</span> <span class="p">+</span> <span class="s">"\t\t"</span> <span class="p">+</span> <span class="n">reader</span><span class="p">.</span><span class="n">ValueType</span><span class="p">+</span> <span class="s">"\t\t"</span> <span class="p">+</span> <span class="n">reader</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="使用jsonwriter写字符串-1">使用JsonWriter写字符串：</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="n">StringWriter</span> <span class="n">sw</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">StringWriter</span><span class="p">();</span>
+<span class="n">JsonWriter</span> <span class="n">writer</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">JsonTextWriter</span><span class="p">(</span><span class="n">sw</span><span class="p">);</span>
+
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteStartObject</span><span class="p">();</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WritePropertyName</span><span class="p">(</span><span class="s">"input"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteValue</span><span class="p">(</span><span class="s">"value"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WritePropertyName</span><span class="p">(</span><span class="s">"output"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteValue</span><span class="p">(</span><span class="s">"result"</span><span class="p">);</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">WriteEndObject</span><span class="p">();</span>
+<span class="n">writer</span><span class="p">.</span><span class="nf">Flush</span><span class="p">();</span>
+
+<span class="kt">string</span> <span class="n">jsonText</span> <span class="p">=</span><span class="n">sw</span><span class="p">.</span><span class="nf">GetStringBuilder</span><span class="p">().</span><span class="nf">ToString</span><span class="p">();</span>
+<span class="n">Console</span><span class="p">.</span><span class="nf">WriteLine</span><span class="p">(</span><span class="n">jsonText</span><span class="p">);</span>
+</code></pre></div></div>
+<h3 id="使用jobject读写字符串-1">使用JObject读写字符串：</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="n">JObject</span> <span class="n">jo</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="nf">Parse</span><span class="p">(</span><span class="n">jsonText</span><span class="p">);</span>
+<span class="kt">string</span><span class="p">[]</span> <span class="n">values</span> <span class="p">=</span><span class="n">jo</span><span class="p">.</span><span class="nf">Properties</span><span class="p">().</span><span class="nf">Select</span><span class="p">(</span><span class="n">item</span> <span class="p">=&gt;</span> <span class="n">item</span><span class="p">.</span><span class="n">Value</span><span class="p">.</span><span class="nf">ToString</span><span class="p">()).</span><span class="nf">ToArray</span><span class="p">();</span>
+</code></pre></div></div>
+<h3 id="使用jsonserializer读写对象基于jsonwriter与jsonreader数组型数据-1">使用JsonSerializer读写对象(基于JsonWriter与JsonReader):数组型数据</h3>
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="n">csharp</span><span class="p">]</span> <span class="n">view</span> <span class="n">plaincopy</span>
+<span class="kt">string</span> <span class="n">jsonArrayText1</span> <span class="p">=</span><span class="s">"[{'a':'a1','b':'b1'},{'a':'a2','b':'b2'}]"</span><span class="p">;</span>
+<span class="n">JArray</span> <span class="n">ja</span> <span class="p">=(</span><span class="n">JArray</span><span class="p">)</span><span class="n">JsonConvert</span><span class="p">.</span><span class="nf">DeserializeObject</span><span class="p">(</span><span class="n">jsonArrayText1</span><span class="p">);</span>
+<span class="kt">string</span> <span class="n">ja1a</span> <span class="p">=</span><span class="n">ja</span><span class="p">[</span><span class="m">1</span><span class="p">][</span><span class="s">"a"</span><span class="p">].</span><span class="nf">ToString</span><span class="p">();</span>
+<span class="c1">//或者</span>
+<span class="n">JObject</span> <span class="n">o</span> <span class="p">=</span> <span class="p">(</span><span class="n">JObject</span><span class="p">)</span><span class="n">ja</span><span class="p">[</span><span class="m">1</span><span class="p">];</span>
+<span class="kt">string</span> <span class="n">oa</span> <span class="p">=</span> <span class="n">o</span><span class="p">[</span><span class="s">"a"</span><span class="p">].</span><span class="nf">ToString</span><span class="p">();</span>
+</code></pre></div></div>
+<h2 id="python-1">Python:</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="n">data</span><span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">loads</span><span class="p">(</span><span class="s">'{"ID": "2", "IP":"12.12.12.12", "Port": "3000"}'</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span><span class="p">[</span><span class="s">'ID'</span><span class="p">]</span>
+<span class="n">输出结果</span><span class="p">:</span><span class="s">"2"</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">data</span>
+<span class="n">输出结果</span><span class="p">:{</span><span class="s">"ID"</span><span class="p">:</span> <span class="s">"2"</span><span class="p">,</span> <span class="s">"IP"</span><span class="p">:</span><span class="s">"12.12.12.12"</span><span class="p">,</span> <span class="s">"Port"</span><span class="p">:</span> <span class="s">"3000"</span><span class="p">}</span>
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <h1 id="f0bfe13-new-update_posts知识点2018-03-13-json-analysismd">f0bfe13 (new update):_posts/知识点/2018-03-13-json-analysis.md</h1>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

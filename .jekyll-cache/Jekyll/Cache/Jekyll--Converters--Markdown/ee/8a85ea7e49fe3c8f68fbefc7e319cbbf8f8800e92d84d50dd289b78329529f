@@ -1,0 +1,84 @@
+I"* <h2 id="方法">方法</h2>
+
+<p>«««&lt; HEAD
+<a href="https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data">数据来源</a>
+=======
+数据来源：https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span><span class="p">,</span> <span class="n">LogisticRegressionCV</span>
+ 
+<span class="c1"># solver ('liblinear', 'sag', 'saga', 'newton-cg', 'lbfgs')
+# penalty 正则化种类
+# C 正则化力度
+</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">solver</span><span class="o">=</span><span class="s">'liblinear'</span><span class="p">,</span> <span class="n">penalty</span><span class="o">=</span><span class="s">'12'</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="完整代码">完整代码</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+1. 获取数据集
+2. 数据基本处理
+3. 特征工程
+4. 机器学习
+5. 模型评估
+"""</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="c1"># 获取数据
+</span><span class="n">names</span> <span class="o">=</span> <span class="s">'Sample code number'</span><span class="p">,</span> <span class="s">'Clump Thickness'</span><span class="p">,</span> <span class="s">'Uniformity of Cell Size'</span><span class="p">,</span> <span class="s">'Uniformity of Cell Shape'</span><span class="p">,</span> <span class="s">'Marginal Adhesion'</span><span class="p">,</span> <span class="s">'Single Epithelial Cell Size'</span><span class="p">,</span> <span class="s">'Bare Nuclei'</span><span class="p">,</span> <span class="s">'Bland Chromatin'</span><span class="p">,</span> <span class="s">'Normal Nucleoli'</span><span class="p">,</span> <span class="s">'Mitoses'</span><span class="p">,</span> <span class="s">'Class'</span>
+<span class="n">filePath</span> <span class="o">=</span> <span class="s">"breast-cancer-wisconsin.data"</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
+
+<span class="c1"># 数据处理
+# 缺失值处理
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s">"?"</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">NAN</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">dropna</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c1"># 确定特征值、目标值
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">"Class"</span><span class="p">]</span>
+<span class="c1"># 数据分割
+</span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+<span class="c1"># 特征工程
+</span><span class="n">transfer</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+<span class="c1"># 机器学习
+</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">estimator</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 模型评估
+</span><span class="n">y_pre</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"---逻辑回归--"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"预测值为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"准确率为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"均方误差：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+:ET

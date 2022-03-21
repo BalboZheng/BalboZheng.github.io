@@ -1,0 +1,157 @@
+I"�C<h2 id="抓取首页">抓取首页</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="k">def</span> <span class="nf">get_one_page</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'User-Agent'</span><span class="p">:</span> <span class="s">'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, '</span>
+                      <span class="s">'like Gecko) Version/5.1 Safari/534.50 '</span>
+    <span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">'https://maoyan.com/board/4'</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">get_one_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+<h2 id="正则提取">正则提取</h2>
+<p>回到网页，按F12在开发者模式下的NETWORK监听组件中查看到源代码</p>
+
+<p>在源代码中可以看到电影的相关信息，这里用红色箭头从上至下分别标记出了电影的排名、图片、电影名、演员、上映时间以及评分所在的位置。接下来只需要为每一部分的信息写出对应的正则表达式即可获取到相应的信息。</p>
+
+<p>先以电影排名为例，可以看到每一个电影部分的所有信息都包含在&lt; dd&gt;..&lt;\/dd&gt;节点中，而电影排名的信息是在class为board-index的i节点中，所以这里利用非贪婪的匹配原则提取该节点内的信息，正则表达式可写为：</p>
+
+<blockquote>
+  <dd>.*?"board-index.*?&gt;(.*?)&lt;/i&gt;
+</dd>
+</blockquote>
+
+<p>接下来获取电影图片。可以看到电影图片的信息在img data-src的a节点中，正则表达式可写为：</p>
+
+<blockquote>
+  <dd>.*?data-src="(.*?)".*?&lt;/a&gt;
+</dd>
+</blockquote>
+
+<p>同样，电影名称的信息在name为标志位title=”“的a节点中，正则表达式可写为：</p>
+
+<blockquote>
+  <dd>.*?class="name".*?title="(.*?)".*?&lt;/a&gt;
+</dd>
+</blockquote>
+
+<p>按照以上方法，最后可以得到完整的正则表达式为：</p>
+
+<blockquote>
+  <dd>.*?board-index.*?&gt;(\d+?)&lt;/i&gt;.*?data-src="(.*?)".*?&lt;/a&gt;.*?class="name".*?title="(.*?)".*?&lt;/a&gt;.*?class="star".+?(.*?)&lt;/p&gt;.*?class="releasetime".+?(.*?)&lt;/p&gt;.*?class="integer".+?(.*?)&lt;/i&gt;.*?"fraction".+?(.*?)&lt;/i&gt;.*?</dd>
+</blockquote>
+
+<p>接下来只需要构建一个解析页面的函数parse_one_page()，用来得到所需要的电影信息，代码实现如下：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">parse_one_page</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s">'&lt;dd&gt;.*?board-index.*?&gt;(\d+?)&lt;/i&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?data-src="(.*?)".*?&lt;/a&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="name".*?title="(.*?)".*?&lt;/a&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="star".+?(.*?)&lt;/p&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="releasetime".+?(.*?)&lt;/p&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="integer".+?(.*?)&lt;/i&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?"fraction".+?(.*?)&lt;/i&gt;.*?&lt;/dd&gt;'</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">S</span>
+    <span class="p">)</span>
+    <span class="n">re_lists</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">re_list</span> <span class="ow">in</span> <span class="n">re_lists</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="p">{</span>
+            <span class="s">'index'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s">'image'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s">'title'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s">'actor'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">strip</span><span class="p">()[</span><span class="mi">3</span><span class="p">:],</span>
+            <span class="s">'time'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">strip</span><span class="p">()[</span><span class="mi">5</span><span class="p">:],</span>
+            <span class="s">'score'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="写入文件">写入文件</h2>
+<p>对于抓取到的数据，这里构建一个write()函数，直接将数据写入文本文件中。通过JSON库里的dumps()方法实现字典的序列化，并指定ensure_ascii参数为False，这样可以保证输出结果是中文形式而不是Unicode编码。代码实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">write_to_file</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'result.txt'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">)))</span>
+        <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">+</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+</code></pre></div></div>
+<h2 id="分页爬取">分页爬取</h2>
+<p>因为我们需要爬取的是TOP100，所以还需要遍历一下，给这个连接传入 offset 参数，实现其他90不电影的爬取</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">main</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="n">i</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">offset</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">'https://maoyan.com/board/4?offset='</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">get_one_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parse_one_page</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+        <span class="n">write_to_file</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="整合代码">整合代码</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+<span class="k">def</span> <span class="nf">get_one_page</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'User-Agent'</span><span class="p">:</span> <span class="s">'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, '</span>
+                      <span class="s">'like Gecko) Version/5.1 Safari/534.50 '</span>
+    <span class="p">}</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+    <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">def</span> <span class="nf">parse_one_page</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span>
+        <span class="sa">r</span><span class="s">'&lt;dd&gt;.*?board-index.*?&gt;(\d+?)&lt;/i&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?data-src="(.*?)".*?&lt;/a&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="name".*?title="(.*?)".*?&lt;/a&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="star".+?(.*?)&lt;/p&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="releasetime".+?(.*?)&lt;/p&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?class="integer".+?(.*?)&lt;/i&gt;'</span>
+        <span class="sa">r</span><span class="s">'.*?"fraction".+?(.*?)&lt;/i&gt;.*?&lt;/dd&gt;'</span><span class="p">,</span> <span class="n">re</span><span class="p">.</span><span class="n">S</span>
+    <span class="p">)</span>
+    <span class="n">re_lists</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">re_list</span> <span class="ow">in</span> <span class="n">re_lists</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="p">{</span>
+            <span class="s">'index'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="s">'image'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s">'title'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="s">'actor'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">strip</span><span class="p">()[</span><span class="mi">3</span><span class="p">:],</span>
+            <span class="s">'time'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">4</span><span class="p">].</span><span class="n">strip</span><span class="p">()[</span><span class="mi">5</span><span class="p">:],</span>
+            <span class="s">'score'</span><span class="p">:</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">re_list</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">write_to_file</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'result.txt'</span><span class="p">,</span> <span class="s">'a'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'utf-8'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">)))</span>
+        <span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">+</span><span class="s">'</span><span class="se">\n</span><span class="s">'</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">'https://maoyan.com/board/4'</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">get_one_page</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">parse_one_page</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+        <span class="n">write_to_file</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+:ET

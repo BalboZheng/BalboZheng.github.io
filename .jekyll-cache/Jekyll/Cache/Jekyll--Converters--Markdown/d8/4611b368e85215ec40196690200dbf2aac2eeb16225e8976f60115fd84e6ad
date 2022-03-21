@@ -1,0 +1,2 @@
+I"7<p>redis.hincrby(‘price’, ‘apple’, 3)</p>
+:ET

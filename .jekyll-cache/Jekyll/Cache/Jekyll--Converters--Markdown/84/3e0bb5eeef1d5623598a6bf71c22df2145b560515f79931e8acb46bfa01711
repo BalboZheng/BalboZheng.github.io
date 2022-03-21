@@ -1,0 +1,158 @@
+I"'*<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “format函数”
+subtitle:   “”
+date:       2019-09-30 11:43:48
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - Python
+—</p>
+
+<h2 id="format函数是一种格式化输出字符串的函数">format函数是一种格式化输出字符串的函数</h2>
+<p>str.format,基本语法是通过｛｝和：来代替以前的%。</p>
+
+<p>format 函数可以接受不限个参数，位置可以不按顺序。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"{} {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 不设置指定位置，按默认顺序
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{0} {1}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 设置指定位置
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{1} {0} {1}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 设置指定位置
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{name} {title}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"hello"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 设置参数
+</span></code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello world
+hello world
+world hello world
+hello world
+</code></pre></div></div>
+<p>也可以向 str.format() 传入对象：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AssignValue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="n">my_value</span> <span class="o">=</span> <span class="n">AssignValue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'value 为: {0.value}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">my_value</span><span class="p">))</span>  <span class="c1"># "0" 是可选的
+</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>value 为: 5
+</code></pre></div></div>
+<h2 id="数字格式化">数字格式化</h2>
+<p>| 数字 | 格式 | 输出 | 描述 |
+| —- | —- | —- | —- |
+| 3.1415926 | {:.2f} | 3.14 | 保留小数点后两位 |
+| 3.1415926 |{:+.2f} | +3.14 | 带符号保留小数点后两位 |
+| -1 |  {:+.2f} | -1.00 | 带符号保留小数点后两位 |
+| 2.71828 | {:.0f} | 3 | 不带小数 |
+| 5 | {:0&gt;2d} | 05 | 数字补零 (填充左边, 宽度为2) |
+| 5 | {:x&lt;4d} | 5xxx | 数字补x (填充右边, 宽度为4) |
+| 10 | {:x&lt;4d} | 10xx | 数字补x (填充右边, 宽度为4) |
+| 1000000 | {:,} | 1,000,000 | 以逗号分隔的数字格式  |
+| 0.25 | {:.2%} | 25.00% | 百分比格式 |
+| 1000000000 | {:.2e} | 1.00e+09 | 指数记法 |
+| 13 | {:&gt;10d} |        13 | 右对齐 (默认, 宽度为10) |
+| 13 | {:&lt;10d} |13 | 左对齐 (宽度为10) |
+| 13 | {:^10d} |    13     | 中间对齐 (宽度为10) |
+| 11 | ‘{:b}’.format(11) | 1011 | 进制 |
+| 11 | ‘{:d}’.format(11) | 11 | 进制 |
+| 11 | ‘{:o}’.format(11) | 13 | 进制 |
+| 11 | ‘{:x}’.format(11) | b | 进制 |
+| 11 | ‘{:#x}’.format(11) | 0xb | 进制 |
+| 11 | ‘{:#X}’.format(11) | 0xB | 进制 |</p>
+
+<p>此外我们可以使用大括号 {} 来转义大括号，如下实例：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="p">(</span><span class="s">"{} 对应的位置是 0"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"runoob"</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>runoob 对应的位置是 {0}
+</code></pre></div></div>
+<p>=======
+—
+layout: post
+title: format函数
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [format]
+sidebar: []
+—</p>
+
+<h2 id="format函数是一种格式化输出字符串的函数-1">format函数是一种格式化输出字符串的函数</h2>
+<p>str.format,基本语法是通过｛｝和：来代替以前的%。</p>
+
+<p>format 函数可以接受不限个参数，位置可以不按顺序。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"{} {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 不设置指定位置，按默认顺序
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{0} {1}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 设置指定位置
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{1} {0} {1}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 设置指定位置
+</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"{name} {title}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"hello"</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">"world"</span><span class="p">))</span>  <span class="c1"># 设置参数
+</span></code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello world
+hello world
+world hello world
+hello world
+</code></pre></div></div>
+<p>也可以向 str.format() 传入对象：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">AssignValue</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="n">my_value</span> <span class="o">=</span> <span class="n">AssignValue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'value 为: {0.value}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">my_value</span><span class="p">))</span>  <span class="c1"># "0" 是可选的
+</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>value 为: 5
+</code></pre></div></div>
+<h2 id="数字格式化-1">数字格式化</h2>
+<p>| 数字 | 格式 | 输出 | 描述 |
+| —- | —- | —- | —- |
+| 3.1415926 | {:.2f} | 3.14 | 保留小数点后两位 |
+| 3.1415926 |{:+.2f} | +3.14 | 带符号保留小数点后两位 |
+| -1 |  {:+.2f} | -1.00 | 带符号保留小数点后两位 |
+| 2.71828 | {:.0f} | 3 | 不带小数 |
+| 5 | {:0&gt;2d} | 05 | 数字补零 (填充左边, 宽度为2) |
+| 5 | {:x&lt;4d} | 5xxx | 数字补x (填充右边, 宽度为4) |
+| 10 | {:x&lt;4d} | 10xx | 数字补x (填充右边, 宽度为4) |
+| 1000000 | {:,} | 1,000,000 | 以逗号分隔的数字格式  |
+| 0.25 | {:.2%} | 25.00% | 百分比格式 |
+| 1000000000 | {:.2e} | 1.00e+09 | 指数记法 |
+| 13 | {:&gt;10d} |        13 | 右对齐 (默认, 宽度为10) |
+| 13 | {:&lt;10d} |13 | 左对齐 (宽度为10) |
+| 13 | {:^10d} |    13     | 中间对齐 (宽度为10) |
+| 11 | ‘{:b}’.format(11) | 1011 | 进制 |
+| 11 | ‘{:d}’.format(11) | 11 | 进制 |
+| 11 | ‘{:o}’.format(11) | 13 | 进制 |
+| 11 | ‘{:x}’.format(11) | b | 进制 |
+| 11 | ‘{:#x}’.format(11) | 0xb | 进制 |
+| 11 | ‘{:#X}’.format(11) | 0xB | 进制 |</p>
+
+<p>此外我们可以使用大括号 {} 来转义大括号，如下实例：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span> <span class="p">(</span><span class="s">"{} 对应的位置是 0"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="s">"runoob"</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>runoob 对应的位置是 {0}
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

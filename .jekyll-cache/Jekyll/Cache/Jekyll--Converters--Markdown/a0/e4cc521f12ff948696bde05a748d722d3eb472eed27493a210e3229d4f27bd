@@ -1,0 +1,116 @@
+I"f<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “Python 运行问题”
+subtitle:   “Python x 和 +x 何时不相等”
+date:       2019-10-31 15:39:14
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - python
+—</p>
+
+<p>每个人都觉得 x==+x，而且在 Python 中，几乎所有的情况下都是这样。但是，在 Python 的标准库中找到两例 x!=+x 的情况。</p>
+
+<p>第一例和 decimal.Decimal 类有关。如果 x 是 Decimal 实例，在算术运算的上下文中创建，然后在不同的上下文中计算 +x，那么 x!=+x，例如，x所在的上下文使用某个精度，而计算+x时，精度变了。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import decimal
+from collections import Counter
+     
+# 获取当前全局算术运算的上下文引用
+ctx = decimal.getcontext()
+# 把算法运算上下文的精度设为40
+ctx.prec = 40
+# 使用当前精度计算的1/3
+one_third = decimal.Decimal('1') / decimal.Decimal('3')
+print(one_third)
+print(one_third == +one_third)
+     
+# 把精度降为28，这是Python3.4为 Decimal 算术运算设定的默认精度
+ctx.prec = 28
+print(one_third == +one_third)
+print(+one_third)
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.3333333333333333333333333333333333333333
+True
+False
+0.3333333333333333333333333333
+</code></pre></div></div>
+<p>第二例在 collections.Counter 的文档中，Counter类实现了几个算术运算符，例如中缀运算符+，作用是把两个Counter实例的计数器加在一起，然后，从使用角度出发，Counter 相加时，负值和零值计数会从结果中剔除，因此产生一个新的Counter且仅保留大于零的计数器。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ct = Counter('abcdhbcans')
+print(ct)
+ct['h'] = -3
+ct['d'] = 0
+print(ct)
+print(+ct)
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counter({'b': 2, 'a': 2, 'c': 2, 'h': 1, 'd': 1, 's': 1, 'n': 1})
+Counter({'b': 2, 'a': 2, 'c': 2, 's': 1, 'n': 1, 'd': 0, 'h': -3})
+Counter({'c': 2, 'b': 2, 'a': 2, 'n': 1, 's': 1})
+</code></pre></div></div>
+<p>=======
+—
+layout: post
+title: Python 运行问题
+subtitle: Python x 和 +x 何时不相等
+author: Balbo Cheng
+categories: python
+tags: []
+sidebar: []
+—</p>
+
+<p>每个人都觉得 x==+x，而且在 Python 中，几乎所有的情况下都是这样。但是，在 Python 的标准库中找到两例 x!=+x 的情况。</p>
+
+<p>第一例和 decimal.Decimal 类有关。如果 x 是 Decimal 实例，在算术运算的上下文中创建，然后在不同的上下文中计算 +x，那么 x!=+x，例如，x所在的上下文使用某个精度，而计算+x时，精度变了。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">decimal</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+     
+<span class="c1"># 获取当前全局算术运算的上下文引用
+</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">decimal</span><span class="p">.</span><span class="n">getcontext</span><span class="p">()</span>
+<span class="c1"># 把算法运算上下文的精度设为40
+</span><span class="n">ctx</span><span class="p">.</span><span class="n">prec</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="c1"># 使用当前精度计算的1/3
+</span><span class="n">one_third</span> <span class="o">=</span> <span class="n">decimal</span><span class="p">.</span><span class="n">Decimal</span><span class="p">(</span><span class="s">'1'</span><span class="p">)</span> <span class="o">/</span> <span class="n">decimal</span><span class="p">.</span><span class="n">Decimal</span><span class="p">(</span><span class="s">'3'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">one_third</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">one_third</span> <span class="o">==</span> <span class="o">+</span><span class="n">one_third</span><span class="p">)</span>
+     
+<span class="c1"># 把精度降为28，这是Python3.4为 Decimal 算术运算设定的默认精度
+</span><span class="n">ctx</span><span class="p">.</span><span class="n">prec</span> <span class="o">=</span> <span class="mi">28</span>
+<span class="k">print</span><span class="p">(</span><span class="n">one_third</span> <span class="o">==</span> <span class="o">+</span><span class="n">one_third</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="o">+</span><span class="n">one_third</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0.3333333333333333333333333333333333333333
+True
+False
+0.3333333333333333333333333333
+</code></pre></div></div>
+<p>第二例在 collections.Counter 的文档中，Counter类实现了几个算术运算符，例如中缀运算符+，作用是把两个Counter实例的计数器加在一起，然后，从使用角度出发，Counter 相加时，负值和零值计数会从结果中剔除，因此产生一个新的Counter且仅保留大于零的计数器。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ct</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="s">'abcdhbcans'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+<span class="n">ct</span><span class="p">[</span><span class="s">'h'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+<span class="n">ct</span><span class="p">[</span><span class="s">'d'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">print</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="o">+</span><span class="n">ct</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Counter({'b': 2, 'a': 2, 'c': 2, 'h': 1, 'd': 1, 's': 1, 'n': 1})
+Counter({'b': 2, 'a': 2, 'c': 2, 's': 1, 'n': 1, 'd': 0, 'h': -3})
+Counter({'c': 2, 'b': 2, 'a': 2, 'n': 1, 's': 1})
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

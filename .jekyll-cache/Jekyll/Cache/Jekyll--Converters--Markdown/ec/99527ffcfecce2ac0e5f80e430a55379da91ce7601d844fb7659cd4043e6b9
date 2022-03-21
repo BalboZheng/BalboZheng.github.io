@@ -1,0 +1,136 @@
+I"�&<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “Python数据模型”
+subtitle:   “”
+date:       2019-09-06 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - python
+—</p>
+<h2 id="特殊方法">特殊方法</h2>
+<p>特殊方法的存在是为了被Python解释器调用的，你自己并不需要调用他们。也就是说没有 my_object._len_ 这种写法，而应该使用 len(my_objext)。</p>
+
+<h3 id="字符串表示形式">字符串表示形式</h3>
+<p>在_repr_的实现中，我们用到了%r来获取对象各个属性的标准字符串表示形式——这是个好习惯，他暗示了一个关键：Vector(1, 2)和Vector(‘1’, ‘2’)是不一样的，后者在我们的定义中会报错，因为向量对象的构造函数只接受数值，不接受字符串。</p>
+
+<p>&lt;font face=”STCAIYUN” color=#00FFCC size=5&gt; _repr_ 和 _str_ &lt;/font&gt;的区别在于，后者是在str()函数被使用，或是在用print函数打印一个对象的时候才被调用的，并且塔返回的字符串对终端用户更友好。</p>
+
+<p>如果你只是想实现这两个特殊方法中的一个，_repr_是更好的选择，因为如果一个对象没有_str_函数，二Python又需要调用他的时候，解释器会用_repe_作为替代。</p>
+
+<p>参考：<a href="http://stackoverflow.com/questions/1436703/difference-between-str-and-repe-in-python">Difference between <em>str</em> and <em>repr</em> in Python</a></p>
+
+<h3 id="算术运算符">算术运算符</h3>
+<p>&lt;font face=”STCAIYUN” color=#00FFCC size=5&gt; _add_ 和 _mul_ &lt;/font&gt;为向量带来了 + 和 * 这两个算术运算符。值得注意的是，这两个方法的返回值都是新插件的向量对象，代码里只是读取了他们的值 (self, other) 而已。</p>
+
+<h3 id="自定义的布尔值">自定义的布尔值</h3>
+<p>默认情况下，我们自己定义的累的实力总被认为是真的。</p>
+
+<p>在Python标准库的文档中，有一节叫做<a href="http://docs.python.org/3/library/stdtypes.html#truth">Built-in Types</a>，其中规定了真值检验的标准。通过实现_bool_，你定义的对象就可以与这个标准保持一致。</p>
+
+<p>* 如果想让Vector._bool_更高效，可以采用这种实现：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="ow">or</span> <span class="bp">self</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+<p>他不那么易读，却能省掉 abs 到 _abs_ 到平方再到平方根这些中间步骤。通过 bool 把返回类型显示装换为布尔值是为了符合 _bool_ 对返回值的规定，因为 or 运算符可能会返回 x 或者 y 本身的值：若 x 的值等价于真，则 or 返回的 x 的值，否则返回 y 的值。
+***</p>
+
+<h2 id="特殊方法一览">特殊方法一览</h2>
+<p>| 类别  | 方法名 |
+| ————- | ————- |
+| 字符串/字节序列表示形式 | _repr_、 _str_、 _format_、 _bytes_ |
+| 数值装换 | _abs_、 _bool_、 _complex_、 _int_、 _float_、 _hash_、 _index_ |
+| 集合模拟 | _len_、 _getitem_、 _setitem_、 _delitem_、 _contains_ |
+| 迭代枚举 | _iter_、 _reversed_、 _next_ |
+| 可调用模拟 | _call_ |
+| 上下文管理 | _enter_、 _exit_ |
+| 实例插件和销毁 | _new_、 _init_、 _del_ |
+| 属性管理 | _getattr_、 _getattribute_、 _setattr_、 _delattr_、 _dir_ |
+| 属性描述符 | _get_、 _set_、 _delete_ |
+| 跟类相关的服务 | _prepare_、 _instancecheck_、 _subclasscheck_ |</p>
+
+<p>| 类别 | 方法名和对应的运算符 |
+| ————- | ————- |
+| 一元运算符 | _neg_ -、 _pos_ +、 _abs_ abs() |
+| 众多比较运算符 | _lt_ &lt;、 _le_ &lt;=、 _eq_ ==、 _ne_ ！=、 _gt_ &gt;、 _ge_ &gt;= |
+| 算术运算符 | _add_ +、 _sub_ -、 _fmul_ *、 _truediv_ /、 _floordiv_ //、 _mod_ %、 _divmod_ divmod()、 _pow_ **或pow()、 _round_ round() |
+| 反向算术运算符 | _radd_、 _rsub_、 _rmul_、 _rtruediv_、 _rfloordiv_、 _rmod_、 _rdivmod_、 _rpow_ |
+| 增量赋值算术运算符 | _iadd_、 _isub_、 _imul_、 _itruediv_、 _ifoordiv_、 _imod_、 _ipow_ |
+| 位运算符 | _invert_ -、 _lshift_ «、 _rshift_ »、 _and_ &amp;、 _or_ |、 _xor_ ^ |
+| 反向位运算符 |  _rlshift_、 _rrshift_、 _rand_、 _ror_、 _rxor_ |
+| 增量赋值位运算符 | _ilshift_、 _irshift_、 _iand_、 _ior_、 _ixor_ |
+=======
+layout: post
+title: Python数据模型
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: []</p>
+
+<h2 id="特殊方法-1">特殊方法</h2>
+<p>特殊方法的存在是为了被Python解释器调用的，你自己并不需要调用他们。也就是说没有 my_object._len_ 这种写法，而应该使用 len(my_objext)。</p>
+
+<h3 id="字符串表示形式-1">字符串表示形式</h3>
+<p>在_repr_的实现中，我们用到了%r来获取对象各个属性的标准字符串表示形式——这是个好习惯，他暗示了一个关键：Vector(1, 2)和Vector(‘1’, ‘2’)是不一样的，后者在我们的定义中会报错，因为向量对象的构造函数只接受数值，不接受字符串。</p>
+
+<p>&lt;font face=”STCAIYUN” color=#00FFCC size=5&gt; _repr_ 和 _str_ &lt;/font&gt;的区别在于，后者是在str()函数被使用，或是在用print函数打印一个对象的时候才被调用的，并且塔返回的字符串对终端用户更友好。</p>
+
+<p>如果你只是想实现这两个特殊方法中的一个，_repr_是更好的选择，因为如果一个对象没有_str_函数，二Python又需要调用他的时候，解释器会用_repe_作为替代。</p>
+
+<p>参考：<a href="http://stackoverflow.com/questions/1436703/difference-between-str-and-repe-in-python">Difference between <em>str</em> and <em>repr</em> in Python</a></p>
+
+<h3 id="算术运算符-1">算术运算符</h3>
+<p>&lt;font face=”STCAIYUN” color=#00FFCC size=5&gt; _add_ 和 _mul_ &lt;/font&gt;为向量带来了 + 和 * 这两个算术运算符。值得注意的是，这两个方法的返回值都是新插件的向量对象，代码里只是读取了他们的值 (self, other) 而已。</p>
+
+<h3 id="自定义的布尔值-1">自定义的布尔值</h3>
+<p>默认情况下，我们自己定义的累的实力总被认为是真的。</p>
+
+<p>在Python标准库的文档中，有一节叫做<a href="http://docs.python.org/3/library/stdtypes.html#truth">Built-in Types</a>，其中规定了真值检验的标准。通过实现_bool_，你定义的对象就可以与这个标准保持一致。</p>
+
+<p>* 如果想让Vector._bool_更高效，可以采用这种实现：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="ow">or</span> <span class="bp">self</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+<p>他不那么易读，却能省掉 abs 到 _abs_ 到平方再到平方根这些中间步骤。通过 bool 把返回类型显示装换为布尔值是为了符合 _bool_ 对返回值的规定，因为 or 运算符可能会返回 x 或者 y 本身的值：若 x 的值等价于真，则 or 返回的 x 的值，否则返回 y 的值。
+***</p>
+
+<h2 id="特殊方法一览-1">特殊方法一览</h2>
+<p>| 类别  | 方法名 |
+| ————- | ————- |
+| 字符串/字节序列表示形式 | _repr_、 _str_、 _format_、 _bytes_ |
+| 数值装换 | _abs_、 _bool_、 _complex_、 _int_、 _float_、 _hash_、 _index_ |
+| 集合模拟 | _len_、 _getitem_、 _setitem_、 _delitem_、 _contains_ |
+| 迭代枚举 | _iter_、 _reversed_、 _next_ |
+| 可调用模拟 | _call_ |
+| 上下文管理 | _enter_、 _exit_ |
+| 实例插件和销毁 | _new_、 _init_、 _del_ |
+| 属性管理 | _getattr_、 _getattribute_、 _setattr_、 _delattr_、 _dir_ |
+| 属性描述符 | _get_、 _set_、 _delete_ |
+| 跟类相关的服务 | _prepare_、 _instancecheck_、 _subclasscheck_ |</p>
+
+<p>| 类别 | 方法名和对应的运算符 |
+| ————- | ————- |
+| 一元运算符 | _neg_ -、 _pos_ +、 _abs_ abs() |
+| 众多比较运算符 | _lt_ &lt;、 _le_ &lt;=、 _eq_ ==、 _ne_ ！=、 _gt_ &gt;、 _ge_ &gt;= |
+| 算术运算符 | _add_ +、 _sub_ -、 _fmul_ *、 _truediv_ /、 _floordiv_ //、 _mod_ %、 _divmod_ divmod()、 _pow_ **或pow()、 _round_ round() |
+| 反向算术运算符 | _radd_、 _rsub_、 _rmul_、 _rtruediv_、 _rfloordiv_、 _rmod_、 _rdivmod_、 _rpow_ |
+| 增量赋值算术运算符 | _iadd_、 _isub_、 _imul_、 _itruediv_、 _ifoordiv_、 _imod_、 _ipow_ |
+| 位运算符 | _invert_ -、 _lshift_ «、 _rshift_ »、 _and_ &amp;、 _or_ |、 _xor_ ^ |
+| 反向位运算符 |  _rlshift_、 _rrshift_、 _rand_、 _ror_、 _rxor_ |
+| 增量赋值位运算符 | _ilshift_、 _irshift_、 _iand_、 _ior_、 _ixor_ |</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

@@ -1,0 +1,369 @@
+I"Hv<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2018-09-09-db-conn.md
+—
+layout:     post
+title:      “数据库连接”
+subtitle:   “数据库连接的各种方式”
+date:       2018-09-09 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2018.jpg”
+tags:
+    - oracle8
+    - db2
+    - sql server
+    - sybase
+    - informix
+    - mysql
+    - postgresql
+    - access
+    - teradata
+    - netezza
+—</p>
+<h2 id="oracle88i9i数据库thin模式">Oracle8/8i/9i数据库（thin模式）</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"oracle.jdbc.driver.OracleDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:oracle:thin:@localhost:1521:orcl"</span><span class="o">;</span> 
+<span class="c1">//orcl为数据库的SID </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"test"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">"test"</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Oracle Thin 驱动程序包名：ojdbc14.jar
+驱动程序类名: oracle.JDBC URL: 
+jdbc:oracle:thin:@//&lt;host&gt;:&lt;port&gt;/ServiceName
+或
+jdbc:oracle:thin:@&lt;host&gt;:&lt;port&gt;:&lt;SID&gt; 
+</code></pre></div></div>
+
+<h2 id="db2数据库">DB2数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.ibm.db2.jdbc.app.DB2Driver "</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:db2://localhost:5000/sample"</span><span class="o">;</span>
+<span class="c1">//sample为你的数据库名 </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"admin"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">""</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IBM DB2 Universal Driver Type 4
+
+驱动程序包名：db2jcc.jar db2jcc_license_cu.jar
+驱动程序类名: com.ibm.db2.jcc.DB2Driver
+URL: database_name&gt;
+IBM DB2 Universal Driver Type 2
+
+驱动程序包名：db2jcc.jar db2jcc_license_cu.jar
+驱动程序类名: com.ibm.db2.jcc.DB2Driver
+URL: database_name&gt; 
+</code></pre></div></div>
+
+<h2 id="sql-server702000数据库">Sql Server7.0/2000数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.microsoft.jdbc.sqlserver.SQLServerDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb"</span><span class="o">;</span> 
+<span class="c1">//mydb为数据库 </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"sa"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">""</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Microsoft SQL Server 驱动程序包名：msbase.jar mssqlserver.jar msutil.jar
+驱动程序类名: com.microsoft.JDBC jdbc:microsoft:sqlserver://&lt;server_name&gt;:&lt;port&gt;
+默认端口1433，如果服务器使用默认端口则port可以省略
+
+Microsoft SQL Server 2005 驱动程序包名：sqljdbc.jar
+驱动程序类名: com.microsoft.sqlserver.JDBC jdbc:sqlserver://&lt;server_name&gt;:&lt;port&gt;
+默认端口1433，如果服务器使用默认端口则port可以省略 
+</code></pre></div></div>
+
+<h2 id="sybase数据库">Sybase数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.sybase.jdbc.SybDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span><span class="s">" jdbc:sybase:Tds:localhost:5007/myDB"</span><span class="o">;</span>
+<span class="c1">//myDB为你的数据库名 </span>
+<span class="nc">Properties</span> <span class="n">sysProps</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperties</span><span class="o">();</span> 
+<span class="nc">SysProps</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span><span class="s">"userid"</span><span class="o">);</span> 
+<span class="nc">SysProps</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span><span class="s">"user_password"</span><span class="o">);</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="nc">SysProps</span><span class="o">);</span> 
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sybase Adaptive Server Enterprise 驱动程序包名：jconn2.jar 或jconn3.jar
+驱动程序类名: com.sybase.jdbc.SybDriver (com.sybase.jdbc.SybDriver)
+URL: jdbc:sybase:Tds:&lt;host&gt;:&lt;port&gt;默认端口5000
+
+Sybase Adaptive Server Anywhere or Sybase IQ 驱动程序包名：jconn2.jar 或jconn3.jar
+驱动程序类名: com.sybase.jdbc.SybDriver (com.sybase.jdbc.SybDriver)
+URL: database_name&gt;
+默认端口2638
+</code></pre></div></div>
+
+<h2 id="informix数据库">Informix数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.informix.jdbc.IfxDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s">"jdbc:informix-sqli://123.45.67.89:1533/myDB:INFORMIXSERVER=myserver; 
+
+user=testuser;password=testpassword"</span><span class="o">;</span> <span class="c1">//myDB为数据库名 </span>
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">);</span> 
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Informix 驱动程序包名：ifxjdbc.jar
+驱动程序类名: com.informix.JDBC jdbc:informix-sqli://{&lt;ip-address&gt;|&lt;host-name&gt;}:
+    &lt;port-number&gt;[/&lt;dbname&gt;]: INFORMIXSERVER=&lt;server-name&gt;
+</code></pre></div></div>
+
+<h2 id="mysql数据库">MySQL数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"org.gjt.mm.mysql.Driver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();&amp;</span>
+<span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.mysql.jdbc.Driver"</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span><span class="s">"jdbc:mysql://localhost/myDB?user=soft&amp;password=soft1234&amp;useUnicode=true&amp;
+    characterEncoding=8859_1"</span> 
+<span class="c1">//myDB为数据库名 </span>
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">);</span> 
+</code></pre></div></div>
+
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>驱动程序包名：mysql-connector-java-x.x.xx-bin.jar
+驱动程序类名: com.mysql.JDBC jdbc:mysql://&lt;host&gt;:&lt;port&gt;/&lt;database_name&gt;
+默认端口3306，如果服务器使用默认端口则port可以省略
+MySQL Connector/J Driver 允许在jdbc:mysql://&lt;host&gt;:&lt;port&gt;/&lt;database_name&gt;
+    ?property1=value1&amp;property2=value2
+</code></pre></div></div>
+
+<h2 id="postgresql数据库">PostgreSQL数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"org.postgresql.Driver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span><span class="s">"jdbc:postgresql://localhost/myDB"</span>
+<span class="c1">//myDB为数据库名 </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"myuser"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">"mypassword"</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PostgreSQL Native 驱动程序包名：驱动程序类名: org.postgresql.Driver
+URL: database_name&gt;
+默认端口5432 
+</code></pre></div></div>
+<h2 id="access数据库直连用odbc的">access数据库直连用ODBC的</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"sun.jdbc.odbc.JdbcOdbcDriver"</span><span class="o">)</span> <span class="o">;</span>
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:odbc:Driver={MicroSoft Access Driver (*.mdb)};
+DBQ="</span><span class="o">+</span><span class="n">application</span><span class="o">.</span><span class="na">getRealPath</span><span class="o">(</span><span class="s">"/Data/ReportDemo.mdb"</span><span class="o">);</span>
+<span class="nc">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="s">""</span><span class="o">,</span><span class="s">""</span><span class="o">);</span>
+<span class="nc">Statement</span> <span class="n">stmtNew</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="na">createStatement</span><span class="o">()</span> <span class="o">;</span>
+</code></pre></div></div>
+
+<h2 id="teradata">Teradata</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Teradata Driver for the 驱动程序包名：terajdbc4.jar tdgssjava.jar gui.jar 
+驱动程序类名: com.ncr.teradata.TeraDriver
+URL: 
+Type 4: jdbc:teradata://GatewayServerName:PortNumber
+/DatabaseServerName/Param1,Param2,...
+</code></pre></div></div>
+
+<p>##　Netezza</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Netezza 驱动程序包名：terajdbc4.jar tdgssjava.jar gui.jar 
+驱动程序类名: org.netezza.Driver
+URL: database_name&gt;
+</code></pre></div></div>
+<p>=======
+—
+layout:     post
+title:      “数据库连接”
+subtitle:   “数据库连接的各种方式”
+date:       2018-09-09 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2018.jpg”
+catalog: true
+tags:
+    - oracle8
+    - db2
+    - sql server
+    - sybase
+    - informix
+    - mysql
+    - postgresql
+    - access
+    - teradata
+    - netezza
+—
+=======
+—
+layout: post
+title: 数据库连接
+subtitle: 数据库连接的各种方式
+author: Balbo Cheng
+categories: 
+tags: [oracle8, db2, sql server, sybase, informix, mysql, postgresql, access, teradata, netezza]
+—</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+              <h2 id="oracle88i9i数据库thin模式-1">Oracle8/8i/9i数据库（thin模式）</h2>
+              <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"oracle.jdbc.driver.OracleDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:oracle:thin:@localhost:1521:orcl"</span><span class="o">;</span> 
+<span class="c1">//orcl为数据库的SID </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"test"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">"test"</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div>              </div>
+              <p><strong>or</strong></p>
+              <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Oracle Thin 驱动程序包名：ojdbc14.jar
+驱动程序类名: oracle.JDBC URL: 
+jdbc:oracle:thin:@//&lt;host&gt;:&lt;port&gt;/ServiceName
+或
+jdbc:oracle:thin:@&lt;host&gt;:&lt;port&gt;:&lt;SID&gt; 
+</code></pre></div>              </div>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h2 id="db2数据库-1">DB2数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.ibm.db2.jdbc.app.DB2Driver "</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:db2://localhost:5000/sample"</span><span class="o">;</span>
+<span class="c1">//sample为你的数据库名 </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"admin"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">""</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IBM DB2 Universal Driver Type 4
+
+驱动程序包名：db2jcc.jar db2jcc_license_cu.jar
+驱动程序类名: com.ibm.db2.jcc.DB2Driver
+URL: database_name&gt;
+IBM DB2 Universal Driver Type 2
+
+驱动程序包名：db2jcc.jar db2jcc_license_cu.jar
+驱动程序类名: com.ibm.db2.jcc.DB2Driver
+URL: database_name&gt; 
+</code></pre></div></div>
+
+<h2 id="sql-server702000数据库-1">Sql Server7.0/2000数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.microsoft.jdbc.sqlserver.SQLServerDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=mydb"</span><span class="o">;</span> 
+<span class="c1">//mydb为数据库 </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"sa"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">""</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Microsoft SQL Server 驱动程序包名：msbase.jar mssqlserver.jar msutil.jar
+驱动程序类名: com.microsoft.JDBC jdbc:microsoft:sqlserver://&lt;server_name&gt;:&lt;port&gt;
+默认端口1433，如果服务器使用默认端口则port可以省略
+
+Microsoft SQL Server 2005 驱动程序包名：sqljdbc.jar
+驱动程序类名: com.microsoft.sqlserver.JDBC jdbc:sqlserver://&lt;server_name&gt;:&lt;port&gt;
+默认端口1433，如果服务器使用默认端口则port可以省略 
+</code></pre></div></div>
+
+<h2 id="sybase数据库-1">Sybase数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.sybase.jdbc.SybDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span><span class="s">" jdbc:sybase:Tds:localhost:5007/myDB"</span><span class="o">;</span>
+<span class="c1">//myDB为你的数据库名 </span>
+<span class="nc">Properties</span> <span class="n">sysProps</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">getProperties</span><span class="o">();</span> 
+<span class="nc">SysProps</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"user"</span><span class="o">,</span><span class="s">"userid"</span><span class="o">);</span> 
+<span class="nc">SysProps</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"password"</span><span class="o">,</span><span class="s">"user_password"</span><span class="o">);</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span> <span class="nc">SysProps</span><span class="o">);</span> 
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sybase Adaptive Server Enterprise 驱动程序包名：jconn2.jar 或jconn3.jar
+驱动程序类名: com.sybase.jdbc.SybDriver (com.sybase.jdbc.SybDriver)
+URL: jdbc:sybase:Tds:&lt;host&gt;:&lt;port&gt;默认端口5000
+
+Sybase Adaptive Server Anywhere or Sybase IQ 驱动程序包名：jconn2.jar 或jconn3.jar
+驱动程序类名: com.sybase.jdbc.SybDriver (com.sybase.jdbc.SybDriver)
+URL: database_name&gt;
+默认端口2638
+</code></pre></div></div>
+
+<h2 id="informix数据库-1">Informix数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.informix.jdbc.IfxDriver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span> <span class="s">"jdbc:informix-sqli://123.45.67.89:1533/myDB:INFORMIXSERVER=myserver; 
+
+user=testuser;password=testpassword"</span><span class="o">;</span> <span class="c1">//myDB为数据库名 </span>
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">);</span> 
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Informix 驱动程序包名：ifxjdbc.jar
+驱动程序类名: com.informix.JDBC jdbc:informix-sqli://{&lt;ip-address&gt;|&lt;host-name&gt;}:
+    &lt;port-number&gt;[/&lt;dbname&gt;]: INFORMIXSERVER=&lt;server-name&gt;
+</code></pre></div></div>
+
+<h2 id="mysql数据库-1">MySQL数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"org.gjt.mm.mysql.Driver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();&amp;</span>
+<span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"com.mysql.jdbc.Driver"</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span><span class="s">"jdbc:mysql://localhost/myDB?user=soft&amp;password=soft1234&amp;useUnicode=true&amp;
+    characterEncoding=8859_1"</span> 
+<span class="c1">//myDB为数据库名 </span>
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">);</span> 
+</code></pre></div></div>
+
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>驱动程序包名：mysql-connector-java-x.x.xx-bin.jar
+驱动程序类名: com.mysql.JDBC jdbc:mysql://&lt;host&gt;:&lt;port&gt;/&lt;database_name&gt;
+默认端口3306，如果服务器使用默认端口则port可以省略
+MySQL Connector/J Driver 允许在jdbc:mysql://&lt;host&gt;:&lt;port&gt;/&lt;database_name&gt;
+    ?property1=value1&amp;property2=value2
+</code></pre></div></div>
+
+<h2 id="postgresql数据库-1">PostgreSQL数据库</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"org.postgresql.Driver"</span><span class="o">).</span><span class="na">newInstance</span><span class="o">();</span> 
+<span class="nc">String</span> <span class="n">url</span> <span class="o">=</span><span class="s">"jdbc:postgresql://localhost/myDB"</span>
+<span class="c1">//myDB为数据库名 </span>
+<span class="nc">String</span> <span class="n">user</span><span class="o">=</span><span class="s">"myuser"</span><span class="o">;</span> 
+<span class="nc">String</span> <span class="n">password</span><span class="o">=</span><span class="s">"mypassword"</span><span class="o">;</span> 
+<span class="nc">Connection</span> <span class="n">conn</span><span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="n">user</span><span class="o">,</span><span class="n">password</span><span class="o">);</span>
+</code></pre></div></div>
+<p><strong>or</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PostgreSQL Native 驱动程序包名：驱动程序类名: org.postgresql.Driver
+URL: database_name&gt;
+默认端口5432 
+</code></pre></div></div>
+<h2 id="access数据库直连用odbc的-1">access数据库直连用ODBC的</h2>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Class</span><span class="o">.</span><span class="na">forName</span><span class="o">(</span><span class="s">"sun.jdbc.odbc.JdbcOdbcDriver"</span><span class="o">)</span> <span class="o">;</span>
+<span class="nc">String</span> <span class="n">url</span><span class="o">=</span><span class="s">"jdbc:odbc:Driver={MicroSoft Access Driver (*.mdb)};
+DBQ="</span><span class="o">+</span><span class="n">application</span><span class="o">.</span><span class="na">getRealPath</span><span class="o">(</span><span class="s">"/Data/ReportDemo.mdb"</span><span class="o">);</span>
+<span class="nc">Connection</span> <span class="n">conn</span> <span class="o">=</span> <span class="nc">DriverManager</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(</span><span class="n">url</span><span class="o">,</span><span class="s">""</span><span class="o">,</span><span class="s">""</span><span class="o">);</span>
+<span class="nc">Statement</span> <span class="n">stmtNew</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="na">createStatement</span><span class="o">()</span> <span class="o">;</span>
+</code></pre></div></div>
+
+<h2 id="teradata-1">Teradata</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Teradata Driver for the 驱动程序包名：terajdbc4.jar tdgssjava.jar gui.jar 
+驱动程序类名: com.ncr.teradata.TeraDriver
+URL: 
+Type 4: jdbc:teradata://GatewayServerName:PortNumber
+/DatabaseServerName/Param1,Param2,...
+</code></pre></div></div>
+
+<p>«««&lt; HEAD
+##　Netezza
+=======</p>
+<h2 id="netezza">Netezza</h2>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+              <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Netezza 驱动程序包名：terajdbc4.jar tdgssjava.jar gui.jar 
+驱动程序类名: org.netezza.Driver
+URL: database_name&gt;
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+</code></pre></div>              </div>
+              <p>f0bfe13 (new update):_posts/知识点/2018-09-09-db-conn.md
+=======
+```
+e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

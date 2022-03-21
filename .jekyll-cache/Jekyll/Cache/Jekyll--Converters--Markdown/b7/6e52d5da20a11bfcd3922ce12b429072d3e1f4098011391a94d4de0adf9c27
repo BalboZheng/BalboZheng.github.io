@@ -1,0 +1,125 @@
+I"�2<h2 id="获取数据集">获取数据集</h2>
+
+<ul>
+  <li>小数据集：sklearn.datasets.load.*</li>
+  <li>大数据集：sklearn.datasets.fetch.*</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span><span class="p">,</span> <span class="n">fetch_20newsgroups</span>
+
+<span class="c1"># 数据集收集
+# 小数据集
+</span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="c1"># print(iris)
+</span>
+<span class="c1"># 大数据集
+# data_home 保存位置
+# subset train/text/all
+</span><span class="n">groups</span> <span class="o">=</span> <span class="n">fetch_20newsgroups</span><span class="p">(</span><span class="n">data_home</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s">'train'</span><span class="p">)</span>
+<span class="c1"># print(groups)
+</span></code></pre></div></div>
+
+<h2 id="数据集属性描述">数据集属性描述</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 返回值是一个“字典bunch”
+</span><span class="k">print</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"数据集中特征值是：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">iris</span><span class="p">.</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"数据集中目标值是：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">iris</span><span class="p">[</span><span class="s">'target'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"数据集中特征值名字是：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">iris</span><span class="p">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"数据集中目标值是名字：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">iris</span><span class="p">.</span><span class="n">target_names</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"数据集描述是：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">iris</span><span class="p">.</span><span class="n">DESCR</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="数据可视化">数据可视化</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+<span class="c1"># 不能正常显示中文时加上一下两行
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'font.sans-serif'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s">'SimHei'</span><span class="p">]</span>  <span class="c1"># 显示中文标签
+</span><span class="n">plt</span><span class="p">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">'axes.unicode_minus'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>  <span class="c1"># 这两行需要手动设置
+</span>
+<span class="n">iris_d</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s">'data'</span><span class="p">],</span>
+                      <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'sepal length (cm)'</span><span class="p">,</span> <span class="s">'sepal width (cm)'</span><span class="p">,</span> <span class="s">'petal length (cm)'</span><span class="p">,</span> <span class="s">'petal width (cm)'</span><span class="p">])</span>
+<span class="n">iris_d</span><span class="p">[</span><span class="s">'species'</span><span class="p">]</span> <span class="o">=</span> <span class="n">iris</span><span class="p">.</span><span class="n">target</span>
+<span class="k">print</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s">'target'</span><span class="p">])</span>
+
+
+<span class="k">def</span> <span class="nf">plot_iris</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">):</span>
+    <span class="c1"># hue 目标值是什么
+</span>    <span class="c1"># fit_reg 是否进行线性拟合
+</span>    <span class="n">sns</span><span class="p">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">col1</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col2</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s">'species'</span><span class="p">,</span> <span class="n">fit_reg</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">col1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">col2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"鸢尾花种类分布图"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">plot_iris</span><span class="p">(</span><span class="n">iris_d</span><span class="p">,</span> <span class="s">'sepal length (cm)'</span><span class="p">,</span> <span class="s">'sepal width (cm)'</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h2 id="数据集的划分">数据集的划分</h2>
+
+<p>机器学习一般会把数据集划分为两部分</p>
+
+<ul>
+  <li>训练数据：用于训练，构建模型</li>
+  <li>测试数据：在模型检验时使用，用于评估模型是否有效</li>
+</ul>
+
+<p>数据划分比例一般有以下几种：7：3、8：2、7.5：2.5</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># x 数据集的特征值
+# y 数据集的标签值
+# test_size 测试集的大小，一般为float
+# random_tate 随机数种子
+# return 训练集特征值、测试集特征值、训练集目标值、测试集目标值
+</span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">iris</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="p">.</span><span class="n">target</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"训练集特征值：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">x_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"测试集特征值：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">x_test</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="完整代码">完整代码</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
+
+<span class="c1"># 获取数据集
+</span><span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+
+<span class="c1"># 数据基本处理
+# 数据分割
+</span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">iris</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">iris</span><span class="p">.</span><span class="n">target</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># 特征工程
+# 实例化一个转化器
+</span><span class="n">transfer</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="c1"># 调用fit.transform函数
+</span><span class="n">x_train</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+<span class="c1"># 机器学习
+# 实例化一个估计器
+</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="c1"># 模型训练
+</span><span class="n">estimator</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 模型评估
+# 输出预测值
+</span><span class="n">y_pre</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"预测值是：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+<span class="c1"># print("真实值是：\n", y_test)
+# print("真实值和预测值对比：\n", y_test == y_pre)
+# 输出准确率
+</span><span class="n">ret</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"准确率为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+:ET

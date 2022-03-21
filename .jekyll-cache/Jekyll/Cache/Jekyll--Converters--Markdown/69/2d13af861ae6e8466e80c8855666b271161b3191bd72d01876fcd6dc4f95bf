@@ -1,0 +1,2 @@
+I"5<p>redis.rpoplpush(‘list’, ‘list2’)</p>
+:ET

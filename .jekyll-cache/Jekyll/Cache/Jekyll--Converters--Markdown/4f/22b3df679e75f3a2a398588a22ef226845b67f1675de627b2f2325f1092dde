@@ -1,0 +1,212 @@
+I"uA<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “Ajax 分析”
+subtitle:   “”
+date:       2019-11-24 15:59:20
+author:     “Balbo”
+header-img: “img/post-bg-2018.jpg”
+tags:
+    - reptile
+—</p>
+<h2 id="ajax-分析">Ajax 分析</h2>
+<h3 id="查看请求">查看请求</h3>
+
+<p>使用Chrome浏览器访问链接，打开开发者工具。切换到Network选项卡，重新刷新页面，看到非常多的条目。</p>
+
+<p>Ajax请求其实有它特殊的请求类型，叫做xhr。在途中Type对应请求类型中，点击图中的XHR可以过滤出所有的xhr请求。找到其中一个xhr的请求，点击进去查看详细内容。其中Request Headers中有一条信息为X-Requested-With:XMLHttpRequest，这就标记了次请求是Ajax请求。</p>
+
+<h2 id="ajax-结果提取">Ajax 结果提取</h2>
+<h3 id="分析请求">分析请求</h3>
+
+<p>使用开发者工具打开Ajax的XHR过滤器，然后一直向下滑动页面，我们会看到不断有Ajax请求发出。选定其中一个请求，分析其参数信息，进入请求详情。</p>
+
+<p>可以发现，这是一个GET请求，url为 https://weibo.com/a/aj/transform/loadingmoreunlogin?ajwvr=6&amp;category=0&amp;page=3&amp;lefnav=0&amp;cursor=&amp;__rnd=1559115353265。请求的参数有六个：ajwvr，category，page，lefnav，cursor，__rnd。</p>
+
+<p>再看看其他请求，发现只有page，__rnd这两个参数在改变。很明显page是用来控制分页的，细心观察__rnd的值为对应的时间戳。</p>
+
+<h3 id="分析响应">分析响应</h3>
+
+<p>观察这个请求的响应内容：</p>
+
+<p><img src="http://q17k7c3by.bkt.clouddn.com/svu9mpslxg95zo7.png" alt="" /></p>
+
+<p>这个内容的格式为JSON，其中主要的内容在data对应的值里面。这样我们请求一个接口，改变page参数就可以获得对应数据。</p>
+
+<h3 id="实战演练">实战演练</h3>
+
+<p>模拟这Ajax请求，将前10页的数据爬取下来。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _*_ coding=utf-8 _*_
+</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="s">'https://weibo.com/a/aj/transform/loadingmoreunlogin?'</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'Host'</span><span class="p">:</span> <span class="s">'weibo.com'</span><span class="p">,</span>
+    <span class="s">'Referer'</span><span class="p">:</span> <span class="s">'https://weibo.com/'</span><span class="p">,</span>
+    <span class="s">'User-Agent'</span><span class="p">:</span> <span class="s">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'</span><span class="p">,</span>
+    <span class="s">'X-Requested-With'</span><span class="p">:</span> <span class="s">'XMLHttpRequest'</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">get_page</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+    <span class="s">"""
+    :param page:
+    :return:
+    """</span>
+    <span class="c1"># 构造__rnd参数
+</span>    <span class="n">rnd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="c1"># 构造参数字典
+</span>    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'ajwvr'</span><span class="p">:</span> <span class="s">'6'</span><span class="p">,</span>
+        <span class="s">'category'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
+        <span class="s">'page'</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+        <span class="s">'lefnav'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
+        <span class="s">'cursor'</span><span class="p">:</span> <span class="s">''</span><span class="p">,</span>
+        <span class="s">'__rnd'</span><span class="p">:</span> <span class="n">rnd</span>
+
+    <span class="p">}</span>
+    <span class="c1"># 拼接参数与url
+</span>    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Error:'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="n">weibo</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+        <span class="n">weibo</span><span class="p">[</span><span class="s">'data'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'data'</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">weibo</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">get_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="n">weibo_data</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">weibo_data</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'data': '    &lt;!--榜单栏位置--&gt;\n                    &lt;!--/ card--&gt;\r\n&lt;div class="UG_slider" &gt;\r\n    &lt;ul action-type="header_slider" node-type="header_slider"&gt;\r\n            &lt;li&gt;\r\n            &lt;a href="/a/hot/7562265474177025_1.html?type=new" target="_blank" suda-uatrack="key=www_unlogin_home&amp;value=focus01"&gt;\r\n            &lt;img src="https://wx2.sinaimg.cn/crop.0.61.600.337/60718250ly1g3hxko6uxbj20go0b30t9.jpg" class="pic"&gt;&lt;div class="pic_intro"&gt;头条新闻今日快讯 | 华为在美提起诉讼.....}
+</code></pre></div></div>
+<p>=======
+—
+layout: post
+title: Ajax 分析
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [reptile]
+sidebar: []
+—</p>
+<h2 id="ajax-分析-1">Ajax 分析</h2>
+<h3 id="查看请求-1">查看请求</h3>
+
+<p>使用Chrome浏览器访问链接，打开开发者工具。切换到Network选项卡，重新刷新页面，看到非常多的条目。</p>
+
+<p>Ajax请求其实有它特殊的请求类型，叫做xhr。在途中Type对应请求类型中，点击图中的XHR可以过滤出所有的xhr请求。找到其中一个xhr的请求，点击进去查看详细内容。其中Request Headers中有一条信息为X-Requested-With:XMLHttpRequest，这就标记了次请求是Ajax请求。</p>
+
+<h2 id="ajax-结果提取-1">Ajax 结果提取</h2>
+<h3 id="分析请求-1">分析请求</h3>
+
+<p>使用开发者工具打开Ajax的XHR过滤器，然后一直向下滑动页面，我们会看到不断有Ajax请求发出。选定其中一个请求，分析其参数信息，进入请求详情。</p>
+
+<p>可以发现，这是一个GET请求，url为 https://weibo.com/a/aj/transform/loadingmoreunlogin?ajwvr=6&amp;category=0&amp;page=3&amp;lefnav=0&amp;cursor=&amp;__rnd=1559115353265。请求的参数有六个：ajwvr，category，page，lefnav，cursor，__rnd。</p>
+
+<p>再看看其他请求，发现只有page，__rnd这两个参数在改变。很明显page是用来控制分页的，细心观察__rnd的值为对应的时间戳。</p>
+
+<h3 id="分析响应-1">分析响应</h3>
+
+<p>观察这个请求的响应内容：</p>
+
+<p><img src="http://q17k7c3by.bkt.clouddn.com/svu9mpslxg95zo7.png" alt="" /></p>
+
+<p>这个内容的格式为JSON，其中主要的内容在data对应的值里面。这样我们请求一个接口，改变page参数就可以获得对应数据。</p>
+
+<h3 id="实战演练-1">实战演练</h3>
+
+<p>模拟这Ajax请求，将前10页的数据爬取下来。</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># _*_ coding=utf-8 _*_
+</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">base_url</span> <span class="o">=</span> <span class="s">'https://weibo.com/a/aj/transform/loadingmoreunlogin?'</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'Host'</span><span class="p">:</span> <span class="s">'weibo.com'</span><span class="p">,</span>
+    <span class="s">'Referer'</span><span class="p">:</span> <span class="s">'https://weibo.com/'</span><span class="p">,</span>
+    <span class="s">'User-Agent'</span><span class="p">:</span> <span class="s">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36'</span><span class="p">,</span>
+    <span class="s">'X-Requested-With'</span><span class="p">:</span> <span class="s">'XMLHttpRequest'</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">get_page</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+    <span class="s">"""
+    :param page:
+    :return:
+    """</span>
+    <span class="c1"># 构造__rnd参数
+</span>    <span class="n">rnd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span>
+    <span class="c1"># 构造参数字典
+</span>    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'ajwvr'</span><span class="p">:</span> <span class="s">'6'</span><span class="p">,</span>
+        <span class="s">'category'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
+        <span class="s">'page'</span><span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+        <span class="s">'lefnav'</span><span class="p">:</span> <span class="s">'0'</span><span class="p">,</span>
+        <span class="s">'cursor'</span><span class="p">:</span> <span class="s">''</span><span class="p">,</span>
+        <span class="s">'__rnd'</span><span class="p">:</span> <span class="n">rnd</span>
+
+    <span class="p">}</span>
+    <span class="c1"># 拼接参数与url
+</span>    <span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="o">+</span> <span class="n">urlencode</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">res</span><span class="p">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">except</span> <span class="nb">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'Error:'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="n">weibo</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">res</span><span class="p">:</span>
+        <span class="n">weibo</span><span class="p">[</span><span class="s">'data'</span><span class="p">]</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'data'</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">weibo</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">get_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+        <span class="n">weibo_data</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">weibo_data</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'data': '    &lt;!--榜单栏位置--&gt;\n                    &lt;!--/ card--&gt;\r\n&lt;div class="UG_slider" &gt;\r\n    &lt;ul action-type="header_slider" node-type="header_slider"&gt;\r\n            &lt;li&gt;\r\n            &lt;a href="/a/hot/7562265474177025_1.html?type=new" target="_blank" suda-uatrack="key=www_unlogin_home&amp;value=focus01"&gt;\r\n            &lt;img src="https://wx2.sinaimg.cn/crop.0.61.600.337/60718250ly1g3hxko6uxbj20go0b30t9.jpg" class="pic"&gt;&lt;div class="pic_intro"&gt;头条新闻今日快讯 | 华为在美提起诉讼.....}
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

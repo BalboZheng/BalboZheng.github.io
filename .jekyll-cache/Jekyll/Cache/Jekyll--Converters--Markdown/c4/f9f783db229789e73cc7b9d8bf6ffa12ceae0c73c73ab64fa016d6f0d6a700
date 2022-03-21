@@ -1,0 +1,2 @@
+I"-<p>redis.rpush(‘list’, 1, 2, 3)</p>
+:ET

@@ -1,0 +1,1463 @@
+I"�a<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “Beautiful Soup”
+subtitle:   “”
+date:       2019-11-20 15:44:27
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - reptile
+—</p>
+<h2 id="解析器">解析器</h2>
+<p>Beautiful Soup 在解析时实际上依赖解析器，他除了支持 Python 标准库中的 HTML 解析器外，还支持一些第三方解析器。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>解析器</th>
+      <th>使用方法</th>
+      <th>优势</th>
+      <th>劣势</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Python标准库</td>
+      <td>BeautifulSoup(markup, ‘html.parser’)</td>
+      <td>Python 的内置标准库、执行速度适中、文档容错能力强</td>
+      <td>Python 2.7.3 及 Python 3.2.2 之前的版本文档容错能力差</td>
+    </tr>
+    <tr>
+      <td>lxml HTML 解析器</td>
+      <td>BeautifulSoup(markup, ‘lxml’)</td>
+      <td>速度快、文档容错能力强</td>
+      <td>需要安装 C 语言库</td>
+    </tr>
+    <tr>
+      <td>lxml XML 解析器</td>
+      <td>BeautifulSoup(markup, ‘xml’)</td>
+      <td>速度快、唯一支持 XML 的解析器</td>
+      <td>需要安装 C 语言库</td>
+    </tr>
+    <tr>
+      <td>html5lib</td>
+      <td>BeautifulSoup(markup, ‘html5lib’)</td>
+      <td>最好的容错性、以浏览器的方式解析文档、生成 HTML5 格式的文档</td>
+      <td>速度慢、不依赖外部扩展</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="基本用法">基本用法</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">html</span> <span class="o">=</span> <span class="s">"""
+
+&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;p class="title" name="dromouse"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class="story"&gt;Once upon a time there were three little sisters; and their names were
+
+&lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+
+&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; and
+
+&lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;;
+
+and they lived at the bottom of a well.&lt;/p&gt;
+
+&lt;p class="story"&gt;...&lt;/p&gt;
+
+"""</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+<span class="c1"># 把解析的字符串以标准的缩进格式输出
+</span><span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">prettify</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+ <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>
+   The Dormouse's story
+  <span class="nt">&lt;/title&gt;</span>
+ <span class="nt">&lt;/head&gt;</span>
+ <span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"title"</span> <span class="na">name=</span><span class="s">"dromouse"</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;b&gt;</span>
+    The Dormouse's story
+   <span class="nt">&lt;/b&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"story"</span><span class="nt">&gt;</span>
+   Once upon a time there were three little sisters; and their names were
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/elsie"</span> <span class="na">id=</span><span class="s">"link1"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Elsie --&gt;</span>
+   <span class="nt">&lt;/a&gt;</span>
+   ,
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/lacie"</span> <span class="na">id=</span><span class="s">"link2"</span><span class="nt">&gt;</span>
+    Lacie
+   <span class="nt">&lt;/a&gt;</span>
+   and
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/tillie"</span> <span class="na">id=</span><span class="s">"link3"</span><span class="nt">&gt;</span>
+    Tillie
+   <span class="nt">&lt;/a&gt;</span>
+   ;
+and they lived at the bottom of a well.
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"story"</span><span class="nt">&gt;</span>
+   ...
+  <span class="nt">&lt;/p&gt;</span>
+ <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+The Dormouse's story
+</code></pre></div></div>
+<h2 id="节点选择器">节点选择器</h2>
+<h3 id="选择元素">选择元素</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;class 'bs4.element.Tag'&gt;
+The Dormouse's story
+&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;
+&lt;p class="title" name="dromouse"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;
+</code></pre></div></div>
+<h3 id="提取信息">提取信息</h3>
+
+<ol>
+  <li>
+    <p>获取名称</p>
+
+    <p>可以利用 name 属性获取节点的名称</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> title
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取属性</p>
+
+    <p>每个节点可能有多个属性，比如 id 和 class 等，选择这个节点元素后，可以调用 attrs 获取所有属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">attrs</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'name'</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> {'class': ['title'], 'name': 'dromouse'}
+ dromouse
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取内容</p>
+
+    <p>可以利用 string 属性获取节点元素包含的文本内容</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> The Dormouse's story
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="嵌套选择">嵌套选择</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;class 'bs4.element.Tag'&gt;
+The Dormouse's story
+</code></pre></div></div>
+
+<h2 id="关联选择">关联选择</h2>
+
+<ol>
+  <li>
+    <p>子节点和子孙节点</p>
+
+    <p>选取节点元素之后，如果先要获取他的直接子节点，可以调用 contents 属性</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+
+ &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;The Dormouse's story&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">contents</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ['\n    Once upon a time there were three little sisters; and their names were\n    ', &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;, '\n', &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, ' \nand\n', &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;, '\nand they lived at the bottom of a well.\n']
+</code></pre></div>    </div>
+    <p>contents 得到的是直接子节点的列表</p>
+
+    <p>同样，我们可以调用 children 属性得到相应的结果</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+ <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">children</span><span class="p">):</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;list_iterator object at 0x000000000B301D48&gt;
+ 0 
+     Once upon a time there were three little sisters; and their names were
+        
+ 1 &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ 2 
+ 3 &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ 4  
+ and
+ 5 &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ 6 
+ and they lived at the bottom of a well.
+</code></pre></div>    </div>
+    <p>如果要得到所有的子孙节点，可以调用 descendants 属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">descendants</span><span class="p">)</span>
+ <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">descendants</span><span class="p">):</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;generator object Tag.descendants at 0x000000000B2B9548&gt;
+ 0 
+     Once upon a time there were three little sisters; and their names were
+        
+ 1 &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ 2 
+ 3 &lt;span&gt;Elsie&lt;/span&gt;
+ 4 Elsie
+ 5 
+ 6 
+ 7 &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ 8 Lacie
+ 9  
+ and
+ 10 &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ 11 Tillie
+ 12 
+ and they lived at the bottom of a well.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>父节点和祖先节点</p>
+
+    <p>如果要获取某个节点元素的父节点，可以调用 parent 属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parent</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+</code></pre></div>    </div>
+    <p>如果想获取所有的祖先节点，可以调用parents 属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">parents</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)))</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;class 'generator'&gt;
+ [(0, &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;), (1, &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+ &lt;/body&gt;), (2, &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;The Dormouse's story&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+ &lt;/body&gt;&lt;/html&gt;), (3, &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;The Dormouse's story&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+ &lt;/body&gt;&lt;/html&gt;)]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>兄弟节点</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+
+ &lt;html&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+         Once upon a time there were three little sisters; and their names were
+ &lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+         Hello
+ &lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; 
+         and
+ &lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;
+         and they lived at the bottom of a well.
+ &lt;/p&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Next Sibling'</span><span class="p">,</span> <span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Prev Sibling'</span><span class="p">,</span> <span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">previous_sibling</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Next Siblings'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_siblings</span><span class="p">)))</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Prev Siblings'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">previous_siblings</span><span class="p">)))</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Next Sibling 
+         Hello
+ Prev Sibling 
+         Once upon a time there were three little sisters; and their names were
+ Next Siblings [(0, '\n        Hello\n'), (1, &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;), (2, ' \n        and\n'), (3, &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;), (4, '\n        and they lived at the bottom of a well.\n')]
+ Prev Siblings [(0, '\n        Once upon a time there were three little sisters; and their names were\n')]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>提取信息</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;html&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+         Once upon a time there were three little sisters; and their names were
+ &lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;Bob&lt;/a&gt;&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; 
+
+ &lt;/p&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Next Sibling:'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Parent:'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">attrs</span><span class="p">[</span><span class="s">'class'</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Next Sibling:
+ &lt;class 'bs4.element.Tag'&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ Lacie
+ Parent:
+ &lt;class 'generator'&gt;
+ &lt;p class="story"&gt;
+         Once upon a time there were three little sisters; and their names were
+ &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Bob&lt;/a&gt;&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ &lt;/p&gt;
+ ['story']
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="方法选择器">方法选择器</h2>
+
+<ul>
+  <li>
+    <p>find_all()</p>
+
+    <ol>
+      <li>
+        <p>name</p>
+
+        <p>我们可以根据节点名来查询元素</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;div class="panel"&gt;
+ &lt;div class="panel-heading"&gt;
+ &lt;h4&gt;Hello&lt;/h4&gt;
+ &lt;/div&gt;
+ &lt;div class="panel-body"&gt;
+ &lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;ul class="list list-small" id="list-2"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ul'</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ul'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [&lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;, &lt;ul class="list list-small" id="list-2"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;/ul&gt;]
+ &lt;class 'bs4.element.Tag'&gt;
+</code></pre></div>        </div>
+        <p>因为都是 Tag 类型，所以依然可以进行嵌套查询。</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ul'</span><span class="p">):</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'li'</span><span class="p">))</span>
+ <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">ul</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'li'</span><span class="p">):</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;]
+ Foo
+ Bar
+ Jay
+ [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+ Foo
+ Bar
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>attrs</p>
+
+        <p>除了工具节点名查询，我们也可以传入一些属性来查询，        对于一些常用的属性，比如 id 和 class 等，我们可以不用 attrs 来传递</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;div class="panel"&gt;
+ &lt;div class="panel-heading"&gt;
+ &lt;h4&gt;Hello&lt;/h4&gt;
+ &lt;/div&gt;
+ &lt;div class="panel-body"&gt;
+ &lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;ul class="list list-small" id="list-2"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">'id'</span><span class="p">:</span> <span class="s">'list-1'</span><span class="p">}))</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'elements'</span><span class="p">}))</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'-----'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">'list-1'</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s">'element'</span><span class="p">))</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [&lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;]
+ []
+ -----
+ [&lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;]
+ [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;, &lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>text</p>
+
+        <p>text 参数可用来匹配节点的文本，传入的形式可以是字符串，可以是正则表达式对象</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">re</span>
+
+ <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;div class="panel"&gt;
+ &lt;div class="panel-body"&gt;
+ &lt;a&gt;Hello, this is a link&lt;/a&gt;
+ &lt;a&gt;Hello, this is a link, too&lt;/a&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">'link'</span><span class="p">)))</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ['Hello, this is a link', 'Hello, this is a link, too']
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>find()
+find() 返回的是单个元素
+```python
+from bs4 import BeautifulSoup</p>
+  </li>
+</ul>
+
+<p>html = “””</p>
+<div class="panel">
+<div class="panel-heading">
+<h4>Hello</h4>
+</div>
+<div class="panel-body">
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<ul class="list list-small" id="list-2">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+</ul>
+</div>
+</div>
+<p>”””</p>
+
+<p>soup = BeautifulSoup(html, ‘lxml’)
+print(soup.find(name=’ul’))
+print(type(soup.find(name=’ul’)))
+print(soup.find(class_=’list’))</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>运行结果：
+</code></pre></div></div>
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<p>&lt;class ‘bs4.element.Tag’&gt;</p>
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    - find_parents() 和 find_parent()： 前者返回所有祖先节点，后者返回直接父节点
+    - find_next_siblings() 和 find_next_sibling()： 前者返回后面所有的兄弟节点，后者返回后面第一个兄弟节点
+    - find_previous_siblings() 和 find_previous_sibling()： 前者返回前面所有的兄弟节点，后者返回前面第一个兄弟节点
+    - find_all_next() 和 find_next()： 前者返回节点后所有符合条件的节点，后者返回第一个符合条件的节点
+    - find_all_previous() 和 fing_previous()： 前者返回节点前所有符合条件的节点，后者返回第一个符合条件的节点
+
+## CSS 选择器
+使用 CSS 选择器时，只需要调用 select() 方法，传入相应的 CSS 选择器即可
+```python
+from bs4 import BeautifulSoup
+
+html = """
+&lt;div class="panel"&gt;
+&lt;div class="panel-heading"&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div class="panel-body"&gt;
+&lt;ul class="list" id="list-1"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;li class="element"&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class="list list-small" id="list-2"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""
+
+soup = BeautifulSoup(html, 'lxml')
+print(soup.select('.panel .panel-heading'))
+print(soup.select('ul li'))
+print(soup.select('#list-2 .element'))
+print(type(soup.select('ul')[0]))
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;div class="panel-heading"&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;, &lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+&lt;class 'bs4.element.Tag'&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>嵌套选择</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+  <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'ul'</span><span class="p">):</span>
+      <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'li'</span><span class="p">))</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;]
+  [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取属性</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+  <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'ul'</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">[</span><span class="s">'id'</span><span class="p">])</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'id'</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  list-1
+  list-1
+  list-2
+  list-2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取文本</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+  <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'li'</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">'GET Text:'</span><span class="p">,</span> <span class="n">li</span><span class="p">.</span><span class="n">get_text</span><span class="p">())</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">'String:'</span><span class="p">,</span> <span class="n">li</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  GET Text: Foo
+  String: Foo
+  GET Text: Bar
+  String: Bar
+  GET Text: Jay
+  String: Jay
+  GET Text: Foo
+  String: Foo
+  GET Text: Bar
+  String: Bar
+</code></pre></div>    </div>
+    <p>=======
+—
+layout: post
+title: Beautiful Soup
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [reptile]
+—</p>
+    <h2 id="解析器-1">解析器</h2>
+    <p>Beautiful Soup 在解析时实际上依赖解析器，他除了支持 Python 标准库中的 HTML 解析器外，还支持一些第三方解析器。</p>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>解析器</th>
+      <th>使用方法</th>
+      <th>优势</th>
+      <th>劣势</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Python标准库</td>
+      <td>BeautifulSoup(markup, ‘html.parser’)</td>
+      <td>Python 的内置标准库、执行速度适中、文档容错能力强</td>
+      <td>Python 2.7.3 及 Python 3.2.2 之前的版本文档容错能力差</td>
+    </tr>
+    <tr>
+      <td>lxml HTML 解析器</td>
+      <td>BeautifulSoup(markup, ‘lxml’)</td>
+      <td>速度快、文档容错能力强</td>
+      <td>需要安装 C 语言库</td>
+    </tr>
+    <tr>
+      <td>lxml XML 解析器</td>
+      <td>BeautifulSoup(markup, ‘xml’)</td>
+      <td>速度快、唯一支持 XML 的解析器</td>
+      <td>需要安装 C 语言库</td>
+    </tr>
+    <tr>
+      <td>html5lib</td>
+      <td>BeautifulSoup(markup, ‘html5lib’)</td>
+      <td>最好的容错性、以浏览器的方式解析文档、生成 HTML5 格式的文档</td>
+      <td>速度慢、不依赖外部扩展</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="基本用法-1">基本用法</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">html</span> <span class="o">=</span> <span class="s">"""
+
+&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;p class="title" name="dromouse"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class="story"&gt;Once upon a time there were three little sisters; and their names were
+
+&lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+
+&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; and
+
+&lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;;
+
+and they lived at the bottom of a well.&lt;/p&gt;
+
+&lt;p class="story"&gt;...&lt;/p&gt;
+
+"""</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+<span class="c1"># 把解析的字符串以标准的缩进格式输出
+</span><span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">prettify</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+ <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>
+   The Dormouse's story
+  <span class="nt">&lt;/title&gt;</span>
+ <span class="nt">&lt;/head&gt;</span>
+ <span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"title"</span> <span class="na">name=</span><span class="s">"dromouse"</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;b&gt;</span>
+    The Dormouse's story
+   <span class="nt">&lt;/b&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"story"</span><span class="nt">&gt;</span>
+   Once upon a time there were three little sisters; and their names were
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/elsie"</span> <span class="na">id=</span><span class="s">"link1"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Elsie --&gt;</span>
+   <span class="nt">&lt;/a&gt;</span>
+   ,
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/lacie"</span> <span class="na">id=</span><span class="s">"link2"</span><span class="nt">&gt;</span>
+    Lacie
+   <span class="nt">&lt;/a&gt;</span>
+   and
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/tillie"</span> <span class="na">id=</span><span class="s">"link3"</span><span class="nt">&gt;</span>
+    Tillie
+   <span class="nt">&lt;/a&gt;</span>
+   ;
+and they lived at the bottom of a well.
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"story"</span><span class="nt">&gt;</span>
+   ...
+  <span class="nt">&lt;/p&gt;</span>
+ <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+The Dormouse's story
+</code></pre></div></div>
+<h2 id="节点选择器-1">节点选择器</h2>
+<h3 id="选择元素-1">选择元素</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;class 'bs4.element.Tag'&gt;
+The Dormouse's story
+&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;
+&lt;p class="title" name="dromouse"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;
+</code></pre></div></div>
+<h3 id="提取信息-1">提取信息</h3>
+
+<ol>
+  <li>
+    <p>获取名称</p>
+
+    <p>可以利用 name 属性获取节点的名称</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> title
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取属性</p>
+
+    <p>每个节点可能有多个属性，比如 id 和 class 等，选择这个节点元素后，可以调用 attrs 获取所有属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">attrs</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'name'</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> {'class': ['title'], 'name': 'dromouse'}
+ dromouse
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取内容</p>
+
+    <p>可以利用 string 属性获取节点元素包含的文本内容</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> The Dormouse's story
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="嵌套选择-1">嵌套选择</h2>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;class 'bs4.element.Tag'&gt;
+The Dormouse's story
+</code></pre></div></div>
+
+<h2 id="关联选择-1">关联选择</h2>
+
+<ol>
+  <li>
+    <p>子节点和子孙节点</p>
+
+    <p>选取节点元素之后，如果先要获取他的直接子节点，可以调用 contents 属性</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+
+ &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;The Dormouse's story&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">contents</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ['\n    Once upon a time there were three little sisters; and their names were\n    ', &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;, '\n', &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, ' \nand\n', &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;, '\nand they lived at the bottom of a well.\n']
+</code></pre></div>    </div>
+    <p>contents 得到的是直接子节点的列表</p>
+
+    <p>同样，我们可以调用 children 属性得到相应的结果</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+ <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">children</span><span class="p">):</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;list_iterator object at 0x000000000B301D48&gt;
+ 0 
+     Once upon a time there were three little sisters; and their names were
+        
+ 1 &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ 2 
+ 3 &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ 4  
+ and
+ 5 &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ 6 
+ and they lived at the bottom of a well.
+</code></pre></div>    </div>
+    <p>如果要得到所有的子孙节点，可以调用 descendants 属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">descendants</span><span class="p">)</span>
+ <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">descendants</span><span class="p">):</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;generator object Tag.descendants at 0x000000000B2B9548&gt;
+ 0 
+     Once upon a time there were three little sisters; and their names were
+        
+ 1 &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ 2 
+ 3 &lt;span&gt;Elsie&lt;/span&gt;
+ 4 Elsie
+ 5 
+ 6 
+ 7 &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ 8 Lacie
+ 9  
+ and
+ 10 &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ 11 Tillie
+ 12 
+ and they lived at the bottom of a well.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>父节点和祖先节点</p>
+
+    <p>如果要获取某个节点元素的父节点，可以调用 parent 属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parent</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+</code></pre></div>    </div>
+    <p>如果想获取所有的祖先节点，可以调用parents 属性：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">parents</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)))</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;class 'generator'&gt;
+ [(0, &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;), (1, &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+ &lt;/body&gt;), (2, &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;The Dormouse's story&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+ &lt;/body&gt;&lt;/html&gt;), (3, &lt;html&gt;
+ &lt;head&gt;
+ &lt;title&gt;The Dormouse's story&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+     Once upon a time there were three little sisters; and their names were
+     &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+ and
+ &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+ and they lived at the bottom of a well.
+ &lt;/p&gt;
+ &lt;p class="story"&gt;...&lt;/p&gt;
+ &lt;/body&gt;&lt;/html&gt;)]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>兄弟节点</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+
+ &lt;html&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+         Once upon a time there were three little sisters; and their names were
+ &lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;
+ &lt;span&gt;Elsie&lt;/span&gt;
+ &lt;/a&gt;
+         Hello
+ &lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; 
+         and
+ &lt;a href="http://example.com/tillie" class="sister" id="link3"&gt;Tillie&lt;/a&gt;
+         and they lived at the bottom of a well.
+ &lt;/p&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Next Sibling'</span><span class="p">,</span> <span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Prev Sibling'</span><span class="p">,</span> <span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">previous_sibling</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Next Siblings'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_siblings</span><span class="p">)))</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Prev Siblings'</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">previous_siblings</span><span class="p">)))</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Next Sibling 
+         Hello
+ Prev Sibling 
+         Once upon a time there were three little sisters; and their names were
+ Next Siblings [(0, '\n        Hello\n'), (1, &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;), (2, ' \n        and\n'), (3, &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;), (4, '\n        and they lived at the bottom of a well.\n')]
+ Prev Siblings [(0, '\n        Once upon a time there were three little sisters; and their names were\n')]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>提取信息</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;html&gt;
+ &lt;body&gt;
+ &lt;p class="story"&gt;
+         Once upon a time there were three little sisters; and their names were
+ &lt;a href="http://example.com/elsie" class="sister" id="link1"&gt;Bob&lt;/a&gt;&lt;a href="http://example.com/lacie" class="sister" id="link2"&gt;Lacie&lt;/a&gt; 
+
+ &lt;/p&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Next Sibling:'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Parent:'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">attrs</span><span class="p">[</span><span class="s">'class'</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Next Sibling:
+ &lt;class 'bs4.element.Tag'&gt;
+ &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ Lacie
+ Parent:
+ &lt;class 'generator'&gt;
+ &lt;p class="story"&gt;
+         Once upon a time there were three little sisters; and their names were
+ &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Bob&lt;/a&gt;&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+ &lt;/p&gt;
+ ['story']
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="方法选择器-1">方法选择器</h2>
+
+<ul>
+  <li>
+    <p>find_all()</p>
+
+    <ol>
+      <li>
+        <p>name</p>
+
+        <p>我们可以根据节点名来查询元素</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;div class="panel"&gt;
+ &lt;div class="panel-heading"&gt;
+ &lt;h4&gt;Hello&lt;/h4&gt;
+ &lt;/div&gt;
+ &lt;div class="panel-body"&gt;
+ &lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;ul class="list list-small" id="list-2"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ul'</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ul'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [&lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;, &lt;ul class="list list-small" id="list-2"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;/ul&gt;]
+ &lt;class 'bs4.element.Tag'&gt;
+</code></pre></div>        </div>
+        <p>因为都是 Tag 类型，所以依然可以进行嵌套查询。</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'ul'</span><span class="p">):</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'li'</span><span class="p">))</span>
+ <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">ul</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'li'</span><span class="p">):</span>
+     <span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;]
+ Foo
+ Bar
+ Jay
+ [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+ Foo
+ Bar
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>attrs</p>
+
+        <p>除了工具节点名查询，我们也可以传入一些属性来查询，        对于一些常用的属性，比如 id 和 class 等，我们可以不用 attrs 来传递</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;div class="panel"&gt;
+ &lt;div class="panel-heading"&gt;
+ &lt;h4&gt;Hello&lt;/h4&gt;
+ &lt;/div&gt;
+ &lt;div class="panel-body"&gt;
+ &lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;ul class="list list-small" id="list-2"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">'id'</span><span class="p">:</span> <span class="s">'list-1'</span><span class="p">}))</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'elements'</span><span class="p">}))</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'-----'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s">'list-1'</span><span class="p">))</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="s">'element'</span><span class="p">))</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [&lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;]
+ []
+ -----
+ [&lt;ul class="list" id="list-1"&gt;
+ &lt;li class="element"&gt;Foo&lt;/li&gt;
+ &lt;li class="element"&gt;Bar&lt;/li&gt;
+ &lt;li class="element"&gt;Jay&lt;/li&gt;
+ &lt;/ul&gt;]
+ [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;, &lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>text</p>
+
+        <p>text 参数可用来匹配节点的文本，传入的形式可以是字符串，可以是正则表达式对象</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">re</span>
+
+ <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+ <span class="n">html</span> <span class="o">=</span> <span class="s">"""
+ &lt;div class="panel"&gt;
+ &lt;div class="panel-body"&gt;
+ &lt;a&gt;Hello, this is a link&lt;/a&gt;
+ &lt;a&gt;Hello, this is a link, too&lt;/a&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+ """</span>
+
+ <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="s">'link'</span><span class="p">)))</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ['Hello, this is a link', 'Hello, this is a link, too']
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>find()
+find() 返回的是单个元素
+```python
+from bs4 import BeautifulSoup</p>
+  </li>
+</ul>
+
+<p>html = “””</p>
+<div class="panel">
+<div class="panel-heading">
+<h4>Hello</h4>
+</div>
+<div class="panel-body">
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<ul class="list list-small" id="list-2">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+</ul>
+</div>
+</div>
+<p>”””</p>
+
+<p>soup = BeautifulSoup(html, ‘lxml’)
+print(soup.find(name=’ul’))
+print(type(soup.find(name=’ul’)))
+print(soup.find(class_=’list’))</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>运行结果：
+</code></pre></div></div>
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<p>&lt;class ‘bs4.element.Tag’&gt;</p>
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    - find_parents() 和 find_parent()： 前者返回所有祖先节点，后者返回直接父节点
+    - find_next_siblings() 和 find_next_sibling()： 前者返回后面所有的兄弟节点，后者返回后面第一个兄弟节点
+    - find_previous_siblings() 和 find_previous_sibling()： 前者返回前面所有的兄弟节点，后者返回前面第一个兄弟节点
+    - find_all_next() 和 find_next()： 前者返回节点后所有符合条件的节点，后者返回第一个符合条件的节点
+    - find_all_previous() 和 fing_previous()： 前者返回节点前所有符合条件的节点，后者返回第一个符合条件的节点
+
+## CSS 选择器
+使用 CSS 选择器时，只需要调用 select() 方法，传入相应的 CSS 选择器即可
+```python
+from bs4 import BeautifulSoup
+
+html = """
+&lt;div class="panel"&gt;
+&lt;div class="panel-heading"&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div class="panel-body"&gt;
+&lt;ul class="list" id="list-1"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;li class="element"&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class="list list-small" id="list-2"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""
+
+soup = BeautifulSoup(html, 'lxml')
+print(soup.select('.panel .panel-heading'))
+print(soup.select('ul li'))
+print(soup.select('#list-2 .element'))
+print(type(soup.select('ul')[0]))
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;div class="panel-heading"&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;, &lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+&lt;class 'bs4.element.Tag'&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>嵌套选择</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+  <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'ul'</span><span class="p">):</span>
+      <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'li'</span><span class="p">))</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;]
+  [&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取属性</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+  <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'ul'</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">[</span><span class="s">'id'</span><span class="p">])</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">'id'</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  list-1
+  list-1
+  list-2
+  list-2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取文本</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+  <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="s">'lxml'</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="n">select</span><span class="p">(</span><span class="s">'li'</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">'GET Text:'</span><span class="p">,</span> <span class="n">li</span><span class="p">.</span><span class="n">get_text</span><span class="p">())</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">'String:'</span><span class="p">,</span> <span class="n">li</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  GET Text: Foo
+  String: Foo
+  GET Text: Bar
+  String: Bar
+  GET Text: Jay
+  String: Jay
+  GET Text: Foo
+  String: Foo
+  GET Text: Bar
+  String: Bar
+</code></pre></div>    </div>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <p>e5c77ca (新页面)</p>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </li>
+</ul>
+:ET

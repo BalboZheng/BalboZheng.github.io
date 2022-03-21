@@ -1,0 +1,2 @@
+I"Z<p>redis.set(‘name’, ‘Hello’) redis.setrange(‘name’, 6, ‘World’)</p>
+:ET

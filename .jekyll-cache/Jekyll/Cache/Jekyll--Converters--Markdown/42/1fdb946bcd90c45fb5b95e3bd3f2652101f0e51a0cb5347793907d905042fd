@@ -1,0 +1,1495 @@
+I"s�<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2019-03-18-shortcut-keys.md
+—
+layout:     post
+title:      “IntelliJ 快捷键”
+subtitle:   “IntelliJ IDEA常用快捷键汇总”
+date:       2019-03-18 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - idea
+    - pycharm
+—</p>
+<h2 id="idea">IDEA</h2>
+<p>在使用IntelliJ Idea的时候，使用快捷键是必不可少的。掌握一些常用的快捷键能大大提高我们的开发效率。有些快捷键可以熟练的使用，但是还有另外一些快捷键虽然很好用，但是由于因为没有形成使用习惯或者没有理解快捷键的用法，甚至之前对一些快捷键根本没有概念，导致不会去使用。对于这些快捷键，如果能够用好，编辑代码的效率必能提高一个水平。所以在此梳理出来，加强自己的使用，形成习惯。
+（注：有些操作的快捷键做了更改，和IntelliJ Idea默认的快捷键不一样）</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Move Caret to Code Block End</td>
+      <td>Ctrl+]</td>
+      <td>诸如{}围起来的代码块，使用该快捷键可以快速跳转至代码块的结尾处</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Code Block Start</td>
+      <td>Ctrl+[</td>
+      <td>同上，快速跳至代码块的开始出</td>
+    </tr>
+    <tr>
+      <td>Complete Current Statement</td>
+      <td>Ctrl+Shift+Enter</td>
+      <td>将输入的if、for、函数等等补上{}或者;使代码语句完整</td>
+    </tr>
+    <tr>
+      <td>Start New Line</td>
+      <td>Shift+Enter</td>
+      <td>在当前行的下方开始新行</td>
+    </tr>
+    <tr>
+      <td>Start New Line Before Current</td>
+      <td>Ctrl+Delete</td>
+      <td>删除光标所在至单词结尾处的所有字符</td>
+    </tr>
+    <tr>
+      <td>Delete to Word Start</td>
+      <td>Ctrl+BackSpace</td>
+      <td>删除光标所在至单词开头的所有字符</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Previous Word</td>
+      <td>Ctrl+向左箭头</td>
+      <td>将光标移至前一个单词</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Next Word</td>
+      <td>Ctrl+向右箭头</td>
+      <td>将光标移至后一个单词</td>
+    </tr>
+    <tr>
+      <td>Scroll Up</td>
+      <td>Ctrl+向上箭头</td>
+      <td>向上滚动一行</td>
+    </tr>
+    <tr>
+      <td>Scroll Down</td>
+      <td>Ctrl+向下箭头</td>
+      <td>向下滚动一行</td>
+    </tr>
+    <tr>
+      <td>Extend Selection</td>
+      <td>Ctrl+W</td>
+      <td>选中整个单词</td>
+    </tr>
+    <tr>
+      <td>Toggle Case</td>
+      <td>Ctrl+Shift+U</td>
+      <td>切换大小写</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="edit">Edit</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Undo</td>
+      <td>Ctrl+Z</td>
+      <td>撤销</td>
+    </tr>
+    <tr>
+      <td>Redo</td>
+      <td>Ctrl+Shift+Z</td>
+      <td>重做</td>
+    </tr>
+    <tr>
+      <td>Cut</td>
+      <td>Ctrl+X</td>
+      <td>剪切</td>
+    </tr>
+    <tr>
+      <td>Copy</td>
+      <td>Ctrl+C</td>
+      <td>复制</td>
+    </tr>
+    <tr>
+      <td>Paste</td>
+      <td>Ctrl+V</td>
+      <td>粘贴</td>
+    </tr>
+    <tr>
+      <td>Join Lines</td>
+      <td>Ctrl+Shift+J</td>
+      <td>将选中的行合并成一行</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="find">Find</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Find</td>
+      <td>Ctrl+F</td>
+      <td>在当前文件中查找</td>
+    </tr>
+    <tr>
+      <td>Replace</td>
+      <td>Ctrl+R</td>
+      <td>替换字符串</td>
+    </tr>
+    <tr>
+      <td>Find in Path</td>
+      <td>Ctrl+Shift+F</td>
+      <td>在全局文件中查找字符串</td>
+    </tr>
+    <tr>
+      <td>Replace in Path</td>
+      <td>Ctrl+Shift+R</td>
+      <td>在全局中替换字符串</td>
+    </tr>
+    <tr>
+      <td>Find Usages</td>
+      <td>Alt+F7</td>
+      <td>查找当前变量的使用，并列表显示</td>
+    </tr>
+    <tr>
+      <td>Show Usages</td>
+      <td>Ctrl+Alt+F7</td>
+      <td>查找当前变量的使用，并直接对话框显示</td>
+    </tr>
+    <tr>
+      <td>Find Usages in File</td>
+      <td>Ctrl+F7</td>
+      <td>在文件中查找符号的使用</td>
+    </tr>
+    <tr>
+      <td>Highlight Usages in File</td>
+      <td>Ctrl+Shift+F7</td>
+      <td>在文件中高亮显示变量的使用</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里的快捷键用的频率还是很高的，但是之前用的最多的是Ctrl+F和Ctrl+Shift+F，后面相关的Find Usages基本上没有用过，后面应该多使用，有的时候相对Ctrl+F在文件内按字符串查找，还是更好用一些</p>
+<h3 id="navigate">Navigate</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Class…</td>
+      <td>Ctrl+N</td>
+      <td>查找类文件</td>
+    </tr>
+    <tr>
+      <td>File…</td>
+      <td>Ctrl+Shift+N</td>
+      <td>查找文件</td>
+    </tr>
+    <tr>
+      <td>Line…</td>
+      <td>Ctrl+G</td>
+      <td>定位到文件某一行</td>
+    </tr>
+    <tr>
+      <td>Back</td>
+      <td>Alt+向左箭头</td>
+      <td>返回至上次光标位置</td>
+    </tr>
+    <tr>
+      <td>Forward</td>
+      <td>Alt+向右箭头</td>
+      <td>返回至后一次光标位置</td>
+    </tr>
+    <tr>
+      <td>Last Edit Location</td>
+      <td>Ctrl+Shift+Backspace</td>
+      <td>返回上次编辑位置</td>
+    </tr>
+    <tr>
+      <td>Next Edit Location</td>
+      <td>Ctrl+Shift+反斜杠</td>
+      <td>返回后一次编辑位置</td>
+    </tr>
+    <tr>
+      <td>Declaration</td>
+      <td>Ctrl+B</td>
+      <td>定位至变量定义的位置</td>
+    </tr>
+    <tr>
+      <td>Implementation(s)</td>
+      <td>Ctrl+Alt+B</td>
+      <td>定位至选中类或方法的具体实现</td>
+    </tr>
+    <tr>
+      <td>Type Declaration</td>
+      <td>Ctrl+Shift+B</td>
+      <td>直接定位至光标所在变量的类型定义</td>
+    </tr>
+    <tr>
+      <td>Super Method</td>
+      <td>Ctrl+U</td>
+      <td>直接定位至当前方法override或者implements的方法定义处</td>
+    </tr>
+    <tr>
+      <td>File Structure</td>
+      <td>Ctrl+F12</td>
+      <td>显示当前文件的文件结构</td>
+    </tr>
+    <tr>
+      <td>File Path</td>
+      <td>Ctrl+Alt+F12</td>
+      <td>显示当前文件的路径，并可以方便的将相关父路径打开</td>
+    </tr>
+    <tr>
+      <td>Type Hierarchy</td>
+      <td>Ctrl+H</td>
+      <td>显示当前类的继承层次</td>
+    </tr>
+    <tr>
+      <td>Method Hierarchy</td>
+      <td>Ctrl+Shift+H</td>
+      <td>显示当前方法的继承层次</td>
+    </tr>
+    <tr>
+      <td>Call Hierarchy</td>
+      <td>Ctrl+Alt+H</td>
+      <td>显示当前方法的调用层次</td>
+    </tr>
+    <tr>
+      <td>Next Highlighted Error</td>
+      <td>F2</td>
+      <td>定位至下一个错误处</td>
+    </tr>
+    <tr>
+      <td>Previous Highlighted Error</td>
+      <td>Shift+F2</td>
+      <td>定位至前一个错误处</td>
+    </tr>
+    <tr>
+      <td>Previous Occurrence</td>
+      <td>Ctrl+Alt+向上箭头</td>
+      <td>查找前一个变量共现的地方</td>
+    </tr>
+    <tr>
+      <td>Next Occurrence</td>
+      <td>Ctrl+Alt+向下箭头</td>
+      <td>查找下一个变量共现的地方</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>目前还不知道Previous Occurrence 和 Next Occurrence是怎么用的，在变量上使用没有反应。不过在Edit–Find菜单下有几个菜单项：Find Next \/ Move to Next Occurrence、Find Previous \/ Move to Previous Occurrence等。当选中变量的时候，需要首先点击“Find Word at Caret”，然后再点击上述选项才有用</p>
+<h3 id="code">Code</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Override Methods…</td>
+      <td>Ctrl+O</td>
+      <td>重写基类的方法</td>
+    </tr>
+    <tr>
+      <td>Implement Methods…</td>
+      <td>Ctrl+I</td>
+      <td>实现基类或接口中的方法</td>
+    </tr>
+    <tr>
+      <td>Generate…</td>
+      <td>Alt+Insert</td>
+      <td>产生构造方法、getter/setter等方法</td>
+    </tr>
+    <tr>
+      <td>Surround With…</td>
+      <td>Ctrl+Alt+T</td>
+      <td>将选中的代码使用if、while、try/catch等包装</td>
+    </tr>
+    <tr>
+      <td>Unwrap/Remove…</td>
+      <td>Ctrl+Shift+Delete</td>
+      <td>去除相关的包装代码</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="completion">Completion</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Basic</td>
+      <td>Alt+/</td>
+      <td>自动完成</td>
+    </tr>
+    <tr>
+      <td>SmartType</td>
+      <td>Alt+Enter</td>
+      <td>自动提示完成</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="folding">Folding</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Expand</td>
+      <td>Ctrl+=</td>
+      <td>展开代码</td>
+    </tr>
+    <tr>
+      <td>Collapse</td>
+      <td>Ctrl+-</td>
+      <td>展开代码</td>
+    </tr>
+    <tr>
+      <td>Expand Recursively</td>
+      <td>Ctrl+Alt+=</td>
+      <td>递归展开代码</td>
+    </tr>
+    <tr>
+      <td>Collapse Recursively</td>
+      <td>Ctrl+Alt+-</td>
+      <td>递归收缩代码</td>
+    </tr>
+    <tr>
+      <td>Expand All</td>
+      <td>Ctrl+Shift+=</td>
+      <td>展开所有代码</td>
+    </tr>
+    <tr>
+      <td>Collapse All</td>
+      <td>Ctrl+Shift+-</td>
+      <td>收缩所有代码</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="refactor">Refactor</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rename</td>
+      <td>Shift+F6</td>
+      <td>重命名</td>
+    </tr>
+    <tr>
+      <td>Change Signature</td>
+      <td>Ctrl+F6</td>
+      <td>更改函数签名</td>
+    </tr>
+    <tr>
+      <td>Change Signature</td>
+      <td>Ctrl+Shift+F6</td>
+      <td>更改函数签名</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="other">Other</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert Live Template</td>
+      <td>Ctrl+J</td>
+      <td>插入Live Template</td>
+    </tr>
+    <tr>
+      <td>Surround with Live Template</td>
+      <td>Ctrl+Alt+J</td>
+      <td>使用Live Template包装</td>
+    </tr>
+    <tr>
+      <td>Comment with Line Comment</td>
+      <td>Ctrl+/</td>
+      <td>使用//进行注释</td>
+    </tr>
+    <tr>
+      <td>Comment with Line Comment</td>
+      <td>Ctrl+Shift+/</td>
+      <td>使用/**/进行注释</td>
+    </tr>
+    <tr>
+      <td>Reformat Code</td>
+      <td>Ctrl+Alt+L</td>
+      <td>格式化代码</td>
+    </tr>
+    <tr>
+      <td>Auto-Indent Lines</td>
+      <td>Ctrl+Alt+I</td>
+      <td>自动缩进行</td>
+    </tr>
+    <tr>
+      <td>Optimize Imports</td>
+      <td>Ctrl+Alt+O</td>
+      <td>优化import</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>| 动作              | 快捷键               | 说明                         |
+| ——————- | ———————– | —————————— |
+| Move Statement Down | Ctrl+Shift+向下箭头 | 将光标所在的代码块向下整体移动 |
+| Move Statement Up   | Ctrl+Shift+向上箭头 | 将光标所在的代码块向上移动 |
+| Move Element Left   | Ctrl+Alt+Shift+向左箭头 | 将元素向左移动          |
+| Move Element Right  | Ctrl+Alt+Shift+向右箭头 | 将元素向右移动          |
+| Move Line Down      | Alt+Shift+向下箭头  | 将行向下移动             |
+| Move Line Up        | Alt+Shift+向上箭头  | 将行向上移动             |
+—</p>
+<h2 id="pycharm">PYCHARM</h2>
+<h3 id="编辑editing">编辑（Editing）</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + Space | 基本的代码完成（类、方法、属性） | Ctrl + Alt + I | 自动缩进 |
+| Ctrl + Alt + Space | 快速导入任意类 | Tab / Shift + Tab | 缩进、不缩进当前行 ||
+| Ctrl + Shift + Enter | 语句完成 | Ctrl+X/Shift+Delete | 剪切当前行或选定的代码块到剪贴板 |
+| Ctrl + P | 参数信息（在方法中调用参数） | Ctrl+C/Ctrl+Insert | 复制当前行或选定的代码块到剪贴板 |
+| Ctrl + Q | 快速查看文档 | Ctrl+V/Shift+Insert | 从剪贴板粘贴 |
+| Shift + F1 | 外部文档 | Ctrl + Shift + V | 从最近的缓冲区粘贴 |
+| Ctrl + 鼠标 | 简介 | Ctrl + D | 复制选定的区域或行 |
+| Ctrl + F1 | 显示错误描述或警告信息 | Ctrl + Y | 删除选定的行 |
+| Alt + Insert | 自动生成代码 | Ctrl + Shift + J | 添加智能线 |
+| Ctrl + O | 重新方法 | Ctrl + Enter | 智能线切割 |
+| Ctrl + Alt + T | 选中 | Shift + Enter | 另起一行 |
+| Ctrl + / | 行注释 | Ctrl + Shift + U | 在选定的区域或代码块间切换 |
+| Ctrl + Shift + / | 块注释 | Ctrl + Delete | 删除到字符结束 |
+| Ctrl + W | 选中增加的代码块 | Ctrl + Backspace | 删除到字符开始 |
+| Ctrl + Shift + W | 回到之前状态 | Ctrl + Numpad+/- | 展开折叠代码块 |
+| Ctrl + Shift + ]/[ | 选定代码块结束、开始 | Ctrl + Numpad+ | 全部展开 |
+| Alt + Enter | 快速修正 | Ctrl + Numpad- | 全部折叠 |
+| Ctrl + Alt + L | 代码格式化 | Ctrl + F4 | 关闭运行的选项卡 |
+| Ctrl + Alt + O | 优化导入 |</p>
+
+<h3 id="查找替换searchreplace">查找/替换(Search/Replace)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| F3 | 下一个 | Ctrl + Shift + F | 全局查找 |
+| Shift + F3 | 前一个 | Ctrl + Shift + R | 全局替换 |
+| Ctrl + R | 替换 |</p>
+
+<h3 id="运行running">运行(Running)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Alt + Shift + F10 | 运行模式配置 | Shift + F9 | 调试 |
+| Alt + Shift + F9 | 调试模式配置 | Ctrl + Shift + F10 | 运行编辑器配置 |
+| Shift + F10 | 运行 | Ctrl + Alt + R | 运行manage.py任务 |</p>
+
+<h3 id="调试debugging">调试(Debugging)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| F8 | 跳过 | Ctrl + Alt + F8 | 快速验证表达式 |
+| F7 | 进入 | F9 | 恢复程序 |
+| Shift + F8 | 退出 | Ctrl + F8 | 断点开关 |
+| Alt + F9 | 运行游标 | Ctrl + Shift + F8 | 查看断点 |
+| Alt + F8 | 验证表达式 |</p>
+
+<h3 id="导航navigation">导航(Navigation)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + N | 跳转到类 | Ctrl + Shift + B | 跳转到类型声明 |
+| Ctrl + Shift + N | 跳转到符号 | Ctrl + U | 跳转到父方法、父类 |
+| Alt + Right/Left | 跳转到下一个、前一个编辑的选项卡 | Alt + Up/Down | 跳转到上一个、下一个方法 |
+| F12 | 回到先前的工具窗口 | Ctrl + ]/[ | 跳转到代码块结束、开始 |
+| Esc | 从工具窗口回到编辑窗口 | Ctrl + F12 | 弹出文件结构 |
+| Shift + Esc | 隐藏运行的、最近运行的窗口 | Ctrl + H | 类型层次结构 |
+| Ctrl + Shift + F4 | 关闭主动运行的选项卡 | Ctrl + Shift + H | 方法层次结构 |
+| Ctrl + G | 查看当前行号、字符号 | Ctrl + Alt + H | 调用层次结构 |
+| Ctrl + E | 当前文件弹出 | F2 / Shift + F2 | 下一条、前一条高亮的错误 |
+| Ctrl+Alt+Left/Right | 后退、前进 | F4 / Ctrl + Enter | 编辑资源、查看资源 |
+| Ctrl+Shift+Backspace | 导航到最近编辑区域 | Alt + Home | 显示导航条F11书签开关 |
+| Alt + F1 | 查找当前文件或标识 | Ctrl + Shift + F11 | 书签助记开关 |
+| Ctrl+B / Ctrl+Click | 跳转到声明 | Ctrl + #[0-9] | 跳转到标识的书签 |
+| Ctrl + Alt + B | 跳转到实现 | Shift + F11 | 显示书签 |
+| Ctrl + Shift + I | 查看快速定义 |  |  |</p>
+
+<h3 id="搜索相关usage-search">搜索相关(Usage Search)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Alt + F7/Ctrl + F7 | 文件中查询用法 | Ctrl + Alt + F7 | 显示用法 |
+| Ctrl + Shift + F7 | 文件中用法高亮显示 |</p>
+
+<h3 id="重构refactoring">重构(Refactoring)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| F5 | 复制 | Ctrl + Alt + M | 提取方法 |
+| F6 | 剪切 | Ctrl + Alt + V | 提取属性 |
+| Alt + Delete | 安全删除 | Ctrl + Alt + F | 提取字段 |
+| Shift + F6 | 重命名 | Ctrl + Alt + C | 提取常量 |
+| Ctrl + F6 | 更改签名 | Ctrl + Alt + P | 提取参数 |
+| Ctrl + Alt + N | 内联 |  |  |</p>
+
+<h3 id="控制vcslocal-history">控制VCS/Local History</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + K | 提交项目 | Alt + Shift + C | 查看最近的变化 |
+| Ctrl + T | 更新项目 | Alt + BackQuote(’)VCS | 快速弹出 |</p>
+
+<h3 id="模版live-templates">模版(Live Templates)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + Alt + J | 当前行使用模版 | Ctrl +Ｊ | 插入模版 |</p>
+
+<h3 id="基本general">基本(General)</h3>
+<p>| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Alt + #[0-9] | 打开相应的工具窗口 | Ctrl + BackQuote(’) | 快速切换当前计划 |
+| Ctrl + Alt + Y | 同步 | Ctrl + Alt + S | 打开设置页 |
+| Ctrl + Shift + F12 | 最大化编辑开关 | Ctrl + Shift + A | 查找编辑器里所有的动作 |
+| Alt + Shift + F | 添加到最喜欢 | Ctrl + Tab | 在窗口间进行切换 |
+| Alt + Shift + I | 根据配置检查当前文件 |</p>
+
+<h3 id="一些常用设置">一些常用设置：</h3>
+<ol>
+  <li>
+    <p>pycharm默认是自动保存的，习惯自己按ctrl + s 的可以进行如下设置：</p>
+
+    <ol>
+      <li>file -&gt; Setting -&gt; General -&gt; Synchronization -&gt; Save files on frame deactivation 和 Save files automatically if application is idle for .. sec 的勾去掉</li>
+      <li>file -&gt;Setting -&gt; Editor -&gt; Editor Tabs -&gt; Mark modified tabs with asterisk 打上勾</li>
+    </ol>
+  </li>
+  <li>Alt + Enter: 自动添加包</li>
+  <li>对于常用的快捷键，可以设置为visual studio(eclipse…)一样的：file -&gt; Setting -&gt; Keymap -&gt; Keymaps -&gt; vuisual studio -&gt; Apply</li>
+  <li>Pycharm中默认是不能用Ctrl+滚轮改变字体大小的，可以在file -&gt; Setting -&gt;Editor-〉Mouse中设置</li>
+  <li>要设置Pycharm的字体，要先在file -&gt; Setting -&gt;Editor-〉Editor中选择一种风格并保存，然后才可以改变</li>
+  <li>
+    <h1 id="在setting中搜索theme可以改变主题所有配色统一改变">在setting中搜索theme可以改变主题，所有配色统一改变</h1>
+    <hr />
+    <p>layout:     post
+title:      “IntelliJ 快捷键”
+subtitle:   “IntelliJ IDEA常用快捷键汇总”
+date:       2019-03-18 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+catalog: true
+tags:</p>
+    <ul>
+      <li>idea</li>
+      <li>
+        <h2 id="pycharm-1">pycharm</h2>
+        <p>=======
+—
+layout: post
+title: IDE 快捷键
+subtitle: IntelliJ IDEA常用快捷键汇总
+author: Balbo Cheng
+categories: 
+tags: [idea, pycharm, webstorm]
+—</p>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+              <h2 id="idea-1">IDEA</h2>
+              <p>在使用IntelliJ Idea的时候，使用快捷键是必不可少的。掌握一些常用的快捷键能大大提高我们的开发效率。有些快捷键可以熟练的使用，但是还有另外一些快捷键虽然很好用，但是由于因为没有形成使用习惯或者没有理解快捷键的用法，甚至之前对一些快捷键根本没有概念，导致不会去使用。对于这些快捷键，如果能够用好，编辑代码的效率必能提高一个水平。所以在此梳理出来，加强自己的使用，形成习惯。
+（注：有些操作的快捷键做了更改，和IntelliJ Idea默认的快捷键不一样）</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Move Caret to Code Block End</td>
+      <td>Ctrl+]</td>
+      <td>诸如{}围起来的代码块，使用该快捷键可以快速跳转至代码块的结尾处</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Code Block Start</td>
+      <td>Ctrl+[</td>
+      <td>同上，快速跳至代码块的开始出</td>
+    </tr>
+    <tr>
+      <td>Complete Current Statement</td>
+      <td>Ctrl+Shift+Enter</td>
+      <td>将输入的if、for、函数等等补上{}或者;使代码语句完整</td>
+    </tr>
+    <tr>
+      <td>Start New Line</td>
+      <td>Shift+Enter</td>
+      <td>在当前行的下方开始新行</td>
+    </tr>
+    <tr>
+      <td>Start New Line Before Current</td>
+      <td>Ctrl+Delete</td>
+      <td>删除光标所在至单词结尾处的所有字符</td>
+    </tr>
+    <tr>
+      <td>Delete to Word Start</td>
+      <td>Ctrl+BackSpace</td>
+      <td>删除光标所在至单词开头的所有字符</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Previous Word</td>
+      <td>Ctrl+向左箭头</td>
+      <td>将光标移至前一个单词</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Next Word</td>
+      <td>Ctrl+向右箭头</td>
+      <td>将光标移至后一个单词</td>
+    </tr>
+    <tr>
+      <td>Scroll Up</td>
+      <td>Ctrl+向上箭头</td>
+      <td>向上滚动一行</td>
+    </tr>
+    <tr>
+      <td>Scroll Down</td>
+      <td>Ctrl+向下箭头</td>
+      <td>向下滚动一行</td>
+    </tr>
+    <tr>
+      <td>Extend Selection</td>
+      <td>Ctrl+W</td>
+      <td>选中整个单词</td>
+    </tr>
+    <tr>
+      <td>Toggle Case</td>
+      <td>Ctrl+Shift+U</td>
+      <td>切换大小写</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="edit-1">Edit</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Undo</td>
+      <td>Ctrl+Z</td>
+      <td>撤销</td>
+    </tr>
+    <tr>
+      <td>Redo</td>
+      <td>Ctrl+Shift+Z</td>
+      <td>重做</td>
+    </tr>
+    <tr>
+      <td>Cut</td>
+      <td>Ctrl+X</td>
+      <td>剪切</td>
+    </tr>
+    <tr>
+      <td>Copy</td>
+      <td>Ctrl+C</td>
+      <td>复制</td>
+    </tr>
+    <tr>
+      <td>Paste</td>
+      <td>Ctrl+V</td>
+      <td>粘贴</td>
+    </tr>
+    <tr>
+      <td>Join Lines</td>
+      <td>Ctrl+Shift+J</td>
+      <td>将选中的行合并成一行</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="find-1">Find</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Find</td>
+      <td>Ctrl+F</td>
+      <td>在当前文件中查找</td>
+    </tr>
+    <tr>
+      <td>Replace</td>
+      <td>Ctrl+R</td>
+      <td>替换字符串</td>
+    </tr>
+    <tr>
+      <td>Find in Path</td>
+      <td>Ctrl+Shift+F</td>
+      <td>在全局文件中查找字符串</td>
+    </tr>
+    <tr>
+      <td>Replace in Path</td>
+      <td>Ctrl+Shift+R</td>
+      <td>在全局中替换字符串</td>
+    </tr>
+    <tr>
+      <td>Find Usages</td>
+      <td>Alt+F7</td>
+      <td>查找当前变量的使用，并列表显示</td>
+    </tr>
+    <tr>
+      <td>Show Usages</td>
+      <td>Ctrl+Alt+F7</td>
+      <td>查找当前变量的使用，并直接对话框显示</td>
+    </tr>
+    <tr>
+      <td>Find Usages in File</td>
+      <td>Ctrl+F7</td>
+      <td>在文件中查找符号的使用</td>
+    </tr>
+    <tr>
+      <td>Highlight Usages in File</td>
+      <td>Ctrl+Shift+F7</td>
+      <td>在文件中高亮显示变量的使用</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里的快捷键用的频率还是很高的，但是之前用的最多的是Ctrl+F和Ctrl+Shift+F，后面相关的Find Usages基本上没有用过，后面应该多使用，有的时候相对Ctrl+F在文件内按字符串查找，还是更好用一些</p>
+<h3 id="navigate-1">Navigate</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Class…</td>
+      <td>Ctrl+N</td>
+      <td>查找类文件</td>
+    </tr>
+    <tr>
+      <td>File…</td>
+      <td>Ctrl+Shift+N</td>
+      <td>查找文件</td>
+    </tr>
+    <tr>
+      <td>Line…</td>
+      <td>Ctrl+G</td>
+      <td>定位到文件某一行</td>
+    </tr>
+    <tr>
+      <td>Back</td>
+      <td>Alt+向左箭头</td>
+      <td>返回至上次光标位置</td>
+    </tr>
+    <tr>
+      <td>Forward</td>
+      <td>Alt+向右箭头</td>
+      <td>返回至后一次光标位置</td>
+    </tr>
+    <tr>
+      <td>Last Edit Location</td>
+      <td>Ctrl+Shift+Backspace</td>
+      <td>返回上次编辑位置</td>
+    </tr>
+    <tr>
+      <td>Next Edit Location</td>
+      <td>Ctrl+Shift+反斜杠</td>
+      <td>返回后一次编辑位置</td>
+    </tr>
+    <tr>
+      <td>Declaration</td>
+      <td>Ctrl+B</td>
+      <td>定位至变量定义的位置</td>
+    </tr>
+    <tr>
+      <td>Implementation(s)</td>
+      <td>Ctrl+Alt+B</td>
+      <td>定位至选中类或方法的具体实现</td>
+    </tr>
+    <tr>
+      <td>Type Declaration</td>
+      <td>Ctrl+Shift+B</td>
+      <td>直接定位至光标所在变量的类型定义</td>
+    </tr>
+    <tr>
+      <td>Super Method</td>
+      <td>Ctrl+U</td>
+      <td>直接定位至当前方法override或者implements的方法定义处</td>
+    </tr>
+    <tr>
+      <td>File Structure</td>
+      <td>Ctrl+F12</td>
+      <td>显示当前文件的文件结构</td>
+    </tr>
+    <tr>
+      <td>File Path</td>
+      <td>Ctrl+Alt+F12</td>
+      <td>显示当前文件的路径，并可以方便的将相关父路径打开</td>
+    </tr>
+    <tr>
+      <td>Type Hierarchy</td>
+      <td>Ctrl+H</td>
+      <td>显示当前类的继承层次</td>
+    </tr>
+    <tr>
+      <td>Method Hierarchy</td>
+      <td>Ctrl+Shift+H</td>
+      <td>显示当前方法的继承层次</td>
+    </tr>
+    <tr>
+      <td>Call Hierarchy</td>
+      <td>Ctrl+Alt+H</td>
+      <td>显示当前方法的调用层次</td>
+    </tr>
+    <tr>
+      <td>Next Highlighted Error</td>
+      <td>F2</td>
+      <td>定位至下一个错误处</td>
+    </tr>
+    <tr>
+      <td>Previous Highlighted Error</td>
+      <td>Shift+F2</td>
+      <td>定位至前一个错误处</td>
+    </tr>
+    <tr>
+      <td>Previous Occurrence</td>
+      <td>Ctrl+Alt+向上箭头</td>
+      <td>查找前一个变量共现的地方</td>
+    </tr>
+    <tr>
+      <td>Next Occurrence</td>
+      <td>Ctrl+Alt+向下箭头</td>
+      <td>查找下一个变量共现的地方</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>目前还不知道Previous Occurrence 和 Next Occurrence是怎么用的，在变量上使用没有反应。不过在Edit–Find菜单下有几个菜单项：Find Next \/ Move to Next Occurrence、Find Previous \/ Move to Previous Occurrence等。当选中变量的时候，需要首先点击“Find Word at Caret”，然后再点击上述选项才有用</p>
+<h3 id="code-1">Code</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Override Methods…</td>
+      <td>Ctrl+O</td>
+      <td>重写基类的方法</td>
+    </tr>
+    <tr>
+      <td>Implement Methods…</td>
+      <td>Ctrl+I</td>
+      <td>实现基类或接口中的方法</td>
+    </tr>
+    <tr>
+      <td>Generate…</td>
+      <td>Alt+Insert</td>
+      <td>产生构造方法、getter/setter等方法</td>
+    </tr>
+    <tr>
+      <td>Surround With…</td>
+      <td>Ctrl+Alt+T</td>
+      <td>将选中的代码使用if、while、try/catch等包装</td>
+    </tr>
+    <tr>
+      <td>Unwrap/Remove…</td>
+      <td>Ctrl+Shift+Delete</td>
+      <td>去除相关的包装代码</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="completion-1">Completion</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Basic</td>
+      <td>Alt+/</td>
+      <td>自动完成</td>
+    </tr>
+    <tr>
+      <td>SmartType</td>
+      <td>Alt+Enter</td>
+      <td>自动提示完成</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="folding-1">Folding</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Expand</td>
+      <td>Ctrl+=</td>
+      <td>展开代码</td>
+    </tr>
+    <tr>
+      <td>Collapse</td>
+      <td>Ctrl+-</td>
+      <td>展开代码</td>
+    </tr>
+    <tr>
+      <td>Expand Recursively</td>
+      <td>Ctrl+Alt+=</td>
+      <td>递归展开代码</td>
+    </tr>
+    <tr>
+      <td>Collapse Recursively</td>
+      <td>Ctrl+Alt+-</td>
+      <td>递归收缩代码</td>
+    </tr>
+    <tr>
+      <td>Expand All</td>
+      <td>Ctrl+Shift+=</td>
+      <td>展开所有代码</td>
+    </tr>
+    <tr>
+      <td>Collapse All</td>
+      <td>Ctrl+Shift+-</td>
+      <td>收缩所有代码</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="refactor-1">Refactor</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rename</td>
+      <td>Shift+F6</td>
+      <td>重命名</td>
+    </tr>
+    <tr>
+      <td>Change Signature</td>
+      <td>Ctrl+F6</td>
+      <td>更改函数签名</td>
+    </tr>
+    <tr>
+      <td>Change Signature</td>
+      <td>Ctrl+Shift+F6</td>
+      <td>更改函数签名</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="other-1">Other</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert Live Template</td>
+      <td>Ctrl+J</td>
+      <td>插入Live Template</td>
+    </tr>
+    <tr>
+      <td>Surround with Live Template</td>
+      <td>Ctrl+Alt+J</td>
+      <td>使用Live Template包装</td>
+    </tr>
+    <tr>
+      <td>Comment with Line Comment</td>
+      <td>Ctrl+/</td>
+      <td>使用//进行注释</td>
+    </tr>
+    <tr>
+      <td>Comment with Line Comment</td>
+      <td>Ctrl+Shift+/</td>
+      <td>使用/**/进行注释</td>
+    </tr>
+    <tr>
+      <td>Reformat Code</td>
+      <td>Ctrl+Alt+L</td>
+      <td>格式化代码</td>
+    </tr>
+    <tr>
+      <td>Auto-Indent Lines</td>
+      <td>Ctrl+Alt+I</td>
+      <td>自动缩进行</td>
+    </tr>
+    <tr>
+      <td>Optimize Imports</td>
+      <td>Ctrl+Alt+O</td>
+      <td>优化import</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>| 动作              | 快捷键               | 说明                         |
+| ——————- | ———————– | —————————— |
+| Move Statement Down | Ctrl+Shift+向下箭头 | 将光标所在的代码块向下整体移动 |
+| Move Statement Up   | Ctrl+Shift+向上箭头 | 将光标所在的代码块向上移动 |
+| Move Element Left   | Ctrl+Alt+Shift+向左箭头 | 将元素向左移动          |
+| Move Element Right  | Ctrl+Alt+Shift+向右箭头 | 将元素向右移动          |
+| Move Line Down      | Alt+Shift+向下箭头  | 将行向下移动             |
+| Move Line Up        | Alt+Shift+向上箭头  | 将行向上移动             |
+«««&lt; HEAD
+—</p>
+<h2 id="pycharm-2">PYCHARM</h2>
+<h3 id="编辑editing-1">编辑（Editing）</h3>
+<p>=======</p>
+
+<h2 id="pycharm-3">PYCHARM</h2>
+<h3 id="编辑editing-2">编辑（Editing）</h3>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + Space | 基本的代码完成（类、方法、属性） | Ctrl + Alt + I | 自动缩进 |
+| Ctrl + Alt + Space | 快速导入任意类 | Tab / Shift + Tab | 缩进、不缩进当前行 ||
+| Ctrl + Shift + Enter | 语句完成 | Ctrl+X/Shift+Delete | 剪切当前行或选定的代码块到剪贴板 |
+| Ctrl + P | 参数信息（在方法中调用参数） | Ctrl+C/Ctrl+Insert | 复制当前行或选定的代码块到剪贴板 |
+| Ctrl + Q | 快速查看文档 | Ctrl+V/Shift+Insert | 从剪贴板粘贴 |
+| Shift + F1 | 外部文档 | Ctrl + Shift + V | 从最近的缓冲区粘贴 |
+| Ctrl + 鼠标 | 简介 | Ctrl + D | 复制选定的区域或行 |
+| Ctrl + F1 | 显示错误描述或警告信息 | Ctrl + Y | 删除选定的行 |
+| Alt + Insert | 自动生成代码 | Ctrl + Shift + J | 添加智能线 |
+| Ctrl + O | 重新方法 | Ctrl + Enter | 智能线切割 |
+| Ctrl + Alt + T | 选中 | Shift + Enter | 另起一行 |
+| Ctrl + / | 行注释 | Ctrl + Shift + U | 在选定的区域或代码块间切换 |
+| Ctrl + Shift + / | 块注释 | Ctrl + Delete | 删除到字符结束 |
+| Ctrl + W | 选中增加的代码块 | Ctrl + Backspace | 删除到字符开始 |
+| Ctrl + Shift + W | 回到之前状态 | Ctrl + Numpad+/- | 展开折叠代码块 |
+| Ctrl + Shift + ]/[ | 选定代码块结束、开始 | Ctrl + Numpad+ | 全部展开 |
+| Alt + Enter | 快速修正 | Ctrl + Numpad- | 全部折叠 |
+| Ctrl + Alt + L | 代码格式化 | Ctrl + F4 | 关闭运行的选项卡 |
+| Ctrl + Alt + O | 优化导入 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="查找替换searchreplace-1">查找/替换(Search/Replace)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| F3 | 下一个 | Ctrl + Shift + F | 全局查找 |
+| Shift + F3 | 前一个 | Ctrl + Shift + R | 全局替换 |
+| Ctrl + R | 替换 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="运行running-1">运行(Running)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Alt + Shift + F10 | 运行模式配置 | Shift + F9 | 调试 |
+| Alt + Shift + F9 | 调试模式配置 | Ctrl + Shift + F10 | 运行编辑器配置 |
+| Shift + F10 | 运行 | Ctrl + Alt + R | 运行manage.py任务 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="调试debugging-1">调试(Debugging)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| F8 | 跳过 | Ctrl + Alt + F8 | 快速验证表达式 |
+| F7 | 进入 | F9 | 恢复程序 |
+| Shift + F8 | 退出 | Ctrl + F8 | 断点开关 |
+| Alt + F9 | 运行游标 | Ctrl + Shift + F8 | 查看断点 |
+| Alt + F8 | 验证表达式 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="导航navigation-1">导航(Navigation)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + N | 跳转到类 | Ctrl + Shift + B | 跳转到类型声明 |
+| Ctrl + Shift + N | 跳转到符号 | Ctrl + U | 跳转到父方法、父类 |
+| Alt + Right/Left | 跳转到下一个、前一个编辑的选项卡 | Alt + Up/Down | 跳转到上一个、下一个方法 |
+| F12 | 回到先前的工具窗口 | Ctrl + ]/[ | 跳转到代码块结束、开始 |
+| Esc | 从工具窗口回到编辑窗口 | Ctrl + F12 | 弹出文件结构 |
+| Shift + Esc | 隐藏运行的、最近运行的窗口 | Ctrl + H | 类型层次结构 |
+| Ctrl + Shift + F4 | 关闭主动运行的选项卡 | Ctrl + Shift + H | 方法层次结构 |
+| Ctrl + G | 查看当前行号、字符号 | Ctrl + Alt + H | 调用层次结构 |
+| Ctrl + E | 当前文件弹出 | F2 / Shift + F2 | 下一条、前一条高亮的错误 |
+| Ctrl+Alt+Left/Right | 后退、前进 | F4 / Ctrl + Enter | 编辑资源、查看资源 |
+| Ctrl+Shift+Backspace | 导航到最近编辑区域 | Alt + Home | 显示导航条F11书签开关 |
+| Alt + F1 | 查找当前文件或标识 | Ctrl + Shift + F11 | 书签助记开关 |
+| Ctrl+B / Ctrl+Click | 跳转到声明 | Ctrl + #[0-9] | 跳转到标识的书签 |
+| Ctrl + Alt + B | 跳转到实现 | Shift + F11 | 显示书签 |
+| Ctrl + Shift + I | 查看快速定义 |  |  |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="搜索相关usage-search-1">搜索相关(Usage Search)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Alt + F7/Ctrl + F7 | 文件中查询用法 | Ctrl + Alt + F7 | 显示用法 |
+| Ctrl + Shift + F7 | 文件中用法高亮显示 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="重构refactoring-1">重构(Refactoring)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| F5 | 复制 | Ctrl + Alt + M | 提取方法 |
+| F6 | 剪切 | Ctrl + Alt + V | 提取属性 |
+| Alt + Delete | 安全删除 | Ctrl + Alt + F | 提取字段 |
+| Shift + F6 | 重命名 | Ctrl + Alt + C | 提取常量 |
+| Ctrl + F6 | 更改签名 | Ctrl + Alt + P | 提取参数 |
+| Ctrl + Alt + N | 内联 |  |  |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="控制vcslocal-history-1">控制VCS/Local History</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + K | 提交项目 | Alt + Shift + C | 查看最近的变化 |
+| Ctrl + T | 更新项目 | Alt + BackQuote(’)VCS | 快速弹出 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="模版live-templates-1">模版(Live Templates)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Ctrl + Alt + J | 当前行使用模版 | Ctrl +Ｊ | 插入模版 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="基本general-1">基本(General)</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)
+| 命令 | 表述 | 命令 | 表述 |
+| —- | —- | —- | —- |
+| Alt + #[0-9] | 打开相应的工具窗口 | Ctrl + BackQuote(’) | 快速切换当前计划 |
+| Ctrl + Alt + Y | 同步 | Ctrl + Alt + S | 打开设置页 |
+| Ctrl + Shift + F12 | 最大化编辑开关 | Ctrl + Shift + A | 查找编辑器里所有的动作 |
+| Alt + Shift + F | 添加到最喜欢 | Ctrl + Tab | 在窗口间进行切换 |
+| Alt + Shift + I | 根据配置检查当前文件 |</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<h3 id="一些常用设置-1">一些常用设置：</h3>
+<p>«««&lt; HEAD
+=======</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+              <ol>
+                <li>pycharm默认是自动保存的，习惯自己按ctrl + s 的可以进行如下设置：</li>
+              </ol>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. file -&gt; Setting -&gt; General -&gt; Synchronization -&gt; Save files on frame deactivation 和 Save files automatically if application is idle for .. sec 的勾去掉
+2. file -&gt;Setting -&gt; Editor -&gt; Editor Tabs -&gt; Mark modified tabs with asterisk 打上勾
+</code></pre></div></div>
+
+<ol>
+  <li>Alt + Enter: 自动添加包</li>
+  <li>对于常用的快捷键，可以设置为visual studio(eclipse…)一样的：file -&gt; Setting -&gt; Keymap -&gt; Keymaps -&gt; vuisual studio -&gt; Apply</li>
+  <li>Pycharm中默认是不能用Ctrl+滚轮改变字体大小的，可以在file -&gt; Setting -&gt;Editor-〉Mouse中设置</li>
+  <li>要设置Pycharm的字体，要先在file -&gt; Setting -&gt;Editor-〉Editor中选择一种风格并保存，然后才可以改变
+«««&lt; HEAD</li>
+  <li>在setting中搜索theme可以改变主题，所有配色统一改变
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <h1 id="f0bfe13-new-update_posts知识点2019-03-18-shortcut-keysmd">f0bfe13 (new update):_posts/知识点/2019-03-18-shortcut-keys.md</h1>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </li>
+  <li>在setting中搜索theme可以改变主题，所有配色统一改变
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <blockquote>
+                <blockquote>
+                  <p>e5c77ca (新页面)</p>
+                </blockquote>
+              </blockquote>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </li>
+</ol>
+:ET

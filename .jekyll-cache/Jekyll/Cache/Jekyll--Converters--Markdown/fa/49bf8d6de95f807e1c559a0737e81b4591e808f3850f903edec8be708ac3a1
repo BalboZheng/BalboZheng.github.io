@@ -1,0 +1,126 @@
+I"�<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “Robots 协议”
+subtitle:   “分析robots协议”
+date:       2019-11-15 19:50:25
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - reptile
+—
+利用 urllib 的 robotparser 模块，我们可以实现网站 Robots 协议的分析。</p>
+
+<h2 id="robots-协议">Robots 协议</h2>
+<p>Robots 协议就是每个网站对于来到的爬虫所提出的要求。(并非强制要求遵守的协议，只是一种建议，但是如果不遵守有可能会承担法律责任。）</p>
+
+<p>每个网站的 Robots 协议都在该网站的根目录下，例如百度的 Robots 协议的位置就是 https://www.baidu.com/robots.txt 或者京东的 Robots 协议就在 https://www.jd.com/robots.txt</p>
+
+<p>下面给出一段京东的 Robots 的内容：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User-agent: * 
+Disallow: /?* 
+Disallow: /pop/*.html 
+Disallow: /pinpai/*.html?* 
+User-agent: EtaoSpider 
+Disallow: / 
+User-agent: HuihuiSpider 
+Disallow: / 
+User-agent: GwdangSpider 
+Disallow: / 
+User-agent: WochachaSpider 
+Disallow: /
+</code></pre></div></div>
+
+<p>第一个的意思就是说对于所有的爬虫，不能爬取在/？开头的路径，也不能访问和/pop/*.html 匹配的路径。
+后面四个用户代理的爬虫不允许访问任何资源。</p>
+
+<p>所以 Robots 协议的基本语法如下：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User-agent: 这里是爬虫的名字
+Disallow: /该爬虫不允许访问的内容
+</code></pre></div></div>
+
+<h2 id="robotparser">robotparser</h2>
+<p>连接 Robots 协议之后，我们就可以使用 robotparser 模块来解析 robots.txt。该模块提供了一个类 RobotFileParser，他可以根据摸网站的 robots.txt 文件来频段一个爬取爬出是否有权限来爬取这个网站</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">urllib.robotparser</span> <span class="kn">import</span> <span class="n">RobotFileParser</span>
+
+<span class="n">rp</span> <span class="o">=</span> <span class="n">RobotFileParser</span><span class="p">()</span>
+<span class="n">rp</span><span class="p">.</span><span class="n">set_url</span><span class="p">(</span><span class="s">'http://www.jianshu.com/robots.txt'</span><span class="p">)</span>
+<span class="n">rp</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rp</span><span class="p">.</span><span class="n">can_fetch</span><span class="p">(</span><span class="s">'*'</span><span class="p">,</span> <span class="s">'https://www.jianshu.com/p/46034a031b7a'</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rp</span><span class="p">.</span><span class="n">can_fetch</span><span class="p">(</span><span class="s">'*'</span><span class="p">,</span> <span class="s">'http://www.jianshu.com/search?q=python&amp;page=1&amp;type=collections'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>False
+False
+</code></pre></div></div>
+<p>=======
+—
+layout: post
+title: Robots 协议
+subtitle: 分析robots协议
+author: Balbo Cheng
+categories: python
+tags: [reptile]
+sidebar: []
+—
+利用 urllib 的 robotparser 模块，我们可以实现网站 Robots 协议的分析。</p>
+
+<h2 id="robots-协议-1">Robots 协议</h2>
+<p>Robots 协议就是每个网站对于来到的爬虫所提出的要求。(并非强制要求遵守的协议，只是一种建议，但是如果不遵守有可能会承担法律责任。）</p>
+
+<p>每个网站的 Robots 协议都在该网站的根目录下，例如百度的 Robots 协议的位置就是 https://www.baidu.com/robots.txt 或者京东的 Robots 协议就在 https://www.jd.com/robots.txt</p>
+
+<p>下面给出一段京东的 Robots 的内容：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User-agent: * 
+Disallow: /?* 
+Disallow: /pop/*.html 
+Disallow: /pinpai/*.html?* 
+User-agent: EtaoSpider 
+Disallow: / 
+User-agent: HuihuiSpider 
+Disallow: / 
+User-agent: GwdangSpider 
+Disallow: / 
+User-agent: WochachaSpider 
+Disallow: /
+</code></pre></div></div>
+
+<p>第一个的意思就是说对于所有的爬虫，不能爬取在/？开头的路径，也不能访问和/pop/*.html 匹配的路径。
+后面四个用户代理的爬虫不允许访问任何资源。</p>
+
+<p>所以 Robots 协议的基本语法如下：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User-agent: 这里是爬虫的名字
+Disallow: /该爬虫不允许访问的内容
+</code></pre></div></div>
+
+<h2 id="robotparser-1">robotparser</h2>
+<p>连接 Robots 协议之后，我们就可以使用 robotparser 模块来解析 robots.txt。该模块提供了一个类 RobotFileParser，他可以根据摸网站的 robots.txt 文件来频段一个爬取爬出是否有权限来爬取这个网站</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">urllib.robotparser</span> <span class="kn">import</span> <span class="n">RobotFileParser</span>
+
+<span class="n">rp</span> <span class="o">=</span> <span class="n">RobotFileParser</span><span class="p">()</span>
+<span class="n">rp</span><span class="p">.</span><span class="n">set_url</span><span class="p">(</span><span class="s">'http://www.jianshu.com/robots.txt'</span><span class="p">)</span>
+<span class="n">rp</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rp</span><span class="p">.</span><span class="n">can_fetch</span><span class="p">(</span><span class="s">'*'</span><span class="p">,</span> <span class="s">'https://www.jianshu.com/p/46034a031b7a'</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">rp</span><span class="p">.</span><span class="n">can_fetch</span><span class="p">(</span><span class="s">'*'</span><span class="p">,</span> <span class="s">'http://www.jianshu.com/search?q=python&amp;page=1&amp;type=collections'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>False
+False
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

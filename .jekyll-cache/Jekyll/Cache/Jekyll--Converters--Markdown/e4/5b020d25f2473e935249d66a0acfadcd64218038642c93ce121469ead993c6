@@ -1,0 +1,933 @@
+I"�<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “pyquery”
+subtitle:   “pyquery”
+date:       2019-11-21 12:46:22
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - reptile
+—</p>
+<h2 id="初始化">初始化</h2>
+
+<h3 id="字符串初始化">字符串初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div&gt;
+&lt;ul&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'li'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h3 id="url初始化">URL初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">'http://balbozheng.com'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'title'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;ZhengXuJi&lt;/title&gt;
+</code></pre></div></div>
+<p>也可以写成</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://balbozheng.com'</span><span class="p">).</span><span class="n">text</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'title'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="文件初始化">文件初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">'demo.html'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'li'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="基本-css-选择器">基本 CSS 选择器</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'#container .list li'</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'#container .list li'</span><span class="p">)))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;class 'pyquery.pyquery.PyQuery'&gt;
+</code></pre></div></div>
+
+<h2 id="查找节点">查找节点</h2>
+
+<h3 id="子节点">子节点</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+<span class="n">lis</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">'li'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">lis</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>fing() 的搜索范围是节点的所有子孙节点，如果我们只想查找子节点，那么可以用 children() 方法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lis</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">children</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">lis</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>or</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lis</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">children</span><span class="p">(</span><span class="s">'.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">lis</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h3 id="父节点">父节点</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="n">container</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">parent</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">container</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+<p>如果想获取某个祖先节点，可以用 parents() 方法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="n">parents</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">parents</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parents</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+<p>or</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="n">parents</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">parents</span><span class="p">(</span><span class="s">".wrap"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parents</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+
+<h3 id="兄弟节点">兄弟节点</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list .item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">siblings</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>or</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list .item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">siblings</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h2 id="遍历">遍历</h2>
+<p>对于单个节点来说，可以直接打印输出，也可以直接转成字符串：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list .item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">li</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>对于多个节点的结果，我们就需要遍历来获取</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">lis</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">li</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'generator'&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+</code></pre></div></div>
+
+<h2 id="获取信息">获取信息</h2>
+<h3 id="获取属性">获取属性</h3>
+
+<p>提取某个节点后，我们可以调用 attr() 方法来获取属性</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active a'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">'href'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt; &lt;class 'pyquery.pyquery.PyQuery'&gt;
+link3.html
+</code></pre></div></div>
+<p>如果要获取多个节点属性，我们就要使用遍历</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">a</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">'href'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>link2.html
+link3.html
+link4.html
+link5.html
+</code></pre></div></div>
+
+<h3 id="获取文本">获取文本</h3>
+<p>获取其内部文本</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active a'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;
+third item
+</code></pre></div></div>
+<p>如果想获取这个节点内部的 HTML 文本，就要用 html() 方法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active a'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">html</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;
+&lt;span class="bold"&gt;third item&lt;/span&gt;
+</code></pre></div></div>
+<p>如果我们选中的结果是多个节点，想要获取每个节点的内部 HTML 文本，则需要遍历每个节点。而 text() 方法你休安排遍历就可以获取</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">html</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">text</span><span class="p">()))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>first item
+first item second item third item fourth item fifth item
+&lt;class 'str'&gt;
+</code></pre></div></div>
+
+<h2 id="节点操作">节点操作</h2>
+<h3 id="addclass-和-removeclass">addClass 和 removeClass</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">remove_class</span><span class="p">(</span><span class="s">'active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">add_class</span><span class="p">(</span><span class="s">'active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>addClass() 和 removeClass() 这些方法可以动态改变节点的 Class 属性</p>
+
+<h3 id="attrtext-和-html">attr、text 和 html</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;ul class="list"&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'link'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="s">'changed item'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">html</span><span class="p">(</span><span class="s">'&lt;span&gt;changed item&lt;/span&gt;'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active" name="link"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active" name="link"&gt;changed item&lt;/li&gt;
+&lt;li class="item-0 active" name="link"&gt;&lt;span&gt;changed item&lt;/span&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h3 id="remove">remove()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+    Hello World
+&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">wrap</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.wrap'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">wrap</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+<span class="n">wrap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">'p'</span><span class="p">).</span><span class="n">remove</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">wrap</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello World
+This is a paragraph.
+Hello World
+</code></pre></div></div>
+
+<h2 id="伪类选择器">伪类选择器</h2>
+<p>CSS 选择器之所以强大，其中之一是因为他支持多种多样的伪类选择器</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:first-child'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:last-child'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:nth-child(2)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:gt(2)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:nth-child(2n)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:contains(second)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>=======
+—
+layout: post
+title: pyquery
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [reptile]
+—</p>
+<h2 id="初始化-1">初始化</h2>
+
+<h3 id="字符串初始化-1">字符串初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div&gt;
+&lt;ul&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'li'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h3 id="url初始化-1">URL初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s">'http://balbozheng.com'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'title'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;ZhengXuJi&lt;/title&gt;
+</code></pre></div></div>
+<p>也可以写成</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'http://balbozheng.com'</span><span class="p">).</span><span class="n">text</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'title'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="文件初始化-1">文件初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">'demo.html'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'li'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="基本-css-选择器-1">基本 CSS 选择器</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'#container .list li'</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">doc</span><span class="p">(</span><span class="s">'#container .list li'</span><span class="p">)))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;class 'pyquery.pyquery.PyQuery'&gt;
+</code></pre></div></div>
+
+<h2 id="查找节点-1">查找节点</h2>
+
+<h3 id="子节点-1">子节点</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+<span class="n">lis</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">'li'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">lis</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>fing() 的搜索范围是节点的所有子孙节点，如果我们只想查找子节点，那么可以用 children() 方法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lis</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">children</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">lis</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>or</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">lis</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">children</span><span class="p">(</span><span class="s">'.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">lis</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h3 id="父节点-1">父节点</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="n">container</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">parent</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">container</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">container</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+<p>如果想获取某个祖先节点，可以用 parents() 方法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="n">parents</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">parents</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parents</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+<p>or</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">items</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list'</span><span class="p">)</span>
+<span class="n">parents</span> <span class="o">=</span> <span class="n">items</span><span class="p">.</span><span class="n">parents</span><span class="p">(</span><span class="s">".wrap"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parents</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">parents</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+
+<h3 id="兄弟节点-1">兄弟节点</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list .item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">siblings</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>or</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list .item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">siblings</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h2 id="遍历-1">遍历</h2>
+<p>对于单个节点来说，可以直接打印输出，也可以直接转成字符串：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.list .item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">li</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>对于多个节点的结果，我们就需要遍历来获取</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">lis</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">lis</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">li</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;class 'generator'&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+ &lt;class 'pyquery.pyquery.PyQuery'&gt;
+</code></pre></div></div>
+
+<h2 id="获取信息-1">获取信息</h2>
+<h3 id="获取属性-1">获取属性</h3>
+
+<p>提取某个节点后，我们可以调用 attr() 方法来获取属性</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active a'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">'href'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt; &lt;class 'pyquery.pyquery.PyQuery'&gt;
+link3.html
+</code></pre></div></div>
+<p>如果要获取多个节点属性，我们就要使用遍历</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">a</span><span class="p">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">'href'</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>link2.html
+link3.html
+link4.html
+link5.html
+</code></pre></div></div>
+
+<h3 id="获取文本-1">获取文本</h3>
+<p>获取其内部文本</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active a'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;
+third item
+</code></pre></div></div>
+<p>如果想获取这个节点内部的 HTML 文本，就要用 html() 方法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active a'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">html</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;
+&lt;span class="bold"&gt;third item&lt;/span&gt;
+</code></pre></div></div>
+<p>如果我们选中的结果是多个节点，想要获取每个节点的内部 HTML 文本，则需要遍历每个节点。而 text() 方法你休安排遍历就可以获取</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">html</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">text</span><span class="p">()))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>first item
+first item second item third item fourth item fifth item
+&lt;class 'str'&gt;
+</code></pre></div></div>
+
+<h2 id="节点操作-1">节点操作</h2>
+<h3 id="addclass-和-removeclass-1">addClass 和 removeClass</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">remove_class</span><span class="p">(</span><span class="s">'active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">add_class</span><span class="p">(</span><span class="s">'active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<p>addClass() 和 removeClass() 这些方法可以动态改变节点的 Class 属性</p>
+
+<h3 id="attrtext-和-html-1">attr、text 和 html</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;ul class="list"&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.item-0.active'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">attr</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'link'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="s">'changed item'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span><span class="p">.</span><span class="n">html</span><span class="p">(</span><span class="s">'&lt;span&gt;changed item&lt;/span&gt;'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active" name="link"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active" name="link"&gt;changed item&lt;/li&gt;
+&lt;li class="item-0 active" name="link"&gt;&lt;span&gt;changed item&lt;/span&gt;&lt;/li&gt;
+</code></pre></div></div>
+
+<h3 id="remove-1">remove()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+    Hello World
+&lt;p&gt;This is a paragraph.&lt;/p&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">wrap</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'.wrap'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">wrap</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+<span class="n">wrap</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">'p'</span><span class="p">).</span><span class="n">remove</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">wrap</span><span class="p">.</span><span class="n">text</span><span class="p">())</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello World
+This is a paragraph.
+Hello World
+</code></pre></div></div>
+
+<h2 id="伪类选择器-1">伪类选择器</h2>
+<p>CSS 选择器之所以强大，其中之一是因为他支持多种多样的伪类选择器</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s">"""
+&lt;div class="wrap"&gt;
+&lt;div id="container"&gt;
+&lt;ul class="list"&gt;
+&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0 active"&gt;&lt;a href="link3.html"&gt;&lt;span class="bold"&gt;third item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">pq</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:first-child'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:last-child'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:nth-child(2)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:gt(2)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:nth-child(2n)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+<span class="n">li</span> <span class="o">=</span> <span class="n">doc</span><span class="p">(</span><span class="s">'li:contains(second)'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">li</span><span class="p">)</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;li class="item-0"&gt;first item&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-0"&gt;&lt;a href="link5.html"&gt;fifth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1 active"&gt;&lt;a href="link4.html"&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+&lt;li class="item-1"&gt;&lt;a href="link2.html"&gt;second item&lt;/a&gt;&lt;/li&gt;
+</code></pre></div></div>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

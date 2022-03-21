@@ -1,0 +1,109 @@
+I"�!<h2 id="django">Django</h2>
+
+<ol>
+  <li>
+    <p>Django是一个开源的Web应用框架，由Python写成，支持许多数据库引擎，可以让Web开发变得迅速和可扩展，并会不断的版本更新以匹配Python最新版本，如果是&lt;font color=#FF0000 &gt;新手程序员&lt;/font&gt;，可以从这个框架入手。</p>
+
+    <p>Django为人所称道的地方主要有：</p>
+
+    <p>完美的文档，Django的成功，很大一部分原因要归功于Django近乎完美的官方文档</p>
+  </li>
+  <li>
+    <p><strong>全套的解决方案</strong>，Django提供全套的解决方案，基本要什么有什么，而且全部Django自己造，开发网站应手的工具Django基本都给你做好了，因此开发效率是不用说的，出了问题也算好找，不在你的代码里就在Django的源码里。</p>
+  </li>
+  <li>
+    <p><strong>强大的URL路由配置</strong>，Django让你可以设计出非常优雅的URL，在Django里你基本可以跟丑陋的GET参数说拜拜。</p>
+  </li>
+  <li>
+    <p><strong>自助管理后台</strong>，admin interface是Django里比较吸引眼球的一项contrib，让你几乎不用写一行代码就拥有一个完整的后台管理界面。</p>
+  </li>
+  <li>
+    <p><strong>系统紧耦合</strong>，如果你觉得Django内置的某项功能不是很好，想用喜欢的第三方库来代替是很难的，比如下面将要说的 <strong><em>ORM、Template</em></strong>。要在Django里用SQLAlchemy或Mako几乎是不可能，即使打了一些补丁用上了也会让你觉得非常非常别扭。</p>
+  </li>
+  <li>
+    <p>Template功能比较弱，不能插入Python代码，要写复杂一点的逻辑需要另外用Python实现Tag或Filter。</p>
+  </li>
+</ol>
+
+<blockquote>
+  <p>Django是走大而全的方向，注重的是高效开发，它最出名的是其全自动化的管理后台：只需要使用起ORM，做简单的对象定义，它就能自动生成数据库结构、以及全功能的管理后台。</p>
+</blockquote>
+
+<h2 id="cubicweb">CubicWeb</h2>
+
+<p>CubicWeb被称为“一个支持重用和面向对象设计的语义Web应用程序框架。”这是一个有趣的系统，<strong><em>强调使用抽象和可重用</em></strong> 的代码块称为“多维数据集”，但对于某些开发人员来说可能过于抽象或特殊。</p>
+
+<p>多维数据集是具有<strong>模式</strong>（数据模型），<strong>实体</strong>（编程逻辑）和<strong>视图</strong>的软件组件。通过组合多个立方体，每个立方体执行自己的任务，可以通过重用自己的代码和其他代码来编写软件应用程序。</p>
+
+<h2 id="web2py">Web2py</h2>
+
+<p>Web2py是一个用Python语言编写的免费的开源Web框架，旨在敏捷快速的开发Web应用，具有快速、可扩展、安全以及可移植的数据库驱动的应用，遵循LGPLv3开源协议。</p>
+
+<p>Web2py提供一站式的解决方案，整个开发过程都可以在浏览器上进行，提供了Web版的<strong>在线开发</strong>，HTML模版编写，静态文件的上传，数据库的编写的功能。其它的还有日志功能，以及一个自动化的admin接口。</p>
+
+<h2 id="weppy">Weppy</h2>
+
+<p>Weppy感觉就像Flask的简约风格和Django的完整性之间的中间标记。虽然开发Weppy应用程序具有Flash的直接性，但Weppy具有Django中的许多功能，如数据层和身份验证。因此，<strong>Weppy适用于从极其简单到适度复杂的应用程序</strong>。</p>
+
+<h2 id="zope2">Zope2</h2>
+
+<p><strong>Zope不适用于简单的RESTful API</strong>（每Bottle或Flask），甚至不适用于具有交互性的基本网站（à la Django）。相反，它意味着是一个完整的企业级应用程序服务器堆栈，类似于Java产品。该文档将该框架描述为“对组件开发人员，整合者和Web设计人员最有用。”一个主要的第三方产品Plone CMS使用Zope作为其基础，并作为Zope持续开发的主要驱动力。</p>
+
+<h2 id="bottle">Bottle</h2>
+
+<p>Bottle是一个<strong>简单高效的遵循WSGI</strong>的微型python Web框架。说微型，是因为它只有一个文件，除Python标准库外，它不依赖于任何第三方模块。</p>
+
+<p>Bottle可以被认为是一种迷你烧瓶，因为它比其他“微框架”更加紧凑和简洁。由于其占地面积最小，<strong>Bottle非常适合包含在其他项目中或快速交付REST API等小型项目</strong>。</p>
+
+<h2 id="cherrypy">CherryPy</h2>
+
+<p>CherryPy是一种用于Python的、简单而非常有用的Web框架，其主要作用是以尽可能少的操作将Web服务器与Python代码连接，其功能包括内置的分析功能、灵活的插件系统以及一次运行多个HTTP服务器的功能，可与运行在最新版本的Python、Jython、Android上。</p>
+
+<h2 id="falcon">Falcon</h2>
+
+<p>如果正在构建基于REST的API而不是其他任何东西，那么Falcon提供的绝对必要。它的设计精简而快速，几乎没有标准库之外的依赖关系。</p>
+
+<p>Falcon获得“轻薄”标签的原因很大一部分与框架中的代码行数无关。这是因为Falcon在应用程序上几乎没有任何结构。</p>
+
+<p>Falcon还采用了理智的开箱即用默认设置，因此安装时几乎不需要修改。</p>
+
+<p>Falcon对API的关注意味着用传统的HTML用户界面构建Web应用程序几乎没有。</p>
+
+<p>Falcon的文档与其他框架相比比较细长，但仅仅因为它的覆盖范围较小。用户指南包括所有主要功能的正式逐步演练，以及一个快速入门部分，可让您查看带或不带注释的示例代码。</p>
+
+<h2 id="flask">Flask</h2>
+
+<p>Flask是一个轻量级的Web应用框架, 使用Python编写。基于 WerkzeugWSGI工具箱和Jinja2模板引擎，使用 BSD 授权。</p>
+
+<p>Flask也被称为 “microframework” ，因为它使用简单的核心，用 extension 增加其他功能。Flask没有默认使用的数据库、窗体验证工具。然而，Flask保留了扩增的弹性，可以用Flask-extension加入这些功能：ORM、窗体验证工具、文件上传、各种开放式身份验证技术。</p>
+
+<p>Flask 很轻，花很少的成本就能够开发一个简单的网站。非常适合<strong><em>初学者学习</em></strong>。Flask 框架学会以后，可以考虑学习插件的使用。例如使用 WTForm + Flask-WTForm 来验证表单数据，用 SQLAlchemy + Flask-SQLAlchemy 来对你的数据库进行控制。</p>
+
+<p>Flask是轻量级的，但是扩展性非常良好（Github 上 37000 多个 star 就知道群众的选择不无道理），可以让我们在开发的时候 定制专属的功能。</p>
+
+<h2 id="pyramid">Pyramid</h2>
+
+<p>Pyramid是一款非常<strong>通用</strong>的开源web框架。作为一个框架，它的首要任务是让开发者创建web应用变得简单。web应用的类型并不重要，可以是一个电子表单、一个企业内部网或者是一个社交平台。Pyramid非常通用，可以在各种各样的情况下使用它。</p>
+
+<p>小而轻，Pyramid比Django更接近Flask甚至Falcon。因此，它非常适合于将现有Python代码公开为REST API，或者为开发人员完成大部分繁重任务的Web项目提供核心的任务。</p>
+
+<p>Pyramid支持Python 2和Python 3，但不使用Python 3的异步语法。</p>
+
+<h2 id="tornado">Tornado</h2>
+
+<p>Tornado是使用Python编写的一个强大的、可扩展的Web服务器。它在处理严峻的网络流量时表现得足够强健，但却在创建和编写时有着足够的轻量级，并能够被用在大量的应用和工具中。</p>
+
+<p>Tornado的特点：</p>
+
+<p>作为Web框架，是一个轻量级的Web框架，类似于另一个Python web框架Web.py，其拥有异步非阻塞IO的处理方式。</p>
+
+<p>作为Web服务器，Tornado有较为出色的抗负载能力，官方用nginx反向代理的方式部署Tornado和其它Python web应用框架进行对比，结果最大浏览量超过第二名近40%。</p>
+
+<p>Tornado走的是少而精的方向，注重的是性能优越，它最出名的是异步非阻塞的设计方式。</p>
+
+<h2 id="wheezyweb">Wheezy.web</h2>
+
+<p>Wheezy.web是Web框架的Flask/Bottle/Pyramid模型：小巧轻便，专注于提供高速和高并发性。这个功能集的核心是小的，但它的创建者已经为它配备了各种必备功能。</p>
+
+<p>Wheezy的开发似乎已经停滞不前，因为该项目的最后一次提交都记录在2015年。这对于保持与新Python功能的兼容性并不是好兆头。</p>
+:ET

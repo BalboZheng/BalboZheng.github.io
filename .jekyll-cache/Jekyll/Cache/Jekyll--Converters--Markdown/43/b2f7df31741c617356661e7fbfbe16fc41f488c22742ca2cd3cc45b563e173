@@ -1,0 +1,2396 @@
+I"�P<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “数据库存储”
+subtitle:   “数据库存储”
+date:       2019-11-22 11:54:02
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - reptile
+—</p>
+<h2 id="关系型数据库存储">关系型数据库存储</h2>
+
+<h3 id="mysql-存储">MySQL 存储</h3>
+<ol>
+  <li>
+    <p>连接数据库</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+ <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT VERSION()'</span><span class="p">)</span>
+ <span class="n">data</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Database version:'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+ <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="s">"CREATE DATABASE spiders DEFAULT CHARACTER SET utf-8"</span><span class="p">)</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Database version: ('5.5.53',)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建表</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'CREATE TABLE IF NOT EXISTS students (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, age INT NOT NULL, PRIMARY KEY (id))'</span>
+ <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span><span class="n">s</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>插入数据</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s">'id'</span><span class="p">:</span> <span class="s">'20120001'</span><span class="p">,</span>
+     <span class="s">'name'</span><span class="p">:</span> <span class="s">'Bob'</span><span class="p">,</span>
+     <span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+ <span class="p">}</span>
+ <span class="n">table</span> <span class="o">=</span> <span class="s">'students'</span>
+ <span class="n">keys</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+ <span class="n">values</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">'%s'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'INSERT INTO {table}({keys}) VALUE ({values})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="k">if</span> <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">())):</span>
+         <span class="k">print</span><span class="p">(</span><span class="s">'Successful'</span><span class="p">)</span>
+         <span class="n">db</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Failed'</span><span class="p">)</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>更新数据</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s">'id'</span><span class="p">:</span> <span class="s">'20120001'</span><span class="p">,</span>
+     <span class="s">'name'</span><span class="p">:</span> <span class="s">'Bob'</span><span class="p">,</span>
+     <span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+ <span class="p">}</span>
+ <span class="n">table</span> <span class="o">=</span> <span class="s">'students'</span>
+ <span class="n">keys</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+ <span class="n">values</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">'%s'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'INSERT INTO {table}({keys}) VALUE ({values}) ON DUPLICATE KEY UPDATE '</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+ <span class="n">update</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">" {key} = %s"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+ <span class="n">sql</span> <span class="o">+=</span> <span class="n">update</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="k">if</span> <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">())</span><span class="o">*</span><span class="mi">2</span><span class="p">):</span>
+         <span class="k">print</span><span class="p">(</span><span class="s">'Successful'</span><span class="p">)</span>
+         <span class="n">db</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Failed'</span><span class="p">)</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除数据</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">table</span> <span class="o">=</span> <span class="s">'students'</span>
+ <span class="n">condition</span> <span class="o">=</span> <span class="s">'age &gt; 20'</span>
+
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'DELETE FROM {table} WHERE {condition}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">)</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>数据查询</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'SELECT * FROM students WHERE age &gt;= 20'</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Count:'</span><span class="p">,</span> <span class="n">cursor</span><span class="p">.</span><span class="n">rowcount</span><span class="p">)</span>
+     <span class="n">one</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'One:'</span><span class="p">,</span> <span class="n">one</span><span class="p">)</span>
+     <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchall</span><span class="p">()</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Results:'</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Result Type:'</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+         <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Error'</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>在这里我们构造了一条 SQL 语句，将年龄 20 岁及以上的学生查询出来，然后将其传给 execute() 方法即可，注意在这里不再需要 db 的 commit() 方法。然后我们可以调用 cursor 的 rowcount 属性获取查询结果的条数，当前示例中获取的结果条数是 4 条。</p>
+
+    <p>然后我们调用了 fetchone() 方法，这个方法可以获取结果的第一条数据，返回结果是元组形式，元组的元素顺序跟字段一一对应，也就是第一个元素就是第一个字段 id，第二个元素就是第二个字段 name，以此类推。随后我们又调用了fetchall() 方法，它可以得到结果的所有数据，然后将其结果和类型打印出来，它是二重元组，每个元素都是一条记录。我们将其遍历输出，将其逐个输出出来。</p>
+
+    <p>但是这里注意到一个问题，显示的是4条数据，fetall() 方法不是获取所有数据吗？为什么只有3条？这是因为它的内部实现是有一个偏移指针来指向查询结果的，最开始偏移指针指向第一条数据，取一次之后，指针偏移到下一条数据，这样再取的话就会取到下一条数据了。所以我们最初调用了一次 fetchone() 方法，这样结果的偏移指针就指向了下一条数据，fetchall() 方法返回的是偏移指针指向的数据一直到结束的所有数据，所以 fetchall() 方法获取的结果就只剩 3 个了，所以在这里要理解偏移指针的概念。</p>
+
+    <p>所以我们还可以用 while 循环加 fetchone() 的方法来获取所有数据，而不是用 fetchall() 全部一起获取出来，fetchall() 会将结果以元组形式全部返回，如果数据量很大，那么占用的开销会非常高。所以推荐使用如下的方法来逐条取数据：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'SELECT * FROM students WHERE age &gt;= 20'</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Count:'</span><span class="p">,</span> <span class="n">cursor</span><span class="p">.</span><span class="n">rowcount</span><span class="p">)</span>
+     <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+     <span class="k">while</span> <span class="n">row</span><span class="p">:</span>
+         <span class="k">print</span><span class="p">(</span><span class="s">'Row'</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+         <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Error'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="非关系型数据库存储">非关系型数据库存储</h2>
+
+<p>非关系型数据库可细分如下：</p>
+
+<ul>
+  <li>键值存储数据库：Redis、Voldemort 和 Oracle BDB 等</li>
+  <li>列存储数据库：Cassandra、HBase 和 Rick 等</li>
+  <li>文档型数据库：CouchDB 和 MongoDB 等</li>
+  <li>图形数据库：Neo4J、InfoGrid 和 Infinit Graph 等</li>
+</ul>
+
+<h3 id="mongodb-存储">MongoDB 存储</h3>
+<ol>
+  <li>
+    <p>连接 MongoDB</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymongo</span>
+
+ <span class="n">client</span> <span class="o">=</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">27017</span><span class="p">)</span>
+ <span class="c1"># client = pymongo.MongoClient('mongodb://localhost:27017/')
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>指定数据库</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">test</span>
+ <span class="c1"># db = client['test']
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>指定集合</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">collection</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">students</span>
+ <span class="c1"># collection = db['students']
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>插入数据</p>
+
+    <ul>
+      <li>
+        <p>新建学生数据</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">student1</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s">'id'</span><span class="p">:</span> <span class="s">'20170101'</span><span class="p">,</span>
+      <span class="s">'name'</span><span class="p">:</span> <span class="s">'Jordan'</span><span class="p">,</span>
+      <span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+      <span class="s">'gender'</span><span class="p">:</span> <span class="s">'male'</span>
+  <span class="p">}</span>
+  <span class="n">student2</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s">'id'</span><span class="p">:</span> <span class="s">'20170102'</span><span class="p">,</span>
+      <span class="s">'name'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+      <span class="s">'age'</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+      <span class="s">'gender'</span><span class="p">:</span> <span class="s">'male'</span>
+  <span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>插入一条数据</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">student1</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">inserted_id</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;pymongo.results.InsertOneResult object at 0x0000029188063F48&gt;
+  5dd8be4a475adf926a44d21b
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>插入多条数据</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">insert_many</span><span class="p">([</span><span class="n">student1</span><span class="p">,</span> <span class="n">student2</span><span class="p">])</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">inserted_ids</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;pymongo.results.InsertManyResult object at 0x00000249740C27C8&gt;
+  [ObjectId('5dd8becc6c94b9c18bab42f8'), ObjectId('5dd8becc6c94b9c18bab42f9')]
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>查询</p>
+
+    <ul>
+      <li>
+        <p>查询一个结果</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">})</span>
+  <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;class 'dict'&gt;
+  {'_id': ObjectId('5dd8be3466741231fe29341e'), 'id': '20170102', 'name': 'Mike', 'age': 21, 'gender': 'male'}
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>根据 ObjectId 查询</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bson</span> <span class="kn">import</span> <span class="n">ObjectId</span>
+                
+  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'5dd8eb565053ed048d9a21ec'</span><span class="p">)})</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {'_id': ObjectId('5dd8eb565053ed048d9a21ec'), 'id': '20170101', 'name': 'Jordan', 'age': 20, 'gender': 'male'}
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>查询多个结果</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>如果要查找大于20的数据</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}})</span>
+</code></pre></div>        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>符号</th>
+              <th>含义</th>
+              <th>示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$lt</td>
+              <td>小于</td>
+              <td>{‘age’: {‘$lt’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$gt</td>
+              <td>大于</td>
+              <td>{‘age’: {‘$gt’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$lte</td>
+              <td>小于等于</td>
+              <td>{‘age’: {‘$lte’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$gte</td>
+              <td>大于等于</td>
+              <td>{‘age’: {‘$gte’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$ne</td>
+              <td>不等于</td>
+              <td>{‘age’: {‘$ne’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$in</td>
+              <td>在范围内</td>
+              <td>{‘age’: {‘$in’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$nin</td>
+              <td>不在范围内</td>
+              <td>{‘age’: {‘$nin’: 20}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>正则匹配查询</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$regex'</span><span class="p">:</span> <span class="s">'^J.*'</span><span class="p">}})</span>
+</code></pre></div>        </div>
+        <p>| 符号 | 含义 | 示例 | 示例含义 |
+  | —- | —- | —- | —- |
+  | $regex | 匹配正则表达式 | {‘name’: {‘$regex’: ‘^J.*’}} | name以 J 开头 |
+  | $exists | 属性是否存在 | {‘name’: {‘$exists’: True}} | name 属性存在 |
+  | $type | 类型判断 | {‘age’: {‘$type’: ‘int’}} | age 的类型为 int |
+  | $mod | 数字模操作 | {‘age’: {‘$mod’: [5, 0]}} | 年龄模 5 余 0 |
+  | $text | 文本查询 | {‘$text’: {‘$search’: ‘Mike’}} | text 类型的属性中包含 Mike 字符串 |
+  | $where | 高级条件查询 | {‘$where’: ‘obj.fans_count == obj.follows_count’} | 自身粉丝数等于关注数 |</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>计数</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">count</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>排序</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">)</span>
+ <span class="c1"># results = collection.find().sort('name', pymongo.DESCENDING)
+</span> <span class="k">print</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>偏移</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">).</span><span class="n">skip</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>limit() 方法指定要取的结果个数</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">).</span><span class="n">skip</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>在数据库非常庞大的时候，最好不要使用大的偏移量来查询数据，可能导致内存溢出，可以使用以下操作</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'5dd8eb565053ed048d9a21ec'</span><span class="p">)}})</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>更新</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">}</span>
+ <span class="n">student</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+ <span class="n">student</span><span class="p">[</span><span class="s">'age'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">26</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">update_one</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">{</span><span class="s">'$set'</span><span class="p">:</span> <span class="n">student</span><span class="p">})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">matched_count</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;pymongo.results.UpdateResult object at 0x000002748B94A4C8&gt;
+ 1 1
+</code></pre></div>    </div>
+    <p>符合条件的第一条信息进行修改</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">update_one</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">{</span><span class="s">'$inc'</span><span class="p">:</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">matched_count</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;pymongo.results.UpdateResult object at 0x000001919904B2C8&gt;
+ 1 1
+</code></pre></div>    </div>
+    <p>符合条件的所有信息进行修改</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">update_many</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">{</span><span class="s">'$inc'</span><span class="p">:</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">21</span><span class="p">}})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">matched_count</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;pymongo.results.UpdateResult object at 0x000002013C6CB388&gt;
+ 4 4
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Kevin'</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">deleted_count</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">delete_many</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$lt'</span><span class="p">:</span> <span class="mi">25</span><span class="p">}})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">deleted_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="redis-存储">Redis 存储</h3>
+<ol>
+  <li>连接 Redis
+    <ul>
+      <li>
+        <p>直接连接</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">StrictRedis</span>
+
+  <span class="n">redis</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'foobared'</span><span class="p">)</span>
+  <span class="n">redis</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'Bob'</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">redis</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'name'</span><span class="p">))</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>连接池连接</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">StrictRedis</span><span class="p">,</span> <span class="n">ConnectionPool</span>
+
+  <span class="n">pool</span> <span class="o">=</span> <span class="n">ConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'foobared'</span><span class="p">)</span>
+  <span class="n">redis</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="p">(</span><span class="n">connection_pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+  <span class="n">redis</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'Bob'</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">redis</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'name'</span><span class="p">))</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>键操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>exists(name)</td>
+          <td>判断一个键是否存在</td>
+          <td>name：键名</td>
+          <td>redis.exists(‘name’)</td>
+          <td>是否存在 name 这个键</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>delete(name)</td>
+          <td>删除一个键</td>
+          <td>name：键名</td>
+          <td>redis.delete(‘name’)</td>
+          <td>删除 name 这个键</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>type(name)</td>
+          <td>判断键类型</td>
+          <td>name：键名</td>
+          <td>redis.type(‘name’)</td>
+          <td>判断 name 这个键类型</td>
+          <td>b’string’</td>
+        </tr>
+        <tr>
+          <td>keys(patten)</td>
+          <td>获取所有符合规则的键</td>
+          <td>patten：匹配规则</td>
+          <td>redis.keys(‘n*’)</td>
+          <td>获取所有以 n 开头的键</td>
+          <td>[b’name’]</td>
+        </tr>
+        <tr>
+          <td>randomkey()</td>
+          <td>获得随机一个键</td>
+          <td> </td>
+          <td>randomkey()</td>
+          <td>获取随机的一个键</td>
+          <td>b’name’</td>
+        </tr>
+        <tr>
+          <td>rename(src, dst)</td>
+          <td>重命名键</td>
+          <td>src：原键名；dst：新键名</td>
+          <td>redis.rename(‘name’, ‘nickname’)</td>
+          <td>将 name 重命名为 nickname</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>dbsize()</td>
+          <td>获取当前数据库中键的数目</td>
+          <td> </td>
+          <td>dbsize()</td>
+          <td>获取当前数据库中键的数目</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td>expire(name, time)</td>
+          <td>设定键的过期时间，单位为秒</td>
+          <td>name：键名；time：键名</td>
+          <td>redis.expire(‘name’, 2)</td>
+          <td>将 name 键的过期时间设置为2秒</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>ttl(name)</td>
+          <td>获取键的过期时间，单位为秒，-1代表永不过期</td>
+          <td>name：键名</td>
+          <td>redis.ttl(‘name’)</td>
+          <td>获取 name 这个键的过期时间</td>
+          <td>-1</td>
+        </tr>
+        <tr>
+          <td>move(name, db)</td>
+          <td>将键移动到其他数据库</td>
+          <td>name：键名;db: 数据库代号</td>
+          <td>moce(‘name’, 2)</td>
+          <td>将 name 移到2号数据库</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>flushdb()</td>
+          <td>删除当前选择数据库中的所有键</td>
+          <td> </td>
+          <td>flushdb()</td>
+          <td>删除当前选择数据库中的所有键</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>flushall()</td>
+          <td>删除所有数据库中的所有键</td>
+          <td> </td>
+          <td>flushall()</td>
+          <td>删除所有数据库中的所有键</td>
+          <td>True</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>字符串操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>set(name, value)</td>
+          <td>给数据库中键名为 name 的 string 赋予值 value</td>
+          <td>name： 键名；value： 值</td>
+          <td>redis.set(‘name’, ‘Bob’)</td>
+          <td>给 name 这个键的 value 赋予为 Bob</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>get(name)</td>
+          <td>返回数据库中键名为 name 的 string 的 value</td>
+          <td>name: 键名</td>
+          <td>redis.get(‘name’)</td>
+          <td>返回 name 这个键的 value</td>
+          <td>b’Bob’</td>
+        </tr>
+        <tr>
+          <td>getset(name, value)</td>
+          <td>给数据库中键名为 name 的 string 赋予值 value 并返回上次的 value</td>
+          <td>name: 键名；value： 新值</td>
+          <td>redis.getset(‘name’, ‘Mike’)</td>
+          <td>赋值 name 为 Mike 并得到上次的 value</td>
+          <td>b’Bob’</td>
+        </tr>
+        <tr>
+          <td>mget(keys, *args)</td>
+          <td>返回多个键对应的 value 组成的列表</td>
+          <td>keys: 键名序列</td>
+          <td>redis.mget([‘name’, ‘nickname’])</td>
+          <td>返回 name 和 nickname 的 value</td>
+          <td>[b’Mike’, b’Miker’]</td>
+        </tr>
+        <tr>
+          <td>setnx(name, value)</td>
+          <td>如果不存在这个键值对，则更新 value，否则不变</td>
+          <td>name： 键名</td>
+          <td>redis.setnx(‘newname’, ‘James’)</td>
+          <td>如果 newname 这个键不存在，则设置值为 James</td>
+          <td>第一次运行结果是 True，第二次运行结果的 False</td>
+        </tr>
+        <tr>
+          <td>setex(name, time, value)</td>
+          <td>设置可以对应的值为 string 类型的 value，并指定键值对应的有效期</td>
+          <td>name: 键名；time： 有效期；value： 值</td>
+          <td>redis.setex(‘name’, 1, ‘James’)</td>
+          <td>将 name 这个键的值设为 James，有效期为1秒</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>setrange(name, offset, value)</td>
+          <td>设置指定键的 value 值的子字符串</td>
+          <td>name: 键名；offset： 偏移量；value: 值</td>
+          <td>redis.set(‘name’, ‘Hello’) redis.setrange(‘name’, 6, ‘World’)</td>
+          <td>设置 name 为 Hello 字符串，并在 index 为6的位置补 World</td>
+          <td>11， 修改后的字符串长度</td>
+        </tr>
+        <tr>
+          <td>mset(mapping)</td>
+          <td>批量赋值</td>
+          <td>mapping: 字典或关键字参数</td>
+          <td>redis.mset({‘name1’: ‘Durant’, ‘name2’: ‘James’})</td>
+          <td>将 name1 设为 Durant，name2 设为 James</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>msetnx(mapping)</td>
+          <td>键均不存在时才批量赋值</td>
+          <td>mapping: 字典或关键字参数</td>
+          <td>redis.msetnx({‘name3’: ‘Smith’,’name4’: ‘Curry’})</td>
+          <td>在 name3 和 name4 均不存在的情况下才设置二者值</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>incr(name, amount=1)</td>
+          <td>键名为 name 的 value 增值操作，默认为1，键不存在则被创建并设为 amount</td>
+          <td>name： 键名；amount： 增长的值</td>
+          <td>redis.incr(‘age’, 1)</td>
+          <td>age 对应的值增1， 若不存在。则会创建并设置为 1</td>
+          <td>1, 即修改后的值</td>
+        </tr>
+        <tr>
+          <td>decr（name， amount=1)</td>
+          <td>键名为 name 的 value 减值操作，默认为1，键不存在则被创建并将 value 设为 -amount</td>
+          <td>name： 键名；amount： 减少的值</td>
+          <td>redis.decr(‘age’, 1)</td>
+          <td>age 对应的值减1， 若不存在。则会创建并设置为 -1</td>
+          <td>-1, 即修改后的值</td>
+        </tr>
+        <tr>
+          <td>append(key, value)</td>
+          <td>键名为 key 的 string 的值附加 value</td>
+          <td>key： 键名</td>
+          <td>redis.append(‘nickname’, ‘OK’)</td>
+          <td>向键名为 nickname 的值后追加 OK</td>
+          <td>13，即修改后的字符串长度</td>
+        </tr>
+        <tr>
+          <td>substr(name, value)</td>
+          <td>返回键名为 name 的 string 的子字符串</td>
+          <td>name: 键名；start: 起始索引；end： 终止索引，默认为 -1，表示截取到末尾</td>
+          <td>redis.substr(‘name’, 1, 4)</td>
+          <td>返回键名为 name 的 值的字符串，截取索引为1~4的字符</td>
+          <td>b’ello’</td>
+        </tr>
+        <tr>
+          <td>getrange(key, start, end)</td>
+          <td>获取键的 value 值从 start 到 end 的子字符串</td>
+          <td>key: 键名；start： 起始索引；end： 终止索引</td>
+          <td>redis.getrange(‘name’, 1, 4)</td>
+          <td>返回键名为 name 的值的字符串，截取索引为1~4的字符</td>
+          <td>b’ello’</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>列表操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>rpush(name, *values)</td>
+          <td>在键名为 name 的列表末尾添加为 value 的元素，可以传多个</td>
+          <td>name: 键名；values： 值</td>
+          <td>redis.rpush(‘list’, 1, 2, 3)</td>
+          <td>向键名为 list 的列表尾添加1、2、3</td>
+          <td>3，列表大小</td>
+        </tr>
+        <tr>
+          <td>lpush(name, *values)</td>
+          <td>在键名为 name 的列表头添加值为 value 的元素，可以传多个</td>
+          <td>name: 键名；values： 值</td>
+          <td>redis.lpush(‘list’, 0)</td>
+          <td>向键名为 list 的列表头部添加0</td>
+          <td>4，列表大小</td>
+        </tr>
+        <tr>
+          <td>llen(name)</td>
+          <td>返回键名为 name 的列表的长度</td>
+          <td>name: 键名</td>
+          <td>redis.llen(‘list’)</td>
+          <td>返回键名为 list 的列表的长度</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>lrange(name, start, end)</td>
+          <td>返回键名为 name 的列表中 start 至 end 之间的元素</td>
+          <td>name: 键名；start： 起始索引；end： 终止索引</td>
+          <td>redis.lrange(‘list’, 1, 3)</td>
+          <td>返回起始索引为1终止索引为3的所有范围对应的列表</td>
+          <td>[b’3’, b’2’, b’1’]</td>
+        </tr>
+        <tr>
+          <td>ltrim(name, start, end)</td>
+          <td>截取键名为 name 的列表，保留索引为 start 到 end 的内容</td>
+          <td>name: 键名；start： 起始索引；end： 终止索引</td>
+          <td>redis.ltrim(‘list’, 1, 3)</td>
+          <td>保留键名为 list 的所有为1到3的元素</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>lindex(name, index)</td>
+          <td>返回键名为 name 的列表中 index 位置的元素</td>
+          <td>name: 键名；index： 索引</td>
+          <td>redis.index(‘list’, 1)</td>
+          <td>返回键名为 list 的列表所有为1的元素</td>
+          <td>b’2’</td>
+        </tr>
+        <tr>
+          <td>lset(name, index, value)</td>
+          <td>给键名为 name 的列表中 index 位置的元素赋值，越界则报错</td>
+          <td>name: 键名；index： 索引位置；value： 值</td>
+          <td>redis.lset(‘list’, 1, 5)</td>
+          <td>将键名为 list 的列表中索引为1的位置赋值为5</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>lrem(name, count, value)</td>
+          <td>删除 count 个键的列表中值为 value 的元素</td>
+          <td>name: 键名；count： 删除个数；value： 值</td>
+          <td>redis.lrem(‘list’, 2, 3)</td>
+          <td>将键名为 list 的列表删除两个3</td>
+          <td>1,即删除的个数</td>
+        </tr>
+        <tr>
+          <td>lpop(name)</td>
+          <td>返回并删除键名为 name 的列表中的首元素</td>
+          <td>name: 键名</td>
+          <td>redis.lpop(‘list’)</td>
+          <td>返回并删除名为 list 的列表中的第一个元素</td>
+          <td>b’5’</td>
+        </tr>
+        <tr>
+          <td>rpop(name)</td>
+          <td>返回并删除键名为 name 的列表中的尾元素</td>
+          <td>name: 键名</td>
+          <td>redis.rpop(‘list’)</td>
+          <td>返回并删除名为 list 的列表中的最后一个元素</td>
+          <td>b’2’</td>
+        </tr>
+        <tr>
+          <td>blpop(keys, timeout=0)</td>
+          <td>返回并删除名称在 keys 中的 list 中的首个元素，如果列表为空，则会一直阻塞等待</td>
+          <td>keys: 键名序列；timeout：超时等待时间，0为一直等待</td>
+          <td>redis.blpop(‘list’)</td>
+          <td>返回并删除键名为 list 的列表中的第一个元素</td>
+          <td>[b’5’]</td>
+        </tr>
+        <tr>
+          <td>brpop(keys, timeout=0)</td>
+          <td>返回并删除键名为 name 的列表中的尾元素，如果 list 为空，则会一直阻塞等待</td>
+          <td>keys: 键名序列；timeout： 超时等待时间，0为一直等待</td>
+          <td>redis.brpop(‘list’)</td>
+          <td>返回并删除名为 list 的列表中的最后一个元素</td>
+          <td>[b’2’]</td>
+        </tr>
+        <tr>
+          <td>rpoplpush(src, dst)</td>
+          <td>返回并删除名称为 src 的列表的尾元素，并将该元素添加到名称尾 dst 的列表头部</td>
+          <td>src： 源列表的键；dst： 目标列表的 key</td>
+          <td>redis.rpoplpush(‘list’, ‘list2’)</td>
+          <td>将键名尾 list 的列表尾元素删除并将其添加到键名尾 list2 的列表头部，然后返回</td>
+          <td>b’2’</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>集合操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sadd(name, *values)</td>
+          <td>向键名尾 name 的集合中添加元素</td>
+          <td>name： 键名；values： 值，可为多个</td>
+          <td>redis.sadd(‘tags’, ‘Book’, ‘Tea’, ‘Coffee’)</td>
+          <td>向键名为 tags 的集合中添加 Book、Tea 和 Coffee 这3个内容</td>
+          <td>3， 即插入的数据个数</td>
+        </tr>
+        <tr>
+          <td>srem(name, *values)</td>
+          <td>从键名为 name 的集合中删除元素</td>
+          <td>name： 键名；values： 值，可为多个</td>
+          <td>redis.srem(‘tags’, ‘Book’)</td>
+          <td>从键名为 tags 的集合中删除 Book</td>
+          <td>1，即删除的数据个数</td>
+        </tr>
+        <tr>
+          <td>spop(name)</td>
+          <td>随机返回并删除键名为 name 的集合中的一个元素</td>
+          <td>name： 键名</td>
+          <td>redis.spop(‘tags’)</td>
+          <td>从键名为 tags 的集合并随机删除并返回该元素</td>
+          <td>b’Tea’</td>
+        </tr>
+        <tr>
+          <td>smove(scr, dst, value)</td>
+          <td>src 对应的集合中一处元素并将其添加到 dst 对应的集合中</td>
+          <td>src： 源集合；dst： 目标集合；value： 元素值</td>
+          <td>redis.smove(‘tags’, ‘tags2’, ‘Coffee’)</td>
+          <td>从键名为 tags 的集合中删除元素 Coffee 并将其添加到键为 tags2 的集合</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>scard(name)</td>
+          <td>返回键名为 name 的集合的元素个数</td>
+          <td>name: 键名</td>
+          <td>redis.scard(‘tags’)</td>
+          <td>获取键名为 tags 的集合中的元素个数</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>sismember(name, value)</td>
+          <td>测试 member 是否是键名为 name 的集合的元素</td>
+          <td>name: 键值</td>
+          <td>redis.sismember(‘tags’, ‘Book’)</td>
+          <td>判断 Book 是否是键名为 tags 的集合元素</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>sinter(keys, *args)</td>
+          <td>返回所有给定键的集合的交集</td>
+          <td>keys： 键名序列</td>
+          <td>redis.sinter([‘tags’, ‘tags2’])</td>
+          <td>返回键名为 tags 的集合和键名为 tags2 的集合的交集</td>
+          <td>{b’Coffee’}</td>
+        </tr>
+        <tr>
+          <td>sinterstore(dest, keys, *args)</td>
+          <td>求交集并将交集保存到 dest 的集合</td>
+          <td>dest: 结果集合；keys： 键名序列</td>
+          <td>redis.sinterstore(‘inttag’, [‘tags’, ‘tags2’])</td>
+          <td>求键名为 tags 的集合和键名为 tags2 的集合的交集并将其保存为 inttag</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>sunion(keys, *args)</td>
+          <td>返回所有给定键的集合的并集</td>
+          <td>keys： 键名序列</td>
+          <td>redis.sunion([‘tags’, ‘tags2’])</td>
+          <td>返回键名为 tags 的集合和键名为 tags2 的集合的并集</td>
+          <td>{b’Coffee’, b’Book’, b’Pen’}</td>
+        </tr>
+        <tr>
+          <td>sunionstore(dest, keys, *args)</td>
+          <td>求并集并将并集保存到 dest 的集合</td>
+          <td>dest： 结果集合；keys： 键名序列</td>
+          <td>redis.sunionstore(‘inttag’, [‘tags’, ‘tags2’])</td>
+          <td>求键名为 tags 的集合和键名为 tags2 的集合并集并将其保存为 inttag</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>sdiff(keys, *args)</td>
+          <td>返回所有给定键的集合的差集</td>
+          <td>keys： 键名序列</td>
+          <td>redis.sdiff([‘tags’, ‘tags2’])</td>
+          <td>返回键名为 tags 的集合和键名为 tags2 的集合的差集</td>
+          <td>{b’Book’, ‘b’Pen’}</td>
+        </tr>
+        <tr>
+          <td>sdiffstore(dest, keys, *args)</td>
+          <td>求差集并将差集保存到 dest 集合</td>
+          <td>dest: 记过集合；keys： 键名序列</td>
+          <td>redis.sdiffstore(‘inttag’, [‘tags’, ‘tags2’])</td>
+          <td>求键名为 tags 的集合和键名为 tags2 的集合的差集并将其保存为 inttag</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>smembers(name)</td>
+          <td>返回键名为 name 的集合的所有元素</td>
+          <td>name： 键名</td>
+          <td>redis.smembers(‘tags)</td>
+          <td>返回键名为 tags 的集合的所有元素</td>
+          <td>{b’Pen’, b’Book’, b’Coffee’}</td>
+        </tr>
+        <tr>
+          <td>srandmember(name)</td>
+          <td>随机返回键名为 name 的集合中的一个元素，但不删除元素</td>
+          <td>name: 键值</td>
+          <td>redis.srandmember(‘tags’)</td>
+          <td>随机返回名为 tags 的集合中的一个元素</td>
+          <td>Srandmember(name)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>有序集合操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>zadd(name, *values)</td>
+          <td>向键名为 name 的 zset 中添加元素 member，score 用于排序。如果该元素存在，则更新其顺序</td>
+          <td>name： 键名；args： 可变参数</td>
+          <td>redis.zadd(‘grade’, 100, ‘Bob’, 98, ‘Mike’)</td>
+          <td>向键名为 grade 的 zset 中添加 Bob（其 score 为100),并添加 Mike（其 score 为98)</td>
+          <td>2, 即添加的元素个数</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrem(name, *values)</td>
+          <td>删除键名为 name 的 zset 中的元素</td>
+          <td>name： 键名；values： 元素</td>
+          <td>redis.zrem(‘grade’, ‘Mike’)</td>
+          <td>从键名为 grade 的 zset 中删除 Mike</td>
+          <td>从键名为 grade 的 zset 中删除 Mike</td>
+          <td>1， 即删除的元素个数</td>
+        </tr>
+        <tr>
+          <td>zincrby(name, value, amount=1)</td>
+          <td>如果在键名为 name 的 zset 中已经存在元素，value 则将该元素的 score 增加 amount；否则向该集合中添加该元素，其 score 的值为 amount</td>
+          <td>name： 键名；value： 元素；amount： 增长的 score 的值</td>
+          <td>redis.zincrby(‘grade’, ‘Bob’, -2)</td>
+          <td>键名为 grade 的 zset 中 Bob 的 score 减2</td>
+          <td>98.0，即修改后的值</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrank(name, value)</td>
+          <td>返回键名为 name 的 zset 中元素的排名，按 score 从小到大排序，即名次</td>
+          <td>name： 键名；value： 元素值</td>
+          <td>redis.zrank(‘grade’, ‘Amy’)</td>
+          <td>得到键名为 grade 的 zset 中 Amy 的排名</td>
+          <td>1</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrevrank(name, value)</td>
+          <td>返回键名为 name 的 zset 中元素的倒数排名，按 score 从小到大排序，即名次</td>
+          <td>name： 键名；value： 元素值</td>
+          <td>redis.zrevzrank(‘grade’, ‘Amy’)</td>
+          <td>得到键名为 grade 的 zset 中 Amy 的倒数排名</td>
+          <td>2</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrevrange(name, start, end, withscores=False)</td>
+          <td>返回键名为 name 的 zset（按 score 从小到大排序）中 index 从 start 到 end 的所有元素</td>
+          <td>name： 键值；start： 开始索引；end： 借宿索引；withscores： 是否带 score</td>
+          <td>redis.zrevrange(‘grade’, 0, 3)</td>
+          <td>返回键名为 grade 的 zset 中前四名元素</td>
+          <td>[b’Bob’, b’Mike’, b’Amy’, b’James’]</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrangebysocre(name. min, max, start=None, num=None, withscores=False)</td>
+          <td>返回键名为 name 的 zset 中 score 在给定区间的元素</td>
+          <td>name： 键值；min： 最低 score；max： 最高 score；start： 起始索引；end： 结束索引；num： 个数； withscore： 是否带score</td>
+          <td>redis.zrangebysocre(‘grade’, 80, 95)</td>
+          <td>返回键名为 grade 的 zset 中 score 在 80 和 95 之间的元素</td>
+          <td>[b’Bob’, b’Mike’, b’Amy’, b’James’]</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zcount(name, min, max)</td>
+          <td>返回键名为 name 的 zset 中 score 在给定区间的数量</td>
+          <td>name： 键名；min：最低score;max: 最高 score</td>
+          <td>redis.zcount(’grade‘， 80， 95)</td>
+          <td>返回键名为 grade 的 zset 中 score 在80到95的元素个数</td>
+          <td>2</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zcard(name)</td>
+          <td>返回键名为 name 的 zset 的元素个数</td>
+          <td>name： 键名</td>
+          <td>redis.zcard(‘grade’)</td>
+          <td>获取键名为 grade 的 zset 中元素个数</td>
+          <td>3</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zremrangebyrank(name, min, max)</td>
+          <td>删除键名为 name 的 zset 中 score 在 给定区间的元素</td>
+          <td>name： 键名；min： 最低 score；max： 最高 score</td>
+          <td>redis.zremrangebyscore(‘grade’, 0, 0)</td>
+          <td>删除键名为 grade 的 zset 中排名第一的元素</td>
+          <td>1，即删除的元素个数</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zremrangebyscore(name, min, max)</td>
+          <td>删除键名为 name 的 zset 中 score 在 给定区间的元素</td>
+          <td>name： 键名；min： 最低 score；max： 最高 score</td>
+          <td>redis.zremrangebyscore(‘grade’, 80, 90)</td>
+          <td>删除 score 在80到90之间的元素</td>
+          <td>1，即删除的元素个数</td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>散列操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>hset(name, key, value)</td>
+          <td>向键名为 name 的散列表中添加映射</td>
+          <td>name： 键名；key： 映射键名；value： 映射键值</td>
+          <td>hset(‘price’, ‘cake, 5)</td>
+          <td>向键名为 price 的散列表中添加映射关系，cake的值为5</td>
+          <td>1，即添加的映射个数</td>
+        </tr>
+        <tr>
+          <td>hestnx(name, key, value)</td>
+          <td>如果映射键名不存在，则向键名为 name 的散列表中添加映射</td>
+          <td>name： 键名；key： 映射键名；value： 映射键值</td>
+          <td>hsetnx(‘price’, ‘book’, 6)</td>
+          <td>向键名为 price 的散列表中添加映射关系， book的值为6</td>
+          <td>1，即添加的映射个数</td>
+        </tr>
+        <tr>
+          <td>hget(name, key)</td>
+          <td>返回键名为 name 的散列表中 key 对应的值</td>
+          <td>name: 键名；key： 映射键名</td>
+          <td>redis.hget(’price’, ‘cake’)</td>
+          <td>获取键名为 price 的散列表中键名为 cake 的值</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>hmget(name, keys, *args)</td>
+          <td>返回键名为 name 的散列表中各个键对应的值</td>
+          <td>name： 键名；keys： 键名序列</td>
+          <td>redis.hmget(‘price’, [‘apple’, ‘orange’])</td>
+          <td>获取键名为 price 的散列表中 apple 和 orange 的值</td>
+          <td>[b’3’, b’7’]</td>
+        </tr>
+        <tr>
+          <td>hmset(name, mapping)</td>
+          <td>向键名为 name 的散列表中批量添加映射</td>
+          <td>name： 键名；mapping： 映射字典</td>
+          <td>redis.hmset(‘price’, {‘banana’: 2, ‘pear’: 6})</td>
+          <td>向键名为 price 的散列表中批量添加映射</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>hincrby(name, key, amount=1)</td>
+          <td>将键名为 name 的散列表中的映射的值增加 amount</td>
+          <td>name： 键名；key：映射键名；amount： 增长量</td>
+          <td>redis.hincrby(‘price’, ‘apple’, 3)</td>
+          <td>key 为 price 的散列表中 apple 的值增加3</td>
+          <td>6，修改后的值</td>
+        </tr>
+        <tr>
+          <td>hexists(name, key)</td>
+          <td>键名为 name 的散列表中是否存在键名为键的映射</td>
+          <td>name： 键名；key： 映射键名</td>
+          <td>redis.hexists(‘price’, ‘banana’)</td>
+          <td>键名为 orice 的散列表中 banana 的值是否存在</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>hdel(name, *keys)</td>
+          <td>在键名为 name 的散列表中，删除键名为键的映射</td>
+          <td>name： 键名；keys： 键名序列</td>
+          <td>redis.hdel(‘price’, ‘banana)</td>
+          <td>从键名为 price 的散列表中删除键名为 banana 的映射</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>hlen(name)</td>
+          <td>在键名为 name 的散列表中获取映射个数</td>
+          <td>name： 键名</td>
+          <td>redis.hlen(‘price)</td>
+          <td>从键名为 price 的散列表中获取映射个数</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>hkeys(name)</td>
+          <td>从键名为 name 的散列表中获取所有映射键名</td>
+          <td>name： 键名</td>
+          <td>redis.hkeys(‘price’)</td>
+          <td>从键名为 price 的散列表中获取所有映射键名</td>
+          <td>[b’cake’, b’book’, b’banana’, b’pear’]</td>
+        </tr>
+        <tr>
+          <td>hvals(name)</td>
+          <td>从键名为 name 的散列表中获取所有映射键值</td>
+          <td>name： 键名</td>
+          <td>redis.hvals(‘price’)</td>
+          <td>从键名为 price 的散列表中获取所有映射键值</td>
+          <td>[b’5’, b’6’, b’2’, b’6’]</td>
+        </tr>
+        <tr>
+          <td>hgetall(name)</td>
+          <td>从键名为 name 的散列表中获取所有映射键值对</td>
+          <td>name: 键名</td>
+          <td>redis.hgetall(‘price’)</td>
+          <td>从加密为 price 的散列表中获取所有映射键值对</td>
+          <td>{b’cake’: b’5’, b’book’: b’6’, b’organe’: b’2’, b’pear’: b’6’}</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+<h2>=======</h2>
+<p>layout: post
+title: 数据库存储
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [reptile]
+—</p>
+<h2 id="关系型数据库存储-1">关系型数据库存储</h2>
+
+<h3 id="mysql-存储-1">MySQL 存储</h3>
+<ol>
+  <li>
+    <p>连接数据库</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+ <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="s">'SELECT VERSION()'</span><span class="p">)</span>
+ <span class="n">data</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+ <span class="k">print</span><span class="p">(</span><span class="s">'Database version:'</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+ <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="s">"CREATE DATABASE spiders DEFAULT CHARACTER SET utf-8"</span><span class="p">)</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> Database version: ('5.5.53',)
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>创建表</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'CREATE TABLE IF NOT EXISTS students (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, age INT NOT NULL, PRIMARY KEY (id))'</span>
+ <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span><span class="n">s</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>插入数据</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s">'id'</span><span class="p">:</span> <span class="s">'20120001'</span><span class="p">,</span>
+     <span class="s">'name'</span><span class="p">:</span> <span class="s">'Bob'</span><span class="p">,</span>
+     <span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+ <span class="p">}</span>
+ <span class="n">table</span> <span class="o">=</span> <span class="s">'students'</span>
+ <span class="n">keys</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+ <span class="n">values</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">'%s'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'INSERT INTO {table}({keys}) VALUE ({values})'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="k">if</span> <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">())):</span>
+         <span class="k">print</span><span class="p">(</span><span class="s">'Successful'</span><span class="p">)</span>
+         <span class="n">db</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Failed'</span><span class="p">)</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>更新数据</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+     <span class="s">'id'</span><span class="p">:</span> <span class="s">'20120001'</span><span class="p">,</span>
+     <span class="s">'name'</span><span class="p">:</span> <span class="s">'Bob'</span><span class="p">,</span>
+     <span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+ <span class="p">}</span>
+ <span class="n">table</span> <span class="o">=</span> <span class="s">'students'</span>
+ <span class="n">keys</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">keys</span><span class="p">())</span>
+ <span class="n">values</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">'%s'</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'INSERT INTO {table}({keys}) VALUE ({values}) ON DUPLICATE KEY UPDATE '</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+ <span class="n">update</span> <span class="o">=</span> <span class="s">', '</span><span class="p">.</span><span class="n">join</span><span class="p">([</span><span class="s">" {key} = %s"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+ <span class="n">sql</span> <span class="o">+=</span> <span class="n">update</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="k">if</span> <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">values</span><span class="p">())</span><span class="o">*</span><span class="mi">2</span><span class="p">):</span>
+         <span class="k">print</span><span class="p">(</span><span class="s">'Successful'</span><span class="p">)</span>
+         <span class="n">db</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Failed'</span><span class="p">)</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除数据</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">table</span> <span class="o">=</span> <span class="s">'students'</span>
+ <span class="n">condition</span> <span class="o">=</span> <span class="s">'age &gt; 20'</span>
+
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'DELETE FROM {table} WHERE {condition}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="n">table</span><span class="p">,</span> <span class="n">condition</span><span class="o">=</span><span class="n">condition</span><span class="p">)</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">commit</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="n">db</span><span class="p">.</span><span class="n">rollback</span><span class="p">()</span>
+ <span class="n">db</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>数据查询</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'SELECT * FROM students WHERE age &gt;= 20'</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Count:'</span><span class="p">,</span> <span class="n">cursor</span><span class="p">.</span><span class="n">rowcount</span><span class="p">)</span>
+     <span class="n">one</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'One:'</span><span class="p">,</span> <span class="n">one</span><span class="p">)</span>
+     <span class="n">results</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchall</span><span class="p">()</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Results:'</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Result Type:'</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>
+     <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+         <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Error'</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>在这里我们构造了一条 SQL 语句，将年龄 20 岁及以上的学生查询出来，然后将其传给 execute() 方法即可，注意在这里不再需要 db 的 commit() 方法。然后我们可以调用 cursor 的 rowcount 属性获取查询结果的条数，当前示例中获取的结果条数是 4 条。</p>
+
+    <p>然后我们调用了 fetchone() 方法，这个方法可以获取结果的第一条数据，返回结果是元组形式，元组的元素顺序跟字段一一对应，也就是第一个元素就是第一个字段 id，第二个元素就是第二个字段 name，以此类推。随后我们又调用了fetchall() 方法，它可以得到结果的所有数据，然后将其结果和类型打印出来，它是二重元组，每个元素都是一条记录。我们将其遍历输出，将其逐个输出出来。</p>
+
+    <p>但是这里注意到一个问题，显示的是4条数据，fetall() 方法不是获取所有数据吗？为什么只有3条？这是因为它的内部实现是有一个偏移指针来指向查询结果的，最开始偏移指针指向第一条数据，取一次之后，指针偏移到下一条数据，这样再取的话就会取到下一条数据了。所以我们最初调用了一次 fetchone() 方法，这样结果的偏移指针就指向了下一条数据，fetchall() 方法返回的是偏移指针指向的数据一直到结束的所有数据，所以 fetchall() 方法获取的结果就只剩 3 个了，所以在这里要理解偏移指针的概念。</p>
+
+    <p>所以我们还可以用 while 循环加 fetchone() 的方法来获取所有数据，而不是用 fetchall() 全部一起获取出来，fetchall() 会将结果以元组形式全部返回，如果数据量很大，那么占用的开销会非常高。所以推荐使用如下的方法来逐条取数据：</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymysql</span>
+
+ <span class="n">sql</span> <span class="o">=</span> <span class="s">'SELECT * FROM students WHERE age &gt;= 20'</span>
+
+ <span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">'root'</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'123456'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="s">'spiders'</span><span class="p">)</span>
+ <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">cursor</span><span class="p">()</span>
+
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">cursor</span><span class="p">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Count:'</span><span class="p">,</span> <span class="n">cursor</span><span class="p">.</span><span class="n">rowcount</span><span class="p">)</span>
+     <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+     <span class="k">while</span> <span class="n">row</span><span class="p">:</span>
+         <span class="k">print</span><span class="p">(</span><span class="s">'Row'</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+         <span class="n">row</span> <span class="o">=</span> <span class="n">cursor</span><span class="p">.</span><span class="n">fetchone</span><span class="p">()</span>
+ <span class="k">except</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s">'Error'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="非关系型数据库存储-1">非关系型数据库存储</h2>
+
+<p>非关系型数据库可细分如下：</p>
+
+<ul>
+  <li>键值存储数据库：Redis、Voldemort 和 Oracle BDB 等</li>
+  <li>列存储数据库：Cassandra、HBase 和 Rick 等</li>
+  <li>文档型数据库：CouchDB 和 MongoDB 等</li>
+  <li>图形数据库：Neo4J、InfoGrid 和 Infinit Graph 等</li>
+</ul>
+
+<h3 id="mongodb-存储-1">MongoDB 存储</h3>
+<ol>
+  <li>
+    <p>连接 MongoDB</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="kn">import</span> <span class="nn">pymongo</span>
+
+ <span class="n">client</span> <span class="o">=</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">MongoClient</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">27017</span><span class="p">)</span>
+ <span class="c1"># client = pymongo.MongoClient('mongodb://localhost:27017/')
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>指定数据库</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">db</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">test</span>
+ <span class="c1"># db = client['test']
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>指定集合</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">collection</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">students</span>
+ <span class="c1"># collection = db['students']
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>插入数据</p>
+
+    <ul>
+      <li>
+        <p>新建学生数据</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">student1</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s">'id'</span><span class="p">:</span> <span class="s">'20170101'</span><span class="p">,</span>
+      <span class="s">'name'</span><span class="p">:</span> <span class="s">'Jordan'</span><span class="p">,</span>
+      <span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+      <span class="s">'gender'</span><span class="p">:</span> <span class="s">'male'</span>
+  <span class="p">}</span>
+  <span class="n">student2</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="s">'id'</span><span class="p">:</span> <span class="s">'20170102'</span><span class="p">,</span>
+      <span class="s">'name'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">,</span>
+      <span class="s">'age'</span><span class="p">:</span> <span class="mi">21</span><span class="p">,</span>
+      <span class="s">'gender'</span><span class="p">:</span> <span class="s">'male'</span>
+  <span class="p">}</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>插入一条数据</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">insert_one</span><span class="p">(</span><span class="n">student1</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">inserted_id</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;pymongo.results.InsertOneResult object at 0x0000029188063F48&gt;
+  5dd8be4a475adf926a44d21b
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>插入多条数据</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">insert_many</span><span class="p">([</span><span class="n">student1</span><span class="p">,</span> <span class="n">student2</span><span class="p">])</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">inserted_ids</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;pymongo.results.InsertManyResult object at 0x00000249740C27C8&gt;
+  [ObjectId('5dd8becc6c94b9c18bab42f8'), ObjectId('5dd8becc6c94b9c18bab42f9')]
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>查询</p>
+
+    <ul>
+      <li>
+        <p>查询一个结果</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">})</span>
+  <span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  &lt;class 'dict'&gt;
+  {'_id': ObjectId('5dd8be3466741231fe29341e'), 'id': '20170102', 'name': 'Mike', 'age': 21, 'gender': 'male'}
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>根据 ObjectId 查询</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">bson</span> <span class="kn">import</span> <span class="n">ObjectId</span>
+                
+  <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'5dd8eb565053ed048d9a21ec'</span><span class="p">)})</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>运行结果：</p>
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {'_id': ObjectId('5dd8eb565053ed048d9a21ec'), 'id': '20170101', 'name': 'Jordan', 'age': 20, 'gender': 'male'}
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>查询多个结果</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>        </div>
+        <p>如果要查找大于20的数据</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}})</span>
+</code></pre></div>        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>符号</th>
+              <th>含义</th>
+              <th>示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>$lt</td>
+              <td>小于</td>
+              <td>{‘age’: {‘$lt’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$gt</td>
+              <td>大于</td>
+              <td>{‘age’: {‘$gt’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$lte</td>
+              <td>小于等于</td>
+              <td>{‘age’: {‘$lte’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$gte</td>
+              <td>大于等于</td>
+              <td>{‘age’: {‘$gte’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$ne</td>
+              <td>不等于</td>
+              <td>{‘age’: {‘$ne’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$in</td>
+              <td>在范围内</td>
+              <td>{‘age’: {‘$in’: 20}}</td>
+            </tr>
+            <tr>
+              <td>$nin</td>
+              <td>不在范围内</td>
+              <td>{‘age’: {‘$nin’: 20}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>
+        <p>正则匹配查询</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$regex'</span><span class="p">:</span> <span class="s">'^J.*'</span><span class="p">}})</span>
+</code></pre></div>        </div>
+        <p>| 符号 | 含义 | 示例 | 示例含义 |
+  | —- | —- | —- | —- |
+  | $regex | 匹配正则表达式 | {‘name’: {‘$regex’: ‘^J.*’}} | name以 J 开头 |
+  | $exists | 属性是否存在 | {‘name’: {‘$exists’: True}} | name 属性存在 |
+  | $type | 类型判断 | {‘age’: {‘$type’: ‘int’}} | age 的类型为 int |
+  | $mod | 数字模操作 | {‘age’: {‘$mod’: [5, 0]}} | 年龄模 5 余 0 |
+  | $text | 文本查询 | {‘$text’: {‘$search’: ‘Mike’}} | text 类型的属性中包含 Mike 字符串 |
+  | $where | 高级条件查询 | {‘$where’: ‘obj.fans_count == obj.follows_count’} | 自身粉丝数等于关注数 |</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>计数</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">count</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">count_documents</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>排序</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">)</span>
+ <span class="c1"># results = collection.find().sort('name', pymongo.DESCENDING)
+</span> <span class="k">print</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>偏移</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">).</span><span class="n">skip</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+</code></pre></div>    </div>
+    <p>limit() 方法指定要取的结果个数</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">().</span><span class="n">sort</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="n">pymongo</span><span class="p">.</span><span class="n">ASCENDING</span><span class="p">).</span><span class="n">skip</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span><span class="n">limit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>在数据库非常庞大的时候，最好不要使用大的偏移量来查询数据，可能导致内存溢出，可以使用以下操作</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">results</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find</span><span class="p">({</span><span class="s">'_id'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="n">ObjectId</span><span class="p">(</span><span class="s">'5dd8eb565053ed048d9a21ec'</span><span class="p">)}})</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>更新</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Mike'</span><span class="p">}</span>
+ <span class="n">student</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">find_one</span><span class="p">(</span><span class="n">condition</span><span class="p">)</span>
+ <span class="n">student</span><span class="p">[</span><span class="s">'age'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">26</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">update_one</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">{</span><span class="s">'$set'</span><span class="p">:</span> <span class="n">student</span><span class="p">})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">matched_count</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;pymongo.results.UpdateResult object at 0x000002748B94A4C8&gt;
+ 1 1
+</code></pre></div>    </div>
+    <p>符合条件的第一条信息进行修改</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">update_one</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">{</span><span class="s">'$inc'</span><span class="p">:</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">matched_count</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;pymongo.results.UpdateResult object at 0x000001919904B2C8&gt;
+ 1 1
+</code></pre></div>    </div>
+    <p>符合条件的所有信息进行修改</p>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">condition</span> <span class="o">=</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$gt'</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}</span>
+ <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">update_many</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="p">{</span><span class="s">'$inc'</span><span class="p">:</span> <span class="p">{</span><span class="s">'age'</span><span class="p">:</span> <span class="mi">21</span><span class="p">}})</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+ <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">matched_count</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">modified_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+    <p>运行结果：</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;pymongo.results.UpdateResult object at 0x000002013C6CB388&gt;
+ 4 4
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>删除</p>
+
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">delete_one</span><span class="p">({</span><span class="s">'name'</span><span class="p">:</span> <span class="s">'Kevin'</span><span class="p">})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">deleted_count</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="p">.</span><span class="n">delete_many</span><span class="p">({</span><span class="s">'age'</span><span class="p">:</span> <span class="p">{</span><span class="s">'$lt'</span><span class="p">:</span> <span class="mi">25</span><span class="p">}})</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">deleted_count</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="redis-存储-1">Redis 存储</h3>
+<ol>
+  <li>连接 Redis
+    <ul>
+      <li>
+        <p>直接连接</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">StrictRedis</span>
+
+  <span class="n">redis</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'foobared'</span><span class="p">)</span>
+  <span class="n">redis</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'Bob'</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">redis</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'name'</span><span class="p">))</span>
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>连接池连接</p>
+
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">from</span> <span class="nn">redis</span> <span class="kn">import</span> <span class="n">StrictRedis</span><span class="p">,</span> <span class="n">ConnectionPool</span>
+
+  <span class="n">pool</span> <span class="o">=</span> <span class="n">ConnectionPool</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">'localhost'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">6379</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">'foobared'</span><span class="p">)</span>
+  <span class="n">redis</span> <span class="o">=</span> <span class="n">StrictRedis</span><span class="p">(</span><span class="n">connection_pool</span><span class="o">=</span><span class="n">pool</span><span class="p">)</span>
+  <span class="n">redis</span><span class="p">.</span><span class="nb">set</span><span class="p">(</span><span class="s">'name'</span><span class="p">,</span> <span class="s">'Bob'</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="n">redis</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">'name'</span><span class="p">))</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>键操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>exists(name)</td>
+          <td>判断一个键是否存在</td>
+          <td>name：键名</td>
+          <td>redis.exists(‘name’)</td>
+          <td>是否存在 name 这个键</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>delete(name)</td>
+          <td>删除一个键</td>
+          <td>name：键名</td>
+          <td>redis.delete(‘name’)</td>
+          <td>删除 name 这个键</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>type(name)</td>
+          <td>判断键类型</td>
+          <td>name：键名</td>
+          <td>redis.type(‘name’)</td>
+          <td>判断 name 这个键类型</td>
+          <td>b’string’</td>
+        </tr>
+        <tr>
+          <td>keys(patten)</td>
+          <td>获取所有符合规则的键</td>
+          <td>patten：匹配规则</td>
+          <td>redis.keys(‘n*’)</td>
+          <td>获取所有以 n 开头的键</td>
+          <td>[b’name’]</td>
+        </tr>
+        <tr>
+          <td>randomkey()</td>
+          <td>获得随机一个键</td>
+          <td> </td>
+          <td>randomkey()</td>
+          <td>获取随机的一个键</td>
+          <td>b’name’</td>
+        </tr>
+        <tr>
+          <td>rename(src, dst)</td>
+          <td>重命名键</td>
+          <td>src：原键名；dst：新键名</td>
+          <td>redis.rename(‘name’, ‘nickname’)</td>
+          <td>将 name 重命名为 nickname</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>dbsize()</td>
+          <td>获取当前数据库中键的数目</td>
+          <td> </td>
+          <td>dbsize()</td>
+          <td>获取当前数据库中键的数目</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td>expire(name, time)</td>
+          <td>设定键的过期时间，单位为秒</td>
+          <td>name：键名；time：键名</td>
+          <td>redis.expire(‘name’, 2)</td>
+          <td>将 name 键的过期时间设置为2秒</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>ttl(name)</td>
+          <td>获取键的过期时间，单位为秒，-1代表永不过期</td>
+          <td>name：键名</td>
+          <td>redis.ttl(‘name’)</td>
+          <td>获取 name 这个键的过期时间</td>
+          <td>-1</td>
+        </tr>
+        <tr>
+          <td>move(name, db)</td>
+          <td>将键移动到其他数据库</td>
+          <td>name：键名;db: 数据库代号</td>
+          <td>moce(‘name’, 2)</td>
+          <td>将 name 移到2号数据库</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>flushdb()</td>
+          <td>删除当前选择数据库中的所有键</td>
+          <td> </td>
+          <td>flushdb()</td>
+          <td>删除当前选择数据库中的所有键</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>flushall()</td>
+          <td>删除所有数据库中的所有键</td>
+          <td> </td>
+          <td>flushall()</td>
+          <td>删除所有数据库中的所有键</td>
+          <td>True</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>字符串操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>set(name, value)</td>
+          <td>给数据库中键名为 name 的 string 赋予值 value</td>
+          <td>name： 键名；value： 值</td>
+          <td>redis.set(‘name’, ‘Bob’)</td>
+          <td>给 name 这个键的 value 赋予为 Bob</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>get(name)</td>
+          <td>返回数据库中键名为 name 的 string 的 value</td>
+          <td>name: 键名</td>
+          <td>redis.get(‘name’)</td>
+          <td>返回 name 这个键的 value</td>
+          <td>b’Bob’</td>
+        </tr>
+        <tr>
+          <td>getset(name, value)</td>
+          <td>给数据库中键名为 name 的 string 赋予值 value 并返回上次的 value</td>
+          <td>name: 键名；value： 新值</td>
+          <td>redis.getset(‘name’, ‘Mike’)</td>
+          <td>赋值 name 为 Mike 并得到上次的 value</td>
+          <td>b’Bob’</td>
+        </tr>
+        <tr>
+          <td>mget(keys, *args)</td>
+          <td>返回多个键对应的 value 组成的列表</td>
+          <td>keys: 键名序列</td>
+          <td>redis.mget([‘name’, ‘nickname’])</td>
+          <td>返回 name 和 nickname 的 value</td>
+          <td>[b’Mike’, b’Miker’]</td>
+        </tr>
+        <tr>
+          <td>setnx(name, value)</td>
+          <td>如果不存在这个键值对，则更新 value，否则不变</td>
+          <td>name： 键名</td>
+          <td>redis.setnx(‘newname’, ‘James’)</td>
+          <td>如果 newname 这个键不存在，则设置值为 James</td>
+          <td>第一次运行结果是 True，第二次运行结果的 False</td>
+        </tr>
+        <tr>
+          <td>setex(name, time, value)</td>
+          <td>设置可以对应的值为 string 类型的 value，并指定键值对应的有效期</td>
+          <td>name: 键名；time： 有效期；value： 值</td>
+          <td>redis.setex(‘name’, 1, ‘James’)</td>
+          <td>将 name 这个键的值设为 James，有效期为1秒</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>setrange(name, offset, value)</td>
+          <td>设置指定键的 value 值的子字符串</td>
+          <td>name: 键名；offset： 偏移量；value: 值</td>
+          <td>redis.set(‘name’, ‘Hello’) redis.setrange(‘name’, 6, ‘World’)</td>
+          <td>设置 name 为 Hello 字符串，并在 index 为6的位置补 World</td>
+          <td>11， 修改后的字符串长度</td>
+        </tr>
+        <tr>
+          <td>mset(mapping)</td>
+          <td>批量赋值</td>
+          <td>mapping: 字典或关键字参数</td>
+          <td>redis.mset({‘name1’: ‘Durant’, ‘name2’: ‘James’})</td>
+          <td>将 name1 设为 Durant，name2 设为 James</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>msetnx(mapping)</td>
+          <td>键均不存在时才批量赋值</td>
+          <td>mapping: 字典或关键字参数</td>
+          <td>redis.msetnx({‘name3’: ‘Smith’,’name4’: ‘Curry’})</td>
+          <td>在 name3 和 name4 均不存在的情况下才设置二者值</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>incr(name, amount=1)</td>
+          <td>键名为 name 的 value 增值操作，默认为1，键不存在则被创建并设为 amount</td>
+          <td>name： 键名；amount： 增长的值</td>
+          <td>redis.incr(‘age’, 1)</td>
+          <td>age 对应的值增1， 若不存在。则会创建并设置为 1</td>
+          <td>1, 即修改后的值</td>
+        </tr>
+        <tr>
+          <td>decr（name， amount=1)</td>
+          <td>键名为 name 的 value 减值操作，默认为1，键不存在则被创建并将 value 设为 -amount</td>
+          <td>name： 键名；amount： 减少的值</td>
+          <td>redis.decr(‘age’, 1)</td>
+          <td>age 对应的值减1， 若不存在。则会创建并设置为 -1</td>
+          <td>-1, 即修改后的值</td>
+        </tr>
+        <tr>
+          <td>append(key, value)</td>
+          <td>键名为 key 的 string 的值附加 value</td>
+          <td>key： 键名</td>
+          <td>redis.append(‘nickname’, ‘OK’)</td>
+          <td>向键名为 nickname 的值后追加 OK</td>
+          <td>13，即修改后的字符串长度</td>
+        </tr>
+        <tr>
+          <td>substr(name, value)</td>
+          <td>返回键名为 name 的 string 的子字符串</td>
+          <td>name: 键名；start: 起始索引；end： 终止索引，默认为 -1，表示截取到末尾</td>
+          <td>redis.substr(‘name’, 1, 4)</td>
+          <td>返回键名为 name 的 值的字符串，截取索引为1~4的字符</td>
+          <td>b’ello’</td>
+        </tr>
+        <tr>
+          <td>getrange(key, start, end)</td>
+          <td>获取键的 value 值从 start 到 end 的子字符串</td>
+          <td>key: 键名；start： 起始索引；end： 终止索引</td>
+          <td>redis.getrange(‘name’, 1, 4)</td>
+          <td>返回键名为 name 的值的字符串，截取索引为1~4的字符</td>
+          <td>b’ello’</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>列表操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>rpush(name, *values)</td>
+          <td>在键名为 name 的列表末尾添加为 value 的元素，可以传多个</td>
+          <td>name: 键名；values： 值</td>
+          <td>redis.rpush(‘list’, 1, 2, 3)</td>
+          <td>向键名为 list 的列表尾添加1、2、3</td>
+          <td>3，列表大小</td>
+        </tr>
+        <tr>
+          <td>lpush(name, *values)</td>
+          <td>在键名为 name 的列表头添加值为 value 的元素，可以传多个</td>
+          <td>name: 键名；values： 值</td>
+          <td>redis.lpush(‘list’, 0)</td>
+          <td>向键名为 list 的列表头部添加0</td>
+          <td>4，列表大小</td>
+        </tr>
+        <tr>
+          <td>llen(name)</td>
+          <td>返回键名为 name 的列表的长度</td>
+          <td>name: 键名</td>
+          <td>redis.llen(‘list’)</td>
+          <td>返回键名为 list 的列表的长度</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>lrange(name, start, end)</td>
+          <td>返回键名为 name 的列表中 start 至 end 之间的元素</td>
+          <td>name: 键名；start： 起始索引；end： 终止索引</td>
+          <td>redis.lrange(‘list’, 1, 3)</td>
+          <td>返回起始索引为1终止索引为3的所有范围对应的列表</td>
+          <td>[b’3’, b’2’, b’1’]</td>
+        </tr>
+        <tr>
+          <td>ltrim(name, start, end)</td>
+          <td>截取键名为 name 的列表，保留索引为 start 到 end 的内容</td>
+          <td>name: 键名；start： 起始索引；end： 终止索引</td>
+          <td>redis.ltrim(‘list’, 1, 3)</td>
+          <td>保留键名为 list 的所有为1到3的元素</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>lindex(name, index)</td>
+          <td>返回键名为 name 的列表中 index 位置的元素</td>
+          <td>name: 键名；index： 索引</td>
+          <td>redis.index(‘list’, 1)</td>
+          <td>返回键名为 list 的列表所有为1的元素</td>
+          <td>b’2’</td>
+        </tr>
+        <tr>
+          <td>lset(name, index, value)</td>
+          <td>给键名为 name 的列表中 index 位置的元素赋值，越界则报错</td>
+          <td>name: 键名；index： 索引位置；value： 值</td>
+          <td>redis.lset(‘list’, 1, 5)</td>
+          <td>将键名为 list 的列表中索引为1的位置赋值为5</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>lrem(name, count, value)</td>
+          <td>删除 count 个键的列表中值为 value 的元素</td>
+          <td>name: 键名；count： 删除个数；value： 值</td>
+          <td>redis.lrem(‘list’, 2, 3)</td>
+          <td>将键名为 list 的列表删除两个3</td>
+          <td>1,即删除的个数</td>
+        </tr>
+        <tr>
+          <td>lpop(name)</td>
+          <td>返回并删除键名为 name 的列表中的首元素</td>
+          <td>name: 键名</td>
+          <td>redis.lpop(‘list’)</td>
+          <td>返回并删除名为 list 的列表中的第一个元素</td>
+          <td>b’5’</td>
+        </tr>
+        <tr>
+          <td>rpop(name)</td>
+          <td>返回并删除键名为 name 的列表中的尾元素</td>
+          <td>name: 键名</td>
+          <td>redis.rpop(‘list’)</td>
+          <td>返回并删除名为 list 的列表中的最后一个元素</td>
+          <td>b’2’</td>
+        </tr>
+        <tr>
+          <td>blpop(keys, timeout=0)</td>
+          <td>返回并删除名称在 keys 中的 list 中的首个元素，如果列表为空，则会一直阻塞等待</td>
+          <td>keys: 键名序列；timeout：超时等待时间，0为一直等待</td>
+          <td>redis.blpop(‘list’)</td>
+          <td>返回并删除键名为 list 的列表中的第一个元素</td>
+          <td>[b’5’]</td>
+        </tr>
+        <tr>
+          <td>brpop(keys, timeout=0)</td>
+          <td>返回并删除键名为 name 的列表中的尾元素，如果 list 为空，则会一直阻塞等待</td>
+          <td>keys: 键名序列；timeout： 超时等待时间，0为一直等待</td>
+          <td>redis.brpop(‘list’)</td>
+          <td>返回并删除名为 list 的列表中的最后一个元素</td>
+          <td>[b’2’]</td>
+        </tr>
+        <tr>
+          <td>rpoplpush(src, dst)</td>
+          <td>返回并删除名称为 src 的列表的尾元素，并将该元素添加到名称尾 dst 的列表头部</td>
+          <td>src： 源列表的键；dst： 目标列表的 key</td>
+          <td>redis.rpoplpush(‘list’, ‘list2’)</td>
+          <td>将键名尾 list 的列表尾元素删除并将其添加到键名尾 list2 的列表头部，然后返回</td>
+          <td>b’2’</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>集合操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>sadd(name, *values)</td>
+          <td>向键名尾 name 的集合中添加元素</td>
+          <td>name： 键名；values： 值，可为多个</td>
+          <td>redis.sadd(‘tags’, ‘Book’, ‘Tea’, ‘Coffee’)</td>
+          <td>向键名为 tags 的集合中添加 Book、Tea 和 Coffee 这3个内容</td>
+          <td>3， 即插入的数据个数</td>
+        </tr>
+        <tr>
+          <td>srem(name, *values)</td>
+          <td>从键名为 name 的集合中删除元素</td>
+          <td>name： 键名；values： 值，可为多个</td>
+          <td>redis.srem(‘tags’, ‘Book’)</td>
+          <td>从键名为 tags 的集合中删除 Book</td>
+          <td>1，即删除的数据个数</td>
+        </tr>
+        <tr>
+          <td>spop(name)</td>
+          <td>随机返回并删除键名为 name 的集合中的一个元素</td>
+          <td>name： 键名</td>
+          <td>redis.spop(‘tags’)</td>
+          <td>从键名为 tags 的集合并随机删除并返回该元素</td>
+          <td>b’Tea’</td>
+        </tr>
+        <tr>
+          <td>smove(scr, dst, value)</td>
+          <td>src 对应的集合中一处元素并将其添加到 dst 对应的集合中</td>
+          <td>src： 源集合；dst： 目标集合；value： 元素值</td>
+          <td>redis.smove(‘tags’, ‘tags2’, ‘Coffee’)</td>
+          <td>从键名为 tags 的集合中删除元素 Coffee 并将其添加到键为 tags2 的集合</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>scard(name)</td>
+          <td>返回键名为 name 的集合的元素个数</td>
+          <td>name: 键名</td>
+          <td>redis.scard(‘tags’)</td>
+          <td>获取键名为 tags 的集合中的元素个数</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>sismember(name, value)</td>
+          <td>测试 member 是否是键名为 name 的集合的元素</td>
+          <td>name: 键值</td>
+          <td>redis.sismember(‘tags’, ‘Book’)</td>
+          <td>判断 Book 是否是键名为 tags 的集合元素</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>sinter(keys, *args)</td>
+          <td>返回所有给定键的集合的交集</td>
+          <td>keys： 键名序列</td>
+          <td>redis.sinter([‘tags’, ‘tags2’])</td>
+          <td>返回键名为 tags 的集合和键名为 tags2 的集合的交集</td>
+          <td>{b’Coffee’}</td>
+        </tr>
+        <tr>
+          <td>sinterstore(dest, keys, *args)</td>
+          <td>求交集并将交集保存到 dest 的集合</td>
+          <td>dest: 结果集合；keys： 键名序列</td>
+          <td>redis.sinterstore(‘inttag’, [‘tags’, ‘tags2’])</td>
+          <td>求键名为 tags 的集合和键名为 tags2 的集合的交集并将其保存为 inttag</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>sunion(keys, *args)</td>
+          <td>返回所有给定键的集合的并集</td>
+          <td>keys： 键名序列</td>
+          <td>redis.sunion([‘tags’, ‘tags2’])</td>
+          <td>返回键名为 tags 的集合和键名为 tags2 的集合的并集</td>
+          <td>{b’Coffee’, b’Book’, b’Pen’}</td>
+        </tr>
+        <tr>
+          <td>sunionstore(dest, keys, *args)</td>
+          <td>求并集并将并集保存到 dest 的集合</td>
+          <td>dest： 结果集合；keys： 键名序列</td>
+          <td>redis.sunionstore(‘inttag’, [‘tags’, ‘tags2’])</td>
+          <td>求键名为 tags 的集合和键名为 tags2 的集合并集并将其保存为 inttag</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>sdiff(keys, *args)</td>
+          <td>返回所有给定键的集合的差集</td>
+          <td>keys： 键名序列</td>
+          <td>redis.sdiff([‘tags’, ‘tags2’])</td>
+          <td>返回键名为 tags 的集合和键名为 tags2 的集合的差集</td>
+          <td>{b’Book’, ‘b’Pen’}</td>
+        </tr>
+        <tr>
+          <td>sdiffstore(dest, keys, *args)</td>
+          <td>求差集并将差集保存到 dest 集合</td>
+          <td>dest: 记过集合；keys： 键名序列</td>
+          <td>redis.sdiffstore(‘inttag’, [‘tags’, ‘tags2’])</td>
+          <td>求键名为 tags 的集合和键名为 tags2 的集合的差集并将其保存为 inttag</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>smembers(name)</td>
+          <td>返回键名为 name 的集合的所有元素</td>
+          <td>name： 键名</td>
+          <td>redis.smembers(‘tags)</td>
+          <td>返回键名为 tags 的集合的所有元素</td>
+          <td>{b’Pen’, b’Book’, b’Coffee’}</td>
+        </tr>
+        <tr>
+          <td>srandmember(name)</td>
+          <td>随机返回键名为 name 的集合中的一个元素，但不删除元素</td>
+          <td>name: 键值</td>
+          <td>redis.srandmember(‘tags’)</td>
+          <td>随机返回名为 tags 的集合中的一个元素</td>
+          <td>Srandmember(name)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>有序集合操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+          <th> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>zadd(name, *values)</td>
+          <td>向键名为 name 的 zset 中添加元素 member，score 用于排序。如果该元素存在，则更新其顺序</td>
+          <td>name： 键名；args： 可变参数</td>
+          <td>redis.zadd(‘grade’, 100, ‘Bob’, 98, ‘Mike’)</td>
+          <td>向键名为 grade 的 zset 中添加 Bob（其 score 为100),并添加 Mike（其 score 为98)</td>
+          <td>2, 即添加的元素个数</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrem(name, *values)</td>
+          <td>删除键名为 name 的 zset 中的元素</td>
+          <td>name： 键名；values： 元素</td>
+          <td>redis.zrem(‘grade’, ‘Mike’)</td>
+          <td>从键名为 grade 的 zset 中删除 Mike</td>
+          <td>从键名为 grade 的 zset 中删除 Mike</td>
+          <td>1， 即删除的元素个数</td>
+        </tr>
+        <tr>
+          <td>zincrby(name, value, amount=1)</td>
+          <td>如果在键名为 name 的 zset 中已经存在元素，value 则将该元素的 score 增加 amount；否则向该集合中添加该元素，其 score 的值为 amount</td>
+          <td>name： 键名；value： 元素；amount： 增长的 score 的值</td>
+          <td>redis.zincrby(‘grade’, ‘Bob’, -2)</td>
+          <td>键名为 grade 的 zset 中 Bob 的 score 减2</td>
+          <td>98.0，即修改后的值</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrank(name, value)</td>
+          <td>返回键名为 name 的 zset 中元素的排名，按 score 从小到大排序，即名次</td>
+          <td>name： 键名；value： 元素值</td>
+          <td>redis.zrank(‘grade’, ‘Amy’)</td>
+          <td>得到键名为 grade 的 zset 中 Amy 的排名</td>
+          <td>1</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrevrank(name, value)</td>
+          <td>返回键名为 name 的 zset 中元素的倒数排名，按 score 从小到大排序，即名次</td>
+          <td>name： 键名；value： 元素值</td>
+          <td>redis.zrevzrank(‘grade’, ‘Amy’)</td>
+          <td>得到键名为 grade 的 zset 中 Amy 的倒数排名</td>
+          <td>2</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrevrange(name, start, end, withscores=False)</td>
+          <td>返回键名为 name 的 zset（按 score 从小到大排序）中 index 从 start 到 end 的所有元素</td>
+          <td>name： 键值；start： 开始索引；end： 借宿索引；withscores： 是否带 score</td>
+          <td>redis.zrevrange(‘grade’, 0, 3)</td>
+          <td>返回键名为 grade 的 zset 中前四名元素</td>
+          <td>[b’Bob’, b’Mike’, b’Amy’, b’James’]</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zrangebysocre(name. min, max, start=None, num=None, withscores=False)</td>
+          <td>返回键名为 name 的 zset 中 score 在给定区间的元素</td>
+          <td>name： 键值；min： 最低 score；max： 最高 score；start： 起始索引；end： 结束索引；num： 个数； withscore： 是否带score</td>
+          <td>redis.zrangebysocre(‘grade’, 80, 95)</td>
+          <td>返回键名为 grade 的 zset 中 score 在 80 和 95 之间的元素</td>
+          <td>[b’Bob’, b’Mike’, b’Amy’, b’James’]</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zcount(name, min, max)</td>
+          <td>返回键名为 name 的 zset 中 score 在给定区间的数量</td>
+          <td>name： 键名；min：最低score;max: 最高 score</td>
+          <td>redis.zcount(’grade‘， 80， 95)</td>
+          <td>返回键名为 grade 的 zset 中 score 在80到95的元素个数</td>
+          <td>2</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zcard(name)</td>
+          <td>返回键名为 name 的 zset 的元素个数</td>
+          <td>name： 键名</td>
+          <td>redis.zcard(‘grade’)</td>
+          <td>获取键名为 grade 的 zset 中元素个数</td>
+          <td>3</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zremrangebyrank(name, min, max)</td>
+          <td>删除键名为 name 的 zset 中 score 在 给定区间的元素</td>
+          <td>name： 键名；min： 最低 score；max： 最高 score</td>
+          <td>redis.zremrangebyscore(‘grade’, 0, 0)</td>
+          <td>删除键名为 grade 的 zset 中排名第一的元素</td>
+          <td>1，即删除的元素个数</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>zremrangebyscore(name, min, max)</td>
+          <td>删除键名为 name 的 zset 中 score 在 给定区间的元素</td>
+          <td>name： 键名；min： 最低 score；max： 最高 score</td>
+          <td>redis.zremrangebyscore(‘grade’, 80, 90)</td>
+          <td>删除 score 在80到90之间的元素</td>
+          <td>1，即删除的元素个数</td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>散列操作</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>方法</th>
+          <th>作用</th>
+          <th>参数说明</th>
+          <th>示例</th>
+          <th>示例说明</th>
+          <th>示例结果</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>hset(name, key, value)</td>
+          <td>向键名为 name 的散列表中添加映射</td>
+          <td>name： 键名；key： 映射键名；value： 映射键值</td>
+          <td>hset(‘price’, ‘cake, 5)</td>
+          <td>向键名为 price 的散列表中添加映射关系，cake的值为5</td>
+          <td>1，即添加的映射个数</td>
+        </tr>
+        <tr>
+          <td>hestnx(name, key, value)</td>
+          <td>如果映射键名不存在，则向键名为 name 的散列表中添加映射</td>
+          <td>name： 键名；key： 映射键名；value： 映射键值</td>
+          <td>hsetnx(‘price’, ‘book’, 6)</td>
+          <td>向键名为 price 的散列表中添加映射关系， book的值为6</td>
+          <td>1，即添加的映射个数</td>
+        </tr>
+        <tr>
+          <td>hget(name, key)</td>
+          <td>返回键名为 name 的散列表中 key 对应的值</td>
+          <td>name: 键名；key： 映射键名</td>
+          <td>redis.hget(’price’, ‘cake’)</td>
+          <td>获取键名为 price 的散列表中键名为 cake 的值</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>hmget(name, keys, *args)</td>
+          <td>返回键名为 name 的散列表中各个键对应的值</td>
+          <td>name： 键名；keys： 键名序列</td>
+          <td>redis.hmget(‘price’, [‘apple’, ‘orange’])</td>
+          <td>获取键名为 price 的散列表中 apple 和 orange 的值</td>
+          <td>[b’3’, b’7’]</td>
+        </tr>
+        <tr>
+          <td>hmset(name, mapping)</td>
+          <td>向键名为 name 的散列表中批量添加映射</td>
+          <td>name： 键名；mapping： 映射字典</td>
+          <td>redis.hmset(‘price’, {‘banana’: 2, ‘pear’: 6})</td>
+          <td>向键名为 price 的散列表中批量添加映射</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>hincrby(name, key, amount=1)</td>
+          <td>将键名为 name 的散列表中的映射的值增加 amount</td>
+          <td>name： 键名；key：映射键名；amount： 增长量</td>
+          <td>redis.hincrby(‘price’, ‘apple’, 3)</td>
+          <td>key 为 price 的散列表中 apple 的值增加3</td>
+          <td>6，修改后的值</td>
+        </tr>
+        <tr>
+          <td>hexists(name, key)</td>
+          <td>键名为 name 的散列表中是否存在键名为键的映射</td>
+          <td>name： 键名；key： 映射键名</td>
+          <td>redis.hexists(‘price’, ‘banana’)</td>
+          <td>键名为 orice 的散列表中 banana 的值是否存在</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>hdel(name, *keys)</td>
+          <td>在键名为 name 的散列表中，删除键名为键的映射</td>
+          <td>name： 键名；keys： 键名序列</td>
+          <td>redis.hdel(‘price’, ‘banana)</td>
+          <td>从键名为 price 的散列表中删除键名为 banana 的映射</td>
+          <td>True</td>
+        </tr>
+        <tr>
+          <td>hlen(name)</td>
+          <td>在键名为 name 的散列表中获取映射个数</td>
+          <td>name： 键名</td>
+          <td>redis.hlen(‘price)</td>
+          <td>从键名为 price 的散列表中获取映射个数</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>hkeys(name)</td>
+          <td>从键名为 name 的散列表中获取所有映射键名</td>
+          <td>name： 键名</td>
+          <td>redis.hkeys(‘price’)</td>
+          <td>从键名为 price 的散列表中获取所有映射键名</td>
+          <td>[b’cake’, b’book’, b’banana’, b’pear’]</td>
+        </tr>
+        <tr>
+          <td>hvals(name)</td>
+          <td>从键名为 name 的散列表中获取所有映射键值</td>
+          <td>name： 键名</td>
+          <td>redis.hvals(‘price’)</td>
+          <td>从键名为 price 的散列表中获取所有映射键值</td>
+          <td>[b’5’, b’6’, b’2’, b’6’]</td>
+        </tr>
+        <tr>
+          <td>hgetall(name)</td>
+          <td>从键名为 name 的散列表中获取所有映射键值对</td>
+          <td>name: 键名</td>
+          <td>redis.hgetall(‘price’)</td>
+          <td>从加密为 price 的散列表中获取所有映射键值对</td>
+          <td>{b’cake’: b’5’, b’book’: b’6’, b’organe’: b’2’, b’pear’: b’6’}</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ol>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

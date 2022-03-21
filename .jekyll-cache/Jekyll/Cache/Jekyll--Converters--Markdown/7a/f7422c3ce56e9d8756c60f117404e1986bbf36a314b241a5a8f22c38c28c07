@@ -1,0 +1,30 @@
+I"W<p>数据来源：https://static.runoob.com/download/nba.csv</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">nba</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'nba.csv'</span><span class="p">)</span>
+
+<span class="c1"># 获取队伍列表信息
+</span><span class="n">team_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">nba</span><span class="p">[</span><span class="s">'Team'</span><span class="p">]]</span>
+<span class="n">array_list</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">unique</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">team_list</span><span class="p">])</span>
+<span class="c1"># print(array_list)
+</span>
+<span class="c1"># 创建一个全为零的df
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">nba</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">array_list</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span> <span class="n">columns</span><span class="o">=</span><span class="n">array_list</span><span class="p">)</span>
+<span class="c1"># print(df.head())
+</span>
+<span class="c1"># 遍历所有人，把df中分类出现的列置为1
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nba</span><span class="p">[</span><span class="s">'Name'</span><span class="p">].</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">team_list</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="c1"># print(df)
+</span>
+<span class="c1"># 统计各组人数
+</span><span class="n">draw</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nb">sum</span><span class="p">().</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">.</span><span class="n">plot</span><span class="p">.</span><span class="n">barh</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+:ET

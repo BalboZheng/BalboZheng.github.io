@@ -1,0 +1,90 @@
+I"><h1 id="数据来源"><a href="https://www.kaggle.com/c/titanic">数据来源</a></h1>
+<p>layout: post
+title: 泰坦尼克号生存预测
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: [pandas, matplotlib, sklearn]
+sidebar: []
+—</p>
+
+<p>数据来源：https://www.kaggle.com/c/titanic</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+1. 获取数据集
+2. 数据基本处理
+3. 特征工程
+4. 机器学习
+5. 模型评估
+"""</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="kn">import</span> <span class="n">DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">export_graphviz</span>
+
+<span class="c1"># 导入数据
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'data/train.csv'</span><span class="p">)</span>
+<span class="c1"># for column_name in data.columns:
+#     print(column_name)
+</span>
+<span class="c1"># 数据基本处理
+# 特征值，目标值
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s">'Pclass'</span><span class="p">,</span> <span class="s">'Sex'</span><span class="p">,</span> <span class="s">'Age'</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s">'Survived'</span><span class="p">]</span>
+<span class="c1"># 缺失值
+</span><span class="n">x</span><span class="p">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="s">'Age'</span><span class="p">].</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># 数据集划分
+</span><span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">22</span><span class="p">)</span>
+
+<span class="c1"># 特征工程
+# 转换成字典
+</span><span class="n">x_train</span> <span class="o">=</span> <span class="n">x_train</span><span class="p">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s">'records'</span><span class="p">)</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">x_test</span><span class="p">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s">'records'</span><span class="p">)</span>
+
+<span class="n">transfer</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">()</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+<span class="n">x_test</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+<span class="c1"># 机器学习
+</span><span class="n">estimator</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">()</span>
+<span class="n">estimator</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># 模型评估
+</span><span class="n">y_pre</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"---决策树--"</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"预测值为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"准确率为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<h2 id="数据可视化">数据可视化</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 数据可视化
+</span><span class="n">export_graphviz</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">out_file</span><span class="o">=</span><span class="s">'data/tree.dot'</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s">'Pclass'</span><span class="p">,</span> <span class="s">'Sex'</span><span class="p">,</span> <span class="s">'Age'</span><span class="p">,</span> <span class="s">'Survived'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>将生成的.dot文件复制到<a href="http://webgraphviz.com/">数据可视化</a>打开</p>
+
+<h2 id="优化">优化</h2>
+
+<p>由于生成的二叉树存在欠拟合，所以需对数据进一步优化</p>
+
+:ET

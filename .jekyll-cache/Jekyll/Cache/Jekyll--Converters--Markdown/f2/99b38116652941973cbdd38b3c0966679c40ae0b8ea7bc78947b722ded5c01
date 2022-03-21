@@ -1,0 +1,129 @@
+I"�3<h2 id="分析">分析</h2>
+
+<p>回归当中的数据大小不一，是否会导致结果影响较大，需做标准化处理</p>
+
+<ul>
+  <li>数据分割与标准化处理</li>
+  <li>回归预测</li>
+  <li>线性回归的算法效果评估</li>
+</ul>
+
+<h2 id="回归性能评估">回归性能评估</h2>
+
+<p>均方误差：
+$$
+MSE=\frac1m\sum_i^m=1(y^i-\bar{y})^2（y为预测值，\bar{y}为真实值）
+$$</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+<span class="c1"># y_true 真实值
+# y_pred 预测值
+# return 浮点数
+</span><span class="n">mse</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="代码">代码</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">"""
+1. 获取数据集
+2. 数据基本处理
+3. 特征工程
+4. 机器学习
+5. 模型评估
+"""</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_boston</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span><span class="p">,</span> <span class="n">SGDRegressor</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">,</span> <span class="n">RidgeCV</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">mean_squared_error</span>
+
+
+<span class="k">def</span> <span class="nf">linear_model1</span><span class="p">():</span>
+    <span class="s">"""
+    回归方程：正规方程
+    :return: None
+    """</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
+    <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="n">transfer</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+    <span class="n">x_test</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="n">estimator</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">y_pre</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"---正规方程---"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"预测值为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"准确率为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"均方误差：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">linear_model2</span><span class="p">():</span>
+    <span class="s">"""
+    线性回归：梯度下降法
+    :return:
+    """</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
+    <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="n">transfer</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+    <span class="n">x_test</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+    <span class="n">estimator</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+    <span class="n">estimator</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">y_pre</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"---梯度下降法---"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"预测值为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"准确率为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"均方误差：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">linear_model3</span><span class="p">():</span>
+    <span class="s">"""
+    线性回归：岭回归
+    :return:
+    """</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
+    <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="p">.</span><span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="n">transfer</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">x_train</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+    <span class="n">x_test</span> <span class="o">=</span> <span class="n">transfer</span><span class="p">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+
+    <span class="c1"># alpha 正则化力度
+</span>    <span class="c1"># solver 会根据数据自动选择方法 sag：如果数据集、特征都比较大，选择改随机梯度下降优化
+</span>    <span class="c1"># normalize 是否标准化
+</span>    <span class="c1"># estimator = Ridge(alpha=1.0)
+</span>    <span class="n">estimator</span> <span class="o">=</span> <span class="n">RidgeCV</span><span class="p">(</span><span class="n">alphas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+    <span class="n">estimator</span><span class="p">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+    <span class="n">y_pre</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_test</span><span class="p">)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">.</span><span class="n">score</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">"---岭回归---"</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"预测值为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">y_pre</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"准确率为：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"均方误差：</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">ret</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">linear_model1</span><span class="p">()</span>
+    <span class="n">linear_model2</span><span class="p">()</span>
+    <span class="n">linear_model3</span><span class="p">()</span>
+
+
+</code></pre></div></div>
+
+:ET

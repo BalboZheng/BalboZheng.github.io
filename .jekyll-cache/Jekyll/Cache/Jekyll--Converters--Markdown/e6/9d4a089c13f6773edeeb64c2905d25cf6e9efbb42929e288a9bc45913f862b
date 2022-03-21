@@ -1,0 +1,950 @@
+I"�0<p>«««&lt; HEAD
+«««&lt; HEAD:_posts/2019-05-13-thymeleaf.md
+—
+layout:     post
+title:      “Thymeleaf入门”
+subtitle:   “”
+date:       2019-05-13 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - thymeleaf
+—</p>
+<h2 id="概述">概述</h2>
+<p>1.是什么</p>
+
+<ul>
+  <li>简单说， Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，它可以完全替代 JSP 。</li>
+</ul>
+
+<p>2.feature</p>
+
+<ul>
+  <li>
+    <p>Thymeleaf在有网络和无网络的环境下皆可运行，即它可以让美工在浏览器查看页面的静态效果，也可以让程序员在服务器查看带数据的动态页面效果。这是由于它支持 html 原型，然后在 html 标签里增加额外的属性来达到模板+数据的展示方式。浏览器解释 html 时会忽略未定义的标签属性，所以 thymeleaf 的模板可以静态地运行；当有数据返回到页面时，Thymeleaf 标签会动态地替换掉静态内容，使页面动态显示。</p>
+  </li>
+  <li>Thymeleaf开箱即用的特性。它提供标准和spring标准两种方言，可以直接套用模板实现JSTL、 OGNL表达式效果，避免每天套模板、该jstl、改标签的困扰。同时开发人员也可以扩展和创建自定义的方言。</li>
+  <li>Thymeleaf 提供spring标准方言和一个与 SpringMVC 完美集成的可选模块，可以快速的实现表单绑定、属性编辑器、国际化等功能。</li>
+</ul>
+
+<p>3.文档</p>
+
+<p>官方教程：</p>
+
+<p>http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#what-is-thymeleaf</p>
+
+<p>推荐教程：</p>
+
+<p>http://blog.didispace.com/springbootweb/</p>
+
+<p>http://blog.csdn.net/u012706811/article/details/52185345</p>
+
+<h2 id="hellworld">HellWorld</h2>
+<h3 id="引入依赖">引入依赖</h3>
+
+<p>springboot直接引入：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-thymeleaf<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+<p>非springboot项目使用如下依赖：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.thymeleaf<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>thymeleaf<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.1.4<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+<p>默认的模板映射路径是：<strong><em>src/main/resources/templates</em></strong></p>
+
+<p>springboot1.4之后，可以使用thymeleaf3来提高效率，并且解决标签闭合问题，配置方式：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+    <span class="c">&lt;!-- set thymeleaf version --&gt;</span>
+    <span class="nt">&lt;thymeleaf.version&gt;</span>3.0.0.RELEASE<span class="nt">&lt;/thymeleaf.version&gt;</span>
+    <span class="nt">&lt;thymeleaf-layout-dialect.version&gt;</span>2.0.0<span class="nt">&lt;/thymeleaf-layout-dialect.version&gt;</span>
+    <span class="c">&lt;!--set java version--&gt;</span>
+    <span class="nt">&lt;java.version&gt;</span>1.8<span class="nt">&lt;/java.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.learndemo.controller</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.Model</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.ModelMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="o">;</span>
+
+<span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/return"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LearnReturnType</span> <span class="o">{</span>
+
+    <span class="cm">/**
+    * Model本身不能设置页面跳转的url地址别名或者物理跳转地址，那么我们可以通过控制器方法的返回值来设置跳转url
+    * 地址别名或者物理跳转地址
+    *
+    * @param model
+    * 一个接口， 其实现类为ExtendedModelMap，继承了ModelMap类
+    * @return 跳转url地址别名或者物理跳转地址
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index1"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">index1</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index1"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"result"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * ModelMap对象主要用于传递控制方法处理数据到结果页面,类似于request对象的setAttribute方法的作用。 
+    * 用法等同于Model
+    *
+    * @param model
+    * @return 跳转url地址别名或者物理跳转地址
+    */</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index2"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">index2</span><span class="o">(</span><span class="nc">ModelMap</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index2"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"result"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * ModelAndView主要有两个作用 设置转向地址和传递控制方法处理结果数据到结果页面
+    * @return 返回一个模板视图对象
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index3"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">index3</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ModelAndView</span> <span class="n">mv</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">(</span><span class="s">"result"</span><span class="o">);</span>
+    <span class="c1">// ModelAndView mv = new ModelAndView();</span>
+    <span class="c1">// mv.setViewName("result");</span>
+    <span class="n">mv</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index3"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">mv</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * map用来存储递控制方法处理结果数据，通过ModelAndView方法返回。
+    * 当然Model,ModelMap也可以通过这种方法返回
+    * @return 返回一个模板视图对象
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index4"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">index4</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;();</span>
+    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index4"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ModelAndView</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="n">map</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h3 id="配置thymeleaf视图解析器">配置thymeleaf视图解析器</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="n">thymeleaf</span> <span class="n">start</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span><span class="o">=</span><span class="no">HTML5</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">encoding</span><span class="o">=</span><span class="no">UTF</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">content</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">text</span><span class="o">/</span><span class="n">html</span>
+<span class="err">#</span><span class="n">开发时关闭缓存</span><span class="o">,</span><span class="n">不然没法看到实时页面</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">cache</span><span class="o">=</span><span class="kc">false</span>
+<span class="err">#</span><span class="n">thymeleaf</span> <span class="n">end</span>
+</code></pre></div></div>
+<p>实际项目中可能会有不太严格的HTML格式，此时设置mode=HTML5将会对非严格的报错，可以参考以下配置：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span><span class="o">=</span><span class="no">LEGACYHTML5</span>
+</code></pre></div></div>
+<p>你可能会发现在默认配置下，thymeleaf对.html的内容要求很严格，比如</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>如果少最后的标签封闭符号/，就会报错而转到错误页。也比如你在使用Vue.js这样的库，然后有</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">v-cloak</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>这样的html代码，也会被thymeleaf认为不符合要求而抛出错误。</p>
+
+<p>因此，建议增加下面这段：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span> <span class="o">=</span> <span class="no">LEGACYHTML5</span>
+</code></pre></div></div>
+<p>spring.thymeleaf.mode的默认值是HTML5其实是一个很严格的检查，改为LEGACYHTML5可以得到一个可能更友好亲切的格式要求。</p>
+
+<p>需要注意的是，LEGACYHTML5需要搭配一个额外的库NekoHTML才可用。</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>  
+       <span class="nt">&lt;groupId&gt;</span>net.sourceforge.nekohtml<span class="nt">&lt;/groupId&gt;</span>  
+       <span class="nt">&lt;artifactId&gt;</span>nekohtml<span class="nt">&lt;/artifactId&gt;</span>   
+       <span class="nt">&lt;version&gt;</span>1.9.22<span class="nt">&lt;/version&gt;</span>   
+<span class="nt">&lt;/dependency&gt;</span>  
+</code></pre></div></div>
+<p>最后重启项目就可以感受到不那么严格的thymeleaf了。</p>
+
+<p>这样，需要的配置项如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span> <span class="n">一项是非严格的HTML检查</span><span class="err">，</span><span class="n">一项是禁用缓存来获取实时页面数据</span><span class="err">，</span><span class="n">其他采用默认项即可</span>
+<span class="nl">thymeleaf:</span>
+    <span class="nl">mode:</span> <span class="no">LEGACYHTML5</span>
+    <span class="nl">cache:</span> <span class="kc">false</span>
+</code></pre></div></div>
+<h3 id="编写控制器">编写控制器</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/**
+* 测试demo的controller
+*
+* @author zcc ON 2018/2/8
+**/</span>
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">HelloController</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/hello"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">hello</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"jiangbei"</span><span class="o">;</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="编写模板html">编写模板html</h3>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>hello<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!--/*@thymesVar id="name" type="java.lang.String"*/--&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello！, ' + ${name} + '!'"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>其中，注释是通过alt+enter进行自动生成的，便于IDEA补全，如果不加，IDEA将会报错cannot reslove，</p>
+
+<p>当然也可以通过如下方式解决，解决之前推荐在maven项目中reimport一下！（据说新版本的IDEA中已经修复此问题，待更新至2017.3以后）</p>
+<h2 id="基础语法">基础语法</h2>
+<h3 id="创建html">创建HTML</h3>
+
+<p>由上文也可以知道需要在html中添加：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+<p>这样，下文才能正确使用th:*形式的标签！</p>
+
+<h3 id="获取变量值">获取变量值${…}</h3>
+
+<p>通过${…}进行取值，这点和ONGL表达式语法一致！</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--/*@thymesVar id="name" type="java.lang.String"*/--&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello！, ' + ${name} + '!'"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+<p><strong>选择变量表达式*{…}</strong></p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:object=</span><span class="s">"${session.user}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"*{firstName}"</span><span class="nt">&gt;</span>Sebastian<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Surname: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"*{lastName}"</span><span class="nt">&gt;</span>Pepper<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Nationality: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">{nationality}"</span><span class="nt">&gt;</span>Saturn<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span> 
+</code></pre></div></div>
+<p>等价于</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.firstName}"</span><span class="nt">&gt;</span>Sebastian<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Surname: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.lastName}"</span><span class="nt">&gt;</span>Pepper<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Nationality: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.nationality}"</span><span class="nt">&gt;</span>Saturn<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>至于p里面的原有的值只是为了给前端开发时做展示用的.这样的话很好的做到了前后端分离。</p>
+
+<p>这也是Thymeleaf非常好的一个特性：在无网络的情况下也能运行，也就是完全可以前端先写出页面，模拟数据展现效果，后端人员再拿此模板修改即可！</p>
+<h3 id="链接表达式-">链接表达式: @{…}</h3>
+
+<p>用来配合link src href使用的语法，类似的标签有:th:href和th:src</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) --&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{http://localhost:8080/gtvg/order/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>
+view<span class="nt">&lt;/a&gt;</span> <span class="c">&lt;!-- Will produce '/gtvg/order/details?orderId=3' (plus rewriting) --&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{/order/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>view<span class="nt">&lt;/a&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{order/{orderId}/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>
+Content路径,默认访问static下的order文件夹<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+<p>###　文本替换</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"'Welcome to our application, ' + ${user.name} + '!'"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+<p>或者下面的表达方式：（只能包含表达式变量，而不能有条件判断等！）</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"|Welcome to our application, ${user.name}!|"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+<h3 id="运算符">运算符</h3>
+
+<p>&lt;font color=#2E8B57 &gt;数学运算&lt;/font&gt;</p>
+
+<ul>
+  <li>二元操作：+, - , * , / , %</li>
+  <li>一元操作: - （负）</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;逻辑运算&lt;/font&gt;</p>
+
+<ul>
+  <li>一元 : and or</li>
+  <li>二元 : !,not</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;比较运算&lt;/font&gt;</p>
+
+<ul>
+  <li>比较：&gt; , &lt; , &gt;= , &lt;= ( gt , lt , ge , le )</li>
+  <li>等于：== , != ( eq , ne )</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;条件运算&lt;/font&gt;</p>
+
+<ul>
+  <li>If-then: (if) ? (then)</li>
+  <li>If-then-else: (if) ? (then) : (else)</li>
+  <li>Default: (value) ?: (defaultvalue)
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="条件">条件</h3>
+
+<p>&lt;font color=#2E8B57 &gt;if/unless&lt;/font&gt;</p>
+
+<p>使用th:if和th:unless属性进行条件判断，th:unless于th:if恰好相反，只有表达式中的条件不成立，才会显示其内容。</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/login}"</span> <span class="na">th:unless=</span><span class="s">${session.user</span> <span class="err">!=</span> <span class="na">null</span><span class="err">}</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+<p>&lt;font color=#2E8B57 &gt;switch&lt;/font&gt;</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:switch=</span><span class="s">"${user.role}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"'admin'"</span><span class="nt">&gt;</span>User is an administrator<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"#{roles.manager}"</span><span class="nt">&gt;</span>User is a manager<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"*"</span><span class="nt">&gt;</span>User is some other thing<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<h3 id="循环">循环</h3>
+
+<p>&lt;font color=#2E8B57 &gt;th:each&lt;/font&gt;</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>hello<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!-- 不存在则忽略，显示hello null!(可以通过默认值进行设置)--&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello ' + (${name}?:'admin')"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;</span>
+            <span class="nt">&lt;th&gt;</span>ID<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;th&gt;</span>NAME<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;th&gt;</span>AGE<span class="nt">&lt;/th&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"emp : ${empList}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.id}"</span><span class="nt">&gt;</span>1<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.name}"</span><span class="nt">&gt;</span>海<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.age}"</span><span class="nt">&gt;</span>18<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>&lt;font color=#2E8B57 &gt;后台&lt;/font&gt;</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/hello"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">hello</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Emp</span><span class="o">&gt;</span> <span class="n">empList</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"校长"</span><span class="o">,</span> <span class="mi">24</span><span class="o">));</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"书记"</span><span class="o">,</span> <span class="mi">28</span><span class="o">));</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="s">"小海"</span><span class="o">,</span> <span class="mi">25</span><span class="o">));</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"empList"</span><span class="o">,</span> <span class="n">empList</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<h3 id="内置对象utilites">内置对象Utilites</h3>
+
+<p>一般不推荐在前端进行这些处理，前端页面以减少逻辑为宜</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#dates :
+utility methods for java.util.Date objects: formatting, component extraction, etc. #calendars :
+ analogous to #dates , but for java.util.Calendar objects.
+
+#numbers :
+utility methods for formatting numeric objects.
+
+#strings :
+utility methods for String objects: contains, startsWith, prepending/appending, etc. #objects :
+ utility methods for objects in general.
+
+#bools :
+utility methods for boolean evaluation. #arrays :
+ utility methods for arrays.
+
+#lists :
+utility methods for lists.
+
+#sets :
+utility methods for sets.
+
+#maps :
+utility methods for maps.
+
+#aggregates :
+utility methods for creating aggregates on arrays or collections.
+
+#messages :
+utility methods for obtaining externalized messages inside variables expressions, 
+in the same way as they would be obtained using #{...} syntax.
+
+#ids :
+utility methods for dealing with id attributes that might be repeated (for example, 
+as a result of an iteration).
+</code></pre></div></div>
+<p>常用示例：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+* Format date with the specified pattern
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">arrayFormat</span><span class="o">(</span><span class="n">datesArray</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">listFormat</span><span class="o">(</span><span class="n">datesList</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">setFormat</span><span class="o">(</span><span class="n">datesSet</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Create a date (java.util.Date) object for the current date and time
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">createNow</span><span class="o">()}</span>
+
+<span class="cm">/*
+* Create a date (java.util.Date) object for the current date (time set to 00:00)
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">createToday</span><span class="o">()}</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+* Check whether a String is empty (or null). Performs a trim() operation before check
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">name</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">arrayIsEmpty</span><span class="o">(</span><span class="n">nameArr</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">listIsEmpty</span><span class="o">(</span><span class="n">nameList</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">setIsEmpty</span><span class="o">(</span><span class="n">nameSet</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Check whether a String starts or ends with a fragment
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="err">'</span><span class="nc">Don</span><span class="err">'</span><span class="o">)}</span> <span class="c1">// also array*, list* and set*</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">endingFragment</span><span class="o">)}</span> <span class="c1">// also array*, list* and set*</span>
+
+<span class="cm">/*
+* Compute length
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">length</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Null-safe comparison and concatenation
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">concatReplaceNulls</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Random
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">randomAlphanumeric</span><span class="o">(</span><span class="n">count</span><span class="o">)}</span>
+</code></pre></div></div>
+<h2 id="常用标签">常用标签</h2>
+<p><img src="http://q17k7c3by.bkt.clouddn.com/0v38kefsvyfe77u.png" alt="" />
+=======
+—
+layout:     post
+title:      “Thymeleaf入门”
+subtitle:   “”
+date:       2019-05-13 12:30:11
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+catalog: true
+tags:
+    - thymeleaf
+—
+=======
+—
+layout: post
+title: Thymeleaf入门
+subtitle: 
+author: Balbo Cheng
+categories: java
+tags: [thymeleaf]
+—</p>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+              <h2 id="概述-1">概述</h2>
+              <p>1.是什么</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<ul>
+  <li>简单说， Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，它可以完全替代 JSP 。</li>
+</ul>
+
+<p>2.feature</p>
+
+<ul>
+  <li>
+    <p>Thymeleaf在有网络和无网络的环境下皆可运行，即它可以让美工在浏览器查看页面的静态效果，也可以让程序员在服务器查看带数据的动态页面效果。这是由于它支持 html 原型，然后在 html 标签里增加额外的属性来达到模板+数据的展示方式。浏览器解释 html 时会忽略未定义的标签属性，所以 thymeleaf 的模板可以静态地运行；当有数据返回到页面时，Thymeleaf 标签会动态地替换掉静态内容，使页面动态显示。</p>
+  </li>
+  <li>Thymeleaf开箱即用的特性。它提供标准和spring标准两种方言，可以直接套用模板实现JSTL、 OGNL表达式效果，避免每天套模板、该jstl、改标签的困扰。同时开发人员也可以扩展和创建自定义的方言。</li>
+  <li>Thymeleaf 提供spring标准方言和一个与 SpringMVC 完美集成的可选模块，可以快速的实现表单绑定、属性编辑器、国际化等功能。</li>
+</ul>
+
+<p>3.文档</p>
+
+<p>官方教程：</p>
+
+<p>http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#what-is-thymeleaf</p>
+
+<p>推荐教程：</p>
+
+<p>http://blog.didispace.com/springbootweb/</p>
+
+<p>http://blog.csdn.net/u012706811/article/details/52185345</p>
+
+<h2 id="hellworld-1">HellWorld</h2>
+<h3 id="引入依赖-1">引入依赖</h3>
+
+<p>springboot直接引入：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-thymeleaf<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+<p>非springboot项目使用如下依赖：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.thymeleaf<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>thymeleaf<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.1.4<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+<p>默认的模板映射路径是：<strong><em>src/main/resources/templates</em></strong></p>
+
+<p>springboot1.4之后，可以使用thymeleaf3来提高效率，并且解决标签闭合问题，配置方式：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+    <span class="c">&lt;!-- set thymeleaf version --&gt;</span>
+    <span class="nt">&lt;thymeleaf.version&gt;</span>3.0.0.RELEASE<span class="nt">&lt;/thymeleaf.version&gt;</span>
+    <span class="nt">&lt;thymeleaf-layout-dialect.version&gt;</span>2.0.0<span class="nt">&lt;/thymeleaf-layout-dialect.version&gt;</span>
+    <span class="c">&lt;!--set java version--&gt;</span>
+    <span class="nt">&lt;java.version&gt;</span>1.8<span class="nt">&lt;/java.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.learndemo.controller</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.Model</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.ModelMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="o">;</span>
+
+<span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/return"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LearnReturnType</span> <span class="o">{</span>
+
+    <span class="cm">/**
+    * Model本身不能设置页面跳转的url地址别名或者物理跳转地址，那么我们可以通过控制器方法的返回值来设置跳转url
+    * 地址别名或者物理跳转地址
+    *
+    * @param model
+    * 一个接口， 其实现类为ExtendedModelMap，继承了ModelMap类
+    * @return 跳转url地址别名或者物理跳转地址
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index1"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">index1</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index1"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"result"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * ModelMap对象主要用于传递控制方法处理数据到结果页面,类似于request对象的setAttribute方法的作用。 
+    * 用法等同于Model
+    *
+    * @param model
+    * @return 跳转url地址别名或者物理跳转地址
+    */</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index2"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">index2</span><span class="o">(</span><span class="nc">ModelMap</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index2"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"result"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * ModelAndView主要有两个作用 设置转向地址和传递控制方法处理结果数据到结果页面
+    * @return 返回一个模板视图对象
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index3"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">index3</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ModelAndView</span> <span class="n">mv</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">(</span><span class="s">"result"</span><span class="o">);</span>
+    <span class="c1">// ModelAndView mv = new ModelAndView();</span>
+    <span class="c1">// mv.setViewName("result");</span>
+    <span class="n">mv</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index3"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">mv</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * map用来存储递控制方法处理结果数据，通过ModelAndView方法返回。
+    * 当然Model,ModelMap也可以通过这种方法返回
+    * @return 返回一个模板视图对象
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index4"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">index4</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;();</span>
+    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index4"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ModelAndView</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="n">map</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h3 id="配置thymeleaf视图解析器-1">配置thymeleaf视图解析器</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="n">thymeleaf</span> <span class="n">start</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span><span class="o">=</span><span class="no">HTML5</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">encoding</span><span class="o">=</span><span class="no">UTF</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">content</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">text</span><span class="o">/</span><span class="n">html</span>
+<span class="err">#</span><span class="n">开发时关闭缓存</span><span class="o">,</span><span class="n">不然没法看到实时页面</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">cache</span><span class="o">=</span><span class="kc">false</span>
+<span class="err">#</span><span class="n">thymeleaf</span> <span class="n">end</span>
+</code></pre></div></div>
+<p>实际项目中可能会有不太严格的HTML格式，此时设置mode=HTML5将会对非严格的报错，可以参考以下配置：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span><span class="o">=</span><span class="no">LEGACYHTML5</span>
+</code></pre></div></div>
+<p>你可能会发现在默认配置下，thymeleaf对.html的内容要求很严格，比如</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+<p>如果少最后的标签封闭符号/，就会报错而转到错误页。也比如你在使用Vue.js这样的库，然后有</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">v-cloak</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>这样的html代码，也会被thymeleaf认为不符合要求而抛出错误。</p>
+
+<p>因此，建议增加下面这段：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span> <span class="o">=</span> <span class="no">LEGACYHTML5</span>
+</code></pre></div></div>
+<p>spring.thymeleaf.mode的默认值是HTML5其实是一个很严格的检查，改为LEGACYHTML5可以得到一个可能更友好亲切的格式要求。</p>
+
+<p>需要注意的是，LEGACYHTML5需要搭配一个额外的库NekoHTML才可用。</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>  
+       <span class="nt">&lt;groupId&gt;</span>net.sourceforge.nekohtml<span class="nt">&lt;/groupId&gt;</span>  
+       <span class="nt">&lt;artifactId&gt;</span>nekohtml<span class="nt">&lt;/artifactId&gt;</span>   
+       <span class="nt">&lt;version&gt;</span>1.9.22<span class="nt">&lt;/version&gt;</span>   
+<span class="nt">&lt;/dependency&gt;</span>  
+</code></pre></div></div>
+<p>最后重启项目就可以感受到不那么严格的thymeleaf了。</p>
+
+<p>这样，需要的配置项如下：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span> <span class="n">一项是非严格的HTML检查</span><span class="err">，</span><span class="n">一项是禁用缓存来获取实时页面数据</span><span class="err">，</span><span class="n">其他采用默认项即可</span>
+<span class="nl">thymeleaf:</span>
+    <span class="nl">mode:</span> <span class="no">LEGACYHTML5</span>
+    <span class="nl">cache:</span> <span class="kc">false</span>
+</code></pre></div></div>
+<h3 id="编写控制器-1">编写控制器</h3>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/**
+* 测试demo的controller
+*
+* @author zcc ON 2018/2/8
+**/</span>
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">HelloController</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/hello"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">hello</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"jiangbei"</span><span class="o">;</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="编写模板html-1">编写模板html</h3>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>hello<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!--/*@thymesVar id="name" type="java.lang.String"*/--&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello！, ' + ${name} + '!'"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>其中，注释是通过alt+enter进行自动生成的，便于IDEA补全，如果不加，IDEA将会报错cannot reslove，</p>
+
+<p>当然也可以通过如下方式解决，解决之前推荐在maven项目中reimport一下！（据说新版本的IDEA中已经修复此问题，待更新至2017.3以后）</p>
+<h2 id="基础语法-1">基础语法</h2>
+<h3 id="创建html-1">创建HTML</h3>
+
+<p>由上文也可以知道需要在html中添加：</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+<p>这样，下文才能正确使用th:*形式的标签！</p>
+
+<h3 id="获取变量值-1">获取变量值${…}</h3>
+
+<p>通过${…}进行取值，这点和ONGL表达式语法一致！</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--/*@thymesVar id="name" type="java.lang.String"*/--&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello！, ' + ${name} + '!'"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+<p><strong>选择变量表达式*{…}</strong></p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:object=</span><span class="s">"${session.user}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"*{firstName}"</span><span class="nt">&gt;</span>Sebastian<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Surname: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"*{lastName}"</span><span class="nt">&gt;</span>Pepper<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Nationality: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">{nationality}"</span><span class="nt">&gt;</span>Saturn<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span> 
+</code></pre></div></div>
+<p>等价于</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.firstName}"</span><span class="nt">&gt;</span>Sebastian<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Surname: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.lastName}"</span><span class="nt">&gt;</span>Pepper<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Nationality: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.nationality}"</span><span class="nt">&gt;</span>Saturn<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<p>至于p里面的原有的值只是为了给前端开发时做展示用的.这样的话很好的做到了前后端分离。</p>
+
+<p>这也是Thymeleaf非常好的一个特性：在无网络的情况下也能运行，也就是完全可以前端先写出页面，模拟数据展现效果，后端人员再拿此模板修改即可！</p>
+<h3 id="链接表达式--1">链接表达式: @{…}</h3>
+
+<p>用来配合link src href使用的语法，类似的标签有:th:href和th:src</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) --&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{http://localhost:8080/gtvg/order/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>
+view<span class="nt">&lt;/a&gt;</span> <span class="c">&lt;!-- Will produce '/gtvg/order/details?orderId=3' (plus rewriting) --&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{/order/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>view<span class="nt">&lt;/a&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{order/{orderId}/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>
+Content路径,默认访问static下的order文件夹<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+<p>###　文本替换</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"'Welcome to our application, ' + ${user.name} + '!'"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+<p>或者下面的表达方式：（只能包含表达式变量，而不能有条件判断等！）</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"|Welcome to our application, ${user.name}!|"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+<h3 id="运算符-1">运算符</h3>
+
+<p>&lt;font color=#2E8B57 &gt;数学运算&lt;/font&gt;</p>
+
+<ul>
+  <li>二元操作：+, - , * , / , %</li>
+  <li>一元操作: - （负）</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;逻辑运算&lt;/font&gt;</p>
+
+<ul>
+  <li>一元 : and or</li>
+  <li>二元 : !,not</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;比较运算&lt;/font&gt;</p>
+
+<ul>
+  <li>比较：&gt; , &lt; , &gt;= , &lt;= ( gt , lt , ge , le )</li>
+  <li>等于：== , != ( eq , ne )</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;条件运算&lt;/font&gt;</p>
+
+<ul>
+  <li>If-then: (if) ? (then)</li>
+  <li>If-then-else: (if) ? (then) : (else)</li>
+  <li>Default: (value) ?: (defaultvalue)
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="条件-1">条件</h3>
+
+<p>&lt;font color=#2E8B57 &gt;if/unless&lt;/font&gt;</p>
+
+<p>使用th:if和th:unless属性进行条件判断，th:unless于th:if恰好相反，只有表达式中的条件不成立，才会显示其内容。</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/login}"</span> <span class="na">th:unless=</span><span class="s">${session.user</span> <span class="err">!=</span> <span class="na">null</span><span class="err">}</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+<p>&lt;font color=#2E8B57 &gt;switch&lt;/font&gt;</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:switch=</span><span class="s">"${user.role}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"'admin'"</span><span class="nt">&gt;</span>User is an administrator<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"#{roles.manager}"</span><span class="nt">&gt;</span>User is a manager<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"*"</span><span class="nt">&gt;</span>User is some other thing<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+<h3 id="循环-1">循环</h3>
+
+<p>&lt;font color=#2E8B57 &gt;th:each&lt;/font&gt;</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>hello<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!-- 不存在则忽略，显示hello null!(可以通过默认值进行设置)--&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello ' + (${name}?:'admin')"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;</span>
+            <span class="nt">&lt;th&gt;</span>ID<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;th&gt;</span>NAME<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;th&gt;</span>AGE<span class="nt">&lt;/th&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"emp : ${empList}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.id}"</span><span class="nt">&gt;</span>1<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.name}"</span><span class="nt">&gt;</span>海<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.age}"</span><span class="nt">&gt;</span>18<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>&lt;font color=#2E8B57 &gt;后台&lt;/font&gt;</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/hello"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">hello</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Emp</span><span class="o">&gt;</span> <span class="n">empList</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"校长"</span><span class="o">,</span> <span class="mi">24</span><span class="o">));</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"书记"</span><span class="o">,</span> <span class="mi">28</span><span class="o">));</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="s">"小海"</span><span class="o">,</span> <span class="mi">25</span><span class="o">));</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"empList"</span><span class="o">,</span> <span class="n">empList</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+<h3 id="内置对象utilites-1">内置对象Utilites</h3>
+
+<p>一般不推荐在前端进行这些处理，前端页面以减少逻辑为宜</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#dates :
+utility methods for java.util.Date objects: formatting, component extraction, etc. #calendars :
+ analogous to #dates , but for java.util.Calendar objects.
+
+#numbers :
+utility methods for formatting numeric objects.
+
+#strings :
+utility methods for String objects: contains, startsWith, prepending/appending, etc. #objects :
+ utility methods for objects in general.
+
+#bools :
+utility methods for boolean evaluation. #arrays :
+ utility methods for arrays.
+
+#lists :
+utility methods for lists.
+
+#sets :
+utility methods for sets.
+
+#maps :
+utility methods for maps.
+
+#aggregates :
+utility methods for creating aggregates on arrays or collections.
+
+#messages :
+utility methods for obtaining externalized messages inside variables expressions, 
+in the same way as they would be obtained using #{...} syntax.
+
+#ids :
+utility methods for dealing with id attributes that might be repeated (for example, 
+as a result of an iteration).
+</code></pre></div></div>
+<p>常用示例：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+* Format date with the specified pattern
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">arrayFormat</span><span class="o">(</span><span class="n">datesArray</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">listFormat</span><span class="o">(</span><span class="n">datesList</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">setFormat</span><span class="o">(</span><span class="n">datesSet</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Create a date (java.util.Date) object for the current date and time
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">createNow</span><span class="o">()}</span>
+
+<span class="cm">/*
+* Create a date (java.util.Date) object for the current date (time set to 00:00)
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">createToday</span><span class="o">()}</span>
+</code></pre></div></div>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+* Check whether a String is empty (or null). Performs a trim() operation before check
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">name</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">arrayIsEmpty</span><span class="o">(</span><span class="n">nameArr</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">listIsEmpty</span><span class="o">(</span><span class="n">nameList</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">setIsEmpty</span><span class="o">(</span><span class="n">nameSet</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Check whether a String starts or ends with a fragment
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="err">'</span><span class="nc">Don</span><span class="err">'</span><span class="o">)}</span> <span class="c1">// also array*, list* and set*</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">endingFragment</span><span class="o">)}</span> <span class="c1">// also array*, list* and set*</span>
+
+<span class="cm">/*
+* Compute length
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">length</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Null-safe comparison and concatenation
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">concatReplaceNulls</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Random
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">randomAlphanumeric</span><span class="o">(</span><span class="n">count</span><span class="o">)}</span>
+</code></pre></div></div>
+<h2 id="常用标签-1">常用标签</h2>
+<p><img src="http://q17k7c3by.bkt.clouddn.com/0v38kefsvyfe77u.png" alt="" />
+«««&lt; HEAD</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <h1 id="f0bfe13-new-update_posts知识点2019-05-13-thymeleafmd">f0bfe13 (new update):_posts/知识点/2019-05-13-thymeleaf.md</h1>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET

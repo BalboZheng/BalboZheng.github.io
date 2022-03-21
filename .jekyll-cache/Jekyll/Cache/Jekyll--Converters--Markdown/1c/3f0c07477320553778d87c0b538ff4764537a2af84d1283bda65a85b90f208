@@ -1,0 +1,113 @@
+I"e1<h2 id="-head">«««&lt; HEAD</h2>
+<p>layout:     post
+title:      “可散列的数据类型”
+subtitle:   “什么是可散列的数据类型”
+date:       2019-10-13 16:03:50
+author:     “Balbo”
+header-img: “img/post-bg-2019.jpg”
+tags:
+    - python
+—
+在Python官方词汇表中，关于hashable类型的定义有这样一段话:</p>
+
+<p>An object is hashable if it has a hash value which never changes during its lifetime (it needs a __hash__() method), and can be compared to other objects (it needs an __eq__() method). Hashable objects which compare equal must have the same hash value.</p>
+
+<p>Hashability makes an object usable as a dictionary key and a set member, because these data structures use the hash value internally.</p>
+
+<p>Most of Python’s immutable built-in objects are hashable; mutable containers (such as lists or dictionaries) are not; immutable containers (such as tuples and frozensets) are only hashable if their elements are hashable. Objects which are instances of user-defined classes are hashable by default. They all compare unequal (except with themselves), and their hash value is derived from their id().</p>
+
+<p>原子不可变数据类型（str，bytes和数值类型）都是 hashable 类型，frozenset 也是 hashable 的，因为根据其定义，frozenset 里只可容纳可散列类型。元组也是 hashable 的，但只有当元组包含的所有元素都是 hashable 类型的情况下它才是可散列的。</p>
+
+<p><strong>tt、tl 和 tf</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tt</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tt</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8027212646858338501
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tl</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tl</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"E:/FP/Topic_2/Section_2/read.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tl</span><span class="p">))</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="n">unhashable</span> <span class="nb">type</span><span class="p">:</span> <span class="s">'list'</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tf</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tf</span><span class="p">))</span>
+
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"E:/FP/Topic_2/Section_2/read.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="s">'type'</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">subscriptable</span>
+
+</code></pre></div></div>
+
+<h1 id="一般来讲用户自定义的类型的对象都是-hashable-的散列值就是他们的-id-函数的返回值所以所有这些对象在比较的时候是不相等的如果一个对象实现了-_eq_-方法并且在方法中用到了这个对象的内部状态的话那么只有当所有这些内部状态都是不可变的情况下这个对象才是-hashable">一般来讲用户自定义的类型的对象都是 hashable 的，散列值就是他们的 id() 函数的返回值，所以所有这些对象在比较的时候是不相等的。如果一个对象实现了 _eq_ 方法，并且在方法中用到了这个对象的内部状态的话，那么只有当所有这些内部状态都是不可变的情况下，这个对象才是 hashable。</h1>
+<hr />
+<p>layout: post
+title: 可散列的数据类型
+subtitle: 什么是可散列的数据类型
+author: Balbo Cheng
+categories: python
+tags: []
+sidebar: []
+—
+在Python官方词汇表中，关于hashable类型的定义有这样一段话:</p>
+
+<p>An object is hashable if it has a hash value which never changes during its lifetime (it needs a __hash__() method), and can be compared to other objects (it needs an __eq__() method). Hashable objects which compare equal must have the same hash value.</p>
+
+<p>Hashability makes an object usable as a dictionary key and a set member, because these data structures use the hash value internally.</p>
+
+<p>Most of Python’s immutable built-in objects are hashable; mutable containers (such as lists or dictionaries) are not; immutable containers (such as tuples and frozensets) are only hashable if their elements are hashable. Objects which are instances of user-defined classes are hashable by default. They all compare unequal (except with themselves), and their hash value is derived from their id().</p>
+
+<p>原子不可变数据类型（str，bytes和数值类型）都是 hashable 类型，frozenset 也是 hashable 的，因为根据其定义，frozenset 里只可容纳可散列类型。元组也是 hashable 的，但只有当元组包含的所有元素都是 hashable 类型的情况下它才是可散列的。</p>
+
+<p><strong>tt、tl 和 tf</strong></p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tt</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tt</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>8027212646858338501
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tl</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tl</span><span class="p">))</span>
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"E:/FP/Topic_2/Section_2/read.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tl</span><span class="p">))</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="n">unhashable</span> <span class="nb">type</span><span class="p">:</span> <span class="s">'list'</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">tf</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">tf</span><span class="p">))</span>
+
+</code></pre></div></div>
+<p>运行结果：</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"E:/FP/Topic_2/Section_2/read.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">2</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">])</span>
+<span class="nb">TypeError</span><span class="p">:</span> <span class="s">'type'</span> <span class="nb">object</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">subscriptable</span>
+
+</code></pre></div></div>
+
+<p>一般来讲用户自定义的类型的对象都是 hashable 的，散列值就是他们的 id() 函数的返回值，所以所有这些对象在比较的时候是不相等的。如果一个对象实现了 _eq_ 方法，并且在方法中用到了这个对象的内部状态的话，那么只有当所有这些内部状态都是不可变的情况下，这个对象才是 hashable。</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>e5c77ca (新页面)</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+:ET
