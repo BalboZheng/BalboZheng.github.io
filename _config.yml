@@ -47,7 +47,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://balbocheng.com" # the base hostname & protocol for your site, e.g. https://example.com
-favicon: "img/favicon.ico" # the favicon for your site
+favicon: "assets/images/banners/favicon.ico" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
@@ -156,7 +156,7 @@ defaults:
   home:
     heading: "群星渐渐暗淡，消失于黎明前的夜空。"
     subheading: "要是我们能找回真正的那条路就好了，就算是枯树林，也无法毁掉真正的路。它不过使了障眼法，因我们误入歧途罢了。"
-    banner: "img/banner.jpg"
+    banner: "assets/images/banners/404-bg.jpg"
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
