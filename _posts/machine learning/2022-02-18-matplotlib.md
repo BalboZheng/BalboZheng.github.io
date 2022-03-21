@@ -1,22 +1,10 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "Matplolib"
-subtitle:   ""
-date:       2022-02-18 18:04:11
-author:     "Balbo"
-header-img: "img/post-bg-2022.png"
-catalog: true
-tags:
-    - python
-=======
 layout: post
 title: Matplolib
 subtitle: 
 author: Balbo Cheng
 categories: python
 tags: [matplolib]
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 实现一个简单的Matplolib画图

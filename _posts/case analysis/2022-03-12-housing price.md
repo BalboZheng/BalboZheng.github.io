@@ -1,15 +1,4 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "波士顿房价预测"
-subtitle:   ""
-date:       2022-03-12 23:22:11
-author:     "Balbo"
-header-img: "img/post-bg-2022.png"
-catalog: true
-tags:
-    - python
-=======
 layout: post
 title: 波士顿房价预测
 subtitle: 
@@ -22,7 +11,6 @@ banner:
   start_at: 8.5
 tags: [sklearn]
 sidebar: []
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 分析

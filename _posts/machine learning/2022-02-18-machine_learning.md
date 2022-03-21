@@ -1,22 +1,10 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "机器学习"
-subtitle:   ""
-date:       2022-02-18 18:04:11
-author:     "Balbo"
-header-img: "img/post-bg-2022.png"
-catalog: true
-tags:
-    - python
-=======
 layout: post
 title: 机器学习
 subtitle: 
 author: Balbo Cheng
 categories: python
 tags: [pandas, numpy, matplotlib, sklearn]
->>>>>>> e5c77ca (新页面)
 ---
 
 

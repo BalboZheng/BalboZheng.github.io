@@ -1,15 +1,4 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "癌症分类预测"
-subtitle:   ""
-date:       2022-03-15 12:12:12
-author:     "Balbo"
-header-img: "img/post-bg-2022.png"
-catalog: true
-tags:
-    - python
-=======
 layout: post
 title: 癌症分类预测
 subtitle: 
@@ -17,16 +6,11 @@ author: Balbo Cheng
 categories: python
 tags: [pandas, numpy, matplotlib, sklearn]
 sidebar: []
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 方法
 
-<<<<<<< HEAD
-[数据来源](https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data)
-=======
 数据来源：https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data
->>>>>>> e5c77ca (新页面)
 
 ```python
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV

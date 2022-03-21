@@ -1,14 +1,13 @@
-<<<<<<< HEAD
 ---
-layout:     post
-title:      "Python数据模型"
-subtitle:   ""
-date:       2019-09-06 12:30:11
-author:     "Balbo"
-header-img: "img/post-bg-2019.jpg"
-tags:
-    - python
+layout: post
+title: python数据模型
+subtitle: 
+author: Balbo Cheng
+categories: python
+tags: []
+sidebar: []
 ---
+
 ## 特殊方法
 特殊方法的存在是为了被Python解释器调用的，你自己并不需要调用他们。也就是说没有 my\_object.\_len\_ 这种写法，而应该使用 len(my\_objext)。
 
@@ -123,4 +122,3 @@ tags: []
 | 位运算符 | \_invert\_ -、 \_lshift\_ <<、 \_rshift\_ >>、 \_and\_ &、 \_or\_ |、 \_xor\_ ^ |
 | 反向位运算符 |  \_rlshift\_、 \_rrshift\_、 \_rand\_、 \_ror\_、 \_rxor\_ |
 | 增量赋值位运算符 | \_ilshift\_、 \_irshift\_、 \_iand\_、 \_ior\_、 \_ixor\_ |
->>>>>>> e5c77ca (新页面)

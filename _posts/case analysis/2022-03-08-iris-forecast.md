@@ -1,16 +1,4 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "鸢尾花预测"
-subtitle:   ""
-date:       2022-03-08 17:25:11
-author:     "Balbo"
-header-img: "img/post-bg-2022.png"
-catalog: true
-tags:
-    - python
-	- kNN
-=======
 layout: post
 title: 鸢尾花预测
 subtitle: 预测鸢尾花种类
@@ -20,7 +8,6 @@ banner:
   image: https://bit.ly/3xTmdUP
 tags: [sklearn]
 sidebar: []
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 获取数据集

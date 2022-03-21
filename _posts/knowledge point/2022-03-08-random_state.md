@@ -1,15 +1,4 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "为什么需要参数random_state？"
-subtitle:   ""
-date:       2022-03-08 17:25:11
-author:     "Balbo"
-header-img: "img/post-bg-2022.png"
-catalog: true
-tags:
-    - python
-=======
 layout: post
 title: 为什么需要参数random_state？
 subtitle: 
@@ -17,7 +6,6 @@ author: Balbo Cheng
 categories: python
 tags: []
 sidebar: []
->>>>>>> e5c77ca (新页面)
 ---
 
 在此先简单罗列三种情况：

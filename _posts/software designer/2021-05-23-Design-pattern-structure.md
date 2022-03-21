@@ -1,21 +1,10 @@
 ---
-<<<<<<< HEAD
-layout:     post
-title:      "设计模式-结构模式"
-subtitle:   
-date:       2021-05-23 20:30:10
-author:     "Balbo"
-header-img: "img/post-bg-2021.jpg"
-tags:
-    - software-designer
-=======
 layout: post
 title: 设计模式-结构模式
 subtitle: 
 author: Balbo Cheng
 categories: software_designer
 tags: [pandas, numpy]
->>>>>>> e5c77ca (新页面)
 ---
 
 ## 适配器模式
