@@ -6,7 +6,7 @@ author: Balbo Cheng
 categories: python
 banner:
   video: https://vjs.zencdn.net/v/oceans.mp4
-  loop: true
+  loop: false
   volume: 0.8
   start_at: 8.5
 tags: [sklearn]
@@ -23,10 +23,7 @@ sidebar: []
 
 ## 回归性能评估
 
-均方误差：
-$$
-MSE=\frac1m\sum_i^m=1(y^i-\bar{y})^2（y为预测值，\bar{y}为真实值）
-$$
+均方误差：$MSE=\frac1m\sum_i^m=1(y^i-\bar{y})^2（y为预测值，\bar{y}为真实值）$
 
 ```python
 from sklearn.metrics import mean_squared_error
