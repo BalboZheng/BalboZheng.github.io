@@ -230,6 +230,19 @@ for data in dataloader:
 
 ```
 
+Conv2d中的参数：
+
+- in_channels：输入维度，即你上一层特征图或者原始图片（3）的通道数
+- out_channels：你希望这一层输出多少层的特征图，或者说你希望有多少个卷积核，有多少个卷积核就会有多少张特征图
+- kernel_size：卷积和的大小
+- stride：卷积和在特征图上滑动的步长
+- padding：一般情况下，卷积核的大小是奇数，为了使得图像边缘的像素也要参与卷积计算，就需要在图像or特征图的边缘进行填充，padding指定为几，则会填充几行的数。具体的填充数由填充方式决定，填充方式有constant（常量填充，默认情况下是0填充），reflect（反射填充）、replicate（复制填充）、circular（循环填充）
+- dilation：扩张卷积，普通的卷积是“密实”的，扩张卷积可以在不改变训练参数量的前提下，增加卷积核的感受野，具体方法请百度吧，一张图就能看懂
+- groups：分组，具体见pytorch的函数中的group参数的作用
+- bias：偏置，不多说
+- padding_mode：详见padding说明，默认padding_mode=‘zeros’
+- device、dtype默认就行
+
 ### 池化层
 
 ```python

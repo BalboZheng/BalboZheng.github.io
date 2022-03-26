@@ -22,7 +22,6 @@ plt.plot(x, y)
 
 # 显示图像
 plt.show()
-
 ```
 
 ## Matplolib三层结构
