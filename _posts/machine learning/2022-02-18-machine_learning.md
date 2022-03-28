@@ -5,7 +5,7 @@ subtitle:
 author: Balbo Cheng
 categories: python
 banner:
-  image: https://bkimg.cdn.bcebos.com/pic/b8389b504fc2d562bb0ba4d9e01190ef76c66c86?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto
+  image: https://sm.ms/image/9i8dwcRWQMKPF7f
 tags: [pandas, numpy, matplotlib, sklearn]
 ---
 

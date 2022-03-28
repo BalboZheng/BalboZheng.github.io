@@ -58,8 +58,11 @@ plt.show()
 ```python
 import cv2
 
-filepath = 'VOCtrainval_06-Nov-2007/VOCdevkit/VOC2007/JPEGImages/000009.jpg'
+filepath = '911Mothers_2010W-480p.mp4'
 cap = cv2.VideoCapture(filepath)
+
+# 获取摄像头
+cap = cv2.VideoCapture(0)
 
 while cap.isOpened():
     ret, frame = cap.read()
