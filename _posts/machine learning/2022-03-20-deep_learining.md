@@ -57,7 +57,7 @@ writer.add_image('Img_Tensor', img_tensor)
 writer.close()
 ```
 
-### 常用transforms
+### 常用 transforms
 
 ```python
 import cv2
