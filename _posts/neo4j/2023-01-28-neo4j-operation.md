@@ -18,8 +18,8 @@ Enter the command line : neo4j.bat console
 Enter a statement on $
 user **create**
 • creat a statement by CREATE.
-• () means a point.
-• a point include identifier and label.
+• () means a node.
+• a node include identifier and label.
 • {} include attribute.
 e.g. Create (r1:Rapper{name:"Pharaoh",Team:"Walkingdead"}) return r1;
 e.g. Create (r2:Rapper:Producer:Composer{name:"Cloud"})
@@ -30,8 +30,8 @@ e.g. Create (r2:Rapper:Producer:Composer{name:"Cloud"})
 ```
 • –> means point to sth.
 • [] include identifier, attribute etc.
-• the contact also have tag and attribute.
-• use MATCH to connect contact 
+• the realationship also have tag and attribute.
+• use MATCH to connect realationship 
 e.g. ## no attribute
     match(r2:Rapper{name:"Pharaoh"}),(r3:Rapper{name:"KeyNG"})
     create(r2)-[:队友]->(r3)
@@ -71,12 +71,12 @@ DELETE r
 ```
 
 ```
-## delete point and contact
+## delete node and contact
 MATCH (r)
 WHERE id(r) = 83
 DETACH DELETE r
 
-## delte all the point and contact under a label
+## delte all the node and realationship under a label
 MATCH (r:Loc)
 DETACH DELETE r
 
@@ -99,10 +99,10 @@ where r.name="GAI"
 return r
 ```
 
-1 is screen name="GAI“ before ergodic all the point ,but when you have too much point that may screen slowly and use more memory space, use 2 can deal this problem ,which have 'label' to reduce the scope.
+1 is screen name="GAI“ before ergodic all the node, but when you have too much node that may screen slowly and use more memory space, use 2 can deal this problem ,which have 'label' to reduce the scope.
 
 ```
-## find multiple points
+## find multiple nodes
 ## use or no and
 match (r:Rapper)
 where r.name='GAI' or r.name='Pharaoh'
@@ -111,12 +111,12 @@ return r
 
 ## Remove and Set
 
-SET：add new attribute to existing point or contact
-REMOVE：delete attribute to existiong point or contact
+SET：add new attribute to existing node or contact
+REMOVE：delete attribute to existiong node or contact
 
 difference between DELETE  and REMOVE：
 
-- DELETE use to delete point and contact
+- DELETE use to delete node and contact
 
 - REMOVE use to delete tags and acctribute
 
@@ -156,7 +156,6 @@ delete poiint's tags
 MATCH (m:Movie) 
 REMOVE m:Picture
 return m
-
 ```
 
 ### Set
@@ -173,8 +172,6 @@ return b
 match(b:Basketballplayer{name:"LeBron"})
 set b.award="3 chmpions"
 return b
-
-
 ```
 
 add new attribute to existing concact
@@ -186,16 +183,14 @@ add new attribute to existing concact
 match p=(:Rapper{name:"Buzzy"})-[r]->(:Rapper{name:"KeyNG"})
 set r.`时间`="2018年夏"
 return p
-
-
 ```
 
 ## Sorting
 
 ```
 match(b:Basketballplayer)
-return b.name,b.Team,b.scoreorder by b.score
-
+return b.name,b.Team,b.score
+order by b.score
 ```
 
 ## Limit and skip
@@ -209,13 +204,11 @@ skip : Ignore the first few lines.
 ```
 limit num.
 skip num.
-
-
 ```
 
 ## merge
 
-merge : Create point, contact and attributes to retrieve data from the database
+merge : Create point, realationship and attributes to retrieve data from the database
 
 ```
 MERGE (<节点或关系的名称>:<节点或关系的标签名称>
@@ -227,5 +220,4 @@ MERGE (<节点或关系的名称>:<节点或关系的标签名称>
 
 
 e.g. merge(:Basketballplayer{name:"Love"})
-
 ```
