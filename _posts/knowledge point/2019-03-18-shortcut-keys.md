@@ -3,7 +3,7 @@ layout: post
 title: IntelliJ 快捷键
 subtitle: 
 author: Balbo Cheng
-categories: 
+categories: programming-language
 tags: [pycharm, idea]
 ---
 
