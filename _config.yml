@@ -40,7 +40,7 @@ author: Balbo Cheng
 #   "Copyright (c) 2017-{currentYear} <a href="https://example.com">{author}</a>"
 #   "Copyright © 2017-2021 Foobar"
 #
-copyright: "Copyright © 2018-2021 {author}"
+copyright: "Copyright © 2018-2023 {author}"
 
 description: >- # this means to ignore newlines until "baseurl:"
   有时我会想，她是把人变成了动物，还是释放了我们心中的野兽？也许在我的天性中就有一部分是鲜艳多彩的鸟儿。为此我曾深思熟虑，却怎么也得不出个结论来。
