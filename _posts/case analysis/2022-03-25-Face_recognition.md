@@ -3,8 +3,8 @@ layout: post
 title: 人脸识别
 subtitle: 
 author: Balbo Cheng
-categories: python
-tags: [cv2, matplotlib]
+categories: programming-language
+tags: [python, cv2, matplotlib]
 sidebar: []
 ---
 

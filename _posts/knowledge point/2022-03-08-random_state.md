@@ -3,28 +3,28 @@ layout: post
 title: 为什么需要参数random_state？
 subtitle: 
 author: Balbo Cheng
-categories: python
-tags: []
+categories: programming-language
+tags: [python]
 sidebar: []
 ---
 
 在此先简单罗列三种情况：
 
 - 在构建模型时：
-
+  
   ```python
   forest = RandomForestClassifier(n_estimators=100, random_state=0)
   forest.fit(X_train, y_train)
   ```
 
 - 在生成数据集时：
-
+  
   ```python
   x, y = make_moons(n_samples=100, noise=0.25, random_state=3)
   ```
 
 - 在拆分数据集为训练集、测试集时：
-
+  
   ```python
   X_train, X_test, y_train, y_test = train_test_split(
   cancer.data, cancer.target, stratify=cancer.target, random_state=42)

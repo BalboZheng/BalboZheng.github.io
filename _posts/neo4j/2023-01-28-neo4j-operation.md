@@ -2,7 +2,7 @@
 layout: post
 title: neo4j base operation
 subtitle: 
-categories: programming language
+categories: programming-language
 tags: [neo4j]
 ---
 

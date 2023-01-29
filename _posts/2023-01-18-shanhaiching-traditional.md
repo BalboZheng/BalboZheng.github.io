@@ -2,7 +2,7 @@
 layout: post
 title: 《山海經》
 subtitle: 《山海經》包含著關於上古地理、歷史、神話、天文、動物、植物、醫學、宗教以及人類學、民族學、海洋學和科技史等方面的諸多內容，是一部上古社會生活的百科全書。
-author: Balbo
+author: Balbo Cheng
 categories: Books
 ---
 

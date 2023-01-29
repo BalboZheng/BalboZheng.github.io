@@ -15,12 +15,11 @@ You can write regular [markdown](https://markdowntutorial.com/) here and Jekyll 
 Here's a useless table:
 
 | Number | Next number | Previous number |
-| :------ |:--- | :--- |
-| Five | Six | Four |
-| Ten | Eleven | Nine |
-| Seven | Eight | Six |
-| Two | Three | One |
-
+|:------ |:----------- |:--------------- |
+| Five   | Six         | Four            |
+| Ten    | Eleven      | Nine            |
+| Seven  | Eight       | Six             |
+| Two    | Three       | One             |
 
 How about a yummy crepe?
 
@@ -32,12 +31,12 @@ It can also be centered!
 
 Here's a code chunk:
 
-~~~
+```
 var foo = function(x) {
   return(x + 5);
 }
 foo(3)
-~~~
+```
 
 And here is the same code with syntax highlighting:
 
@@ -58,6 +57,7 @@ foo(3)
 {% endhighlight %}
 
 ## Boxes
+
 You can add notification, warning and error boxes like this:
 
 ### Notification

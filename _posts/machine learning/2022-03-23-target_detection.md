@@ -3,8 +3,8 @@ layout: post
 title: 目标检测
 subtitle: 
 author: Balbo Cheng
-categories: python
-tags: [pytorch]
+categories: programming-language
+tags: [python, pytorch]
 ---
 
 ## 目标检测数据集
@@ -57,4 +57,3 @@ for annotation in info:
 
 image.show()
 ```
-

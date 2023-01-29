@@ -3,11 +3,10 @@ layout: post
 title: 鸢尾花预测
 subtitle: 预测鸢尾花种类
 author: Balbo Cheng
-categories: python
+categories: programming-language
 banner:
   image: https://bit.ly/3xTmdUP
-tags: [sklearn]
-sidebar: []
+tags: [python, sklearn]
 ---
 
 ## 获取数据集
@@ -72,7 +71,6 @@ def plot_iris(data, col1, col2):
 
 
 plot_iris(iris_d, 'sepal length (cm)', 'sepal width (cm)')
-
 ```
 
 ## 数据集的划分
@@ -132,6 +130,4 @@ print("预测值是：\n", y_pre)
 # 输出准确率
 ret = estimator.score(x_test, y_test)
 print("准确率为：\n", ret)
-
 ```
-

@@ -3,10 +3,10 @@ layout: post
 title: 深度学习
 subtitle: 
 author: Balbo Cheng
-categories: python
+categories: programming-language
 banner:
   image: https://bkimg.cdn.bcebos.com/pic/6c224f4a20a44623bdbfedcf9222720e0cf3d722?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2U4MA==,g_7,xp_5,yp_5/format,f_auto
-tags: [pytorch]
+tags: [python, pytorch]
 ---
 
 ## tensorboard
@@ -29,7 +29,6 @@ for i in range(100):
     writer.add_scalar('y=x', i, i)
 
 writer.close()
-
 ```
 
 执行命令：
@@ -92,7 +91,6 @@ img_crop = trans_compose(img_PIL)
 writer.add_image('RandomCrop', img_crop)
 
 writer.close()
-
 ```
 
 ## torchvisions
@@ -111,7 +109,6 @@ datasets_trans = torchvision.transforms.Compose([
 
 train = torchvision.datasets.CIFAR10('./datasets', transform=datasets_trans, download=True)
 test = torchvision.datasets.CIFAR10('./datasets', transform=datasets_trans, train=False, download=True)
-
 ```
 
 ### DataLoader
@@ -147,7 +144,6 @@ for epoch in range(2):
         step += 1
 
 writer.close()
-
 ```
 
 ## 卷积操作
@@ -185,7 +181,6 @@ class Model(nn.Module):
 model = Model()
 output = F.conv2d(data, kernel, stride=1)
 print(output)
-
 ```
 
 ### 卷积层
@@ -227,7 +222,6 @@ for data in dataloader:
     output = torch.reshape(output, (-1, 3, 30, 30))
     writer.add_images("output", output, step)
     step += 1
-
 ```
 
 Conv2d中的参数：
@@ -363,7 +357,6 @@ for data in dataloader:
     print(output.shape)
     output = model(output)
     print(output.shape)
-
 ```
 
 ### Sequential
@@ -384,7 +377,7 @@ class Model(nn.Module):
         # self.conv2 = Conv2d(32, 32, 5, padding=2)
         # self.maxpool2 = MaxPool2d(2)
         # self.conv3 = Conv2d(32, 64, 5, padding=2)
-        # self.maxpool3 = MaxPo	ol2d(2)
+        # self.maxpool3 = MaxPo    ol2d(2)
         # self.flatten = Flatten()
         # self.linear1 = Linear(1024, 64)
         # self.linear2 = Linear(64, 10)
@@ -419,7 +412,6 @@ print(model)
 intput = torch.ones((64, 3, 32, 32))
 output = model(intput)
 print(output.shape)
-
 ```
 
 ## 损失函数
@@ -463,7 +455,6 @@ for data in loader:
     outputs = model(imgs)
     result = loss(outputs, targets)
     print(result)
-
 ```
 
 ### 优化
@@ -532,7 +523,6 @@ class Model(nn.Module):
     def forward(self, x):
         x = self.model(x)
         return x
-
 ```
 
 dataset.py
@@ -620,7 +610,6 @@ for i in range(epoch):
     print("模型 {} 已保存".format(i))
 
 writer.close()
-
 ```
 
 ## 利用GPU训练
@@ -630,20 +619,20 @@ writer.close()
 # 创建网络模型
 model = Model()
 if torch.cuda.is_available():
-	model.cuda()
+    model.cuda()
 
 # 损失函数
 loss_fn = nn.CrossEntropyLoss()
 if torch.cuda.is_available():
-	loss_fn.cuda()
+    loss_fn.cuda()
 
 # 开始训练
 for data in train_dataloader:
-	imgs, targets = data
-	if torch.cuda.is_available():
-		imgs = imgs.cuda()
-		targets = targets.cuda()
-		
+    imgs, targets = data
+    if torch.cuda.is_available():
+        imgs = imgs.cuda()
+        targets = targets.cuda()
+
 # 方法二 .to
 # 定义训练的设备
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -658,9 +647,9 @@ loss_fn.to(divice)
 
 # 开始训练
 for data in train_dataloader:
-	imgs, targets = data
-	imgs = imgs.to(divice)
-	targets = targets.to(divice)
+    imgs, targets = data
+    imgs = imgs.to(divice)
+    targets = targets.to(divice)
 ```
 
 ## 完整模型测试套路
@@ -688,6 +677,4 @@ with torch.no_grad():
     output = model(image)
 print(output)
 print(output.argmax(1))
-
 ```
-

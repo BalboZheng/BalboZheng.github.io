@@ -3,8 +3,8 @@ layout: post
 title: 市场菜篮子分析
 subtitle: 
 author: Balbo Cheng
-categories: python
-tags: [pandas, matplotlib, sklearn]
+categories: programming-language
+tags: [python, pandas, matplotlib, sklearn]
 sidebar: []
 ---
 

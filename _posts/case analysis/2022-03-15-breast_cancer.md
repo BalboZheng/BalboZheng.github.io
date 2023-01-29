@@ -3,8 +3,8 @@ layout: post
 title: 癌症分类预测
 subtitle: 
 author: Balbo Cheng
-categories: python
-tags: [pandas, numpy, matplotlib, sklearn]
+categories: programming-language
+tags: [python, pandas, numpy, matplotlib, sklearn]
 sidebar: []
 ---
 
@@ -14,7 +14,7 @@ sidebar: []
 
 ```python
 from sklearn.linear_model import LogisticRegression, LogisticRegressionCV
- 
+
 # solver ('liblinear', 'sag', 'saga', 'newton-cg', 'lbfgs')
 # penalty 正则化种类
 # C 正则化力度
@@ -72,6 +72,4 @@ print("---逻辑回归--")
 print("预测值为：\n", y_pre)
 print("准确率为：\n", score)
 print("均方误差：\n", ret)
-
 ```
-

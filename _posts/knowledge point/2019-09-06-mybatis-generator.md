@@ -3,23 +3,26 @@ layout: post
 title: MyBatis Generator
 subtitle: MyBatis逆向工程
 author: Balbo Cheng
-categories: java
-tags: [mybatis]
+categories: programming-language
+tags: [java, mybatis]
 ---
 
-
 ## 什么是MyBatis的逆向工程？
+
 MyBatis逆向工程是指用数据库的表直接生成Java代码，利用MyBatis官方提供的逆向工程，可以针对单表自动生MyBatis执行所需要的代码（如po类，mapper.java和mapper.xml）
 
 ## 生成逆向工程
+
 生成逆向工程的方式有多种，推荐使用Java程序和XML配置文件的方式进行实现。
 
 ## MyBatis逆向工程
+
 ### 数据库配置文件db.properties
 
 这里为了解耦，将数据库信息和要生成的表的信息放到一个db.properties文件里
 
 jdbc连接数据库配置信息
+
 ```java
 jdbc.driver = com.mysql.jdbc.Driver
 jdbc.url = jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8
@@ -32,8 +35,11 @@ jdbc.table.orders = orders
 jdbc.table.orderdetail = orderdetail
 jdbc.table.user = user
 ```
+
 ### 生成代码配置文件generateConfig.xml
+
 在该文件中配置要生成哪些表的信息，以及生成的PO类，mapper.xml和mapper.java所在的包，这里为了今后能用MyBatis的代理进行开发，让mapper.xml和mapper.java在同一个包中。
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
@@ -110,7 +116,9 @@ enableSelectByExample="true" enableUpdateByExample="true"/>
 </context>
 </generatorConfiguration>
 ```
+
 ### 执行生成程序GenerateSqlMap.java
+
 ```java
 import java.io.File;
 import java.util.ArrayList;
@@ -155,8 +163,6 @@ public class GeneratorSqlmap {
 然后再从中挑选出实际需要的POJO类和mapper.xml，千万不要在原有项目中直接生成，那样会比较乱。
 
 MyBatis逆向工程比较简单，可以直接做为模板工程进行应用，只需要改一下数据库名，表名和包的路径就行了，这里提供项目下载地址，可以直接使用。
-
-
 
 ## 在maven工程中的resource中创建generatorConfig.xml
 

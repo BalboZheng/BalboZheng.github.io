@@ -3,12 +3,13 @@ layout: post
 title: 验证码的识别
 subtitle: 
 author: Balbo Cheng
-categories: python
-tags: [reptile]
+categories: programming-language
+tags: [python, reptile]
 sidebar: []
 ---
 
 ## 图像验证码的识别
+
 ### 获取验证码
 
 保存验证码图片以便实验，[验证](http://my.cnki.net/elibregister/CheckCode.aspx)
@@ -16,6 +17,7 @@ sidebar: []
 ### 识别测试
 
 使用 tesserocr 库识别验证码(由于 tesseract 与 window 不兼容， 暂时用 pytesseract 代替)
+
 ```python
 import tesserocr
 from PIL import Image
@@ -30,16 +32,21 @@ print(result)
 验证码内的多余线条可能会干扰图片的识别，对于这种情况，我们还需要做一些额外的处理,例如：
 
 图片转化为灰度图像
+
 ```python
 image = image.covert('L')
 image.show()
 ```
+
 进行二值化处理
+
 ```python
 image = image.covert('1')
 image.show()
 ```
+
 指定二值化阈值
+
 ```python
 image = image.covert('L')
 threshold = 80
@@ -49,12 +56,13 @@ for i in range(256):
         table.append(0)
     else:
         table.append(1)
-        
+
 image = image.point(table, '1')
 image.show()
 ```
 
 ## 极验滑动验证码的识别
+
 ### 识别思路
 
 对于应用了极验验证码的网站，如果我们中介模拟表单提交，加密参数的构造是个问题，需要分析其加密和校验逻辑，相对繁琐。随意我们采用直接模拟浏览器动作的方式来完成验证
@@ -97,7 +105,9 @@ class CrackGeetest():
         button = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'geetest_radar_tip')))
         return button
 ```
+
 获取一个 WebElement 对象，调用它的 click() 方法即可模拟点击
+
 ```python
         button = get_geetest_button()
         button.click()
@@ -114,7 +124,7 @@ class CrackGeetest():
         screenshot = self.browser.get_screenshot_as_png()
         screenshot = Image.open(BytesIO(screenshot))
         return screenshot
-    
+
     def get_position(self):
         """
         获取验证码位置
@@ -126,7 +136,7 @@ class CrackGeetest():
         size = img.size
         top, bottom, left, right = location['y'], location['y'] + size['height'], location['x'], location['x'] + size['width']
         return (top, bottom, left, right)
-    
+
     def get_geetest_image(self, name='captcha.png'):
         """
         获取验证码图片
@@ -139,7 +149,9 @@ class CrackGeetest():
         captcha = screenshot.crop((left, top, right, bottom))
         return captcha
 ```
+
 接下来，获取第二张图片，也就是带缺口的图片，要使图片出现缺口，只需要点击下方的滑动块即可
+
 ```python
     def get_slider(self):
         """
@@ -149,12 +161,16 @@ class CrackGeetest():
         silder = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'geetest_slider_button')))
         return silder
 ```
+
 调用 click() 方法即可触发点击
+
 ```python
         slider = self.get_slider()
         slider.click()
 ```
+
 接下来对比图片获取缺口。我们在这里遍历每个坐标点，获取两张图片对应像素点的 RGB 数据。如果 RGB 数据差距在一定范围内，代表两个像素相同，继续对比下一个像素，如果差距超过一定范围，则代表像素点不同，即缺口。
+
 ```python
     def is_pixel_equal(self, image1, image2, x, y):
         """
@@ -173,7 +189,7 @@ class CrackGeetest():
             return True
         else:
             return False
-        
+
     def get_gap(self, image1, image2):
         """
         还缺缺口偏移量
@@ -195,12 +211,15 @@ class CrackGeetest():
 模拟拖动过程并不复杂，但其中的坑比较多。如果是匀速运动，极验必然会识别出是程序操作，以为人无法做到完全匀速拖动。极验验证码利用机器学习模型，筛选此类数据为机器操作，验证码必失败。
 
 所以，我们采用前段做匀加速运动，后段做匀减速运动，来模拟人拖动时的动作，利用物理学的加速度公式完成验证。
+
 ```python
 # 当前速度 v，初速度 v0， 位移 x， 所需时间 t
 x = v0 * t + 0.5 * a * t * t
 v = v0 + a * t
 ```
+
 构造轨迹移动算法，计算出先加速后减速的运动轨迹
+
 ```python
     def get_track(self, distance):
         """
@@ -236,10 +255,12 @@ v = v0 + a * t
             current += move
             # 加入轨迹
             track.append(round(move))
-            
+
         return track
 ```
+
 按照运动轨迹拖动滑块
+
 ```python
     def move_to_gap(self, slider, tracks):
         """
@@ -325,6 +346,7 @@ if __name__ == '__main__':
 ```
 
 ## 点触验证码的识别
+
 ### 识别思路
 
 互联网上有很多验证码服务平台，这里使用 [超级鹰](http://www.chaojiying.com) 其提供的服务种类非常广泛。
@@ -334,13 +356,14 @@ if __name__ == '__main__':
 ### 获取 API
 
 下载对应的 [API](https://www.chaojiying.com/api-14.html)
+
 ```python
 import requests
 from hashlib import md5
- 
- 
+
+
 class Chaojiying(object):
- 
+
     def __init__(self, username, password, soft_id):
         self.username = username
         self.password = md5(password.encode('utf-8')).hexdigest()
@@ -354,7 +377,7 @@ class Chaojiying(object):
             'Connection': 'Keep-Alive',
             'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)',
         }
- 
+
     def post_pic(self, im, codetype):
         """
         im: 图片字节
@@ -368,7 +391,7 @@ class Chaojiying(object):
         r = requests.post('http://upload.chaojiying.net/Upload/Processing.php', data=params, files=files,
                           headers=self.headers)
         return r.json()
- 
+
     def report_error(self, im_id):
         """
         im_id:报错题目的图片ID
@@ -407,6 +430,7 @@ class CrackTouClick():
 ### 获取验证码
 
 完善相关表单，模拟点击呼出验证码
+
 ```python
     def open(self):
         """
@@ -427,7 +451,9 @@ class CrackTouClick():
         button = self.wait.until(EC.element_to_be_clickable((By.CLASS_NAME, 'touclick-hod-wrap')))
         return button
 ```
+
 获取验证码图片位置和大小
+
 ```python
     def get_touclick_element(self):
         """
@@ -473,7 +499,9 @@ class CrackTouClick():
 ```
 
 ### 识别验证码
+
 调用 Chaojiying 对象的 post_pic() 方法，即可把图片发生到超级鹰后台
+
 ```python
         # 获取验证码图片
         image = self.get_touclick_image()
@@ -483,7 +511,9 @@ class CrackTouClick():
         result = self.chaojiying.post_pic(bytes_array.getvalue(), CHAOJIYING_KIND)
         print(result)
 ```
+
 将 pic_str() 识别的文字坐标 解析，然后模拟点击
+
 ```python
     def get_points(self, captcha_result):
         """
@@ -593,10 +623,10 @@ class CrackWeiboSlide():
         self.wait = WebDriverWait(self.browser, 20)
         self.username = USERNAME
         self.password = PASSWORD
-    
+
     def __del__(self):
         self.browser.close()
-    
+
     def open(self):
         """
         打开网页输入用户名密码并点击
@@ -609,7 +639,7 @@ class CrackWeiboSlide():
         username.send_keys(self.username)
         password.send_keys(self.password)
         submit.click()
-    
+
     def get_position(self):
         """
         获取验证码位置
@@ -626,7 +656,7 @@ class CrackWeiboSlide():
         top, bottom, left, right = location['y'], location['y'] + size['height'], location['x'], location['x'] + size[
             'width']
         return (top, bottom, left, right)
-    
+
     def get_screenshot(self):
         """
         获取网页截图
@@ -635,7 +665,7 @@ class CrackWeiboSlide():
         screenshot = self.browser.get_screenshot_as_png()
         screenshot = Image.open(BytesIO(screenshot))
         return screenshot
-    
+
     def get_image(self, name='captcha.png'):
         """
         获取验证码图片
@@ -647,7 +677,7 @@ class CrackWeiboSlide():
         captcha = screenshot.crop((left, top, right, bottom))
         captcha.save(name)
         return captcha
-    
+
     def is_pixel_equal(self,image1,image2,x,y):#判断刷新出来的验证码图片和已经存储好的验证码模板是否匹配
         pixel1=image1.load()[x,y]#返回的是RGB形式的元组
         pixel2=image2.load()[x,y]
@@ -657,7 +687,7 @@ class CrackWeiboSlide():
             return True 
         else:
             return False
-        
+
     def same_image(self,image,template):#第一个为待识别的验证码，第二个为存储的模板，只要是比对一下各个点的像素
             count=0#用于存储像素相同点的个数
             threshold=0.99#阈值，用于标定两张图表是否相同
@@ -671,8 +701,8 @@ class CrackWeiboSlide():
                 return True 
             else：
                 return False
-        
-    
+
+
      def detect_image(self,image):
          for template_name in listdir(TEMPLATES_FOLDER):
             print('正在匹配', template_name)
@@ -682,7 +712,7 @@ class CrackWeiboSlide():
                 numbers = [int(number) for number in list(template_name.split('.')[0])]
                 print('拖动顺序', numbers)
                 return numbers
-    
+
     def move(self,numbers):
         circles=self.browser.find_elements_by_css_selector('.patt-wrap .patt-circ')#获得的是四个按钮的列表
         dx=dy=0#初始一个原始的初始移动位置
@@ -709,7 +739,7 @@ class CrackWeiboSlide():
                 # 计算下一次偏移
                 dx = circles[numbers[index + 1] - 1].location['x'] - circle.location['x']
                 dy = circles[numbers[index + 1] - 1].location['y'] - circle.location['y']
-                
+
     def crack(self):
         """
         破解入口
@@ -722,19 +752,19 @@ class CrackWeiboSlide():
         self.move(numbers)
         time.sleep(10)
         print('识别结束')
-            
-                    
-            
-        
-    
+
+
+
+
+
      def main(self):
         count=0 
         while True:
             self.open()
             self.get_image(str(count)+'.png')
             count+=1
-            
-            
+
+
 if __name__=='__main__':
     crack= CrackWeiboSlide()
     crack.crack()

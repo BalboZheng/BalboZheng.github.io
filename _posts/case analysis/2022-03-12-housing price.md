@@ -3,13 +3,13 @@ layout: post
 title: 波士顿房价预测
 subtitle: 
 author: Balbo Cheng
-categories: python
+categories: programming-language
 banner:
   video: https://vjs.zencdn.net/v/oceans.mp4
   loop: false
   volume: 0.8
   start_at: 8.5
-tags: [sklearn]
+tags: [python, sklearn]
 sidebar: []
 ---
 
@@ -134,7 +134,4 @@ if __name__ == '__main__':
     linear_model1()
     linear_model2()
     linear_model3()
-
-
 ```
-
