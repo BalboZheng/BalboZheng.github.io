@@ -156,7 +156,7 @@ defaults:
   home:
     heading: "群星渐渐暗淡，消失于黎明前的夜空。"
     subheading: "要是我们能找回真正的那条路就好了，就算是枯树林，也无法毁掉真正的路。它不过使了障眼法，因我们误入歧途罢了。"
-    banner: "assets/images/banners/404-bg.jpg"
+    banner: "assets/images/banners/404-bg.png"
 
 # Banner default settings
 # These banner settings are for global banner default, but you can also
