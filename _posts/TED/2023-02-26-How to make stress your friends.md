@@ -155,28 +155,44 @@ categories: TED
   05:43  
   Now, in a typical stress response, your heart rate goes up, and your blood vessels constrict like this. And this is one of the reasons that chronic stress is sometimes associated with cardiovascular disease. It's not really healthy to be in this state all the time. But in the study, when participants viewed their stress response as helpful, their blood vessels stayed relaxed like this. Their heart was still pounding, but this is a much healthier cardiovascular profile. It actually looks a lot like what happens in moments of joy and courage. Over a lifetime of stressful experiences, this one biological change could be the difference between a stress-induced heart attack at age 50 and living well into your 90s. And this is really what the new science of stress reveals, that how you think about stress matters.  
 
+现在，在一个典型的压力反馈中，你的心跳急速上升，你的血管像这样收缩。这就是慢性压力有时候与心血管病有关联的其中一个原因，持续这种状态不是真正的健康。但经过学习，他们的血管保持像这样的稳定放松当参与者看到他们压力反馈是有益的，他们的心脏持续跳动，但这是许多心血管疾病的表现。事实上看起来像在欢乐和勇气的时刻发生的事。在一生紧张经历中，这一个生物学变化可能是50岁时因压力引发的心脏病发作和90多岁时生活得很好之间的区别。这正是关于压力的新科学所揭示的，你怎样思考关于压力问题的。
+
   06:41  
   So my goal as a health psychologist has changed. I no longer want to get rid of your stress. I want to make you better at stress. And we just did a little intervention. If you raised your hand and said you'd had a lot of stress in the last year, we could have saved your life, because hopefully the next time your heart is pounding from stress, you're going to remember this talk and you're going to think to yourself, this is my body helping me rise to this challenge. And when you view stress in that way, your body believes you, and your stress response becomes healthier.  
+
+所以我作为一个健康心理学家的目标已经改变。我不在想去摆脱你的压力。我想让你变得更好在压力方面。我只做一点点介入。如果你举起你的手并说你有许多压力在过去几年里，我们能救你一命，因为希望下次你的心脏因压力而跳动，你将记住这次谈话并将思考你自己，这是我的身体帮我面对这些挑战，当你用这种方式看待压力，你的身体相信你，你的压力反馈变得更健康。
 
   07:18  
   Now I said I have over a decade of demonizing stress to redeem myself from, so we are going to do one more intervention. I want to tell you about one of the most under-appreciated aspects of the stress response, and the idea is this: Stress makes you social.  
 
+现在我说我有超过十年的魔鬼般的压力来救赎我自己，所以我们打算去做许多干预。我想告诉你关于最不受重视的压力反馈方面之一，这个想法是：压力让你社交
+
   07:37  
   To understand this side of stress, we need to talk about a hormone, oxytocin, and I know oxytocin has already gotten as much hype as a hormone can get. It even has its own cute nickname, the cuddle hormone, because it's released when you hug someone. But this is a very small part of what oxytocin is involved in.  
+
+为了理解这一方面的压力，我们需要讲到荷尔蒙，催产素，我知道催产素已经像荷尔蒙一样被大肆宣传了，甚至有可爱的昵称，拥抱荷尔蒙，因为当你拥抱某人会释放他，但这只是非常小的一部分催产素所涉及的。
 
   07:57  
   Oxytocin is a neuro-hormone. It fine-tunes your brain's social instincts. It primes you to do things that strengthen close relationships. Oxytocin makes you crave physical contact with your friends and family. It enhances your empathy. It even makes you more willing to help and support the people you care about. Some people have even suggested we should snort oxytocin... to become more compassionate and caring. But here's what most people don't understand about oxytocin. It's a stress hormone. Your pituitary gland pumps this stuff out as part of the stress response. It's as much a part of your stress response as the adrenaline that makes your heart pound. And when oxytocin is released in the stress response, it is motivating you to seek support. Your biological stress response is nudging you to tell someone how you feel, instead of bottling it up. Your stress response wants to make sure you notice when someone else in your life is struggling so that you can support each other. When life is difficult, your stress response wants you to be surrounded by people who care about you.  
 
+催产素是一种中性荷尔蒙，他可以微调你大脑的社交本能，他促使你做一些能加强亲密关系的事情。催产素让你渴望与家人朋友做一些身体接触。他增强你的共情。甚至让你更乐意去帮助和支持你关心的人，一些人甚至建议我们喷催产素。。。为了变得更有同情心和爱心。但这里更多的人不了解催产素是什么。是一款应激激素，作为压力反馈的一部分，你的脑垂体会分泌这些物质，他和许多压力反馈的一部分一样，让你心跳加速的肾上腺素。当催产素释放在压力反馈中，他激励你寻求支持，你的生理压力反馈轻推你告诉别人你的感受，而不是闷在心里。你的压力反馈想要确保你注意到某人在你生活中挣扎，这样你就可以互相支持。当生活感到困难时，我的压力反馈想让你围绕那些关心你的人
+
   09:21  
   Okay, so how is knowing this side of stress going to make you healthier? Well, oxytocin doesn't only act on your brain. It also acts on your body, and one of its main roles in your body is to protect your cardiovascular system from the effects of stress. It's a natural anti-inflammatory. It also helps your blood vessels stay relaxed during stress. But my favorite effect on the body is actually on the heart. Your heart has receptors for this hormone, and oxytocin helps heart cells regenerate and heal from any stress-induced damage. This stress hormone strengthens your heart.  
 
+okay，怎样知道这部分压力变得让你健康？号，催产素不仅仅作用于你的大脑，他也作用于你的身体，他的主要功能之一在你的身体上是保护你的心血管系统从压力影响方面。这是一种天然的抗炎药。同时帮助你的血管在压力下保持稳定。但我喜爱的身体影响是在心脏上。你的心脏有这种激素的受体，催产素有助于心脏细胞再生和置于任何从压力引起的伤害上。这种应激激素能增强你的心脏
+
   10:03  
   And the cool thing is that all of these physical benefits of oxytocin are enhanced by social contact and social support. So when you reach out to others under stress, either to seek support or to help someone else, you release more of this hormone, your stress response becomes healthier, and you actually recover faster from stress. I find this amazing, that your stress response has a built-in mechanism for stress resilience, and that mechanism is human connection.  
+
+最酷的是，催产素的所有这些身体益处都是通过社交接触和社会支持来增强的。所以当你在压力下与他人接触，不管是寻求帮助还是帮助其他人，你释放更多这种荷尔蒙，你的压力反馈变得更健康，事实上你从压力中恢复得更快。我发现这很神奇，你的压力反应有一种内在的压力恢复机制，这种机制就是人与人之间的联系。
 
   10:39  
   footnote  
   footnote  
   I want to finish by telling you about one more study. And listen up, because this study could also save a life. This study tracked about 1,000 adults in the United States, and they ranged in age from 34 to 93, and they started the study by asking, "How much stress have you experienced in the last year?" They also asked, "How much time have you spent helping out friends, neighbors, people in your community?" And then they used public records for the next five years to find out who died.  
+
+最后我想告诉你一项研究。听好了，因为这项研究能够拯救生命。这项研究追踪关于美国的1000个成年人，年龄区间从34到93岁，并在研究开始时问，有多少压力你尽力过去年？他们也问，有打算时间你花费在帮助朋友，邻居，社区的人？然后他们使用公共记录去查找过去五年时间谁死了
 
   11:15  
   Okay, so the bad news first: For every major stressful life experience, like financial difficulties or family crisis, that increased the risk of dying by 30 percent. But -- and I hope you are expecting a "but" by now -- but that wasn't true for everyone. People who spent time caring for others showed absolutely no stress-related increase in dying. Zero. Caring created resilience.  
