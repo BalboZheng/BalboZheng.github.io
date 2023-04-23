@@ -50,23 +50,23 @@ categories:
 
 因此，确立自己的八维，因按照平日的使用情况，最自然最舒服的状态进行排序
 
-| ESTP | Se  | >   | Ti  | >   | Fe  | >   | Ni  | >   | Si  | >   | Te  | >   | Fi  | >   | Ne  |
-| ---- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ESFP | Se  | >   | Fi  | >   | Te  | >   | Ni  | >   | Si  | >   | Fe  | >   | Ti  | >   | Ne  |
-| ISTJ | Si  | >   | Te  | >   | Fi  | >   | Ne  | >   | Se  | >   | Ti  | >   | Fe  | >   | Ni  |
-| ISFJ | Si  | >   | Fe  | >   | Ti  | >   | Ne  | >   | Se  | >   | Fi  | >   | Te  | >   | Ni  |
-| ENTP | Ne  | >   | Ti  | >   | Fe  | >   | Si  | >   | Ni  | >   | Te  | >   | Fi  | >   | Se  |
-| ENFP | Ne  | >   | Fi  | >   | Te  | >   | Si  | >   | Ni  | >   | Fe  | >   | Ti  | >   | Se  |
-| INTJ | Ni  | >   | Te  | >   | Fi  | >   | Se  | >   | Ne  | >   | Ti  | >   | Fe  | >   | Si  |
-| INFJ | Ni  | >   | Fe  | >   | Ti  | >   | Se  | >   | Ne  | >   | Fi  | >   | Te  | >   | Si  |
-| ESTJ | Te  | >   | Si  | >   | Ne  | >   | Fi  | >   | Ti  | >   | Se  | >   | Ni  | >   | Fe  |
-| ENTJ | Te  | >   | Ni  | >   | Se  | >   | Fi  | >   | Ti  | >   | Ne  | >   | Si  | >   | Fe  |
-| ISTP | Ti  | >   | Se  | >   | Ni  | >   | Fe  | >   | Te  | >   | Si  | >   | Ne  | >   | Fi  |
-| INTP | Ti  | >   | Ne  | >   | Si  | >   | Fe  | >   | Te  | >   | Ni  | >   | Se  | >   | Fi  |
-| ESFJ | Fe  | >   | Si  | >   | Ne  | >   | Ti  | >   | Fi  | >   | Se  | >   | Ni  | >   | Te  |
-| ENFJ | Fe  | >   | Ni  | >   | Se  | >   | Ti  | >   | Fi  | >   | Ne  | >   | Si  | >   | Te  |
-| ISFP | Fi  | >   | Se  | >   | Ni  | >   | Te  | >   | Fe  | >   | Si  | >   | Ne  | >   | Ti  |
-| INFP | Fi  | >   | Ne  | >   | Si  | >   | Te  | >   | Fe  | >   | Ni  | >   | Se  | >   | Ti  |
+| ESTP | Se  | Ti  | Fe  | Ni  | Si  | Te  | Fi  | Ne  |
+| ---- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ESFP | Se  | Fi  | Te  | Ni  | Si  | Fe  | Ti  | Ne  |
+| ISTJ | Si  | Te  | Fi  | Ne  | Se  | Ti  | Fe  | Ni  |
+| ISFJ | Si  | Fe  | Ti  | Ne  | Se  | Fi  | Te  | Ni  |
+| ENTP | Ne  | Ti  | Fe  | Si  | Ni  | Te  | Fi  | Se  |
+| ENFP | Ne  | Fi  | Te  | Si  | Ni  | Fe  | Ti  | Se  |
+| INTJ | Ni  | Te  | Fi  | Se  | Ne  | Ti  | Fe  | Si  |
+| INFJ | Ni  | Fe  | Ti  | Se  | Ne  | Fi  | Te  | Si  |
+| ESTJ | Te  | Si  | Ne  | Fi  | Ti  | Se  | Ni  | Fe  |
+| ENTJ | Te  | Ni  | Se  | Fi  | Ti  | Ne  | Si  | Fe  |
+| ISTP | Ti  | Se  | Ni  | Fe  | Te  | Si  | Ne  | Fi  |
+| INTP | Ti  | Ne  | Si  | Fe  | Te  | Ni  | Se  | Fi  |
+| ESFJ | Fe  | Si  | Ne  | Ti  | Fi  | Se  | Ni  | Te  |
+| ENFJ | Fe  | Ni  | Se  | Ti  | Fi  | Ne  | Si  | Te  |
+| ISFP | Fi  | Se  | Ni  | Te  | Fe  | Si  | Ne  | Ti  |
+| INFP | Fi  | Ne  | Si  | Te  | Fe  | Ni  | Se  | Ti  |
 
 ## 八维划分-MBIT
 
