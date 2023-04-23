@@ -202,8 +202,8 @@ categories:
 
 > 来源：https://zhuanlan.zhihu.com/p/466453805
 
-| ANALYSTS  | INTJ（建筑师） | INTP（逻辑学家） | ENTJ（指挥官） | ENTP（辩论家） |
-| --------- | --------- | ---------- | --------- | --------- |
-| DLPLOMATS | INFJ（拥护者） | INFP（调解员）  | ENFJ（主人公） | ENFP（竞选者） |
-| SENTINELS | ISTJ（物流师） | ISFJ（守卫者）  | ESTJ（总经理） | ESFJ（执政官） |
-| EXPLORERS | ISTP（鉴赏师） | ISFP（探险家）  | ESTP（企业家） | ESFP（表演者） |
+| ANALYSTS  | [INTJ（建筑师）](http://balbocheng.com/2023/04/18/INTJ.html) | [INTP（逻辑学家）](http://balbocheng.com/2023/04/18/INTP.html) | [ENTJ（指挥官）](http://balbocheng.com/2023/04/18/ENTJ.html) | [ENTP（辩论家）](http://balbocheng.com/2023/04/18/ENTP.html) |
+| --------- | ------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| DLPLOMATS | [INFJ（拥护者）](http://balbocheng.com/2023/04/18/INFJ.html) | [INFP（调解员）](http://balbocheng.com/2023/04/18/INFP.html)  | [ENFJ（主人公）](http://balbocheng.com/2023/04/18/ENFJ.html) | [ENFP（竞选者）](http://balbocheng.com/2023/04/18/ENFP.html) |
+| SENTINELS | [ISTJ（物流师）](http://balbocheng.com/2023/04/18/ISTJ.html) | [ISFJ（守卫者）](http://balbocheng.com/2023/04/18/ISFJ.html)  | [ESTJ（总经理）](http://balbocheng.com/2023/04/18/ESTJ.html) | [ESFJ（执政官）](http://balbocheng.com/2023/04/18/ESFJ.html) |
+| EXPLORERS | [ISTP（鉴赏师）](http://balbocheng.com/2023/04/18/ISTP.html) | [ISFP（探险家）](http://balbocheng.com/2023/04/18/ISFP.html)  | [ESTP（企业家）](http://balbocheng.com/2023/04/18/ESTP.html) | [ESFP（表演者）](http://balbocheng.com/2023/04/18/ESFP.html) |
