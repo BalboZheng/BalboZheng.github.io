@@ -6,49 +6,54 @@ author: Balbo Cheng
 categories: 
 ---
 
-## 什么是荣格八维？
+> Jung conceptualised consciousness as a self-regulating structure present at birth, centred in an ego that expressed its ability to orient the psyche through different attitudes and functions. The four functions were presented as two pairs of opposites, Thinking and Feeling, Intuition and Sensation, with an individual’s dominant mode of functioning being locatable somewhere on each continuum. Functions had a compensatory capacity, with the unconscious function primed to balance unhealthy one-sided conscious functioning. The under-developed attitude or function was an aspect of the shadow and consequently very powerful.
+> 
+> Consciousness was seen by Jung as a product of both rational and irrational processes of encountering and assessing reality. Sensation and Intuition are the irrational functions in the sense of their being perceptive, data gathering modes. Thinking (objective) and Feeling (subjective) are the rational functions: they are ways of processing information and making decisions. Sensation tells us that a thing is, Thinking tells us what the thing is and Feeling tells us what it is worth to us. Intuition is about trusting hunches. For Jung psychological disturbance reflected psychic imbalance, with neurosis overemphasizing the characteristic traits of a personality. One of the major tasks of the first half of life was to learn to express effectively one’s dominant function and attitude.
 
-荣格八维的最初雏形可见于荣格的著作《心理类型》,提出了八种人格类型：
+## 荣格八维起源
+
+荣格在他的《心理类型》一书中首次介绍了他的人格理论。他使用了四种心理功能：思维和情感（理性功能）和感觉和直觉（非理性功能）。
+
+此外，他区分了两种基本的生活态度：内向和外向。根据荣格的说法，每个人都有主导的生活态度和主要功能。这将他归类为某种人格类型。
+
+功能类型结合态度类型，8种类型诞生：
+
+| 态度  | 思维   | 情感   | 感觉   | 直觉   |
+| --- | ---- | ---- | ---- | ---- |
+| 内倾型 | 内倾思维 | 内倾情感 | 内倾感觉 | 内倾直觉 |
+| 外倾型 | 外倾思维 | 外倾情感 | 外倾感觉 | 外倾直觉 |
+
+> 如何看待性格测试？
+> 
+> Carl Jung介绍了他的人格理论，作为一种模型，为了心理治疗的目的对不同的人进行分类。他从未打算让他的模型成为一种给人们贴标签的方式。如果他知道他的教义会被用来根据简单的问卷来定义人，他就不会同意了。
+> 
+> 荣格在他的理论中提到了对立面，但他不相信人们处于光谱的一个极端或另一个极端。目的是通过心理治疗在不同的态度和功能之间找到和谐的平衡。
+
+## 荣格八维解释
 
 + Irrational functions
   
-  + Se（外倾感觉）
-    
-    + 感受当下，对外部变化和机会敏感，能左即时行动，被物质世界所吸引，善于累积经验，能够迅速识别关联数据，沉浸当下
+  + Se（外倾感觉）：感受当下，对外部变化和机会敏感，能左即时行动，被物质世界所吸引，善于累积经验，能够迅速识别关联数据，沉浸当下
   
-  + Si（内倾感觉）
-    
-    + 对过去经验的感受，偏好寻求造成已发送事实的原因，注重细节和已知信息。善于积累事实，用稳定客预测的标准来认识事物
+  + Si（内倾感觉）：对过去经验的感受，偏好寻求造成已发送事实的原因，注重细节和已知信息。善于积累事实，用稳定客预测的标准来认识事物
   
-  + Ne（外倾直觉）
-    
-    + 善于理解事物之间的意义与联系，被各种可能性吸引，对情景线索敏感，热衷于探索心事物
+  + Ne（外倾直觉）：善于理解事物之间的意义与联系，被各种可能性吸引，对情景线索敏感，热衷于探索心事物
   
-  + Ni（内倾直觉）
-    
-    + 能够在缺乏外界线索的情形下，预见未来的发展和可能性观念抽象化，能改变元视角看待观点和事物
+  + Ni（内倾直觉）：能够在缺乏外界线索的情形下，预见未来的发展和可能性观念抽象化，能改变元视角看待观点和事物
 
 + rational functions
   
-  + Te（外倾思维）
-    
-    + 善于组织思维系统化，擅长逻辑思考和设定各种标准，效率和结果导向
+  + Te（外倾思维）：善于组织思维系统化，擅长逻辑思考和设定各种标准，效率和结果导向
   
-  + Ti（内倾思维）
-    
-    + 善于深入分析和分类，偏好框架思维，评估问题的依据来源鱼概念模型，对各种原理感兴趣，追求精确性
+  + Ti（内倾思维）：善于深入分析和分类，偏好框架思维，评估问题的依据来源鱼概念模型，对各种原理感兴趣，追求精确性
   
-  + Fe（外倾情感）
-    
-    + 对他人的情感和需求敏感，并且尊重其价值观和情感，同时追求社会、组织统一的价值观，左决定时辉考虑别人是否接受
+  + Fe（外倾情感）：对他人的情感和需求敏感，并且尊重其价值观和情感，同时追求社会、组织统一的价值观，左决定时辉考虑别人是否接受
   
-  + Fi（内倾情感）
-    
-    + 捍卫自身价值观，依据事物的真实价值判断某件事是否有意义火值得维护，忠于自我
+  + Fi（内倾情感）：捍卫自身价值观，依据事物的真实价值判断某件事是否有意义火值得维护，忠于自我
 
-首先，荣格八维中的每个功能任何人都具备其对应功能，每个功能都具有不可替代性，只不过你的性格会导致向天平的一端倾斜，影响其表现程度。而在不同的情景之下，人们所表现的功能会有所不同，只是比平时更费精力。（INTJ就是如此，特点情况下会由I转E）
+    首先，荣格八维中的每个功能任何人都具备其对应功能，每个功能都具有不可替代性，只不过你的性格会导致向天平的一端倾斜，影响其表现程度。而在不同的情景之下，人们所表现的功能会有所不同，只是比平时更费精力。（INTJ就是如此，特点情况下会由I转E）
 
-因此，确立自己的八维，因按照平日的使用情况，最自然最舒服的状态进行排序
+    因此，确立自己的八维，因按照平日的使用情况，最自然最舒服的状态进行排序
 
 | ESTP | Se  | Ti  | Fe  | Ni  | Si  | Te  | Fi  | Ne  |
 | ---- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -68,37 +73,9 @@ categories:
 | ISFP | Fi  | Se  | Ni  | Te  | Fe  | Si  | Ne  | Ti  |
 | INFP | Fi  | Ne  | Si  | Te  | Fe  | Ni  | Se  | Ti  |
 
-## 八维划分-MBIT
-
-+ 内向型人格（**I**ntroverted）喜欢单独活动并对社交感到疲惫不堪，通常来说，他们往往对外部刺激（声音、气味、视觉等）极为敏感。
-
-+ 外向型人格（**E**xtraverted）更喜欢集体活动，并对社交充满活力。比内向性的人更具热情。更容易激动。
-
-+ 观察型人格（ob**S**ervant）非常务实，实际且脚踏实地，他们往往养成强烈的习惯，关注已发生火正在发生的事情上面
-
-+ 直觉型人格（i**N**tutive）非常有想象力，思想开放和好奇心，他们喜欢新奇多余稳定，关注隐藏意义和未来的可能性
-
-+ 思考型人格（**T**hinking）注重理性和客观性，将逻辑思维置于情感之上，倾向于隐藏自己的感受，认为效率比合作更重要
-
-+ 感知型人格（**F**eeling）是会让你敏感的，情绪表达能力强，他们比思维型的人更善解人意，更不争强好胜注重社会和谐与合作
-
-+ 判断型人格（**J**udging）是果断的，彻底的和高度组织的，他们重视价值清楚，客预测的和封闭的，更喜欢结构性而非自发性
-
-+ 展望型人格（**P**rospecting）善于即兴发挥和发现机会，他们往往是灵活的，放松的，不墨守成规的，喜欢保持开放的选择
-
-> 荣格八维中的 JP 倾向：
-> 
-> 第一第二功能为 Fe/Te 主导的人格，必然为 J 型人格
-> 
-> 第一第二功能为 Fi/Ti 主导的人格，必然维 P型人格
-> 
-> IE 倾向：以判断功能来讲：e聚焦于外部世界，针对于社群/体制，i聚焦于内部世界，针对于个体/客体。判断功能的表现形式非常好甄别。
-
 ## 荣格八维的结构
 
-> ieie、eiei（内倾人格）
-> 
-> eiei、ieie（外倾人格）
+> ieie，eiei（内倾人格）、eiei，ieie（外倾人格）
 
 八维功能可大致分为知觉功能：【Se,Si,Ne,Ni】及判断功能【Fe,Fi,Te,Ti】
 
@@ -198,12 +175,12 @@ categories:
 
 + t人就是没有感情，能很好控制住自己的情感，f人相反。
   
-  + 暂不谈论对t与f功能的误解。*除了优势功能外，其他功能或多或少与个人无意识结合在一起，*人能把握得最好的只有自己的主导功能，辅助其次。*而无意识态度引起的行动，总归在什么地方表现出偶发、失控、幼稚等特点，有时会给人异常、病态的感觉。*（*在针对某个人的行动，如果不区分意识的态度还是无意识态度的表现，就很难将人分为某一种类型。*）t类型相比f，t分化得更好，那么他们的情感功能则更深入于无意识，也更容易表现出偶发、失控、幼稚等特点。
+  + 暂不谈论对t与f功能的误解。除了优势功能外，其他功能或多或少与个人无意识结合在一起，人能把握得最好的只有自己的主导功能，辅助其次。而无意识态度引起的行动，总归在什么地方表现出偶发、失控、幼稚等特点，有时会给人异常、病态的感觉。（在针对某个人的行动，如果不区分意识的态度还是无意识态度的表现，就很难将人分为某一种类型。）t类型相比f，t分化得更好，那么他们的情感功能则更深入于无意识，也更容易表现出偶发、失控、幼稚等特点。
 
 > 来源：https://zhuanlan.zhihu.com/p/466453805
 
-| ANALYSTS  | [INTJ（建筑师）](http://balbocheng.com/2023/04/18/INTJ.html) | [INTP（逻辑学家）](http://balbocheng.com/2023/04/18/INTP.html) | [ENTJ（指挥官）](http://balbocheng.com/2023/04/18/ENTJ.html) | [ENTP（辩论家）](http://balbocheng.com/2023/04/18/ENTP.html) |
-| --------- | ------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
-| DLPLOMATS | [INFJ（拥护者）](http://balbocheng.com/2023/04/18/INFJ.html) | [INFP（调解员）](http://balbocheng.com/2023/04/18/INFP.html)  | [ENFJ（主人公）](http://balbocheng.com/2023/04/18/ENFJ.html) | [ENFP（竞选者）](http://balbocheng.com/2023/04/18/ENFP.html) |
-| SENTINELS | [ISTJ（物流师）](http://balbocheng.com/2023/04/18/ISTJ.html) | [ISFJ（守卫者）](http://balbocheng.com/2023/04/18/ISFJ.html)  | [ESTJ（总经理）](http://balbocheng.com/2023/04/18/ESTJ.html) | [ESFJ（执政官）](http://balbocheng.com/2023/04/18/ESFJ.html) |
-| EXPLORERS | [ISTP（鉴赏师）](http://balbocheng.com/2023/04/18/ISTP.html) | [ISFP（探险家）](http://balbocheng.com/2023/04/18/ISFP.html)  | [ESTP（企业家）](http://balbocheng.com/2023/04/18/ESTP.html) | [ESFP（表演者）](http://balbocheng.com/2023/04/18/ESFP.html) |
+| ANALYSTS（分析师）  | [INTJ（建筑师）](http://balbocheng.com/2023/04/18/INTJ.html) | [INTP（逻辑学家）](http://balbocheng.com/2023/04/18/INTP.html) | [ENTJ（指挥官）](http://balbocheng.com/2023/04/18/ENTJ.html) | [ENTP（辩论家）](http://balbocheng.com/2023/04/18/ENTP.html) |
+| -------------- | ------------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
+| DLPLOMATS（外交官） | [INFJ（拥护者）](http://balbocheng.com/2023/04/18/INFJ.html) | [INFP（调解员）](http://balbocheng.com/2023/04/18/INFP.html)  | [ENFJ（主人公）](http://balbocheng.com/2023/04/18/ENFJ.html) | [ENFP（竞选者）](http://balbocheng.com/2023/04/18/ENFP.html) |
+| SENTINELS（哨兵）  | [ISTJ（物流师）](http://balbocheng.com/2023/04/18/ISTJ.html) | [ISFJ（守卫者）](http://balbocheng.com/2023/04/18/ISFJ.html)  | [ESTJ（总经理）](http://balbocheng.com/2023/04/18/ESTJ.html) | [ESFJ（执政官）](http://balbocheng.com/2023/04/18/ESFJ.html) |
+| EXPLORERS（探险家） | [ISTP（鉴赏师）](http://balbocheng.com/2023/04/18/ISTP.html) | [ISFP（探险家）](http://balbocheng.com/2023/04/18/ISFP.html)  | [ESTP（企业家）](http://balbocheng.com/2023/04/18/ESTP.html) | [ESFP（表演者）](http://balbocheng.com/2023/04/18/ESFP.html) |
