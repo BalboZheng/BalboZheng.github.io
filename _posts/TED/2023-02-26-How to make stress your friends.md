@@ -197,8 +197,12 @@ okay，怎样知道这部分压力变得让你健康？号，催产素不仅仅�
   11:15  
   Okay, so the bad news first: For every major stressful life experience, like financial difficulties or family crisis, that increased the risk of dying by 30 percent. But -- and I hope you are expecting a "but" by now -- but that wasn't true for everyone. People who spent time caring for others showed absolutely no stress-related increase in dying. Zero. Caring created resilience.  
 
+okay，所以第一个坏消息是：对于每一次重大生活经历，如经济危机或家庭危机，死亡增长百分之三十。但我希望你现在期待的是“但是”——但并不是每个人都是这样。那些花时间照顾别人的人绝对没有因压力相关而增长死亡。零，照顾创造弹性。
+
   11:48  
   And so we see once again that the harmful effects of stress on your health are not inevitable. How you think and how you act can transform your experience of stress. When you choose to view your stress response as helpful, you create the biology of courage. And when you choose to connect with others under stress, you can create resilience. Now I wouldn't necessarily ask for more stressful experiences in my life, but this science has given me a whole new appreciation for stress. Stress gives us access to our hearts. The compassionate heart that finds joy and meaning in connecting with others, and yes, your pounding physical heart, working so hard to give you strength and energy. And when you choose to view stress in this way, you're not just getting better at stress, you're actually making a pretty profound statement. You're saying that you can trust yourself to handle life's challenges. And you're remembering that you don't have to face them alone.  
+
+所以我们能看到一旦压力伤害的影响在我们健康上是不可避免的。你该怎么想并怎么做能够转变你压力的经历。当你选择正视你有效的压力反馈，你创造生理的勇气。当你选择在压力下和别人建立联系，你可以创造弹性。选择我不需要请求更多的压力经历在我的生活中，但这项科学给我一整个对压力的全新认知。压力给我们试探我们的心。富有同情心的心，在与他人的联系中找到快乐和意义，是的，你跳动的心脏，努力工作给你力量和能量，当你选择以这种方式看待压力时，你不仅仅在压力方面变得更好，你实际上是在做一个相当深刻的陈述。你说你能相信你自己能支撑生活的挑战，你记得你不需要独自面对他们。
 
   13:09  
   Thank you.  
@@ -209,8 +213,12 @@ okay，怎样知道这部分压力变得让你健康？号，催产素不仅仅�
   13:20  
   Chris Anderson: This is kind of amazing, what you're telling us. It seems amazing to me that a belief about stress can make so much difference to someone's life expectancy. How would that extend to advice, like, if someone is making a lifestyle choice between, say, a stressful job and a non-stressful job, does it matter which way they go? It's equally wise to go for the stressful job so long as you believe that you can handle it, in some sense?  
 
+Chris Anderson:你告诉我们的太神奇了，对我来说，对压力的信念能对一个人的预期寿命产生如此大的影响，怎样延生到建议呢，就好像，如果某人在做生活方式在如工作压力大和没有工作压力之间选择，他们走哪条路有关系吗？同样明智的是走有压力的工作，只要你相信你能够支撑得住，在某种意义上？
+
   13:47  
   KM: Yeah, and one thing we know for certain is that chasing meaning is better for your health than trying to avoid discomfort. And so I would say that's really the best way to make decisions, is go after what it is that creates meaning in your life and then trust yourself to handle the stress that follows.  
+
+KM:对，我们可以肯定的一点是，追求意义比避免不适更有益于你的健康。所以我想说，这真的是做出决定的最佳方式，就是追求在你的生活中创造意义的东西，然后相信自己能处理随之而来的压力。
 
   14:03  
   CA: Thank you so much, Kelly. It's pretty cool.  
