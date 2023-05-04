@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MBIT 理论
+title: MBTI 理论
 subtitle: 通过太多类型和功能类型将人划分8种类型
 author: Balbo Cheng
 categories: MBTI
