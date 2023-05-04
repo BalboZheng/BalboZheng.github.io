@@ -3,7 +3,7 @@ layout: post
 title: MBIT 理论
 subtitle: 通过太多类型和功能类型将人划分8种类型
 author: Balbo Cheng
-categories: 
+categories: MBTI
 ---
 
 > Jung conceptualised consciousness as a self-regulating structure present at birth, centred in an ego that expressed its ability to orient the psyche through different attitudes and functions. The four functions were presented as two pairs of opposites, Thinking and Feeling, Intuition and Sensation, with an individual’s dominant mode of functioning being locatable somewhere on each continuum. Functions had a compensatory capacity, with the unconscious function primed to balance unhealthy one-sided conscious functioning. The under-developed attitude or function was an aspect of the shadow and consequently very powerful.
@@ -179,8 +179,8 @@ categories:
 
 > 来源：https://zhuanlan.zhihu.com/p/466453805
 
-| ANALYSTS（分析师）  | [INTJ（建筑师）](http://balbocheng.com/2023/04/18/INTJ.html) | [INTP（逻辑学家）](http://balbocheng.com/2023/04/18/INTP.html)     | [ENTJ（指挥官）](http://balbocheng.com/2023/04/18/ENTJ.html) | [ENTP（辩论家）](http://balbocheng.com/2023/04/18/ENTP.html) |
-| -------------- | ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------- | ------------------------------------------------------- |
-| DLPLOMATS（外交官） | [INFJ（拥护者）](http://balbocheng.com/2023/04/18/INFJ.html) | [INFP（调解员）](http://balbocheng.com/2023/04/18/INFP.html)      | [ENFJ（主人公）](http://balbocheng.com/2023/04/18/ENFJ.html) | [ENFP（竞选者）](http://balbocheng.com/2023/04/18/ENFP.html) |
-| SENTINELS（哨兵）  | [ISTJ（物流师）](http://balbocheng.com/2023/04/18/ISTJ.html) | [ISFJ（守卫者）](http://balbocheng.com/2023/04/18/ISFJ.html)      | [ESTJ（总经理）](http://balbocheng.com/2023/04/18/ESTJ.html) | [ESFJ（执政官）](http://balbocheng.com/2023/04/18/ESFJ.html) |
-| EXPLORERS（探险家） | [ISTP（鉴赏师）](http://balbocheng.com/2023/04/18/ISTP.html) | [ISFP（探险家）](http://balbocheng.com/mbit/2023/04/18/ISTP.html) | [ESTP（企业家）](http://balbocheng.com/2023/04/18/ESTP.html) | [ESFP（表演者）](http://balbocheng.com/2023/04/18/ESFP.html) |
+| ANALYSTS（分析师）  | [INTJ（建筑师）](http://balbocheng.com/MBTI/2023/04/18/INTJ.html) | [INTP（逻辑学家）](http://balbocheng.com/MBTI/2023/04/18/INTP.html) | [ENTJ（指挥官）](http://balbocheng.com/MBTI/2023/04/18/ENTJ.html) | [ENTP（辩论家）](http://balbocheng.com/MBTI/2023/04/18/ENTP.html) |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| DLPLOMATS（外交官） | [INFJ（拥护者）](http://balbocheng.com/MBTI/2023/04/18/INFJ.html) | [INFP（调解员）](http://balbocheng.com/MBTI/2023/04/18/INFP.html)  | [ENFJ（主人公）](http://balbocheng.com/MBTI/2023/04/18/ENFJ.html) | [ENFP（竞选者）](http://balbocheng.com/MBTI/2023/04/18/ENFP.html) |
+| SENTINELS（哨兵）  | [ISTJ（物流师）](http://balbocheng.com/MBTI/2023/04/18/ISTJ.html) | [ISFJ（守卫者）](http://balbocheng.com/MBTI/2023/04/18/ISFJ.html)  | [ESTJ（总经理）](http://balbocheng.com/MBTI/2023/04/18/ESTJ.html) | [ESFJ（执政官）](http://balbocheng.com/MBTI/2023/04/18/ESFJ.html) |
+| EXPLORERS（探险家） | [ISTP（鉴赏师）](http://balbocheng.com/MBTI/2023/04/18/ISTP.html) | [ISFP（探险家）](http://balbocheng.com/MBTI/2023/04/18/ISTP.html)  | [ESTP（企业家）](http://balbocheng.com/MBTI/2023/04/18/ESTP.html) | [ESFP（表演者）](http://balbocheng.com/MBTI/2023/04/18/ESFP.html) |
