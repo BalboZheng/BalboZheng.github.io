@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>XPath | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="XPath">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="XPath，全称 XML Path Language，即 XML 路径语言，它是一门在XML文档中查找信息的语言。XPath 最初设计是用来搜寻XML文档的，但是它同样适用于 HTML 文档的搜索。">
+<meta property="og:description" content="XPath，全称 XML Path Language，即 XML 路径语言，它是一门在XML文档中查找信息的语言。XPath 最初设计是用来搜寻XML文档的，但是它同样适用于 HTML 文档的搜索。">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/17/xpath.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/17/xpath.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-17T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="XPath">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-11-17T00:00:00+00:00","datePublished":"2019-11-17T00:00:00+00:00","description":"XPath，全称 XML Path Language，即 XML 路径语言，它是一门在XML文档中查找信息的语言。XPath 最初设计是用来搜寻XML文档的，但是它同样适用于 HTML 文档的搜索。","headline":"XPath","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/17/xpath.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/17/xpath.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">XPath</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-11-17T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 17, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 16 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#reptile">#reptile</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><strong>XPath</strong>，全称 XML Path Language，即 XML 路径语言，它是一门在XML文档中查找信息的语言。XPath 最初设计是用来搜寻XML文档的，但是它同样适用于 HTML 文档的搜索。</p>
+
+<p>所以在做爬虫时，我们完全可以使用 XPath 来做相应的信息抽取。</p>
+
+<h2 id="xpath概览">XPath概览</h2>
+
+<p>XPath 的选择功能十分强大，它提供了非常简洁明了的路径选择表达式，另外它还提供了超过 100 个内建函数用于字符串、数值、时间的匹配以及节点、序列的处理等等，几乎所有我们想要定位的节点都可以用XPath来选择。</p>
+
+<p>XPath 于 1999 年 11 月 16 日 成为 W3C 标准，它被设计为供 XSLT、XPointer 以及其他 XML 解析软件使用，更多的文档可以访问其官方网站：https://www.w3.org/TR/xpath/。</p>
+
+<h2 id="xpath常用规则">XPath常用规则</h2>
+
+<p>我们现用表格列举一下几个常用规则：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>表达式</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>nodename</td>
+      <td>选取此节点的所有子节点</td>
+    </tr>
+    <tr>
+      <td>/</td>
+      <td>从当前节点选取直接子节点</td>
+    </tr>
+    <tr>
+      <td>//</td>
+      <td>从当前节点选取子孙节点</td>
+    </tr>
+    <tr>
+      <td>.</td>
+      <td>选取当前节点</td>
+    </tr>
+    <tr>
+      <td>..</td>
+      <td>选取当前节点的父节点</td>
+    </tr>
+    <tr>
+      <td>@</td>
+      <td>选取属性</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>在这里列出了XPath的常用匹配规则，例如：</p>
+
+<blockquote>
+  <p>//title[@lang=’eng’]</p>
+</blockquote>
+
+<p>这就是一个 XPath 规则，它就代表选择所有名称为 title，同时属性 lang 的值为 eng 的节点。</p>
+
+<p>在后文我们会介绍 XPath 的详细用法，通过 Python 的 LXML 库利用 XPath 进行 HTML 的解析。</p>
+
+<h2 id="实例引入">实例引入</h2>
+
+<p>我们现用一个实例来感受一下使用 XPath 来对网页进行解析的过程，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+&lt;div&gt;
+    &lt;ul&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link1.html</span><span class="sh">"</span><span class="s">&gt;first item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-1</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link2.html</span><span class="sh">"</span><span class="s">&gt;second item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-inactive</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link3.html</span><span class="sh">"</span><span class="s">&gt;third item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-1</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link4.html</span><span class="sh">"</span><span class="s">&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link5.html</span><span class="sh">"</span><span class="s">&gt;fifth item&lt;/a&gt;
+     &lt;/ul&gt;
+ &lt;/div&gt;
+</span><span class="sh">'''</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">tostring</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>在这里我们首先导入了 LXML 库的 etree 模块，然后声明了一段 HTML 文本，调用 HTML 类进行初始化，这样我们就成功构造了一个 XPath 解析对象，在这里注意到 HTML 文本中的最后一个 li 节点是没有闭合的，但是 etree 模块可以对 HTML 文本进行自动修正。</p>
+
+<p>在这里我们调用 tostring() 方法即可输出修正后的 HTML 代码，但是结果是 bytes 类型，在这里我们利用 decode() 方法转成 str 类型，结果如下：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;&lt;body&gt;&lt;div&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link1.html"</span><span class="nt">&gt;</span>first item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-1"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link2.html"</span><span class="nt">&gt;</span>second item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-inactive"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link3.html"</span><span class="nt">&gt;</span>third item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-1"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link4.html"</span><span class="nt">&gt;</span>fourth item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link5.html"</span><span class="nt">&gt;</span>fifth item<span class="nt">&lt;/a&gt;</span>
+     <span class="nt">&lt;/li&gt;&lt;/ul&gt;</span>
+ <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/body&gt;&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>我们可以看到经过处理之后 li 节点标签被补全，并且还自动添加了 body、html 节点。</p>
+
+<p>另外我们也可以直接读取文本文件进行解析，示例如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">tostring</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>其中 test.html 的内容就是上面例子中的 HTML 代码，内容如下：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link1.html"</span><span class="nt">&gt;</span>first item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-1"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link2.html"</span><span class="nt">&gt;</span>second item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-inactive"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link3.html"</span><span class="nt">&gt;</span>third item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-1"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link4.html"</span><span class="nt">&gt;</span>fourth item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"https://ask.hellobi.com/link5.html"</span><span class="nt">&gt;</span>fifth item<span class="nt">&lt;/a&gt;</span>
+     <span class="nt">&lt;/ul&gt;</span>
+ <span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>这次的输出结果略有不同，多了一个 DOCTYPE 的声明，不过对解析无任何影响，结果如下：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"&gt;</span>
+<span class="nt">&lt;html&gt;&lt;body&gt;&lt;div&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link1.html"</span><span class="nt">&gt;</span>first item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-1"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link2.html"</span><span class="nt">&gt;</span>second item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-inactive"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link3.html"</span><span class="nt">&gt;</span>third item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-1"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link4.html"</span><span class="nt">&gt;</span>fourth item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+         <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link5.html"</span><span class="nt">&gt;</span>fifth item<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<h2 id="所有节点">所有节点</h2>
+
+<p>我们一般会用 // 开头的 XPath 规则来选取所有符合要求的节点，以上文的 HTML 文本为例，如果我们要选取所有节点，可以这样实现：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//*</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;Element html at 0x10510d9c8&gt;, &lt;Element body at 0x10510da08&gt;, &lt;Element div at 0x10510da48&gt;, &lt;Element ul at 0x10510da88&gt;, &lt;Element li at 0x10510dac8&gt;, &lt;Element a at 0x10510db48&gt;, &lt;Element li at 0x10510db88&gt;, &lt;Element a at 0x10510dbc8&gt;, &lt;Element li at 0x10510dc08&gt;, &lt;Element a at 0x10510db08&gt;, &lt;Element li at 0x10510dc48&gt;, &lt;Element a at 0x10510dc88&gt;, &lt;Element li at 0x10510dcc8&gt;, &lt;Element a at 0x10510dd08&gt;]
+</code></pre></div></div>
+
+<p>我们在这里使用 * 代表匹配所有节点，也就是整个 HTML 文本中的所有节点都会被获取，可以看到返回形式是一个列表，每个元素是 Element 类型，其后跟了节点的名称，如 html、body、div、ul、li、a 等等，所有的节点都包含在列表中了。</p>
+
+<p>当然此处匹配也可以指定节点名称，如果我们想获取所有 li 节点，示例如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>在这里我们要选取所有 li 节点可以使用 //，然后直接加上节点的名称即可，调用时直接调用 xpath() 方法即可提取。</p>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;Element li at 0xb11f9c8&gt;, &lt;Element li at 0xb11fa08&gt;, &lt;Element li at 0xb11fa48&gt;, &lt;Element li at 0xb11f788&gt;, &lt;Element li at 0xb11f708&gt;]
+&lt;Element li at 0xb11f9c8&gt;
+</code></pre></div></div>
+
+<p>在这里我们可以看到提取结果是一个列表形式，其每一个元素都是一个 Element 对象，如果要取出其中一个对象可以直接用中括号加索引即可取出，如 [0]。</p>
+
+<h2 id="子节点">子节点</h2>
+
+<p>我们通过 / 或 // 即可查找元素的子节点或子孙节点，加入我们现在想选择 li 节点所有直接 a 子节点，可以这样来实现：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li/a</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里我们通过追加一个 /a 即选择了所有 li 节点的所有直接 a 子节点，因为 //li 是选中所有li节点， /a 是选中li节点的所有直接子节点 a，二者组合在一起即获取了所有li节点的所有直接 a 子节点。</p>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;Element a at 0x106ee8688&gt;, &lt;Element a at 0x106ee86c8&gt;, &lt;Element a at 0x106ee8708&gt;, &lt;Element a at 0x106ee8748&gt;, &lt;Element a at 0x106ee8788&gt;]
+</code></pre></div></div>
+
+<p>但是此处的 / 是选取直接子节点，如果我们要获取所有子孙节点就该使用 // 了，例如我们要获取 ul 节点下的所有子孙 a 节点，可以这样来实现：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//ul//a</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果是相同的。</p>
+
+<p>但是这里如果我们用 //ul/a 就无法获取任何结果了，因为 / 是获取直接子节点，而在 ul 节点下没有直接的 a 子节点，只有 li 节点，所以无法获取任何匹配结果，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//ul/a</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[]
+</code></pre></div></div>
+
+<p>因此在这里我们要注意 / 和 // 的区别，/ 是获取直接子节点，// 是获取子孙节点。</p>
+
+<h2 id="父节点">父节点</h2>
+
+<p>我们知道通过连续的 / 或 // 可以查找子节点或子孙节点，那假如我们知道了子节点怎样来查找父节点呢？在这里我们可以用 .. 来获取父节点。</p>
+
+<p>比如我们现在首先选中 href 是 link4.html 的 a 节点，然后再获取其父节点，然后再获取其 class 属性，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//a[@href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link4.html</span><span class="sh">"</span><span class="s">]/../@class</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['item-1']
+</code></pre></div></div>
+
+<p>检查一下结果，正是我们获取的目标 li 节点的 class，获取父节点成功。</p>
+
+<p>同时我们也可以通过 parent:: 来获取父节点，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//a[@href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link4.html</span><span class="sh">"</span><span class="s">]/parent::*/@class</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="属性匹配">属性匹配</h2>
+
+<p>在选取的时候我们还可以用 @ 符号进行属性过滤，比如在这里如果我们要选取 class 为 item-1 的 li 节点，可以这样实现:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[@class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">]</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里我们通过加入 [@class=”item-0”] 就限制了节点的 class 属性为 item-0，而 HTML 文本中符合条件的 li 节点有两个，所以返回结果应该返回两个匹配到的元素，结果如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;Element li at 0x10a399288&gt;, &lt;Element li at 0x10a3992c8&gt;]
+</code></pre></div></div>
+
+<p>可见匹配结果结果正是两个，至于是不是那正确的两个，我们在后面验证一下。</p>
+
+<h2 id="文本获取">文本获取</h2>
+
+<p>我们用 XPath 中的 text() 方法可以获取节点中的文本，我们接下来尝试获取一下上文 li 节点中的文本，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[@class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">]/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['\n     ']
+</code></pre></div></div>
+
+<p>很奇怪的是我们并没有获取到任何文本，而是只获取到了一个换行符，这是为什么呢？因为 XPath 中 text() 前面是 /，而此 / 的含义是选取直接子节点，而此处很明显 li 的直接子节点都是 a 节点，文本都是在 a 节点内部的，所以这里匹配到的结果就是被修正的 li 节点内部的换行符，因为自动修正的li节点的尾标签换行了。</p>
+
+<p>即选中的是这两个节点：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link1.html"</span><span class="nt">&gt;</span>first item<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"item-0"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"link5.html"</span><span class="nt">&gt;</span>fifth item<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/li&gt;</span>
+</code></pre></div></div>
+
+<p>其中一个节点因为自动修正，li 节点的尾标签添加的时候换行了，所以提取文本得到的唯一结果就是 li 节点的尾标签和 a 节点的尾标签之间的换行符。</p>
+
+<p>因此，如果我们想获取 li 节点内部的文本就有两种方式，一种是选取到 a 节点再获取文本，另一种就是使用 //，我们来看下二者的区别是什么。</p>
+
+<p>首先我们选取到 a 节点再获取文本，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[@class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['first item', 'fifth item']
+</code></pre></div></div>
+
+<p>可以看到这里返回值是两个，内容都是属性为 item-0 的 li 节点的文本，这也印证了我们上文中属性匹配的结果是正确的。</p>
+
+<p>在这里我们是逐层选取的，先选取了 li 节点，又利用 / 选取了其直接子节点 a，然后再选取其文本，得到的结果恰好是符合我们预期的两个结果。</p>
+
+<p>我们再来看下用另一种方式 // 选取的结果，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[@class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">]//text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['first item', 'fifth item', '\n     ']
+</code></pre></div></div>
+
+<p>不出所料，这里返回结果是三个，可想而知这里是选取所有子孙节点的文本，其中前两个就是 li 的子节点 a 节点内部的文本，另外一个就是最后一个 li 节点内部的文本，即换行符。</p>
+
+<p>所以说，如果我们要想获取子孙节点内部的所有文本，可以直接用 // 加 text() 的方式获取，这样可以保证获取到最全面的文本信息，但是可能会夹杂一些换行符等特殊字符。如果我们想获取某些特定子孙节点下的所有文本，可以先选取到特定的子孙节点，然后再调用 text() 方法获取其内部文本，这样可以保证获取的结果是整洁的。</p>
+
+<h2 id="属性获取">属性获取</h2>
+
+<p>我们知道了用 text() 可以获取节点内部文本，那么节点属性该怎样获取呢？其实还是用 @ 符号就可以，例如我们想获取所有 li 节点下所有 a 节点的 href 属性，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="sh">'</span><span class="s">./test.html</span><span class="sh">'</span><span class="p">,</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTMLParser</span><span class="p">())</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li/a/@href</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里我们通过 @href 即可获取节点的 href 属性，注意此处和属性匹配的方法不同，属性匹配是中括号加属性名和值来限定某个属性，如 [@href=”https://ask.hellobi.com/link1.html”]，而此处的 @href 指的是获取节点的某个属性，二者需要做好区分。</p>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['link1.html', 'link2.html', 'link3.html', 'link4.html', 'link5.html']
+</code></pre></div></div>
+
+<p>可以看到我们成功获取了所有 li 节点下的 a 节点的 href 属性，以列表形式返回。</p>
+
+<h2 id="属性多值匹配">属性多值匹配</h2>
+
+<p>有时候某些节点的某个属性可能有多个值，例如下面例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+&lt;li class=</span><span class="sh">"</span><span class="s">li li-first</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link.html</span><span class="sh">"</span><span class="s">&gt;first item&lt;/a&gt;&lt;/li&gt;
+</span><span class="sh">'''</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[@class=</span><span class="sh">"</span><span class="s">li</span><span class="sh">"</span><span class="s">]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里 HTML 文本中的 li 节点的 class 属性有两个值 li 和 li-first，但是此时如果我们还想用之前的属性匹配获取就无法匹配了，代码运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[]
+</code></pre></div></div>
+
+<p>这时如果属性有多个值就需要用 contains() 函数了，代码可以改写如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+&lt;li class=</span><span class="sh">"</span><span class="s">li li-first</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link.html</span><span class="sh">"</span><span class="s">&gt;first item&lt;/a&gt;&lt;/li&gt;
+</span><span class="sh">'''</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[contains(@class, </span><span class="sh">"</span><span class="s">li</span><span class="sh">"</span><span class="s">)]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这样我们通过 contains() 方法，第一个参数传入属性名称，第二个参数传入属性值，这样只要此属性包含所传入的属性值就可以完成匹配了。</p>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['first item']
+</code></pre></div></div>
+
+<p>此种选择方式在某个节点的某个属性有多个值的时候经常会用到，如某个节点的 class 属性通常有多个。</p>
+
+<h2 id="多属性匹配">多属性匹配</h2>
+
+<p>另外我们可能还遇到一种情况，我们可能需要根据多个属性才能确定一个节点，这是就需要同时匹配多个属性才可以，那么这里可以使用运算符 and 来连接，示例如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+&lt;li class=</span><span class="sh">"</span><span class="s">li li-first</span><span class="sh">"</span><span class="s"> name=</span><span class="sh">"</span><span class="s">item</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link.html</span><span class="sh">"</span><span class="s">&gt;first item&lt;/a&gt;&lt;/li&gt;
+</span><span class="sh">'''</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[contains(@class, </span><span class="sh">"</span><span class="s">li</span><span class="sh">"</span><span class="s">) and @name=</span><span class="sh">"</span><span class="s">item</span><span class="sh">"</span><span class="s">]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里 HTML 文本的 li 节点又增加了一个属性 name，这时候我们需要同时根据 class 和 name 属性来选择，就可以 and 运算符连接两个条件，两个条件都被中括号包围，运行结果如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>['first item']
+</code></pre></div></div>
+
+<p>这里的 and 其实是 XPath 中的运算符，另外还有很多运算符，如 or、mod 等等，在此总结如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>运算符</th>
+      <th>描述</th>
+      <th>实例</th>
+      <th>返回值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>or</td>
+      <td>或</td>
+      <td>price=9.80 or price=9.70</td>
+      <td>如果 price 是 9.80，则返回 true。如果 price 是 9.50，则返回 false</td>
+    </tr>
+    <tr>
+      <td>and</td>
+      <td>与</td>
+      <td>price&gt;9.00 and price&lt;9.90</td>
+      <td>如果 price 是 9.80，则返回 true。如果 price 是 8.50，则返回 false</td>
+    </tr>
+    <tr>
+      <td>mod</td>
+      <td>计算除法的余数</td>
+      <td>5 mod 2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td colspan="2">
+</td>
+      <td>计算两个节点集</td>
+      <td>//book | //cd</td>
+      
+    </tr>
+    <tr>
+      <td>+</td>
+      <td>加法</td>
+      <td>6 + 4</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>减法</td>
+      <td>6 - 4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>*</td>
+      <td>乘法</td>
+      <td>6 * 4</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <td>div</td>
+      <td>除法</td>
+      <td>8 div 4</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>=</td>
+      <td>等于</td>
+      <td>price=9.80</td>
+      <td>如果 price 是 9.80，则返回 true。如果 price 是 9.90，则返回 false</td>
+    </tr>
+    <tr>
+      <td>!=</td>
+      <td>不等于</td>
+      <td>price!=9.80</td>
+      <td>如果 price 是 9.90，则返回 true。如果 price 是 9.80，则返回 false</td>
+    </tr>
+    <tr>
+      <td>&lt;</td>
+      <td>小于</td>
+      <td>price&lt;9.80</td>
+      <td>如果 price 是 9.00，则返回 true。如果 price 是 9.90，则返回 false</td>
+    </tr>
+    <tr>
+      <td>&lt;=</td>
+      <td>小于或等于</td>
+      <td>price&lt;=9.80</td>
+      <td>如果 price 是 9.00，则返回 true。如果 price 是 9.90，则返回 false</td>
+    </tr>
+    <tr>
+      <td>
+<blockquote>
+
+</blockquote>
+</td>
+      <td>大于</td>
+      <td>price&gt;9.80</td>
+      <td>如果 price 是 9.90，则返回 true。如果 price 是 9.80，则返回 false</td>
+    </tr>
+    <tr>
+      <td>
+<blockquote>
+  <p>=</p>
+</blockquote>
+</td>
+      <td>大于或等于</td>
+      <td>price&gt;=9.80</td>
+      <td>如果 price 是 9.90，则返回 true。如果 price 是 9.70，则返回 false</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>此表参考来源：http://www.w3school.com.cn/xpath/xpath_operators.asp。</p>
+
+<h2 id="按序选择">按序选择</h2>
+
+<p>有时候我们在选择的时候可能某些属性同时匹配了多个节点，但是我们只想要其中的某个节点，如第二个节点，或者最后一个节点，这时该怎么办呢？</p>
+
+<p>这时可以利用中括号传入索引的方法获取特定次序的节点，示例如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+ &lt;div&gt;
+     &lt;ul&gt;
+          &lt;li class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link1.html</span><span class="sh">"</span><span class="s">&gt;first item&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=</span><span class="sh">"</span><span class="s">item-1</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link2.html</span><span class="sh">"</span><span class="s">&gt;second item&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=</span><span class="sh">"</span><span class="s">item-inactive</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link3.html</span><span class="sh">"</span><span class="s">&gt;third item&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=</span><span class="sh">"</span><span class="s">item-1</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link4.html</span><span class="sh">"</span><span class="s">&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link5.html</span><span class="sh">"</span><span class="s">&gt;fifth item&lt;/a&gt;
+      &lt;/ul&gt;
+  &lt;/div&gt;
+ </span><span class="sh">'''</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[last()]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[position()&lt;3]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[last()-2]/a/text()</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>第一次选择我们选取了第一个 li 节点，中括号中传入数字1即可，注意这里和代码中不同，序号是以 1 开头的，不是 0 开头的。</p>
+
+<p>第二次选择我们选取了最后一个 li 节点，中括号中传入 last() 即可，返回的便是最后一个 li 节点。</p>
+
+<p>第三次选择我们选取了位置小于 3 的 li 节点，也就是位置序号为 1 和 2 的节点，得到的结果就是前 2 个 li 节点。</p>
+
+<p>第四次选择我们选取了倒数第三个 li 节点，中括号中传入 last()-2即可，因为 last() 是最后一个，所以 last()-2 就是倒数第三个。</p>
+
+<p>运行结果如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ['first item']
+    ['fifth item']
+    ['first item', 'second item']
+    ['third item']
+</code></pre></div></div>
+
+<p>在这里我们使用了 last()、position() 等函数，XPath 中提供了 100 多个函数，包括存取、数值、字符串、逻辑、节点、序列等处理功能，具体所有的函数作用可以参考：http://www.w3school.com.cn/xpath/xpath_functions.asp。</p>
+
+<h2 id="节点轴选择">节点轴选择</h2>
+
+<p>XPath 提供了很多节点轴选择方法，英文叫做 XPath Axes，包括获取子元素、兄弟元素、父元素、祖先元素等等，在一定情况下使用它可以方便地完成节点的选择，我们用一个实例来感受一下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="sh">'''</span><span class="s">
+&lt;div&gt;
+    &lt;ul&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link1.html</span><span class="sh">"</span><span class="s">&gt;&lt;span&gt;first item&lt;/span&gt;&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-1</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link2.html</span><span class="sh">"</span><span class="s">&gt;second item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-inactive</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link3.html</span><span class="sh">"</span><span class="s">&gt;third item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-1</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link4.html</span><span class="sh">"</span><span class="s">&gt;fourth item&lt;/a&gt;&lt;/li&gt;
+         &lt;li class=</span><span class="sh">"</span><span class="s">item-0</span><span class="sh">"</span><span class="s">&gt;&lt;a href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link5.html</span><span class="sh">"</span><span class="s">&gt;fifth item&lt;/a&gt;
+     &lt;/ul&gt;
+ &lt;/div&gt;
+</span><span class="sh">'''</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/ancestor::*</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/ancestor::div</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/attribute::*</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/child::a[@href=</span><span class="sh">"</span><span class="s">https://ask.hellobi.com/link1.html</span><span class="sh">"</span><span class="s">]</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/descendant::span</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/following::*[2]</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">html</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//li[1]/following-sibling::*</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [&lt;Element html at 0x107941808&gt;, &lt;Element body at 0x1079418c8&gt;, &lt;Element div at 0x107941908&gt;, &lt;Element ul at 0x107941948&gt;]
+    [&lt;Element div at 0x107941908&gt;]
+    ['item-0']
+    [&lt;Element a at 0x1079418c8&gt;]
+    [&lt;Element span at 0x107941948&gt;]
+    [&lt;Element a at 0x1079418c8&gt;]
+    [&lt;Element li at 0x107941948&gt;, &lt;Element li at 0x107941988&gt;, &lt;Element li at 0x1079419c8&gt;, &lt;Element li at 0x107941a08&gt;]
+</code></pre></div></div>
+
+<p>第一次选择我们调用了 ancestor 轴，可以获取所有祖先节点，其后需要跟两个冒号，然后是节点的选择器，这里我们直接使用了 *，表示匹配所有节点，因此返回结果是第一个 li 节点的所有祖先节点，包括 html，body，div，ul。</p>
+
+<p>第二次选择我们又加了限定条件，这次在冒号后面加了 div，这样得到的结果就只有 div 这个祖先节点了。</p>
+
+<p>第三次选择我们调用了 attribute 轴，可以获取所有属性值，其后跟的选择器还是 *，这代表获取节点的所有属性，返回值就是 li 节点的所有属性值。</p>
+
+<p>第四次选择我们调用了 child 轴，可以获取所有直接子节点，在这里我们又加了限定条件选取 href 属性为 link1.html 的 a 节点。</p>
+
+<p>第五次选择我们调用了 descendant 轴，可以获取所有子孙节点，这里我们又加了限定条件获取 span 节点，所以返回的就是只包含 span 节点而没有 a 节点。</p>
+
+<p>第六次选择我们调用了 following 轴，可以获取当前节点之后的所有节点，这里我们虽然使用的是 * 匹配，但又加了索引选择，所以只获取了第二个后续节点。</p>
+
+<p>第七次选择我们调用了 following-sibling 轴，可以获取当前节点之后的所有同级节点，这里我们使用的是 * 匹配，所以获取了所有后续同级节点。</p>
+
+<p>以上是XPath轴的简单用法，更多的轴的使用可以参考：http://www.w3school.com.cn/xpath/xpath_axes.asp。</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/11/17/regular-expression.html" title="正则表达式">正则表达式</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html" title="Beautiful Soup">Beautiful Soup</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/28/agency.html" title="Beautiful Soup">代理</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/09/06/mybatis-pagehelper.html" title="Beautiful Soup">Mybatis-PageHelper</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/maths/2022/03/05/Maths.html" title="Beautiful Soup">数学公式汇总</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/12/housing-price.html" title="Beautiful Soup">波士顿房价预测</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/17/xpath.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/17/xpath.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

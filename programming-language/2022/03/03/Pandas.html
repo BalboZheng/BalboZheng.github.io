@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Pandas | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Pandas">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="pandas 介绍">
+<meta property="og:description" content="pandas 介绍">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/03/Pandas.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/03/Pandas.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-03-03T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Pandas">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2022-03-03T00:00:00+00:00","datePublished":"2022-03-03T00:00:00+00:00","description":"pandas 介绍","headline":"Pandas","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/03/Pandas.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/03/Pandas.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Pandas</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2022-03-03T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 03, 2022
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#pandas">#pandas</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="pandas-介绍">pandas 介绍</h2>
+
+<h3 id="objectpyscipypandas">objectpy/Scipy/Pandas</h3>
+
+<p>objectpy是以矩阵为基础的数学计算模块，纯数学。</p>
+
+<p>Scipy基于objectpy，科学计算库，有一些高阶抽象和物理模型。比方说做个傅立叶变换，这是纯数学的，用objectpy；做个滤波器，这属于信号处理模型了，在Scipy里找。</p>
+
+<p><strong>Pandas</strong>提供了一套名为DataFrame的数据结构，比较契合统计分析中的表结构，并且提供了计算接口，可用objectpy或其它方式进行计算。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">objectpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="nf">normal</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># 处理数据，直观显示
+</span><span class="nf">print</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+
+<span class="c1"># 设置索引格式
+</span><span class="n">arr_code</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">类型</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">apd</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+<span class="c1"># 添加索引
+# index 添加行索引
+# cloumns 添加列索引
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">(</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">arr_code</span><span class="p">,</span> <span class="n">cloumns</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>番外：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 生成日期
+# start 开始时间
+# end 结束时间
+# periods 时间天数
+# freq 递进单位，默认1天，'B'略过周末
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">date_range</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="dataframe">DataFrame</h3>
+
+<h4 id="dataframe-属性">DataFrame 属性</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 数组形状
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># 数组列
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="c1"># 数组行
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="n">index</span><span class="p">)</span>
+<span class="c1"># 数组数值
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="n">values</span><span class="p">)</span>
+<span class="c1"># 数组转换
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
+<span class="c1"># 数组前几行
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="nf">head</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="c1"># 数组后几行
+</span><span class="nf">print</span><span class="p">(</span><span class="nb">object</span><span class="p">.</span><span class="nf">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="dataframe-索引">DataFrame 索引</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># keys 以某列为新索引
+# drop 默认False 不删除原来索引
+</span><span class="nb">object</span><span class="p">.</span><span class="nf">reset_index</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="基本操作">基本操作</h2>
+
+<p>处理数据</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 读取文件
+</span><span class="n">data_1</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">read_csv</span><span class="p">(</span><span class="sh">'</span><span class="s">nba.csv</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="c1"># 删除不必要的数据
+</span><span class="n">data_2</span> <span class="o">=</span> <span class="n">data_1</span><span class="p">.</span><span class="nf">drop</span><span class="p">([</span><span class="n">title</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="索引操作">索引操作</h3>
+
+<h4 id="直接使用行列索引">直接使用行列索引</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 不可以先行后列
+# 不可以切片
+</span><span class="nf">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">Name</span><span class="sh">'</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h4 id="结合loc和iloc使用索引">结合loc和iloc使用索引</h4>
+
+<p>https://blog.csdn.net/sushangchun/article/details/83514803</p>
+
+<h3 id="赋值">赋值</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 直接修改原来的值
+</span><span class="n">data</span><span class="p">[</span><span class="sh">'</span><span class="s">point</span><span class="sh">'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">data</span><span class="p">.</span><span class="n">point</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h3 id="排序">排序</h3>
+
+<p>排序分为两种，一种时对索引进行排序，一种是对内容进行排序</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># by 通过什么条件排序
+# ascending 是否升序
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="sh">'</span><span class="s">Name</span><span class="sh">'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># 按照多个值排序
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">Name</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Team</span><span class="sh">'</span><span class="p">])</span>
+
+<span class="c1"># 对索引进行排序
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">sort_index</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># series排序时，只有一列，不需要参数
+</span><span class="n">series</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">].</span><span class="nf">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">series</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">].</span><span class="nf">sort_index</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="dataframe-运算">DataFrame 运算</h2>
+
+<h3 id="算数运算">算数运算</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 加法
+# 同等于 data['']+other
+</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">].</span><span class="nf">add</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+<span class="c1"># 减法
+# 同等于 data['']-other
+</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">].</span><span class="nf">sub</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="逻辑运算">逻辑运算</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 判断大小
+</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">other</span>
+
+<span class="c1"># 逻辑判断的结果可作为筛选依据
+</span><span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">other</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[(</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">other</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">other</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h3 id="逻辑运算函数">逻辑运算函数</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 同上
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">query</span><span class="p">(</span><span class="sh">"</span><span class="s">data[</span><span class="sh">''</span><span class="s">] &lt; other &amp; data[</span><span class="sh">''</span><span class="s">] &gt; other</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># 可以指定值进行一个判断，从而进行筛选操作
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="sh">''</span><span class="p">].</span><span class="nf">isin</span><span class="p">(</span><span class="n">values</span><span class="p">)]</span>
+</code></pre></div></div>
+
+<h3 id="统计运算">统计运算</h3>
+
+<h4 id="describe">describe()</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 数据统计,计算平均值，标准差，最大值，最小值，四分位数
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">describe</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="累计统计函数">累计统计函数</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">函数</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">cumsum</td>
+      <td>计算前1/2/3/…/n个数的和</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">cummax</td>
+      <td>计算前1/2/3/…/n个数的最大值</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">cummin</td>
+      <td>计算前1/2/3/…/n个数的最小值</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">cumprod</td>
+      <td>计算前1/2/3/…/n个数的积</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="自定义运算-apply">自定义运算 apply()</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="sh">'</span><span class="s">Age</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Salary</span><span class="sh">'</span><span class="p">]].</span><span class="nf">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="nf">max</span><span class="p">()</span><span class="o">-</span><span class="n">x</span><span class="p">.</span><span class="nf">min</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="画图">画图</h2>
+
+<h3 id="pandasdataframeplot">pandas.DataFrame.plot</h3>
+
+<ul>
+  <li>‘line’ : line plot(default)</li>
+  <li>‘bar’ : certical bar plot</li>
+  <li>‘barh’ : horizontal bar plot</li>
+  <li>‘hist’ : histogram</li>
+  <li>‘pie’ : pie plot</li>
+  <li>‘scatter’ : scatter plot</li>
+</ul>
+
+<h3 id="pandasseriesplot">pandas.Series.plot</h3>
+
+<h2 id="高级处理">高级处理</h2>
+
+<h3 id="缺失值">缺失值</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 判断数据是否为NaN
+# 如果有缺失值，返回True
+</span><span class="n">np</span><span class="p">.</span><span class="nf">any</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">isnull</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<span class="c1"># 如果有缺失值，返回Flase
+</span><span class="n">np</span><span class="p">.</span><span class="nf">all</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">notnull</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 存在缺失值
+# 删除存在缺失值 不会修改原数据
+</span><span class="n">df</span><span class="p">.</span><span class="nf">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="sh">'</span><span class="s">rows</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 替换缺失值
+# inplace 是否替换原数据
+</span><span class="n">df</span><span class="p">.</span><span class="nf">fillna</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 替换所有缺失值
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="p">.</span><span class="nf">all</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">notnull</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+        <span class="c1"># print(i)
+</span>        <span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">fillna</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">mean</span><span class="p">())</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 非NaN缺失值
+# 先转换为NaN再进行删改
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="n">to_place</span><span class="o">=</span><span class="sh">'</span><span class="s">?</span><span class="sh">'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="sh">'</span><span class="s">np.NaN</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="数据离散化">数据离散化</h3>
+
+<p>连续数据离散化的目的是为了简化数据结构，数据离散化技术可以用来减少给定连续属性值的个数。离散化方法经常作为数据挖掘的工具</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+
+<span class="c1">#指定箱子分箱（等距离分箱子）
+#指定箱子分箱（等距离分箱子）
+</span><span class="n">year</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1992</span><span class="p">,</span> <span class="mi">1983</span><span class="p">,</span> <span class="mi">1922</span><span class="p">,</span> <span class="mi">1932</span><span class="p">,</span> <span class="mi">1973</span><span class="p">]</span>   <span class="c1"># 待分箱数据
+</span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1900</span><span class="p">,</span>  <span class="mi">1950</span><span class="p">,</span>  <span class="mi">2000</span><span class="p">]</span>   <span class="c1"># 指定箱子的分界点
+</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">bins</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="c1"># 结果如下：
+# [(1950, 2000], (1950, 2000], (1900, 1950], (1900, 1950], (1950, 2000]]
+# Categories (2, interval[int64]): [(1900, 1950] &lt; (1950, 2000]]
+# 结果说明：其中(1950, 2000]说明year列表的第一个值1992位于(1950, 2000]区间
+</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>   <span class="c1"># 对不同箱子中的数进行计数
+</span>
+<span class="c1"># 结果如下：
+# (1950, 2000]    3
+# (1900, 1950]    2
+# dtype: int64
+</span>
+
+<span class="c1"># labels参数为False时，返回结果中用不同的整数作为箱子的指示符
+</span><span class="n">result2</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span><span class="n">labels</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="c1"># 输出结果中的数字对应着不同的箱子
+</span><span class="nf">print</span><span class="p">(</span><span class="n">result2</span><span class="p">)</span>
+
+<span class="c1"># 结果如下：
+# [1 1 0 0 1]
+# 结果说明：其中 1 说明year列表的第一个值1992位于(1950, 2000]区间
+# 其中 0 说明year列表的第一个值1922位于(1900, 1950]区间
+</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">result2</span><span class="p">))</span>   <span class="c1"># 对不同箱子中的数进行计数
+</span>
+<span class="c1"># 结果如下：
+# 1    3
+# 0    2
+# dtype: int64
+</span>
+
+<span class="c1"># 可以将想要指定给不同箱子的标签传递给labels参数
+</span><span class="n">group_names</span> <span class="o">=</span> <span class="p">[</span> <span class="sh">'</span><span class="s">50_before</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">50_after</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">result3</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">cut</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">group_names</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">result3</span><span class="p">))</span>
+
+<span class="c1"># 结果如下：
+# 50_after     3
+# 50_before    2
+# dtype: int64
+</span>
+
+<span class="c1">#等频分箱
+#等频分箱
+</span><span class="n">year2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1992</span><span class="p">,</span> <span class="mi">1983</span><span class="p">,</span> <span class="mi">1922</span><span class="p">,</span> <span class="mi">1932</span><span class="p">,</span> <span class="mi">1973</span><span class="p">,</span> <span class="mi">1999</span><span class="p">,</span> <span class="mi">1993</span><span class="p">,</span> <span class="mi">1995</span><span class="p">]</span>   <span class="c1"># 待分箱数据
+</span><span class="n">result4</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">qcut</span><span class="p">(</span><span class="n">year2</span><span class="p">,</span><span class="n">q</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>   <span class="c1"># 参数q指定所分箱子的数量   
+# 从输出结果可以看到每个箱子中的数据量时相同的
+</span><span class="nf">print</span><span class="p">(</span><span class="n">result4</span><span class="p">)</span>
+
+<span class="c1"># 结果如下：
+# [(1987.5, 1993.5], (1962.75, 1987.5], (1921.999, 1962.75], 
+# (1921.999, 1962.75], (1962.75, 1987.5], (1993.5, 1999.0], 
+# (1987.5, 1993.5], (1993.5, 1999.0]]
+# Categories (4, interval[float64]): [(1921.999, 1962.75] &lt; 
+# (1962.75, 1987.5] &lt; (1987.5, 1993.5] &lt; (1993.5, 1999.0]]
+</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">pd</span><span class="p">.</span><span class="nf">value_counts</span><span class="p">(</span><span class="n">result4</span><span class="p">))</span>  <span class="c1"># 从输出结果可以看到每个箱子中的数据量时相同的
+</span>
+<span class="c1"># 结果如下：
+# (1993.5, 1999.0]       2
+# (1987.5, 1993.5]       2
+# (1962.75, 1987.5]      2
+# (1921.999, 1962.75]    2
+# dtype: int64
+</span></code></pre></div></div>
+
+<h3 id="合并">合并</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 按行索引进行拼接
+</span><span class="n">pd</span><span class="p">.</span><span class="nf">concat</span><span class="p">([</span><span class="n">data</span><span class="p">,</span> <span class="n">data_1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">left</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K2</span><span class="sh">'</span><span class="p">],</span>
+                     <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K2</span><span class="sh">'</span><span class="p">],</span>
+                     <span class="sh">'</span><span class="s">A</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">A0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">A0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">A1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">A2</span><span class="sh">'</span><span class="p">],</span>
+                     <span class="sh">'</span><span class="s">B</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">B0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">B2</span><span class="sh">'</span><span class="p">]})</span>
+
+<span class="n">right</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K2</span><span class="sh">'</span><span class="p">],</span>
+                      <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">K2</span><span class="sh">'</span><span class="p">],</span>
+                      <span class="sh">'</span><span class="s">C</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">C0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">C2</span><span class="sh">'</span><span class="p">],</span>
+                      <span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">D0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D0</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">D2</span><span class="sh">'</span><span class="p">]})</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="sh">'</span><span class="s">inner</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="sh">'</span><span class="s">outer</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="sh">'</span><span class="s">left</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nf">merge</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">key1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">key2</span><span class="sh">'</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="sh">'</span><span class="s">right</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="交叉表与透视表">交叉表与透视表*</h3>
+
+<center><font color="red">略</font></center>
+
+<h3 id="分组与聚合">分组与聚合</h3>
+
+<h4 id="分组api">分组api</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">col</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="nc">DataFrame</span><span class="p">({</span><span class="sh">'</span><span class="s">color</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">green</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">blue</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">yellow</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">black</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">white</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">red</span><span class="sh">'</span><span class="p">],</span>
+                    <span class="sh">'</span><span class="s">object</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="sh">'</span><span class="s">pen</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">pencil</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">book</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">ruler</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">pen</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">compasses</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">pen</span><span class="sh">'</span><span class="p">],</span>
+                    <span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">:</span> <span class="p">[</span><span class="mf">5.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">6.4</span><span class="p">,</span> <span class="mf">7.1</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mf">5.8</span><span class="p">,</span> <span class="mi">11</span><span class="p">]})</span>
+
+<span class="c1"># 二选一
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">col</span><span class="p">.</span><span class="nf">groupby</span><span class="p">([</span><span class="sh">'</span><span class="s">color</span><span class="sh">'</span><span class="p">])[</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">].</span><span class="nf">mean</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">col</span><span class="p">[</span><span class="sh">'</span><span class="s">price</span><span class="sh">'</span><span class="p">].</span><span class="nf">groupby</span><span class="p">([</span><span class="sh">'</span><span class="s">color</span><span class="sh">'</span><span class="p">]).</span><span class="nf">mean</span><span class="p">()</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># 运行结果
+# color
+# black     12.00
+# blue       6.40
+# green      1.00
+# red        8.25
+# white      5.80
+# yellow     7.10
+# Name: price, dtype: float64
+</span></code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2022/03/02/Numpy.html" title="Numpy">Numpy</a><a class="next" href="/jekyll-theme-yat/programming-language/2022/03/04/team.html" title="NBA 数据分析">NBA 数据分析</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/23/target_detection.html" title="NBA 数据分析">目标检测</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ISTJ.html" title="NBA 数据分析">人格八维 -- ISTJ（物流师）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/09/19/frame.html" title="NBA 数据分析">Python框架</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/INFP.html" title="NBA 数据分析">人格八维 -- INFP（调停者）</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/03/Pandas.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/03/Pandas.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

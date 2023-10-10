@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>urllib的详解使用 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="urllib的详解使用">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="我们首先了解一下 Urllib 库，它是 Python 内置的 HTTP 请求库，也就是说我们不需要额外安装即可使用，它包含四个模块：">
+<meta property="og:description" content="我们首先了解一下 Urllib 库，它是 Python 内置的 HTTP 请求库，也就是说我们不需要额外安装即可使用，它包含四个模块：">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/14/urllib.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/14/urllib.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-14T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="urllib的详解使用">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-11-14T00:00:00+00:00","datePublished":"2019-11-14T00:00:00+00:00","description":"我们首先了解一下 Urllib 库，它是 Python 内置的 HTTP 请求库，也就是说我们不需要额外安装即可使用，它包含四个模块：","headline":"urllib的详解使用","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/14/urllib.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/14/urllib.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">urllib的详解使用</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-11-14T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 14, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 12 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#reptile">#reptile</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>我们首先了解一下 Urllib 库，它是 Python 内置的 HTTP 请求库，也就是说我们不需要额外安装即可使用，它包含四个模块：</p>
+
+<ul>
+  <li>
+    <p>第一个模块 request，它是最基本的 HTTP 请求模块，我们可以用它来模拟发送一请求，就像在浏览器里输入网址然后敲击回车一样，只需要给库方法传入 URL 还有额外的参数，就可以模拟实现这个过程了。</p>
+  </li>
+  <li>
+    <p>第二个 error 模块即异常处理模块，如果出现请求错误，我们可以捕获这些异常，然后进行重试或其他操作保证程序不会意外终止。</p>
+  </li>
+  <li>
+    <p>第三个 parse 模块是一个工具模块，提供了许多 URL 处理方法，比如拆分、解析、合并等等的方法。</p>
+  </li>
+  <li>
+    <p>第四个模块 robotparser，主要是用来识别网站的 robots.txt 文件，然后判断哪些网站可以爬，哪些网站不可以爬的，其实用的比较少。</p>
+
+    <p>在这里重点对前三个模块进行下讲解。</p>
+  </li>
+</ul>
+
+<h2 id="发送请求">发送请求</h2>
+
+<p>使用 Urllib 的 request 模块我们可以方便地实现 Request 的发送并得到 Response</p>
+
+<h3 id="urlopen">urlopen()</h3>
+
+<p>urllib.request 模块提供了最基本的构造 HTTP 请求的方法，利用它可以模拟浏览器的一个请求发起过程，同时它还带有处理  authenticaton（授权验证），redirections（重定向)，cookies（浏览器Cookies）以及其它内容。
+我们来感受一下它的强大之处，以 Python 官网为例，我们来把这个网页抓下来：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import urllib.request
+
+response = urllib.request.urlopen('https://www.python.org')
+print(response.read().decode('utf-8'))
+</code></pre></div></div>
+
+<p>运行结果如下：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="c">&lt;!--[if lt IE 7]&gt;   &lt;html class="no-js ie6 lt-ie7 lt-ie8 lt-ie9"&gt;   &lt;![endif]--&gt;</span>
+<span class="c">&lt;!--[if IE 7]&gt;      &lt;html class="no-js ie7 lt-ie8 lt-ie9"&gt;          &lt;![endif]--&gt;</span>
+<span class="c">&lt;!--[if IE 8]&gt;      &lt;html class="no-js ie8 lt-ie9"&gt;                 &lt;![endif]--&gt;</span>
+<span class="c">&lt;!--[if gt IE 8]&gt;&lt;!--&gt;</span><span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">"no-js"</span> <span class="na">lang=</span><span class="s">"en"</span> <span class="na">dir=</span><span class="s">"ltr"</span><span class="nt">&gt;</span>  <span class="c">&lt;!--&lt;![endif]--&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"utf-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"X-UA-Compatible"</span> <span class="na">content=</span><span class="s">"IE=edge"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">"prefetch"</span> <span class="na">href=</span><span class="s">"//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"application-name"</span> <span class="na">content=</span><span class="s">"Python.org"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"msapplication-tooltip"</span> <span class="na">content=</span><span class="s">"The official home of the Python Programming Language"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-title"</span> <span class="na">content=</span><span class="s">"Python.org"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-capable"</span> <span class="na">content=</span><span class="s">"yes"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"apple-mobile-web-app-status-bar-style"</span> <span class="na">content=</span><span class="s">"black"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"viewport"</span> <span class="na">content=</span><span class="s">"width=device-width, initial-scale=1.0"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"HandheldFriendly"</span> <span class="na">content=</span><span class="s">"True"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">"format-detection"</span> <span class="na">content=</span><span class="s">"telephone=no"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"cleartype"</span> <span class="na">content=</span><span class="s">"on"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"imagetoolbar"</span> <span class="na">content=</span><span class="s">"false"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"/static/js/libs/modernizr.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"/static/stylesheets/style.67f4b30f7483.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">title=</span><span class="s">"default"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"/static/stylesheets/mq.3ae8e02ece5b.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">type=</span><span class="s">"text/css"</span> <span class="na">media=</span><span class="s">"not print, braille, embossed, speech, tty"</span> <span class="nt">/&gt;</span>
+
+    ...
+
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>接下来我们看下它返回的到底是什么，利用 type() 方法输出 Response 的类型。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">urllib.request</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">https://www.python.org</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>输出结果如下：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;class</span> <span class="err">'</span><span class="na">http.client.HTTPResponse</span><span class="err">'</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>通过输出结果可以发现它是一个 HTTPResposne 类型的对象，它主要包含的方法有 read()、readinto()、getheader(name)、getheaders()、fileno() 等方法和 msg、version、status、reason、debuglevel、closed 等属性。</p>
+
+<p>得到这个对象之后，我们把它赋值为 response 变量，然后就可以调用这些方法和属性，得到返回结果的一系列信息了。+</p>
+
+<p>例如调用 read() 方法可以得到返回的网页内容，调用 status 属性就可以得到返回结果的状态码，如 200 代表请求成功，404 代表网页未找到等。</p>
+
+<p>下面再来一个实例感受一下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">urllib.request</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">https://www.python.org</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">status</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">getheaders</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">getheader</span><span class="p">(</span><span class="sh">'</span><span class="s">Server</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>运行结果如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>200
+[('Server', 'nginx'), ('Content-Type', 'text/html; charset=utf-8'), ('X-Frame-Options', 'SAMEORIGIN'), ('X-Clacks-Overhead', 'GNU Terry Pratchett'), ('Content-Length', '47397'), ('Accept-Ranges', 'bytes'), ('Date', 'Mon, 01 Aug 2016 09:57:31 GMT'), ('Via', '1.1 varnish'), ('Age', '2473'), ('Connection', 'close'), ('X-Served-By', 'cache-lcy1125-LCY'), ('X-Cache', 'HIT'), ('X-Cache-Hits', '23'), ('Vary', 'Cookie'), ('Strict-Transport-Security', 'max-age=63072000; includeSubDomains')]
+nginx
+</code></pre></div></div>
+
+<p>可见，三个输出分别输出了响应的状态码，响应的头信息，以及通过调用 getheader() 方法并传递一个参数 Server 获取了 headers 中的 Server 值，结果是 nginx，意思就是服务器是 nginx 搭建的。</p>
+
+<p>利用以上最基本的 urlopen() 方法，我们可以完成最基本的简单网页的 GET 请求抓取。
+如果我们想给链接传递一些参数该怎么实现呢？我们首先看一下 urlopen() 函数的API：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>urllib.request.urlopen(url, data=None, [timeout, ]*, cafile=None, capath=None, cadefault=False, context=None)
+</code></pre></div></div>
+
+<p>可以发现除了第一个参数可以传递 URL 之外，我们还可以传递其它的内容，比如 data（附加数据）、timeout（超时时间）等等。</p>
+
+<p>下面我们详细说明下这几个参数的用法:</p>
+
+<ul>
+  <li>
+    <p>data参数</p>
+
+    <p>data 参数是可选的，如果要添加 data，它要是字节流编码格式的内容，即 bytes 类型，通过 bytes() 方法可以进行转化，另外如果传递了这个 data 参数，它的请求方式就不再是 GET 方式请求，而是 POST。</p>
+
+    <p>下面用一个实例来感受一下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">urllib.parse</span>
+<span class="kn">import</span> <span class="n">urllib.request</span>
+  
+<span class="n">data</span> <span class="o">=</span> <span class="nf">bytes</span><span class="p">(</span><span class="n">urllib</span><span class="p">.</span><span class="n">parse</span><span class="p">.</span><span class="nf">urlencode</span><span class="p">({</span><span class="sh">'</span><span class="s">word</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">hello</span><span class="sh">'</span><span class="p">}),</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf8</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/post</span><span class="sh">'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">read</span><span class="p">())</span>
+</code></pre></div>    </div>
+
+    <p>在这里我们传递了一个参数 word，值是 hello。它需要被转码成bytes（字节流）类型。其中转字节流采用了 bytes() 方法，第一个参数需要是 str（字符串）类型，需要用 urllib.parse 模块里的 urlencode() 方法来将参数字典转化为字符串。第二个参数指定编码格式，在这里指定为 utf8。</p>
+  </li>
+  <li>
+    <p>timeout参数</p>
+
+    <p>timeout 参数可以设置超时时间，单位为秒，意思就是如果请求超出了设置的这个时间还没有得到响应，就会抛出异常，如果不指定，就会使用全局默认时间。它支持 HTTP、HTTPS、FTP 请求。</p>
+
+    <p>因此我们可以通过设置这个超时时间来控制一个网页如果长时间未响应就跳过它的抓取，利用 try except 语句就可以实现这样的操作，代码如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">socket</span>
+<span class="kn">import</span> <span class="n">urllib.request</span>
+<span class="kn">import</span> <span class="n">urllib.error</span>
+  
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">urllib</span><span class="p">.</span><span class="n">error</span><span class="p">.</span><span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">reason</span><span class="p">,</span> <span class="n">socket</span><span class="p">.</span><span class="n">timeout</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">TIME OUT</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>其他参数</p>
+
+    <p>还有 context 参数，它必须是 ssl.SSLContext 类型，用来指定 SSL 设置。</p>
+
+    <p>cafile 和 capath 两个参数是指定 CA 证书和它的路径，这个在请求 HTTPS 链接时会有用。
+  cadefault 参数现在已经弃用了，默认为 False。</p>
+
+    <p>以上讲解了 urlopen() 方法的用法，通过这个最基本的函数可以完成简单的请求和网页抓取，如需更加详细了解，可以参见官方文档：https://docs.python.org/3/library/urllib.request.html。</p>
+  </li>
+</ul>
+
+<h3 id="request">Request</h3>
+
+<p>由上我们知道利用 urlopen() 方法可以实现最基本请求的发起，但这几个简单的参数并不足以构建一个完整的请求，如果请求中需要加入 Headers 等信息，我们就可以利用更强大的 Request 类来构建一个请求。
+首先我们用一个实例来感受一下 Request 的用法：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">urllib.request</span>
+
+<span class="n">request</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nc">Request</span><span class="p">(</span><span class="sh">'</span><span class="s">https://python.org</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">urllib</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">read</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>可以发现，我们依然是用 urlopen() 方法来发送这个请求，只不过这次 urlopen() 方法的参数不再是一个 URL，而是一个 Request 类型的对象，通过构造这个这个数据结构，一方面我们可以将请求独立成一个对象，另一方面可配置参数更加丰富和灵活。
+下面我们看一下 Request 都可以通过怎样的参数来构造，它的构造方法如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class urllib.request.Request(url, data=None, headers={}, origin_req_host=None, unverifiable=False, method=None)
+</code></pre></div></div>
+
+<ol>
+  <li>第一个 url 参数是请求 URL，这个是必传参数，其他的都是可选参数。</li>
+  <li>第二个 data 参数如果要传必须传 bytes（字节流）类型的，如果是一个字典，可以先用 urllib.parse 模块里的 urlencode() 编码。</li>
+  <li>第三个 headers 参数是一个字典，这个就是 Request Headers 了，你可以在构造 Request 时通过 headers 参数直接构造，也可以通过调用 Request 实例的 add_header() 方法来添加, Request Headers 最常用的用法就是通过修改 User-Agent 来伪装浏览器，默认的 User-Agent 是 Python-urllib，我们可以通过修改它来伪装浏览器。</li>
+  <li>第四个 origin_req_host 参数指的是请求方的 host 名称或者 IP 地址。</li>
+  <li>第五个 unverifiable 参数指的是这个请求是否是无法验证的，默认是False。意思就是说用户没有足够权限来选择接收这个请求的结果。例如我们请求一个 HTML 文档中的图片，但是我们没有自动抓取图像的权限，这时 unverifiable 的值就是 True。</li>
+  <li>第六个 method 参数是一个字符串，它用来指示请求使用的方法，比如GET，POST，PUT等等。</li>
+</ol>
+
+<p>写个例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib</span> <span class="kn">import</span> <span class="n">request</span><span class="p">,</span> <span class="n">parse</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://httpbin.org/post</span><span class="sh">'</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)</span><span class="sh">'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">httpbin.org</span><span class="sh">'</span>
+<span class="p">}</span>
+<span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Germey</span><span class="sh">'</span>
+<span class="p">}</span>
+<span class="n">data</span> <span class="o">=</span> <span class="nf">bytes</span><span class="p">(</span><span class="n">parse</span><span class="p">.</span><span class="nf">urlencode</span><span class="p">(</span><span class="nb">dict</span><span class="p">),</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf8</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">req</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nc">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">POST</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">read</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>在这里我们通过四个参数构造了一个 Request，url 即请求 URL，在headers 中指定了 User-Agent 和 Host，传递的参数 data 用了 urlencode() 和 bytes() 方法来转成字节流，另外指定了请求方式为 POST。</p>
+
+<p>通过观察结果可以发现，我们成功设置了 data，headers 以及 method。
+另外 headers 也可以用 add_header() 方法来添加。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">req</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nc">Request</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">POST</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">req</span><span class="p">.</span><span class="nf">add_header</span><span class="p">(</span><span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>如此一来，我们就可以更加方便地构造一个 Request，实现请求的发送啦。</p>
+
+<h2 id="处理异常">处理异常</h2>
+
+<p>我们了解了 Request 的发送过程，但是在网络情况不好的情况下，出现了异常怎么办呢？这时如果我们不处理这些异常，程序很可能报错而终止运行，所以异常处理还是十分有必要的。</p>
+
+<p>Urllib 的 error 模块定义了由 request 模块产生的异常。如果出现了问题，request 模块便会抛出 error 模块中定义的异常。</p>
+
+<p>主要有这两个处理异常类，URLError,HTTPError
+下面写个例子：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib</span> <span class="kn">import</span> <span class="n">request</span><span class="p">,</span> <span class="n">error</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">http://cuiqingcai.com/index.htm</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">error</span><span class="p">.</span><span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">reason</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>我们打开一个不存在的页面，照理来说应该会报错，但是这时我们捕获了 URLError 这个异常，运行结果如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Not Found
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib</span> <span class="kn">import</span> <span class="n">request</span><span class="p">,</span><span class="n">error</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">http://cuiqingcai.com/index.htm</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">error</span><span class="p">.</span><span class="n">HTTPError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">reason</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">code</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">headers</span><span class="p">,</span> <span class="n">seq</span><span class="o">=</span><span class="sh">'</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Not Found
+404
+Server: nginx/1.4.6 (Ubuntu)
+Date: Wed, 03 Aug 2016 08:54:22 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: close
+X-Powered-By: PHP/5.5.9-1ubuntu4.14
+Vary: Cookie
+Expires: Wed, 11 Jan 1984 05:00:00 GMT
+Cache-Control: no-cache, must-revalidate, max-age=0
+Pragma: no-cache
+Link: &lt;http://cuiqingcai.com/wp-json/&gt;; rel="https://api.w.org/"
+</code></pre></div></div>
+
+<p>HTTPError,它有三个属性。</p>
+
+<ul>
+  <li>
+    <p>code，返回 HTTP Status Code，即状态码，比如 404 网页不存在，500 服务器内部错误等等。</p>
+  </li>
+  <li>
+    <p>reason，同父类一样，返回错误的原因。</p>
+  </li>
+  <li>
+    <p>headers，返回 Request Headers。</p>
+  </li>
+  <li>
+    <p>因为 URLError 是 HTTPError 的父类，所以我们可以先选择捕获子类的错误，再去捕获父类的错误，所以上述代码更好的写法如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib</span> <span class="kn">import</span> <span class="n">request</span><span class="p">,</span> <span class="n">error</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>try:
+    response = request.urlopen(‘http://cuiqingcai.com/index.htm’)
+except error.HTTPError as e:
+    print(e.reason, e.code, e.headers, sep=’\n’)
+except error.URLError as e:
+    print(e.reason)
+else:
+    print(‘Request Successfully’)</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这样我们就可以做到先捕获 HTTPError，获取它的错误状态码、原因、Headers 等详细信息。如果非 HTTPError，再捕获 URLError 异常，输出错误原因。最后用 else 来处理正常的逻辑，这是一个较好的异常处理写法。
+
+有时，reason 属性返回的不一定是字符串，也可能是一个对象。
+```python
+import socket
+from urllib import request, error
+
+try:
+    response = request.urlopen('https://www.baidu.com', timeout=0.01)
+except error.URLError as e:
+    print(type(e.reason))
+    if isinstance(e.reason, socket.timeout):
+        print('TIME OUT')
+</code></pre></div></div>
+
+<h2 id="解析链接">解析链接</h2>
+
+<p>前面说过，urllib 库里还提供了 parse 模块，他定义了处理 URL 的标准接口，例如实现 URL 各部分的抽取、合并以及链接转换。他支持如下协议的 URL 处理：file、gopher、hdl、http、https、imap、mailto、mms、news、nntp、prospero、rsync、rtsp、rtspu、sftp、sip、sips、snews、svn、svn+ssh、telnet 和 wais。我们介绍一下改模块中常用的方法来看一下他的便捷之处：</p>
+
+<h3 id="urlparse">urlparse()</h3>
+
+<p>该方法可以实现 URL 的识别和分段</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="nf">urlparse</span><span class="p">(</span><span class="sh">'</span><span class="s">https://www.baidu.com/index.html;user?id=5%comment</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ParseResult(scheme='https', netloc='www.baidu.com', path='/index.html', params='user', query='id=5%comment', fragment='')
+</code></pre></div></div>
+
+<p>由上诉例子，可以得出一个标准的链接格式：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scheme://netloc/path;params?query#fragment
+</code></pre></div></div>
+
+<h3 id="urlsplit">urlsplit()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="nf">urlsplit</span><span class="p">(</span><span class="sh">'</span><span class="s">https://www.baidu.com/index.html;user?id=5%comment</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SplitResult(scheme='https', netloc='www.baidu.com', path='/index.html;user', query='id=5%comment', fragment='')
+</code></pre></div></div>
+
+<p>SplitResult 其实是一个元组类型，既可以用属性获取值，也可以用索引来获取</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlsplit</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="nf">urlsplit</span><span class="p">(</span><span class="sh">'</span><span class="s">https://www.baidu.com/index.html;user?id=5%comment</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https https
+</code></pre></div></div>
+
+<h3 id="urlunparseurlunsplit">urlunparse()、urlunsplit()</h3>
+
+<p>有了 urlparse()，相应的就有了呀的对立方法 urlunparse()。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlunparse</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">www.baidu.com</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">index.html</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">user</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">a=6</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">comment</span><span class="sh">'</span><span class="p">]</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urlunparse</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.baidu.com/index.html;user?a=6#comment
+</code></pre></div></div>
+
+<p>urlunsplit() 和 urlunparse()用法相同，只不过 urlunsplit() 中 params 合并到 path 中。</p>
+
+<h3 id="urljoin">urljoin()</h3>
+
+<p>这个的功能其实是做拼接的，例子如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">http://www.baidu.com</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">FAQ.html</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">http://www.baidu.com</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">https://pythonsite.com/FAQ.html</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">http://www.baidu.com/about.html</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">https://pythonsite.com/FAQ.html</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">http://www.baidu.com/about.html</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">https://pythonsite.com/FAQ.html?question=2</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">http://www.baidu.com?wd=abc</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">https://pythonsite.com/index.php</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">http://www.baidu.com</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">?category=2#comment</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">www.baidu.com</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">?category=2#comment</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">urljoin</span><span class="p">(</span><span class="sh">'</span><span class="s">www.baidu.com#comment</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">?category=2</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://www.baidu.com/FAQ.html
+https://pythonsite.com/FAQ.html
+https://pythonsite.com/FAQ.html
+https://pythonsite.com/FAQ.html?question=2
+https://pythonsite.com/index.php
+http://www.baidu.com?category=2#comment
+www.baidu.com?category=2#comment
+www.baidu.com?category=2
+</code></pre></div></div>
+
+<p>从拼接的结果我们可以看出，拼接的时候后面的优先级高于前面的url</p>
+
+<h3 id="urllencode">urllencode()</h3>
+
+<p>这个方法可以将字典转换为url参数，例子如下</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">zhaofan</span><span class="sh">"</span><span class="p">,</span>
+    <span class="sh">"</span><span class="s">age</span><span class="sh">"</span><span class="p">:</span> <span class="mi">23</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">base_url</span> <span class="o">=</span> <span class="sh">"</span><span class="s">http://www.baidu.com?</span><span class="sh">"</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">base_url</span><span class="o">+</span><span class="nf">urlencode</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://www.baidu.com?name=zhaofan&age=23
+</code></pre></div></div>
+
+<h3 id="parse_qs">parse_qs()</h3>
+
+<p>有了序列化，就有反序列化。如果我们又一串 GET 请求参数，利用 parse_qs() 方法，就可以将他转回字典</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">parse_qs</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="sh">'</span><span class="s">name=germey&amp;age=22</span><span class="sh">'</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">parse_qs</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'name': ['germey'], 'age': ['22']}
+</code></pre></div></div>
+
+<h3 id="parse_qsl">parse_qsl()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">parse_qsl</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="sh">'</span><span class="s">name=germey&amp;age=22</span><span class="sh">'</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">parse_qsl</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[('name', 'germey'), ('age', '22')]
+</code></pre></div></div>
+
+<h3 id="quote">quote()</h3>
+
+<p>这个方法用于将内容转化成 URL 编码格式，URL 中带有中文参数时，有时会乱码，此时用这个方法可以将中文转化为 URL 编码</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+
+<span class="n">keyword</span> <span class="o">=</span> <span class="sh">'</span><span class="s">壁纸</span><span class="sh">'</span>
+<span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://www.baidu.com/s?wd=</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">quote</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://www.baidu.com/s?wd=%E5%A3%81%E7%BA%B8
+</code></pre></div></div>
+
+<h3 id="unquote">unquote()</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">unquote</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://www.baidu.com/s?wd=%E5%A3%81%E7%BA%B8</span><span class="sh">'</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">unquote</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://www.baidu.com/s?wd=壁纸
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/11/09/iot-core.html" title="物联网核心组件">物联网核心组件</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/11/15/requests.html" title="使用 requests">使用 requests</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/books/2023/01/17/shanhaiching-simplified.html" title="使用 requests">《山海经》</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/INTP.html" title="使用 requests">人格八维 -- INTP（逻辑学家）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/15/breast_cancer.html" title="使用 requests">癌症分类预测</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/15/requests.html" title="使用 requests">使用 requests</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/14/urllib.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/14/urllib.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

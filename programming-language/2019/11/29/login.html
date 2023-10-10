@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>模拟登录 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="模拟登录">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="模拟登录并爬取 GitHub">
+<meta property="og:description" content="模拟登录并爬取 GitHub">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/29/login.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/29/login.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-29T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="模拟登录">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-11-29T00:00:00+00:00","datePublished":"2019-11-29T00:00:00+00:00","description":"模拟登录并爬取 GitHub","headline":"模拟登录","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/29/login.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/29/login.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">模拟登录</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-11-29T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 29, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 13 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#reptile">#reptile</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="模拟登录并爬取-github">模拟登录并爬取 GitHub</h2>
+
+<h3 id="分析登录过程">分析登录过程</h3>
+
+<p>如果已经登录 GitHub,先退出登录，同时清除 Cookies</p>
+
+<p>打开 GitHub 的登录页面，链接为 https://github.com/login ,输入 GitHub 的用户名和密码，打开开发者工具，将 Preserve Log 选项勾选上，这不是显示持续日志</p>
+
+<p>点击登录，便会看到开发者工具显示了各个请求过程</p>
+
+<p>点击第一个请求，进入详情页</p>
+
+<p>可以看到请求的 URL 为 https://github.com/session ,请求方式为 POST ，再往下</p>
+
+<p>Headers 里面包含了 Cookies、Host、Origin、Referer、User-Agent等信息</p>
+
+<p>Form Data 包含了5个字段，commit 是固定的字符串Sign in，utf8 是一个勾选字符，authenticity_token 较长，其初步判断是一个 Base64 加密的字符串，login 是登录的用户名，password 的登录的密码</p>
+
+<p>再登录之前会访问一个登录页面，该页面是通过 GET 形式访问的。输入用户名密码，点击登录，浏览器发送这两部分信息，也就是说 Cookies 和 authenticity_token 一点是再访问登录也时设置的</p>
+
+<p>再退出登录，回到登录页，同时清空 Cookies ，重新访问登录页，解惑发送的请求</p>
+
+<p>Response Headers 有一个 Set-Cookies 字段，这就是设置 Cookies 的过程</p>
+
+<p>另外，我们发现 Response Headers 没有和 authenticity_token 相关的信息，所以可能 authenticity_token 还隐藏再其他的地方或是计算出来的。搜索源码，大小源代码里面隐藏这个信息，他是一个隐藏式表单元素</p>
+
+<h3 id="代码">代码</h3>
+
+<p>定义一个 Login 类：</p>
+
+<p>初始化</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Login</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">Referer</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://github.com/</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)</span><span class="sh">'</span>
+                          <span class="sh">'</span><span class="s"> Chrome/57.0.2987.133 Safari/537.36</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">github.com</span><span class="sh">'</span>
+        <span class="p">}</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">login_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https://github.com/login</span><span class="sh">'</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">post_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https://github.com/session</span><span class="sh">'</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">logined_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https://github.com/settings/profile</span><span class="sh">'</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nc">Session</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>requests.Session() 可以帮助我们维持一个会话，而且可以自动处理 Cookies</p>
+
+<p>页面获取初始 Cookies，提取出 authenticity_token</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">token</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">login_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">selector</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">selector</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//div/input[2]/@value</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">token</span>
+</code></pre></div></div>
+
+<p>模拟登录</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+        <span class="n">post_data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">commit</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Sign in</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">utf8</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">✔</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">authenticity_token</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="nf">token</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">login</span><span class="sh">'</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">password</span><span class="sh">'</span><span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">post_url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">post_data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">dynameics</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">logined_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">profile</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">dynamics</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">html</span><span class="p">):</span>
+        <span class="n">selector</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+        <span class="n">dynamics</span> <span class="o">=</span> <span class="n">selector</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//div[contains(@class, </span><span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="s">)]//div[contains(@class. </span><span class="sh">"</span><span class="s">alert</span><span class="sh">"</span><span class="s">)]</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">dynamics</span><span class="p">:</span>
+            <span class="n">dynamic</span> <span class="o">=</span> <span class="sh">'</span><span class="s"> </span><span class="sh">'</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">item</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">.//div[@class=</span><span class="sh">"</span><span class="s">title</span><span class="sh">"</span><span class="s">]//text()</span><span class="sh">'</span><span class="p">)).</span><span class="nf">strip</span><span class="p">()</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">dynamic</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">profile</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">html</span><span class="p">):</span>
+        <span class="n">selector</span> <span class="o">=</span> <span class="n">etree</span><span class="p">.</span><span class="nc">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">selector</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//input[@id=</span><span class="sh">"</span><span class="s">user_profile_name</span><span class="sh">"</span><span class="s">]/@value</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">selector</span><span class="p">.</span><span class="nf">xpath</span><span class="p">(</span><span class="sh">'</span><span class="s">//select[@id=</span><span class="sh">"</span><span class="s">user_profile_email</span><span class="sh">"</span><span class="s">]/option[@value-</span><span class="sh">""</span><span class="s">]/text()</span><span class="sh">'</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="运行">运行</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">login</span> <span class="o">=</span> <span class="nc">Login</span><span class="p">()</span>
+    <span class="n">login</span><span class="p">.</span><span class="nf">login</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="sh">''</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="sh">''</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="cookies-池搭建">Cookies 池搭建</h2>
+
+<h3 id="cookies-池架构">Cookies 池架构</h3>
+
+<p>Cookies 池和代理池类似，同样是4个核心模块</p>
+
+<ul>
+  <li>存储模块负责存储每个账号的用户名以及每个账号对应的 Cookies 信息，同时还需要提供一些方法来实现方便的存储操作</li>
+  <li>生成模块负责生成新的 Cookies，此模块会从存储模块逐个拿去账号的用户名和密码，然后模拟登录目标页面，判断登录成功，就将 Cookies 返回并交给存储模块存储</li>
+  <li>检测模块需要定时检测数据库中的 Cookies，再这里我们需要设置一个检测链接，不同的站点检测链接不同，检测模块会逐个拿去账号对应的 Cookies 去请求链接，如果返回的状态是有效的，那么此 Cookies 没有失效，否则 Cookies 失效并移除。接下来等待生成模块重新生成即可</li>
+  <li>接口模块需要用 API 来提供对外服务的接口，由于可用的 Cookies 可能有多个，我们可以随机返回 Cookies 的接口，这样保证每个 Cookies 都有可能被取到。Cookies越多，每个 Cookies 被取到的概率就会越小，从而减少被封号的风险</li>
+</ul>
+
+<h3 id="cookies-池实现">Cookies 池实现</h3>
+
+<ul>
+  <li>
+    <p>存储模块</p>
+
+    <p>需要存储的内容包括账号信息与Cookies信息。</p>
+
+    <p>账号由用户名和密码两部分组成，我们可以存成用户名和密码的映射。Cookies可以存成JSON字符串，但是我们后面得需要根据账号来生成Cookies。生成的时候我们需要知道哪些账号已经生成了Cookies，哪些没有生成，所以需要同时保存该Cookies对应的用户名信息，其实也是用户名和Cookies的映射。</p>
+
+    <p>这里就是两组映射，Redis的Hash有天然的优势，所以这里我们就建立两个Hash。Hash的Key就是账号，Value对应着密码或者Cookies。</p>
+
+    <p>由于Cookies池需要可扩展，存储的账号和Cookies可能不止一个网站，所以这里Hash的名称可以做二级分类。以马蜂窝为例，存放账号的Hash名称可以为accounts:mafeng，存放Cookies的Hash名称为cookies:mafeng。这样方便扩展。</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">random</span>
+  
+<span class="kn">import</span> <span class="n">redis</span>
+  
+<span class="n">REDIS_HOST</span> <span class="o">=</span> <span class="sh">'</span><span class="s">localhost</span><span class="sh">'</span>
+<span class="n">REDIS_PORT</span> <span class="o">=</span> <span class="mi">6379</span>
+<span class="n">REDIS_PASSWORD</span> <span class="o">=</span> <span class="bp">None</span>
+  
+<span class="k">class</span> <span class="nc">RedisClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">website</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">REDIS_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">REDIS_PORT</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">REDIS_PASSWORD</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        初始化 Redis 连接
+        :param host: 地址
+        :param port: 端口
+        :param password: 密码
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">redis</span><span class="p">.</span><span class="nc">StrictRedis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">decode_responses</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nb">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">website</span> <span class="o">=</span> <span class="n">website</span>
+  
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取 Hash 的名称
+        :return: Hash 名称
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="sh">"</span><span class="s">{type}: {website}</span><span class="sh">"</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="nb">type</span><span class="p">,</span> <span class="n">website</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">website</span><span class="p">)</span>
+  
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        设置键值对
+        :param username: 用户名
+        :param value: 密码/Cookies
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hset</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">(),</span> <span class="n">username</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+  
+    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        根据键名获取键值
+        :param username: 用户名
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hget</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">(),</span> <span class="n">username</span><span class="p">)</span>
+  
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">username</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        根据键名删除键值对
+        :param username: 用户名
+        :return: 删除结果
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hdel</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">(),</span> <span class="n">username</span><span class="p">)</span>
+  
+    <span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取数目
+        :return: 数目
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hlen</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">())</span>
+  
+    <span class="k">def</span> <span class="nf">random</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        随机得到键值，用于随机 Cookies 获取
+        :return: 随机 Cookies
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">random</span><span class="p">.</span><span class="nf">choice</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hvals</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">()))</span>
+  
+    <span class="k">def</span> <span class="nf">usernames</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取所有账户信息
+        :return: 所有用户名
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hkeys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">())</span>
+  
+    <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取所有键值对
+        :return: 用户名和密码/Cookies的映射表
+        </span><span class="sh">"""</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">hgetall</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">name</span><span class="p">())</span>
+  
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="nc">RedisClient</span><span class="p">(</span><span class="sh">'</span><span class="s">accounts</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">weibo</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="sh">'</span><span class="s">hell2o</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">sss3s</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p><strong>注：</strong> name()方法拼接了type和website,组成Hash的名称。</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>配置文件
+# Redis数据库地址
+REDIS_HOST = 'localhost'
+  
+# Redis端口
+REDIS_PORT = 6379
+  
+# Redis密码，如无填None
+REDIS_PASSWORD = 'foobared'
+  
+# 产生器使用的浏览器
+BROWSER_TYPE = 'Chrome'
+  
+# 产生器类，如扩展其他站点，请在此配置
+GENERATOR_MAP = {
+    'weibo': 'WeiboCookiesGenerator'
+}
+  
+# 测试类，如扩展其他站点，请在此配置
+TESTER_MAP = {
+    'weibo': 'WeiboValidTester'
+}
+  
+TEST_URL_MAP = {
+    'weibo': 'https://m.weibo.cn/'
+}
+  
+# 产生器和验证器循环周期
+CYCLE = 120
+  
+# API地址和端口
+API_HOST = '0.0.0.0'
+API_PORT = 5000
+  
+# 产生器开关，模拟登录添加Cookies
+GENERATOR_PROCESS = False
+# 验证器开关，循环检测数据库中Cookies是否可用，不可用删除
+VALID_PROCESS = False
+# API接口服务
+API_PROCESS = True
+</code></pre></div>    </div>
+
+    <p>另外，我们还需要一个导入数据的方法，便于批量导入用户名与密码。</p>
+  </li>
+  <li>
+    <p>生成模块</p>
+
+    <p>生成模块负责获取各个账号信息并模拟登录，随后生成Cookies并保存。我们首先获取两个Hash的信息，看看账户的Hash比Cookies的多了哪些还没有生成Cookies的账号，然后将剩余的账号遍历，再去生成Cookies即可。</p>
+
+    <p>这里主要逻辑就是找出那些还没对应 Cookies 账户，然后再逐个获取 Cookies</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="n">selenium.webdriver</span> <span class="kn">import</span> <span class="n">DesiredCapabilities</span>
+<span class="kn">from</span> <span class="n">cookiespool.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="n">cookiespool.db</span> <span class="kn">import</span> <span class="n">RedisClient</span>
+<span class="kn">from</span> <span class="n">login.weibo.cookies</span> <span class="kn">import</span> <span class="n">WeiboCookies</span>
+</code></pre></div>    </div>
+
+    <p>class CookiesGenerator(object):
+    def <strong>init</strong>(self, website=’default’):
+        “””
+        父类, 初始化一些对象
+        :param website: 名称
+        :param browser: 浏览器, 若不使用浏览器则可设置为 None
+        “””
+        self.website = website
+        self.cookies_db = RedisClient(‘cookies’, self.website)
+        self.accounts_db = RedisClient(‘accounts’, self.website)
+        self.init_browser()</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>def __del__(self):
+    self.close()
+
+def init_browser(self):
+    """
+    通过browser参数初始化全局浏览器供模拟登录使用
+    :return:
+    """
+    if BROWSER_TYPE == 'PhantomJS':
+        caps = DesiredCapabilities.PHANTOMJS
+        caps[
+            "phantomjs.page.settings.userAgent"] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
+        self.browser = webdriver.PhantomJS(desired_capabilities=caps)
+        self.browser.set_window_size(1400, 500)
+    elif BROWSER_TYPE == 'Chrome':
+        self.browser = webdriver.Chrome()
+
+def new_cookies(self, username, password):
+    """
+    新生成Cookies，子类需要重写
+    :param username: 用户名
+    :param password: 密码
+    :return:
+    """
+    raise NotImplementedError
+
+def process_cookies(self, cookies):
+    """
+    处理Cookies
+    :param cookies:
+    :return:
+    """
+    dict = {}
+    for cookie in cookies:
+        dict[cookie['name']] = cookie['value']
+    return dict
+
+def run(self):
+    """
+    运行, 得到所有账户, 然后顺次模拟登录
+    :return:
+    """
+    accounts_usernames = self.accounts_db.usernames()
+    cookies_usernames = self.cookies_db.usernames()
+
+    for username in accounts_usernames:
+        if not username in cookies_usernames:
+            password = self.accounts_db.get(username)
+            print('正在生成Cookies', '账号', username, '密码', password)
+            result = self.new_cookies(username, password)
+            # 成功获取
+            if result.get('status') == 1:
+                cookies = self.process_cookies(result.get('content'))
+                print('成功获取到Cookies', cookies)
+                if self.cookies_db.set(username, json.dumps(cookies)):
+                    print('成功保存Cookies')
+            # 密码错误，移除账号
+            elif result.get('status') == 2:
+                print(result.get('content'))
+                if self.accounts_db.delete(username):
+                    print('成功删除账号')
+            else:
+                print(result.get('content'))
+
+    else:
+        print('所有账号都已经成功获取Cookies')
+</code></pre></div>    </div>
+
+    <p>def close(self):
+    “””
+    关闭
+    :return:
+    “””
+    try:
+        print(‘Closing Browser’)
+        self.browser.close()
+        del self.browser
+    except TypeError:
+        print(‘Browser not opened’)</p>
+
+    <p>class WeiboCookiesGenerator(CookiesGenerator):
+    def <strong>init</strong>(self, website=’weibo’):
+        “””
+        初始化操作
+        :param website: 站点名称
+        :param browser: 使用的浏览器
+        “””
+        CookiesGenerator.<strong>init</strong>(self, website)
+        self.website = website</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>def new_cookies(self, username, password):
+    """
+    生成Cookies
+    :param username: 用户名
+    :param password: 密码
+    :return: 用户名和Cookies
+    """
+    return WeiboCookies(username, password, self.browser).main()
+</code></pre></div>    </div>
+
+    <p>if <strong>name</strong> == ‘<strong>main</strong>’:
+    generator = WeiboCookiesGenerator()
+    generator.run()</p>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 检测模块
+
+  我们现在可以用生成模块来生成Cookies，但是还是免不了Cookies失效的问题，例如时间太长或者Cookies使用太频繁导致无法正常请求网页。
+
+  如果遇到这样的Cookies，我们肯定不能让它继续保存在数据库里了。
+
+  所以，我们还需要增加一个定时检测模块，负责遍历池中的所有Cookies，同事设置好对应的检测链接，我们用一个个Cookies去请求这个链接。如果检测失效，就将该Cookies从数据库中移除。
+
+  ```python
+  import json
+  import requests
+  from requests.exceptions import ConnectionError
+  from cookiespool.db import *
+
+  class ValidTester(object):
+      def __init__(self, website='default'):
+          self.website = website
+          self.cookies_db = RedisClient('cookies', self.website)
+          self.accounts_db = RedisClient('accounts', self.website)
+
+      def test(self, username, cookies):
+          raise NotImplementedError
+
+      def run(self):
+          cookies_groups = self.cookies_db.all()
+          for username, cookies in cookies_groups.items():
+              self.test(username, cookies)
+
+  class WeiboValidTester(ValidTester):
+      def __init__(self, website='weibo'):
+          ValidTester.__init__(self, website)
+
+      def test(self, username, cookies):
+          print('正在测试Cookies', '用户名', username)
+          try:
+              cookies = json.loads(cookies)
+          except TypeError:
+              print('Cookies不合法', username)
+              self.cookies_db.delete(username)
+              print('删除Cookies', username)
+              return
+          try:
+              test_url = TEST_URL_MAP[self.website]
+              response = requests.get(test_url, cookies=cookies, timeout=5, allow_redirects=False)
+              if response.status_code == 200:
+                  print('Cookies有效', username)
+              else:
+                  print(response.status_code, response.headers)
+                  print('Cookies失效', username)
+                  self.cookies_db.delete(username)
+                  print('删除Cookies', username)
+          except ConnectionError as e:
+              print('发生异常', e.args)
+
+
+  if __name__ == '__main__':
+      WeiboValidTester().run()
+</code></pre></div></div>
+
+<ul>
+  <li>接口模块</li>
+</ul>
+
+<p>生成模块和检测模块如果定时运行，就可以完成Cookies实时检测和更新。</p>
+
+<p>但是Cookies需要给爬虫来用，同时一个Cookies池可供多个爬虫使用，所以我们还需要定义一个Web接口。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">json</span>
+<span class="kn">from</span> <span class="n">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">g</span>
+<span class="kn">from</span> <span class="n">cookiespool.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="n">cookiespool.db</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">app</span><span class="sh">'</span><span class="p">]</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="nc">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+    <span class="k">return</span> <span class="sh">'</span><span class="s">&lt;h2&gt;Welcome to Cookie Pool System&lt;/h2&gt;</span><span class="sh">'</span>
+
+<span class="k">def</span> <span class="nf">get_conn</span><span class="p">():</span>
+    <span class="sh">"""</span><span class="s">
+    获取
+    :return:
+    </span><span class="sh">"""</span>
+    <span class="k">for</span> <span class="n">website</span> <span class="ow">in</span> <span class="n">GENERATOR_MAP</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">website</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nf">hasattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">website</span><span class="p">):</span>
+            <span class="nf">setattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'</span><span class="s">_cookies</span><span class="sh">'</span><span class="p">,</span> <span class="nf">eval</span><span class="p">(</span><span class="sh">'</span><span class="s">RedisClient</span><span class="sh">'</span> <span class="o">+</span> <span class="sh">'</span><span class="s">(</span><span class="sh">"</span><span class="s">cookies</span><span class="sh">"</span><span class="s">, </span><span class="sh">"'</span> <span class="o">+</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'"</span><span class="s">)</span><span class="sh">'</span><span class="p">))</span>
+            <span class="nf">setattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'</span><span class="s">_accounts</span><span class="sh">'</span><span class="p">,</span> <span class="nf">eval</span><span class="p">(</span><span class="sh">'</span><span class="s">RedisClient</span><span class="sh">'</span> <span class="o">+</span> <span class="sh">'</span><span class="s">(</span><span class="sh">"</span><span class="s">accounts</span><span class="sh">"</span><span class="s">, </span><span class="sh">"'</span> <span class="o">+</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'"</span><span class="s">)</span><span class="sh">'</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">g</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/&lt;website&gt;/random</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">random</span><span class="p">(</span><span class="n">website</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    获取随机的Cookie, 访问地址如 /weibo/random
+    :return: 随机Cookie
+    </span><span class="sh">"""</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nf">get_conn</span><span class="p">()</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="nf">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'</span><span class="s">_cookies</span><span class="sh">'</span><span class="p">).</span><span class="nf">random</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">cookies</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/&lt;website&gt;/add/&lt;username&gt;/&lt;password&gt;</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">website</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    添加用户, 访问地址如 /weibo/add/user/password
+    :param website: 站点
+    :param username: 用户名
+    :param password: 密码
+    :return:
+    </span><span class="sh">"""</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nf">get_conn</span><span class="p">()</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="nf">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'</span><span class="s">_accounts</span><span class="sh">'</span><span class="p">).</span><span class="nf">set</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">1</span><span class="sh">'</span><span class="p">})</span>
+
+<span class="nd">@app.route</span><span class="p">(</span><span class="sh">'</span><span class="s">/&lt;website&gt;/count</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">count</span><span class="p">(</span><span class="n">website</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    获取Cookies总数
+    </span><span class="sh">"""</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="nf">get_conn</span><span class="p">()</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="nf">getattr</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">website</span> <span class="o">+</span> <span class="sh">'</span><span class="s">_cookies</span><span class="sh">'</span><span class="p">).</span><span class="nf">count</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">json</span><span class="p">.</span><span class="nf">dumps</span><span class="p">({</span><span class="sh">'</span><span class="s">status</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">1</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">count</span><span class="sh">'</span><span class="p">:</span> <span class="n">count</span><span class="p">})</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">.</span><span class="nf">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="sh">'</span><span class="s">0.0.0.0</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>调度模块
+  最后，我们再加上一个调度模块让这几个模块配合运行起来，主要的工作就是驱动几个模块定时运行，同时各个模块需要在不同进程上运行</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+  
+<span class="kn">from</span> <span class="n">cookiespool.api</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="n">cookiespool.config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="n">cookiespool.generator</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="n">cookiespool.tester</span> <span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>    </div>
+
+    <p>class Scheduler(object):
+      @staticmethod
+      def valid_cookie(cycle=CYCLE):
+          while True:
+              print(‘Cookies检测进程开始运行’)
+              try:
+                  for website, cls in TESTER_MAP.items():
+                      tester = eval(cls + ‘(website=”’ + website + ‘”)’)
+                      tester.run()
+                      print(‘Cookies检测完成’)
+                      del tester
+                      time.sleep(cycle)
+              except Exception as e:
+                  print(e.args)</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>  @staticmethod
+  def generate_cookie(cycle=CYCLE):
+      while True:
+          print('Cookies生成进程开始运行')
+          try:
+              for website, cls in GENERATOR_MAP.items():
+                  generator = eval(cls + '(website="' + website + '")')
+                  generator.run()
+                  print('Cookies生成完成')
+                  generator.close()
+                  time.sleep(cycle)
+          except Exception as e:
+              print(e.args)
+
+  @staticmethod
+  def api():
+      print('API接口开始运行')
+      app.run(host=API_HOST, port=API_PORT)
+
+  def run(self):
+      if API_PROCESS:
+          api_process = Process(target=Scheduler.api)
+          api_process.start()
+
+      if GENERATOR_PROCESS:
+          generate_process = Process(target=Scheduler.generate_cookie)
+          generate_process.start()
+
+      if VALID_PROCESS:
+          valid_process = Process(target=Scheduler.valid_cookie)
+          valid_process.start()   ```
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/11/28/agency.html" title="代理">代理</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/11/30/pyspider.html" title="pyspider 框架">pyspider 框架</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/20/deep_learining.html" title="pyspider 框架">深度学习</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/09/30/format.html" title="pyspider 框架">format函数</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/17/titanic.html" title="pyspider 框架">泰坦尼克号生存预测</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/25/Face_recognition.html" title="pyspider 框架">人脸识别</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/29/login.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/29/login.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Gson解析 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Gson解析">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Gson 是google解析Json的一个开源框架,同类的框架fastJson,JackJson等等">
+<meta property="og:description" content="Gson 是google解析Json的一个开源框架,同类的框架fastJson,JackJson等等">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-09-06T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Gson解析">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-09-06T00:00:00+00:00","datePublished":"2019-09-06T00:00:00+00:00","description":"Gson 是google解析Json的一个开源框架,同类的框架fastJson,JackJson等等","headline":"Gson解析","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Gson解析</h1>
+  <h2 class="post-subtitle">json进阶gson</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-09-06T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 06, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 40 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#gson">#gson</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>Gson 是google解析Json的一个开源框架,同类的框架fastJson,JackJson等等</p>
+
+<h3 id="gson的实例化方式">Gson的实例化方式:</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Gson</span> <span class="n">gson</span><span class="o">=</span><span class="n">newGson</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>通过GsonBuilder 可以配置多种选项</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">().</span><span class="na">setLenient</span><span class="o">()</span><span class="c1">// json宽松</span>
+                        <span class="o">.</span><span class="na">enableComplexMapKeySerialization</span><span class="o">()</span><span class="c1">//支持Map的key为复杂对象的形式</span>
+                        <span class="o">.</span><span class="na">serializeNulls</span><span class="o">()</span> <span class="c1">//智能null</span>
+                        <span class="o">.</span><span class="na">setPrettyPrinting</span><span class="o">()</span><span class="c1">// 调教格式</span>
+                        <span class="o">.</span><span class="na">disableHtmlEscaping</span><span class="o">()</span> <span class="c1">//默认是GSON把HTML 转义的</span>
+                        <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h2 id="gson的基本用法">Gson的基本用法:</h2>
+
+<h3 id="javabean转换json字符串">JavaBean转换Json字符串</h3>
+
+<p>gson提供 publicString toJson(Object src) 方法可以将对象转换成 jsonStr</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest1</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Student</span> <span class="o">{</span>
+        <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+        <span class="c1">//省略setter getter equals</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+        <span class="nc">Student</span> <span class="n">student</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Student</span><span class="o">();</span>
+        <span class="n">student</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"xuanyouwu"</span><span class="o">);</span>
+        <span class="n">student</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">26</span><span class="o">);</span>
+        <span class="nc">String</span> <span class="n">jsonStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">student</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"----&gt;javabean convert jsonStr:"</span> <span class="o">+</span> <span class="n">jsonStr</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; javabean convert jsonStr:{“name”:”xuanyouwu”,”age”:26}</p>
+
+<h3 id="list-map转json字符串">List Map转Json字符串</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest1</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span><span class="s">"1"</span><span class="o">,</span> <span class="s">"a"</span><span class="o">,</span> <span class="s">"3"</span><span class="o">,</span> <span class="s">"rt"</span><span class="o">,</span> <span class="s">"5"</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"----&gt;list convert jsonStr:"</span> <span class="o">+</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">list</span><span class="o">));</span>
+
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">content</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;();</span>
+        <span class="n">content</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="s">"xuanyouwu"</span><span class="o">);</span>
+        <span class="n">content</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"age"</span><span class="o">,</span> <span class="s">"26"</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"----&gt;map convert jsonStr:"</span> <span class="o">+</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">content</span><span class="o">));</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; list convert jsonStr:[“1”,”a”,”3”,”rt”,”5”]</p>
+
+<p>—-&gt; map convert jsonStr:{“name”:”xuanyouwu”,”age”:”26”}</p>
+
+<h3 id="json字符串转javabean">Json字符串转JavaBean</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">studentJsonStr</span><span class="o">=</span><span class="s">"{\"name\":\"xuanyouwu\",\"age\":26}"</span><span class="o">;</span>
+<span class="nc">Student</span> <span class="n">student1</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">studentJsonStr</span><span class="o">,</span> <span class="nc">Student</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">log</span><span class="o">(</span><span class="s">"-------&gt;json convert JavaBean:"</span><span class="o">+</span><span class="n">student1</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; json convert JavaBean:Student{name=’xuanyouwu’, age=26}</p>
+
+<h3 id="json字符串转list">Json字符串转List</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">listJsonStr</span><span class="o">=</span><span class="s">"[\"1\",\"a\",\"3\",\"rt\",\"5\"]"</span><span class="o">;</span>
+<span class="nc">Type</span> <span class="n">type</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TypeToken</span><span class="o">&lt;</span><span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;&gt;()</span> <span class="o">{}.</span><span class="na">getType</span><span class="o">();</span>
+<span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">sList</span><span class="o">=</span><span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">listJsonStr</span><span class="o">,</span> <span class="n">type</span><span class="o">);</span>
+<span class="n">log</span><span class="o">(</span><span class="s">"-------&gt;json convert List:"</span><span class="o">+</span><span class="n">sList</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; json convert List:[1, a, 3, rt, 5]</p>
+
+<h4 id="gson里面有一个非常有意思的抽象基类jsonelement他的继承体系">Gson里面有一个非常有意思的抽象基类JsonElement,他的继承体系:</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JsonElement</span>
+    <span class="o">-</span> <span class="nc">JsonObject</span>
+    <span class="o">-</span> <span class="nc">JsonArray</span>
+    <span class="o">-</span> <span class="nc">JsonNull</span>
+    <span class="o">-</span> <span class="nc">JsonPrimitive</span>
+</code></pre></div></div>
+
+<p>JsonObject等同于org的JSONObject,JsonArray也类似,</p>
+
+<p>JsonNull 其实就是null 字段</p>
+
+<p>//构造方法过时，推荐INSTANCE</p>
+
+<p>JsonNull jsonNull=new JsonNull();</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JsonNull</span> <span class="n">jsonNull</span><span class="o">=</span><span class="nc">JsonNull</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+<span class="n">log</span><span class="o">(</span><span class="s">"-----"</span><span class="o">+</span><span class="n">jsonNull</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; null</p>
+
+<h4 id="jsonprimitive非常有意思我们知道如果json转换成字符串-可能包含引号的转义但是通过jsonprimative我们可以获得为转义的字符串">JsonPrimitive非常有意思,我们知道如果json转换成字符串 可能包含引号的转义，但是通过JsonPrimative我们可以获得为转义的字符串:</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonNull</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonPrimitive</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest2</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">studentJsonStr</span><span class="o">=</span><span class="s">"{\"name\":\"xuanyouwu\",\"age\":26}"</span><span class="o">;</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;studentJsonStr:"</span><span class="o">+</span><span class="n">studentJsonStr</span><span class="o">);</span>
+        <span class="nc">JsonPrimitive</span> <span class="n">jsonPrimitive</span><span class="o">=</span><span class="k">new</span> <span class="nc">JsonPrimitive</span><span class="o">(</span><span class="n">studentJsonStr</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;jsonPrimitive:"</span><span class="o">+</span><span class="n">jsonPrimitive</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;jsonPrimitive:"</span><span class="o">+</span><span class="n">jsonPrimitive</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;jsonPrimitive:"</span><span class="o">+</span><span class="n">jsonPrimitive</span><span class="o">.</span><span class="na">getAsString</span><span class="o">());</span>
+
+        <span class="nc">JsonPrimitive</span> <span class="n">jsonPrimitive2</span><span class="o">=</span><span class="k">new</span> <span class="nc">JsonPrimitive</span><span class="o">(</span><span class="s">"this is String"</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;jsonPrimitive2:"</span><span class="o">+</span><span class="n">jsonPrimitive2</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;jsonPrimitive2:"</span><span class="o">+</span><span class="n">jsonPrimitive2</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;jsonPrimitive2:"</span><span class="o">+</span><span class="n">jsonPrimitive2</span><span class="o">.</span><span class="na">getAsString</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; studentJsonStr:{“name”:”xuanyouwu”,”age”:26}</p>
+
+<p>—-&gt; jsonPrimitive:”{"name":"xuanyouwu","age":26}”</p>
+
+<p>—-&gt; jsonPrimitive:”{"name":"xuanyouwu","age":26}”</p>
+
+<p>—-&gt; jsonPrimitive:{“name”:”xuanyouwu”,”age”:26}</p>
+
+<p>—-&gt; jsonPrimitive2:”this is String”</p>
+
+<p>—-&gt; jsonPrimitive2:”this is String”</p>
+
+<p>—-&gt; jsonPrimitive2:this is String</p>
+
+<h3 id="创建jsonobject">创建JsonObject</h3>
+
+<p>通过addPropert(key,value)可以向jsonObject中添加字段 跟hashMap类似</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JsonObject</span> <span class="n">jsonObject</span><span class="o">=</span><span class="k">new</span> <span class="nc">JsonObject</span><span class="o">();</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">addProperty</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"xuanyouwu"</span><span class="o">);</span>
+<span class="n">jsonObject</span><span class="o">.</span><span class="na">addProperty</span><span class="o">(</span><span class="s">"age"</span><span class="o">,</span><span class="mi">26</span><span class="o">);</span>
+<span class="n">log</span><span class="o">(</span><span class="s">"------&gt;create jsonObject:"</span><span class="o">+</span><span class="n">jsonObject</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; create jsonObject:{“name”:”xuanyouwu”,”age”:26}</p>
+
+<h3 id="创建jsonarray">创建JsonArray</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JsonArray</span> <span class="n">jsonElements</span><span class="o">=</span><span class="k">new</span> <span class="nc">JsonArray</span><span class="o">();</span>
+<span class="n">jsonElements</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"a"</span><span class="o">);</span>
+<span class="n">jsonElements</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"b"</span><span class="o">);</span>
+<span class="n">jsonElements</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"c"</span><span class="o">);</span>
+<span class="n">jsonElements</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"d"</span><span class="o">);</span>
+<span class="n">log</span><span class="o">(</span><span class="s">"------&gt;create jsonArray:"</span><span class="o">+</span><span class="n">jsonElements</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; create jsonArray:[“a”,”b”,”c”,”d”]</p>
+
+<h3 id="jsonobject-嵌套数组或者说嵌套jsonarray">JsonObject 嵌套数组或者说嵌套JsonArray</h3>
+
+<p>通过JsonObject的add(key,JsonElement)可以为jsonObject 添加一个数组的字段</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JsonObject</span> <span class="n">jsonObject2</span><span class="o">=</span><span class="k">new</span> <span class="nc">JsonObject</span><span class="o">();</span>
+<span class="n">jsonObject2</span><span class="o">.</span><span class="na">addProperty</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"xuanyouwu"</span><span class="o">);</span>
+<span class="n">jsonObject2</span><span class="o">.</span><span class="na">addProperty</span><span class="o">(</span><span class="s">"age"</span><span class="o">,</span><span class="mi">26</span><span class="o">);</span>
+<span class="nc">JsonArray</span> <span class="n">jsonElements2</span><span class="o">=</span><span class="k">new</span> <span class="nc">JsonArray</span><span class="o">();</span>
+<span class="n">jsonElements2</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"骑车"</span><span class="o">);</span>
+<span class="n">jsonElements2</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"打游戏"</span><span class="o">);</span>
+<span class="n">jsonElements2</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"看电视"</span><span class="o">);</span>
+<span class="n">jsonObject2</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"hobby"</span><span class="o">,</span><span class="n">jsonElements2</span><span class="o">);</span>
+<span class="n">log</span><span class="o">(</span><span class="s">"------&gt;create jsonObject inner JsonArray:"</span><span class="o">+</span><span class="n">jsonObject2</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; create jsonObject inner JsonArray:{“name”:”xuanyouwu”,”age”:26,”hobby”:[“骑车”,”打游戏”,”看电视”]}</p>
+
+<h2 id="gson注解">Gson注解</h2>
+
+<p>在Gson中有五类注解</p>
+
+<ul>
+  <li>@Expose</li>
+  <li>@JsonAdapter</li>
+  <li>@SerializedName</li>
+  <li>@Since</li>
+  <li>@Until</li>
+</ul>
+
+<h3 id="重命名注解serializedname">重命名注解:SerializedName</h3>
+
+<ul>
+  <li>转换关键字key,json转换成JavaBean时,json字段的key 默认必须和我们声明类的字段名称一样,当服务器端返回了关键字怎么办，比如key 为new switch这样,我们    在声明类的时候不能写这样的字段,可能你想服务器端改动，他可能要改数据库，但是我告诉你，做服务端的大部分不愿意改动他的json,是很自私的!这时候重命名注解都排上用场了   第二种场景:服务器端返回的json 的key 简直太丑，或者太长,你想简化,my_parent_name,可以简化成mpn 比较优雅简介</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.SerializedName</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest3</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+        <span class="nd">@SerializedName</span><span class="o">(</span><span class="s">"new"</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">isnew</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="s">", isnew="</span> <span class="o">+</span> <span class="n">isnew</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": 26,\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"new\": 1\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;user:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; user:User{name=’zhangsan’, age=26, isnew=1}</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.SerializedName</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest3</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User2</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+        <span class="nd">@SerializedName</span><span class="o">(</span><span class="s">"my_parent_name"</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">pn</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User2{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="s">", pn='"</span> <span class="o">+</span> <span class="n">pn</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer2</span><span class="o">=</span><span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": 26,\n"</span> <span class="o">+</span>
+                <span class="s">"    \"my_parent_name\": \"zhangsanf\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+        <span class="nc">User2</span> <span class="n">user2</span> <span class="o">=</span> <span class="n">gson2</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer2</span><span class="o">,</span> <span class="nc">User2</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;user2:"</span> <span class="o">+</span> <span class="n">user2</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt;user2:User2{name=’zhangsan’, age=26, pn=’zhangsanf’}</p>
+
+<ul>
+  <li>
+    <p>结合alternate 提供多种备用字段key来解析,@SerializedName(value =”desc”,alternate = {“other”,”note”})  如果json中有other就会解析成desc 如果有note也会解析成desc</p>
+
+    <p><strong>注意1:</strong>value中的值不能出现在alternate中</p>
+
+    <p><strong>注意2:</strong>alternate的备选字段 会后面的替换前面的</p>
+  </li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.SerializedName</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest4</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+        <span class="nd">@SerializedName</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"desc"</span><span class="o">,</span><span class="n">alternate</span> <span class="o">=</span> <span class="o">{</span><span class="s">"other"</span><span class="o">,</span><span class="s">"note"</span><span class="o">})</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">desc</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="s">", desc='"</span> <span class="o">+</span> <span class="n">desc</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": 26,\n"</span> <span class="o">+</span>
+                <span class="s">"    \"other\": \"成都人\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;user:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+
+        <span class="nc">String</span> <span class="n">jsonFromServer2</span> <span class="o">=</span> <span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": 26,\n"</span> <span class="o">+</span>
+                <span class="s">"    \"note\": \"成都人\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="nc">User</span> <span class="n">user2</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer2</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;user:"</span> <span class="o">+</span> <span class="n">user2</span><span class="o">);</span>
+
+        <span class="c1">//包括desc 与note note在desc之后</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer3</span><span class="o">=</span><span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": 26,\n"</span> <span class="o">+</span>
+                <span class="s">"    \"desc\": \"desc成都人\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"note\": \"note成都人\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="nc">User</span> <span class="n">user3</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer3</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;user:"</span> <span class="o">+</span> <span class="n">user3</span><span class="o">);</span>
+
+        <span class="c1">//包括desc 与note note在desc之前</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer4</span><span class="o">=</span><span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": 26,\n"</span> <span class="o">+</span>
+                <span class="s">"    \"note\": \"note成都人\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"desc\": \"desc成都人\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="nc">User</span> <span class="n">user4</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer4</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;user:"</span> <span class="o">+</span> <span class="n">user4</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; user:User{name=’zhangsan’, age=26, desc=’成都人’}</p>
+
+<p>—-&gt; user:User{name=’zhangsan’, age=26, desc=’成都人’}</p>
+
+<p>—-&gt; user:User{name=’zhangsan’, age=26, desc=’note成都人’}</p>
+
+<p>—-&gt; user:User{name=’zhangsan’, age=26, desc=’desc成都人’}</p>
+
+<h3 id="gson-expose过滤注解">Gson @Expose过滤注解</h3>
+
+<p>源码:默认既可以序列化又可以反序列化</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Retention</span><span class="o">(</span><span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span><span class="o">)</span>
+<span class="nd">@Target</span><span class="o">(</span><span class="nc">ElementType</span><span class="o">.</span><span class="na">FIELD</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Expose</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">serialize</span><span class="o">()</span> <span class="k">default</span> <span class="kc">true</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">deserialize</span><span class="o">()</span> <span class="k">default</span> <span class="kc">true</span><span class="o">;</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">pre</span> <span class="n">style</span><span class="o">=</span><span class="s">"font-family: 宋体; font-size: 9pt; background-color: rgb(255, 255, 255);"</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">pre</span> <span class="n">name</span><span class="o">=</span><span class="s">"code"</span> <span class="kd">class</span><span class="err">="</span><span class="nc">java</span><span class="err">"</span><span class="o">&gt;</span> 
+<span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">excludeFieldsWithoutExposeAnnotation</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>不添加@Expose注解的字段将不会解析:</p>
+
+<p>分为以下几种情况:</p>
+
+<p>1.不添加@Expose注解等同于@Expose(deserialize = false,serialize = false) 不做任何解析</p>
+
+<p>2.@Expose(deserialize = true,serialize = false) 只解析用用，也就是反序列化可以，序列化不可以</p>
+
+<p>3.@Expose(deserialize = false,serialize = true) 序列化可以，反序列化不行</p>
+
+<p>4.@Expose(deserialize = true,serialize = true) 既可以序列化，也可以反序列化</p>
+
+<h3 id="不添加expose注解">不添加@Expose注解:</h3>
+
+<p>等同于@Expose(deserialize = false,serialize = false)</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest5</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\"name\": \"zhangsan\"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">excludeFieldsWithoutExposeAnnotation</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化:"</span> <span class="o">+</span> <span class="n">userStr</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 反序列化:User{name=’null’}</p>
+
+<p>—-&gt; 序列化:{}</p>
+
+<h3 id="添加expose注解">添加@Expose注解</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.Expose</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest5</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="nd">@Expose</span> <span class="c1">//等同于 @Expose(deserialize = true,serialize = true)</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\"name\": \"zhangsan\"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">excludeFieldsWithoutExposeAnnotation</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化:"</span> <span class="o">+</span> <span class="n">userStr</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 反序列化:User{name=’zhangsan’}</p>
+
+<p>—-&gt; 序列化:{“name”:”zhangsan2”}</p>
+
+<h3 id="expose注解-只序列化">@Expose注解 只序列化</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.Expose</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest5</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="nd">@Expose</span><span class="o">(</span><span class="n">deserialize</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span><span class="n">serialize</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\"name\": \"zhangsan\"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">excludeFieldsWithoutExposeAnnotation</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化:"</span> <span class="o">+</span> <span class="n">userStr</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 反序列化:User{name=’null’}</p>
+
+<p>—-&gt; 序列化:{“name”:”zhangsan2”}</p>
+
+<h3 id="expose-只反序列化">@Expose 只反序列化</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.Expose</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest5</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="nd">@Expose</span><span class="o">(</span><span class="n">deserialize</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> <span class="n">serialize</span> <span class="o">=</span> <span class="kc">false</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\"name\": \"zhangsan\"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">excludeFieldsWithoutExposeAnnotation</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化:"</span> <span class="o">+</span> <span class="n">userStr</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 反序列化:User{name=’zhangsan’}</p>
+
+<p>—-&gt; 序列化:{}</p>
+
+<h3 id="sincefloat-v注解--版本控制">@Since(float v)注解  版本控制</h3>
+
+<p>结合GsonBuilder.setVersion(n)使用 当n&gt;=v时 才会序列化解析</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.Since</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest6</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="nd">@Since</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\"name\": \"zhangsan\"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span><span class="c1">//版本为1</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化v=1:"</span> <span class="o">+</span> <span class="n">user1</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1_1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user1_1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user1_1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化v=1:"</span> <span class="o">+</span> <span class="n">userStr</span><span class="o">);</span>
+
+        <span class="nc">Gson</span> <span class="n">gson2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span><span class="c1">//版本为2</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user2</span> <span class="o">=</span> <span class="n">gson2</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化v=2:"</span> <span class="o">+</span> <span class="n">user2</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user2_1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user2_1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr2_1</span> <span class="o">=</span> <span class="n">gson2</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user2_1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化v=2:"</span> <span class="o">+</span> <span class="n">userStr2_1</span><span class="o">);</span>
+
+        <span class="nc">Gson</span> <span class="n">gson3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span><span class="c1">//版本为3</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user3</span> <span class="o">=</span> <span class="n">gson3</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化v=3:"</span> <span class="o">+</span> <span class="n">user3</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user3_1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user3_1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr3_1</span> <span class="o">=</span> <span class="n">gson3</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user3_1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化v=3:"</span> <span class="o">+</span> <span class="n">userStr3_1</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 反序列化v=1:User{name=’null’}</p>
+
+<p>—-&gt; 序列化v=1:{}</p>
+
+<p>—-&gt; 反序列化v=2:User{name=’zhangsan’}</p>
+
+<p>—-&gt; 序列化v=2:{“name”:”zhangsan2”}</p>
+
+<p>—-&gt; 反序列化v=3:User{name=’zhangsan’}</p>
+
+<p>—-&gt; 序列化v=3:{“name”:”zhangsan2”}</p>
+
+<h3 id="utilfloat-v注解-版本控制">@Util(float v)注解 版本控制</h3>
+
+<p>当gson的setVersion(n) n&lt;\v 才解析</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.Until</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest6</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="nd">@Until</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">jsonFromServer</span> <span class="o">=</span> <span class="s">"{\"name\": \"zhangsan\"}"</span><span class="o">;</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="mi">1</span><span class="o">)</span><span class="c1">//版本为1</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化v=1:"</span> <span class="o">+</span> <span class="n">user1</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1_1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user1_1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user1_1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化v=1:"</span> <span class="o">+</span> <span class="n">userStr</span><span class="o">);</span>
+
+        <span class="nc">Gson</span> <span class="n">gson2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="mi">2</span><span class="o">)</span><span class="c1">//版本为2</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user2</span> <span class="o">=</span> <span class="n">gson2</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化v=2:"</span> <span class="o">+</span> <span class="n">user2</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user2_1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user2_1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr2_1</span> <span class="o">=</span> <span class="n">gson2</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user2_1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化v=2:"</span> <span class="o">+</span> <span class="n">userStr2_1</span><span class="o">);</span>
+
+        <span class="nc">Gson</span> <span class="n">gson3</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">setVersion</span><span class="o">(</span><span class="mi">3</span><span class="o">)</span><span class="c1">//版本为3</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+        <span class="nc">User</span> <span class="n">user3</span> <span class="o">=</span> <span class="n">gson3</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化v=3:"</span> <span class="o">+</span> <span class="n">user3</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user3_1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user3_1</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"zhangsan2"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userStr3_1</span> <span class="o">=</span> <span class="n">gson3</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user3_1</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化v=3:"</span> <span class="o">+</span> <span class="n">userStr3_1</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 反序列化v=1:User{name=’zhangsan’}</p>
+
+<p>—-&gt; 序列化v=1:{“name”:”zhangsan2”}</p>
+
+<p>—-&gt; 反序列化v=2:User{name=’null’}</p>
+
+<p>—-&gt; 序列化v=2:{}</p>
+
+<p>—-&gt; 反序列化v=3:User{name=’null’}</p>
+
+<p>—-&gt; 序列化v=3:{}</p>
+
+<h2 id="gson-高级用法">Gson 高级用法</h2>
+
+<p>相信看过retrofit2.0 源码的同学都知道,其中有一个GsonConverterFactory 里面的用法十分精炼老成,这里来一段源码</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">TypeAdapter</span><span class="o">&lt;?&gt;</span> <span class="n">adapter</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">getAdapter</span><span class="o">(</span><span class="nc">TypeToken</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">type</span><span class="o">))</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">JsonWriter</span> <span class="n">jsonwriter</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">newJsonWeiter</span><span class="o">(</span><span class="n">weiter</span><span class="o">);</span>
+<span class="n">adapter</span><span class="o">.</span><span class="na">weiter</span><span class="o">(</span><span class="n">jsonWriter</span><span class="o">,</span> <span class="n">value</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>—据说使用TypeAdapter—</p>
+
+<p>在源码中备注了一句 Converts Java objects to and from JSON 就是对象json之间的互相转换 接替了T 泛型类的序列化和反序列化的逻辑</p>
+
+<p>从源码中我们看到区分了2.1版本之前后之后的用法，2.1版本之前可以自定义adapter:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PointAdapter</span> <span class="kd">extends</span> <span class="nc">TypeAdapter</span><span class="o">&lt;</span><span class="nc">Point</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Point</span> <span class="nf">read</span><span class="o">(</span><span class="nc">JsonReader</span> <span class="n">reader</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">reader</span><span class="o">.</span><span class="na">peek</span><span class="o">()</span> <span class="o">==</span> <span class="nc">JsonToken</span><span class="o">.</span><span class="na">NULL</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">reader</span><span class="o">.</span><span class="na">nextNull</span><span class="o">();</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">String</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="na">nextString</span><span class="o">();</span>
+        <span class="nc">String</span><span class="o">[]</span> <span class="n">parts</span> <span class="o">=</span> <span class="n">xy</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">","</span><span class="o">);</span>
+        <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">0</span><span class="o">]);</span>
+        <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">1</span><span class="o">]);</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">y</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">JsonWriter</span> <span class="n">writer</span><span class="o">,</span> <span class="nc">Point</span> <span class="n">value</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">value</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">writer</span><span class="o">.</span><span class="na">nullValue</span><span class="o">();</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="nc">String</span> <span class="n">xy</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="na">getX</span><span class="o">()</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="n">value</span><span class="o">.</span><span class="na">getY</span><span class="o">();</span>
+        <span class="n">writer</span><span class="o">.</span><span class="na">value</span><span class="o">(</span><span class="n">xy</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>使用</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">GsonBuilder</span> <span class="n">builder</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">();</span>
+<span class="n">builder</span><span class="o">.</span><span class="na">registerTypeAdapter</span><span class="o">(</span><span class="nc">Point</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">new</span> <span class="nc">PointAdapter</span><span class="o">());</span>
+<span class="c1">// if PointAdapter didn't check for nulls in its read/write methods, you should instead use</span>
+<span class="c1">// builder.registerTypeAdapter(Point.class, new PointAdapter().nullSafe());</span>
+<span class="o">...</span>
+<span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+</code></pre></div></div>
+
+<p>在2.1版本之后更推荐直接插入泛型就使用</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">"{'origin':'0,0','points':['1,2','3,4']}"</span><span class="o">;</span>
+<span class="nc">TypeAdapter</span><span class="o">&lt;</span><span class="nc">Graph</span><span class="o">&gt;</span> <span class="n">graphAdapter</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">getAdapter</span><span class="o">(</span><span class="nc">Graph</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">Graph</span> <span class="n">graph</span> <span class="o">=</span> <span class="n">graphAdapter</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">json</span><span class="o">);</span>
+<span class="o">}&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+<span class="nc">And</span> <span class="n">an</span> <span class="n">example</span> <span class="k">for</span> <span class="nl">serialization:</span> <span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;</span>   <span class="o">{</span><span class="nd">@code</span>
+
+<span class="nc">Graph</span> <span class="n">graph</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Graph</span><span class="o">(...);</span>
+<span class="nc">TypeAdapter</span><span class="o">&lt;</span><span class="nc">Graph</span><span class="o">&gt;</span> <span class="n">graphAdapter</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">getAdapter</span><span class="o">(</span><span class="nc">Graph</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">String</span> <span class="n">json</span> <span class="o">=</span> <span class="n">graphAdapter</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">graph</span><span class="o">);</span>
+<span class="o">}&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="实例使用typeadapter-来序列化和反序列化">实例:使用TypeAdapter 来序列化和反序列化</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.TypeAdapter</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest7</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+        <span class="nc">TypeAdapter</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">userTypeAdapter</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">getAdapter</span><span class="o">(</span><span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+        <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="s">"xuanyouwu"</span><span class="o">;</span>
+        <span class="n">user</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="mi">26</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">userJsonStr</span> <span class="o">=</span> <span class="n">userTypeAdapter</span><span class="o">.</span><span class="na">toJson</span><span class="o">(</span><span class="n">user</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;序列化:"</span> <span class="o">+</span> <span class="n">userJsonStr</span><span class="o">);</span>
+
+        <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="n">userTypeAdapter</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">userJsonStr</span><span class="o">);</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;反序列化:"</span> <span class="o">+</span> <span class="n">user1</span><span class="o">);</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; 序列化:{“name”:”xuanyouwu”,”age”:26}</p>
+
+<p>—-&gt; 反序列化:User{name=’xuanyouwu’, age=26}</p>
+
+<h2 id="gson的容错机制">Gson的容错机制:</h2>
+
+<p>为什么要容错了,在javaBean中声明了int类型的age 如果服务端 返回的是”” 空字符串怎么办呢？崩溃？</p>
+
+<p>如果json格式不规范如 {name=zhangsan,age:26,hobby=null}  发现不是普通的key value</p>
+
+<p>容错实现方式1：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>方式</th>
+      <th>代码</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>创建Gson的方式</td>
+      <td>gson = new GsonBuilder().setLenient().create();</td>
+    </tr>
+    <tr>
+      <td>使用JsonReader</td>
+      <td>JsonReader jsonReader = gson.newJsonReader(value.charStream());</td>
+    </tr>
+    <tr>
+      <td> </td>
+      <td>jsonReader.«font color=#FF0000&gt;/&lt;/font&gt;span style=”font-family: 宋体; font-size: 9pt;”&gt;setLenient(true)«font color=#FF0000&gt;/&lt;/font&gt;/span&gt;</td>
+    </tr>
+    <tr>
+      <td>自定义TypeAdapter</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>使用注解JsonAdapter,其实也是自定义Adapter</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>前两项归为一类 由框架实现,基本json大格式规范,键值对不标准,多引号的问题等等,而不报错停止解析,但是功能相对较弱
+能解决bug:</p>
+
+<p>com.google.gson.JsonSyntaxException:com.google.gson.stream.MalformedJsonException:Use JsonReader.setLenient(true) to accept malformed JSON</p>
+
+<p>后两项归为一类,都属于自定义adapter,但是3与gson绑定,4使用注解和字段绑定</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonParseException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.TypeAdapter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.stream.JsonReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.stream.JsonWriter</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest8</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">UserTypeAdapter</span> <span class="kd">extends</span> <span class="nc">TypeAdapter</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="o">{</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">JsonWriter</span> <span class="n">out</span><span class="o">,</span> <span class="nc">User</span> <span class="n">value</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">beginObject</span><span class="o">();</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">"name"</span><span class="o">).</span><span class="na">value</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">name</span><span class="o">);</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">name</span><span class="o">(</span><span class="s">"age"</span><span class="o">).</span><span class="na">value</span><span class="o">(</span><span class="n">value</span><span class="o">.</span><span class="na">age</span><span class="o">);</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">endObject</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">User</span> <span class="nf">read</span><span class="o">(</span><span class="nc">JsonReader</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">in</span><span class="o">.</span><span class="na">beginObject</span><span class="o">();</span>
+            <span class="k">while</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+                <span class="k">switch</span> <span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">nextName</span><span class="o">())</span> <span class="o">{</span>
+                    <span class="k">case</span> <span class="s">"name"</span><span class="o">:</span>
+                        <span class="n">user</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextString</span><span class="o">();</span>
+                        <span class="k">break</span><span class="o">;</span>
+                    <span class="k">case</span> <span class="s">"age"</span><span class="o">:</span>
+                        <span class="k">try</span> <span class="o">{</span>
+                            <span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextString</span><span class="o">();</span>
+                            <span class="n">user</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+                        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="o">}</span>
+                        <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="n">in</span><span class="o">.</span><span class="na">endObject</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">user</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">jsonStrFromServer</span> <span class="o">=</span> <span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": \"\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"-------&gt;jsonFromServer:"</span><span class="o">+</span><span class="n">jsonStrFromServer</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;默认Gson 解析:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">JsonParseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span><span class="c1">//java.lang.NumberFormatException: empty String</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;默认Gson 解析 异常:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">Gson</span> <span class="n">gson2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">registerTypeAdapter</span><span class="o">(</span><span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="k">new</span> <span class="nc">UserTypeAdapter</span><span class="o">()).</span><span class="na">create</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user2</span> <span class="o">=</span> <span class="n">gson2</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;自定义adapter 解析:"</span> <span class="o">+</span> <span class="n">user2</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">JsonParseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span><span class="c1">//java.lang.NumberFormatException: empty String</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;自定义adapter 异常:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">UserTypeAdapter</span> <span class="n">userTypeAdapter</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">UserTypeAdapter</span><span class="o">();</span>
+            <span class="nc">User</span> <span class="n">user3</span> <span class="o">=</span> <span class="n">userTypeAdapter</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;自定义adapter 解析2:"</span> <span class="o">+</span> <span class="n">user3</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;自定义adapter 异常2:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—–&gt; jsonFromServer:{“age”: “”,”name”: “zhangsan”}</p>
+
+<p>—-&gt; 默认Gson 解析 异常:com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: empty String</p>
+
+<p>—-&gt; 自定义adapter 解析:User{name=’zhangsan’, age=0}</p>
+
+<p>—-&gt; 自定义adapter 解析2:User{name=’zhangsan’, age=0}</p>
+
+<p>可以看到 age是空字符串 但是不影响整体的解析流程,这对客户端是十分友好的</p>
+
+<h4 id="基于注解的方式上面的方式倾向于整体注解的方式倾向于字段">基于注解的方式,上面的方式倾向于整体,注解的方式倾向于字段</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.xuan.gson</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonParseException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.TypeAdapter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.annotations.JsonAdapter</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.stream.JsonReader</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.stream.JsonWriter</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest9</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="nd">@JsonAdapter</span><span class="o">(</span><span class="nc">IntegerTypeAdapter</span><span class="o">.</span><span class="na">class</span><span class="o">)</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">IntegerTypeAdapter</span> <span class="kd">extends</span> <span class="nc">TypeAdapter</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">void</span> <span class="nf">write</span><span class="o">(</span><span class="nc">JsonWriter</span> <span class="n">out</span><span class="o">,</span> <span class="nc">Integer</span> <span class="n">value</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">value</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">Integer</span> <span class="nf">read</span><span class="o">(</span><span class="nc">JsonReader</span> <span class="n">in</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="nc">String</span> <span class="n">str</span> <span class="o">=</span> <span class="n">in</span><span class="o">.</span><span class="na">nextString</span><span class="o">();</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="nc">Integer</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">str</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">}</span>
+            <span class="k">return</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User2</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">jsonStrFromServer</span> <span class="o">=</span> <span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": \"\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"-------&gt;jsonFromServer:"</span> <span class="o">+</span> <span class="n">jsonStrFromServer</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User2</span> <span class="n">user2</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">,</span> <span class="nc">User2</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;gson 解析:"</span> <span class="o">+</span> <span class="n">user2</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;gson 解析异常:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;JsonAdapter 注解 解析:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">JsonParseException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span><span class="c1">//java.lang.NumberFormatException: empty String</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;JsonAdapter 注解 异常:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong>
+—–&gt; jsonFromServer:{“age”: “”,”name”: “zhangsan”}</p>
+
+<p>—-&gt; gson 解析异常:com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: empty String</p>
+
+<p>—-&gt; JsonAdapter 注解 解析:User{name=’zhangsan’, age=0}</p>
+
+<p>可以看到我们成功地跳过服务端返回json不合理的坑了吧</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">com.google.gson.Gson</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.GsonBuilder</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonDeserializationContext</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonDeserializer</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonElement</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.google.gson.JsonParseException</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.lang.reflect.Type</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">GsonTest10</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">log</span><span class="o">(</span><span class="nc">String</span> <span class="n">msg</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">User</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="s">"User{"</span> <span class="o">+</span>
+                    <span class="s">"name='"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sc">'\''</span> <span class="o">+</span>
+                    <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span>
+                    <span class="sc">'}'</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+        <span class="nc">JsonDeserializer</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">jsonDeserializer</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">JsonDeserializer</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="nc">Integer</span> <span class="nf">deserialize</span><span class="o">(</span><span class="nc">JsonElement</span> <span class="n">json</span><span class="o">,</span> <span class="nc">Type</span> <span class="n">typeOfT</span><span class="o">,</span>
+             <span class="nc">JsonDeserializationContext</span> <span class="n">context</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">JsonParseException</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="na">getAsInt</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">NumberFormatException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">};</span>
+        <span class="nc">Gson</span> <span class="n">gson</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GsonBuilder</span><span class="o">()</span>
+                <span class="o">.</span><span class="na">registerTypeAdapter</span><span class="o">(</span><span class="kt">int</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="n">jsonDeserializer</span><span class="o">)</span>
+                <span class="o">.</span><span class="na">create</span><span class="o">();</span>
+
+        <span class="nc">String</span> <span class="n">jsonStrFromServer</span> <span class="o">=</span> <span class="s">"{\n"</span> <span class="o">+</span>
+                <span class="s">"    \"age\": \"\",\n"</span> <span class="o">+</span>
+                <span class="s">"    \"name\": \"zhangsan\"\n"</span> <span class="o">+</span>
+                <span class="s">"}"</span><span class="o">;</span>
+        <span class="n">log</span><span class="o">(</span><span class="s">"-------&gt;jsonFromServer:"</span> <span class="o">+</span> <span class="n">jsonStrFromServer</span><span class="o">);</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">gson</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;  JsonDeserializer&lt;Integer&gt; 解析:"</span> <span class="o">+</span> <span class="n">user</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;  JsonDeserializer&lt;Integer&gt; 解析异常:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="nc">Gson</span> <span class="n">gson1</span><span class="o">=</span><span class="k">new</span> <span class="nc">Gson</span><span class="o">();</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">user1</span> <span class="o">=</span> <span class="n">gson1</span><span class="o">.</span><span class="na">fromJson</span><span class="o">(</span><span class="n">jsonStrFromServer</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt; 默认gson 解析:"</span> <span class="o">+</span> <span class="n">user1</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">(</span><span class="s">"------&gt;  默认gson 解析异常:"</span> <span class="o">+</span> <span class="n">e</span><span class="o">);</span>
+        <span class="o">}</span>
+
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>运行结果:</strong></p>
+
+<p>—-&gt; jsonFromServer:{“age”: “”,”name”: “zhangsan”}</p>
+
+<p>—-&gt; JsonDeserializer<integer> 解析:User{name='zhangsan', age=0}</integer></p>
+
+<p>—-&gt; 默认gson 解析异常:com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: empty String</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html" title="Thymeleaf入门">Thymeleaf入门</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/09/06/mybatis-generator.html" title="MyBatis Generator">MyBatis Generator</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html" title="MyBatis Generator">Beautiful Soup</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/software_designer/2021/03/14/data-structure.html" title="MyBatis Generator">数据结构基础知识</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/books/2023/01/17/shanhaiching-simplified.html" title="MyBatis Generator">《山海经》</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ESFP.html" title="MyBatis Generator">人格八维 -- ESFP（表演者）</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>验证码的识别 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="验证码的识别">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="图像验证码的识别">
+<meta property="og:description" content="图像验证码的识别">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/25/verification-code.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/25/verification-code.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-25T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="验证码的识别">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-11-25T00:00:00+00:00","datePublished":"2019-11-25T00:00:00+00:00","description":"图像验证码的识别","headline":"验证码的识别","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/25/verification-code.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/25/verification-code.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">验证码的识别</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-11-25T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 25, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 29 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#reptile">#reptile</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="图像验证码的识别">图像验证码的识别</h2>
+
+<h3 id="获取验证码">获取验证码</h3>
+
+<p>保存验证码图片以便实验，<a href="http://my.cnki.net/elibregister/CheckCode.aspx">验证</a></p>
+
+<h3 id="识别测试">识别测试</h3>
+
+<p>使用 tesserocr 库识别验证码(由于 tesseract 与 window 不兼容， 暂时用 pytesseract 代替)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">tesserocr</span>
+<span class="kn">from</span> <span class="n">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">code.jpg</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">tesserocr</span><span class="p">.</span><span class="nf">image_to_string</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="验证码处理">验证码处理</h3>
+
+<p>验证码内的多余线条可能会干扰图片的识别，对于这种情况，我们还需要做一些额外的处理,例如：</p>
+
+<p>图片转化为灰度图像</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">.</span><span class="nf">covert</span><span class="p">(</span><span class="sh">'</span><span class="s">L</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">image</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>进行二值化处理</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">.</span><span class="nf">covert</span><span class="p">(</span><span class="sh">'</span><span class="s">1</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">image</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>指定二值化阈值</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">.</span><span class="nf">covert</span><span class="p">(</span><span class="sh">'</span><span class="s">L</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">table</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">256</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+        <span class="n">table</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">table</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">.</span><span class="nf">point</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="sh">'</span><span class="s">1</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">image</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="极验滑动验证码的识别">极验滑动验证码的识别</h2>
+
+<h3 id="识别思路">识别思路</h3>
+
+<p>对于应用了极验验证码的网站，如果我们中介模拟表单提交，加密参数的构造是个问题，需要分析其加密和校验逻辑，相对繁琐。随意我们采用直接模拟浏览器动作的方式来完成验证</p>
+
+<p>首先，找到一个带有极验验证码的网站： http://account.geetest.com/login</p>
+
+<p>次按钮为智能验证按钮。如果同一会话，一段时间内第二次点击会直接通过验证。如果智能识别不通过，则会弹出滑动窗口</p>
+
+<p>所以，识别验证需要完成三步</p>
+
+<ol>
+  <li>模拟点击验证按钮</li>
+  <li>识别滑动缺口的位置</li>
+  <li>模拟拖动滑块</li>
+</ol>
+
+<h3 id="初始化">初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">EMAIL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">test@test.com</span><span class="sh">'</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="sh">'</span><span class="s">123456</span><span class="sh">'</span>
+
+
+<span class="k">class</span> <span class="nc">CrackGeetest</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://account.geetest.com/login</span><span class="sh">'</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">Chrome</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wait</span> <span class="o">=</span> <span class="nc">WebDriverWait</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">EMAIL</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">PASSWORD</span>
+</code></pre></div></div>
+
+<h3 id="模拟点击">模拟点击</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_geetest_button</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取初始化验证按钮
+        :return: 按钮对象
+        </span><span class="sh">"""</span>
+        <span class="n">button</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">geetest_radar_tip</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">button</span>
+</code></pre></div></div>
+
+<p>获取一个 WebElement 对象，调用它的 click() 方法即可模拟点击</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="n">button</span> <span class="o">=</span> <span class="nf">get_geetest_button</span><span class="p">()</span>
+        <span class="n">button</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="识别缺口">识别缺口</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_screenshot</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取网页截图
+        :return: 截图对象
+        </span><span class="sh">"""</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">get_screenshot_as_png</span><span class="p">()</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nc">BytesIO</span><span class="p">(</span><span class="n">screenshot</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">screenshot</span>
+
+    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证码位置
+        :return: 验证码位置元组
+        </span><span class="sh">"""</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">geetest_cavas_img</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">location</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">size</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="sh">'</span><span class="s">height</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="sh">'</span><span class="s">width</span><span class="sh">'</span><span class="p">]</span>
+        <span class="nf">return </span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_geetest_image</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">captcha.png</span><span class="sh">'</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证码图片
+        :param name: 
+        :return: 图片对象
+        </span><span class="sh">"""</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_position</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">验证码位置</span><span class="sh">'</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_screenshot</span><span class="p">()</span>
+        <span class="n">captcha</span> <span class="o">=</span> <span class="n">screenshot</span><span class="p">.</span><span class="nf">crop</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">captcha</span>
+</code></pre></div></div>
+
+<p>接下来，获取第二张图片，也就是带缺口的图片，要使图片出现缺口，只需要点击下方的滑动块即可</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_slider</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取滑块
+        :return:滑块对象 
+        </span><span class="sh">"""</span>
+        <span class="n">silder</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">geetest_slider_button</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">silder</span>
+</code></pre></div></div>
+
+<p>调用 click() 方法即可触发点击</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="n">slider</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_slider</span><span class="p">()</span>
+        <span class="n">slider</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>接下来对比图片获取缺口。我们在这里遍历每个坐标点，获取两张图片对应像素点的 RGB 数据。如果 RGB 数据差距在一定范围内，代表两个像素相同，继续对比下一个像素，如果差距超过一定范围，则代表像素点不同，即缺口。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">is_pixel_equal</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        判断两个像素是否相同
+        :param image1: 图片1
+        :param image2: 图片2
+        :param x: 位置x
+        :param y: 位置y
+        :return: 像素是否相同
+        </span><span class="sh">"""</span>
+        <span class="n">pixel1</span> <span class="o">=</span> <span class="n">image1</span><span class="p">.</span><span class="nf">load</span><span class="p">()[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+        <span class="n">pixel2</span> <span class="o">=</span> <span class="n">image2</span><span class="p">.</span><span class="nf">load</span><span class="p">()[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">]</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="k">if</span> <span class="nf">abs</span><span class="p">(</span><span class="n">pixel1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pixel2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="ow">and</span> <span class="nf">abs</span><span class="p">(</span><span class="n">pixel1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pixel2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="ow">and</span> \
+                <span class="nf">abs</span><span class="p">(</span><span class="n">pixel1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">pixel2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">get_gap</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        还缺缺口偏移量
+        :param image1:不带缺口图片 
+        :param image2: 带缺口图片
+        :return: 
+        </span><span class="sh">"""</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">image1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">image1</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="nf">is_pixel_equal</span><span class="p">(</span><span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+                    <span class="n">left</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="k">return</span> <span class="n">left</span>
+        <span class="k">return</span> <span class="n">left</span>
+</code></pre></div></div>
+
+<h3 id="模拟拖动">模拟拖动</h3>
+
+<p>模拟拖动过程并不复杂，但其中的坑比较多。如果是匀速运动，极验必然会识别出是程序操作，以为人无法做到完全匀速拖动。极验验证码利用机器学习模型，筛选此类数据为机器操作，验证码必失败。</p>
+
+<p>所以，我们采用前段做匀加速运动，后段做匀减速运动，来模拟人拖动时的动作，利用物理学的加速度公式完成验证。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 当前速度 v，初速度 v0， 位移 x， 所需时间 t
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">v0</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">v0</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span>
+</code></pre></div></div>
+
+<p>构造轨迹移动算法，计算出先加速后减速的运动轨迹</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_track</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        根据偏移量获取运动轨迹
+        :param distance: 偏移量
+        :return: 运动轨迹
+        </span><span class="sh">"""</span>
+        <span class="c1"># 运动轨迹
+</span>        <span class="n">track</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># 当前位移
+</span>        <span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># 减速阈值
+</span>        <span class="n">mid</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">5</span>
+        <span class="c1"># 计算间隔
+</span>        <span class="n">t</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="c1"># 初速度
+</span>        <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">while</span> <span class="n">current</span> <span class="o">&lt;</span> <span class="n">distance</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">current</span> <span class="o">&lt;</span> <span class="n">mid</span><span class="p">:</span>
+                <span class="c1"># 加速度为+2
+</span>                <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 加速度为-3
+</span>                <span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+            <span class="c1"># 初速度 v0
+</span>            <span class="n">v0</span> <span class="o">=</span> <span class="n">v</span>
+            <span class="c1"># 当前速度 v = v0 + at
+</span>            <span class="n">v</span> <span class="o">=</span> <span class="n">v0</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span>
+            <span class="c1"># 移动距离 x = v0t + 1/2 * a * t * t
+</span>            <span class="n">move</span> <span class="o">=</span> <span class="n">v0</span> <span class="o">*</span><span class="n">t</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span>
+            <span class="c1"># 当前位移
+</span>            <span class="n">current</span> <span class="o">+=</span> <span class="n">move</span>
+            <span class="c1"># 加入轨迹
+</span>            <span class="n">track</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="nf">round</span><span class="p">(</span><span class="n">move</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">track</span>
+</code></pre></div></div>
+
+<p>按照运动轨迹拖动滑块</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">move_to_gap</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">slider</span><span class="p">,</span> <span class="n">tracks</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        拖动滑块到缺口处
+        :param slider: 滑块
+        :param tracks: 缺口
+        :return: 
+        </span><span class="sh">"""</span>
+        <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">).</span><span class="nf">click_and_hold</span><span class="p">(</span><span class="n">slider</span><span class="p">).</span><span class="nf">perform</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tracks</span><span class="p">:</span>
+            <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">).</span><span class="nf">move_by_offset</span><span class="p">(</span><span class="n">xoffset</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">yoffset</span><span class="o">=</span><span class="mi">0</span><span class="p">).</span><span class="nf">perform</span><span class="p">()</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">).</span><span class="nf">release</span><span class="p">().</span><span class="nf">perform</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="完善表单模拟登录">完善表单，模拟登录</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">BORDER</span> <span class="o">=</span> <span class="mi">6</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        打开网页输入用户名密码
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">email</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">password</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">email</span><span class="p">.</span><span class="nf">send_keys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">email</span><span class="p">)</span>
+        <span class="n">password</span><span class="p">.</span><span class="nf">send_keys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">password</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        登录
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">submit</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">login-btn</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">submit</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">登录成功</span><span class="sh">'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># 输入用户名密码
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span>
+        <span class="c1"># 点击验证按钮
+</span>        <span class="n">button</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_geetest_button</span><span class="p">()</span>
+        <span class="n">button</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+        <span class="c1"># 获取验证码图片
+</span>        <span class="n">image1</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_geetest_image</span><span class="p">(</span><span class="sh">'</span><span class="s">captcha1.png</span><span class="sh">'</span><span class="p">)</span>
+        <span class="c1"># 点按呼出缺口
+</span>        <span class="n">slider</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_slider</span><span class="p">()</span>
+        <span class="n">slider</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+        <span class="c1"># 获取带缺口的验证码图片
+</span>        <span class="n">image2</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_geetest_image</span><span class="p">(</span><span class="sh">'</span><span class="s">captcha2.png</span><span class="sh">'</span><span class="p">)</span>
+        <span class="c1"># 获取缺口位置
+</span>        <span class="n">gap</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_gap</span><span class="p">(</span><span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">缺口位置</span><span class="sh">'</span><span class="p">,</span> <span class="n">gap</span><span class="p">)</span>
+        <span class="c1"># 减去缺口位移
+</span>        <span class="n">gap</span> <span class="o">-=</span> <span class="n">BORDER</span>
+        <span class="c1"># 获取移动轨迹
+</span>        <span class="n">track</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_track</span><span class="p">(</span><span class="n">gap</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">滑动轨迹</span><span class="sh">'</span><span class="p">,</span> <span class="n">track</span><span class="p">)</span>
+        <span class="c1"># 拖动滑块
+</span>        <span class="n">self</span><span class="p">.</span><span class="nf">move_to_gap</span><span class="p">(</span><span class="n">slider</span><span class="p">,</span> <span class="n">track</span><span class="p">)</span>
+
+        <span class="n">success</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span>
+            <span class="n">EC</span><span class="p">.</span><span class="nf">text_to_be_present_in_element</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">geetest_success_radar_tip_content</span><span class="sh">'</span><span class="p">),</span> <span class="sh">'</span><span class="s">验证成功</span><span class="sh">'</span><span class="p">))</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">success</span><span class="p">)</span>
+
+        <span class="c1"># 失败后重试
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">crack</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">login</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">crack</span> <span class="o">=</span> <span class="nc">CrackGeetest</span><span class="p">()</span>
+    <span class="n">crack</span><span class="p">.</span><span class="nf">crack</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="点触验证码的识别">点触验证码的识别</h2>
+
+<h3 id="识别思路-1">识别思路</h3>
+
+<p>互联网上有很多验证码服务平台，这里使用 <a href="http://www.chaojiying.com">超级鹰</a> 其提供的服务种类非常广泛。</p>
+
+<h3 id="注册账号"><a href="https://www.chaojiying.com/user/reg">注册账号</a></h3>
+
+<h3 id="获取-api">获取 API</h3>
+
+<p>下载对应的 <a href="https://www.chaojiying.com/api-14.html">API</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>
+
+
+<span class="k">class</span> <span class="nc">Chaojiying</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">soft_id</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">username</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">password</span> <span class="o">=</span> <span class="nf">md5</span><span class="p">(</span><span class="n">password</span><span class="p">.</span><span class="nf">encode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)).</span><span class="nf">hexdigest</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">soft_id</span> <span class="o">=</span> <span class="n">soft_id</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">base_params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">user</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">username</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">pass2</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">password</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">softid</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">soft_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">Connection</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Keep-Alive</span><span class="sh">'</span><span class="p">,</span>
+            <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)</span><span class="sh">'</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">post_pic</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="n">codetype</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        im: 图片字节
+        codetype: 题目类型 参考 http://www.chaojiying.com/price.html
+        </span><span class="sh">"""</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">codetype</span><span class="sh">'</span><span class="p">:</span> <span class="n">codetype</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">params</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">base_params</span><span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">userfile</span><span class="sh">'</span><span class="p">:</span> <span class="p">(</span><span class="sh">'</span><span class="s">ccc.jpg</span><span class="sh">'</span><span class="p">,</span> <span class="n">im</span><span class="p">)}</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="sh">'</span><span class="s">http://upload.chaojiying.net/Upload/Processing.php</span><span class="sh">'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span>
+                          <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">report_error</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">im_id</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        im_id:报错题目的图片ID
+        </span><span class="sh">"""</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="n">im_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">params</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">base_params</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">post</span><span class="p">(</span><span class="sh">'</span><span class="s">http://upload.chaojiying.net/Upload/ReportError.php</span><span class="sh">'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span><span class="p">.</span><span class="nf">json</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="初始化-1">初始化</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># http://admin.touclick.com/login.html的邮箱
+</span><span class="n">EMAIL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">787549184@qq.com</span><span class="sh">'</span>
+<span class="c1"># http://admin.touclick.com/login.html的密码
+</span><span class="n">PASSWORD</span> <span class="o">=</span> <span class="sh">''</span>
+
+<span class="n">CHAOJIYING_USERNAME</span> <span class="o">=</span> <span class="sh">'</span><span class="s">787549184</span><span class="sh">'</span>
+<span class="n">CHAOJIYING_PASSWORD</span> <span class="o">=</span> <span class="sh">''</span>
+<span class="n">CHAOJIYING_SOFT_ID</span> <span class="o">=</span> <span class="mi">898551</span>
+<span class="n">CHAOJIYING_KIND</span> <span class="o">=</span> <span class="mi">9102</span>
+
+<span class="k">class</span> <span class="nc">CrackTouClick</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://admin.touclick.com/login.html</span><span class="sh">'</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">Chrome</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wait</span> <span class="o">=</span> <span class="nc">WebDriverWait</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">EMAIL</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">PASSWORD</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">chaojiying</span> <span class="o">=</span> <span class="nc">Chaojiying</span><span class="p">(</span><span class="n">CHAOJIYING_USERNAME</span><span class="p">,</span> <span class="n">CHAOJIYING_PASSWORD</span><span class="p">,</span> <span class="n">CHAOJIYING_SOFT_ID</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="获取验证码-1">获取验证码</h3>
+
+<p>完善相关表单，模拟点击呼出验证码</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        打开网页输入用户名密码
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">email</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">password</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">email</span><span class="p">.</span><span class="nf">send_keys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">email</span><span class="p">)</span>
+        <span class="n">password</span><span class="p">.</span><span class="nf">send_keys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">password</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_touclick_button</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取初始验证按钮
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="n">button</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">touclick-hod-wrap</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">button</span>
+</code></pre></div></div>
+
+<p>获取验证码图片位置和大小</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_touclick_element</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证图片对象
+        :return: 图片对象
+        </span><span class="sh">"""</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">touclick-pub-content</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">element</span>
+
+    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证码位置
+        :return: 验证码位置元组
+        </span><span class="sh">"""</span>
+        <span class="n">element</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_touclick_element</span><span class="p">()</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="n">location</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">element</span><span class="p">.</span><span class="n">size</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="sh">'</span><span class="s">height</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span>
+            <span class="sh">'</span><span class="s">width</span><span class="sh">'</span><span class="p">]</span>
+        <span class="nf">return </span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_screenshot</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取网页截图
+        :return: 截图对象
+        </span><span class="sh">"""</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">get_screenshot_as_png</span><span class="p">()</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nc">BytesIO</span><span class="p">(</span><span class="n">screenshot</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">screenshot</span>
+
+    <span class="k">def</span> <span class="nf">get_touclick_image</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">captcha.png</span><span class="sh">'</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证码图片
+        :return: 图片对象
+        </span><span class="sh">"""</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_position</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">验证码位置</span><span class="sh">'</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_screenshot</span><span class="p">()</span>
+        <span class="n">captcha</span> <span class="o">=</span> <span class="n">screenshot</span><span class="p">.</span><span class="nf">crop</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">))</span>
+        <span class="n">captcha</span><span class="p">.</span><span class="nf">save</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">captcha</span>
+</code></pre></div></div>
+
+<h3 id="识别验证码">识别验证码</h3>
+
+<p>调用 Chaojiying 对象的 post_pic() 方法，即可把图片发生到超级鹰后台</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="c1"># 获取验证码图片
+</span>        <span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_touclick_image</span><span class="p">()</span>
+        <span class="n">bytes_array</span> <span class="o">=</span> <span class="nc">BytesIO</span><span class="p">()</span>
+        <span class="n">image</span><span class="p">.</span><span class="nf">save</span><span class="p">(</span><span class="n">bytes_array</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="sh">'</span><span class="s">PNG</span><span class="sh">'</span><span class="p">)</span>
+        <span class="c1"># 识别验证码
+</span>        <span class="n">result</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">chaojiying</span><span class="p">.</span><span class="nf">post_pic</span><span class="p">(</span><span class="n">bytes_array</span><span class="p">.</span><span class="nf">getvalue</span><span class="p">(),</span> <span class="n">CHAOJIYING_KIND</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>将 pic_str() 识别的文字坐标 解析，然后模拟点击</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">get_points</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">captcha_result</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        解析识别结果
+        :param captcha_result: 识别结果
+        :return: 转化后的结果
+        </span><span class="sh">"""</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">captcha_result</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">pic_str</span><span class="sh">'</span><span class="p">).</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">|</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="p">[[</span><span class="nf">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">group</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">,</span><span class="sh">'</span><span class="p">)]</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">locations</span>
+
+    <span class="k">def</span> <span class="nf">touch_click_words</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        点击验证图片
+        :param locations: 点击位置
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+            <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">).</span><span class="nf">move_to_element_with_offset</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="nf">get_touclick_element</span><span class="p">(),</span> <span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                                   <span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]).</span><span class="nf">click</span><span class="p">().</span><span class="nf">perform</span><span class="p">()</span>
+            <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="完善表单模拟登录-1">完善表单，模拟登录</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">touch_click_verify</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        点击验证按钮
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">button</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">touclick-pub-submit</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">button</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        登录
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">submit</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">_submit</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">submit</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">登录成功</span><span class="sh">'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        破解入口
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span>
+        <span class="c1"># 点击验证按钮
+</span>        <span class="n">button</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_touclick_button</span><span class="p">()</span>
+        <span class="n">button</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+        <span class="c1"># 获取验证码图片
+</span>        <span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_touclick_image</span><span class="p">()</span>
+        <span class="n">bytes_array</span> <span class="o">=</span> <span class="nc">BytesIO</span><span class="p">()</span>
+        <span class="n">image</span><span class="p">.</span><span class="nf">save</span><span class="p">(</span><span class="n">bytes_array</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="sh">'</span><span class="s">PNG</span><span class="sh">'</span><span class="p">)</span>
+        <span class="c1"># 识别验证码
+</span>        <span class="n">result</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">chaojiying</span><span class="p">.</span><span class="nf">post_pic</span><span class="p">(</span><span class="n">bytes_array</span><span class="p">.</span><span class="nf">getvalue</span><span class="p">(),</span> <span class="n">CHAOJIYING_KIND</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_points</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">touch_click_words</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">touch_click_verify</span><span class="p">()</span>
+        <span class="c1"># 判定是否成功
+</span>        <span class="n">success</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span>
+            <span class="n">EC</span><span class="p">.</span><span class="nf">text_to_be_present_in_element</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">touclick-hod-note</span><span class="sh">'</span><span class="p">),</span> <span class="sh">'</span><span class="s">验证成功</span><span class="sh">'</span><span class="p">))</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">success</span><span class="p">)</span>
+
+        <span class="c1"># 失败后重试
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">crack</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">login</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">crack</span> <span class="o">=</span> <span class="nc">CrackTouClick</span><span class="p">()</span>
+    <span class="n">crack</span><span class="p">.</span><span class="nf">crack</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="微博宫格验证码的识别">微博宫格验证码的识别</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">os</span>
+<span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="n">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="n">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="n">selenium.common.exceptions</span> <span class="kn">import</span> <span class="n">TimeoutException</span>
+<span class="kn">from</span> <span class="n">selenium.webdriver</span> <span class="kn">import</span> <span class="n">ActionChains</span>
+<span class="kn">from</span> <span class="n">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="n">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
+<span class="kn">from</span> <span class="n">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+<span class="kn">from</span> <span class="n">os</span> <span class="kn">import</span> <span class="n">listdir</span>
+
+<span class="n">USERNAME</span> <span class="o">=</span> <span class="sh">'</span><span class="s">xxxxxx</span><span class="sh">'</span>
+<span class="n">PASSWORD</span> <span class="o">=</span> <span class="sh">'</span><span class="s">xxxxxxx</span><span class="sh">'</span>
+
+<span class="n">TEMPLATES_FOLDER</span> <span class="o">=</span> <span class="sh">'</span><span class="s">templates/</span><span class="sh">'</span>
+
+
+<span class="k">class</span> <span class="nc">CrackWeiboSlide</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">https://passport.weibo.cn/signin/login?entry=mweibo&r=https://m.weibo.cn/</span><span class="sh">'</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">Chrome</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">wait</span> <span class="o">=</span> <span class="nc">WebDriverWait</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">username</span> <span class="o">=</span> <span class="n">USERNAME</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">PASSWORD</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        打开网页输入用户名密码并点击
+        :return: None
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">loginName</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">loginPassword</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">submit</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">ID</span><span class="p">,</span> <span class="sh">'</span><span class="s">loginAction</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="n">username</span><span class="p">.</span><span class="nf">send_keys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">password</span><span class="p">.</span><span class="nf">send_keys</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">submit</span><span class="p">.</span><span class="nf">click</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证码位置
+        :return: 验证码位置元组
+        </span><span class="sh">"""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">wait</span><span class="p">.</span><span class="nf">until</span><span class="p">(</span><span class="n">EC</span><span class="p">.</span><span class="nf">presence_of_element_located</span><span class="p">((</span><span class="n">By</span><span class="p">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="sh">'</span><span class="s">patt-shadow</span><span class="sh">'</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="n">TimeoutException</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">未出现验证码</span><span class="sh">'</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">location</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">size</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span><span class="sh">'</span><span class="s">height</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">],</span> <span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">]</span> <span class="o">+</span> <span class="n">size</span><span class="p">[</span>
+            <span class="sh">'</span><span class="s">width</span><span class="sh">'</span><span class="p">]</span>
+        <span class="nf">return </span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_screenshot</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取网页截图
+        :return: 截图对象
+        </span><span class="sh">"""</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">get_screenshot_as_png</span><span class="p">()</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="nc">BytesIO</span><span class="p">(</span><span class="n">screenshot</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">screenshot</span>
+
+    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">captcha.png</span><span class="sh">'</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        获取验证码图片
+        :return: 图片对象
+        </span><span class="sh">"""</span>
+        <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_position</span><span class="p">()</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">验证码位置</span><span class="sh">'</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">screenshot</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_screenshot</span><span class="p">()</span>
+        <span class="n">captcha</span> <span class="o">=</span> <span class="n">screenshot</span><span class="p">.</span><span class="nf">crop</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span><span class="p">))</span>
+        <span class="n">captcha</span><span class="p">.</span><span class="nf">save</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">captcha</span>
+
+    <span class="k">def</span> <span class="nf">is_pixel_equal</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">image1</span><span class="p">,</span><span class="n">image2</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span><span class="c1">#判断刷新出来的验证码图片和已经存储好的验证码模板是否匹配
+</span>        <span class="n">pixel1</span><span class="o">=</span><span class="n">image1</span><span class="p">.</span><span class="nf">load</span><span class="p">()[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span><span class="c1">#返回的是RGB形式的元组
+</span>        <span class="n">pixel2</span><span class="o">=</span><span class="n">image2</span><span class="p">.</span><span class="nf">load</span><span class="p">()[</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">]</span>
+        <span class="n">threshold</span><span class="o">=</span><span class="mi">20</span><span class="c1">#设定一个阈值
+</span>        <span class="k">if</span> <span class="nf">abs</span><span class="p">(</span><span class="n">pixel1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">pixel2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="ow">and</span> <span class="nf">abs</span><span class="p">(</span><span class="n">pixel1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pixel2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span> <span class="ow">and</span> <span class="nf">abs</span><span class="p">(</span>
+                <span class="n">pixel1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">pixel2</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">same_image</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">image</span><span class="p">,</span><span class="n">template</span><span class="p">):</span><span class="c1">#第一个为待识别的验证码，第二个为存储的模板，只要是比对一下各个点的像素
+</span>            <span class="n">count</span><span class="o">=</span><span class="mi">0</span><span class="c1">#用于存储像素相同点的个数
+</span>            <span class="n">threshold</span><span class="o">=</span><span class="mf">0.99</span><span class="c1">#阈值，用于标定两张图表是否相同
+</span>            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">width</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">height</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="nf">is_pixel_equal</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="n">template</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span><span class="c1">#如果像素相同
+</span>                        <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">result</span><span class="o">=</span><span class="nf">float</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">image</span><span class="p">.</span><span class="n">width</span><span class="o">*</span><span class="n">image</span><span class="p">.</span><span class="n">height</span><span class="p">)</span><span class="c1">#判断相同的像素点的占比
+</span>            <span class="k">if</span> <span class="n">result</span><span class="o">&gt;</span><span class="n">threshold</span><span class="p">:</span>
+                <span class="nf">print </span><span class="p">(</span><span class="sh">'</span><span class="s">成功匹配</span><span class="sh">'</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">True</span> 
+            <span class="k">else</span><span class="err">：</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+
+     <span class="k">def</span> <span class="nf">detect_image</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">image</span><span class="p">):</span>
+         <span class="k">for</span> <span class="n">template_name</span> <span class="ow">in</span> <span class="nf">listdir</span><span class="p">(</span><span class="n">TEMPLATES_FOLDER</span><span class="p">):</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">正在匹配</span><span class="sh">'</span><span class="p">,</span> <span class="n">template_name</span><span class="p">)</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">Image</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="n">TEMPLATES_FOLDER</span> <span class="o">+</span> <span class="n">template_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="nf">same_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">template</span><span class="p">):</span>
+                <span class="c1"># 返回顺序
+</span>                <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="nf">int</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="k">for</span> <span class="n">number</span> <span class="ow">in</span> <span class="nf">list</span><span class="p">(</span><span class="n">template_name</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">'</span><span class="s">.</span><span class="sh">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">])]</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">拖动顺序</span><span class="sh">'</span><span class="p">,</span> <span class="n">numbers</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">numbers</span>
+
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">numbers</span><span class="p">):</span>
+        <span class="n">circles</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">.</span><span class="nf">find_elements_by_css_selector</span><span class="p">(</span><span class="sh">'</span><span class="s">.patt-wrap .patt-circ</span><span class="sh">'</span><span class="p">)</span><span class="c1">#获得的是四个按钮的列表
+</span>        <span class="n">dx</span><span class="o">=</span><span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="c1">#初始一个原始的初始移动位置
+</span>        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">circle</span><span class="o">=</span><span class="n">circles</span><span class="p">[</span><span class="n">numbers</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="c1">#numbers是1-4的一个列表
+</span>            <span class="c1"># 如果是第一次循环
+</span>            <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># 点击第一个按点
+</span>                <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">)</span> \
+                    <span class="p">.</span><span class="nf">move_to_element_with_offset</span><span class="p">(</span><span class="n">circle</span><span class="p">,</span> <span class="n">circle</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="sh">'</span><span class="s">width</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">circle</span><span class="p">.</span><span class="n">size</span><span class="p">[</span><span class="sh">'</span><span class="s">height</span><span class="sh">'</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> \
+                    <span class="p">.</span><span class="nf">click_and_hold</span><span class="p">().</span><span class="nf">perform</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 小幅移动次数
+</span>                <span class="n">times</span> <span class="o">=</span> <span class="mi">30</span>
+                <span class="c1"># 拖动
+</span>                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+                    <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">).</span><span class="nf">move_by_offset</span><span class="p">(</span><span class="n">dx</span> <span class="o">/</span> <span class="n">times</span><span class="p">,</span> <span class="n">dy</span> <span class="o">/</span> <span class="n">times</span><span class="p">).</span><span class="nf">perform</span><span class="p">()</span><span class="c1">#当dx=dy=0的时候，index=0，不会执行这一句
+</span>                    <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">times</span><span class="p">)</span>
+            <span class="c1"># 如果是最后一次循环
+</span>            <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="c1"># 松开鼠标
+</span>                <span class="nc">ActionChains</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">browser</span><span class="p">).</span><span class="nf">release</span><span class="p">().</span><span class="nf">perform</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 计算下一次偏移
+</span>                <span class="n">dx</span> <span class="o">=</span> <span class="n">circles</span><span class="p">[</span><span class="n">numbers</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">].</span><span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">circle</span><span class="p">.</span><span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">x</span><span class="sh">'</span><span class="p">]</span>
+                <span class="n">dy</span> <span class="o">=</span> <span class="n">circles</span><span class="p">[</span><span class="n">numbers</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">].</span><span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">]</span> <span class="o">-</span> <span class="n">circle</span><span class="p">.</span><span class="n">location</span><span class="p">[</span><span class="sh">'</span><span class="s">y</span><span class="sh">'</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">crack</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        破解入口
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span>
+        <span class="c1"># 获取验证码图片
+</span>        <span class="n">image</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_image</span><span class="p">(</span><span class="sh">'</span><span class="s">captcha.png</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">numbers</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">detect_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">move</span><span class="p">(</span><span class="n">numbers</span><span class="p">)</span>
+        <span class="n">time</span><span class="p">.</span><span class="nf">sleep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">识别结束</span><span class="sh">'</span><span class="p">)</span>
+
+
+
+
+
+     <span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">count</span><span class="o">=</span><span class="mi">0</span> 
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">open</span><span class="p">()</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">get_image</span><span class="p">(</span><span class="nf">str</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">+</span><span class="sh">'</span><span class="s">.png</span><span class="sh">'</span><span class="p">)</span>
+            <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">crack</span><span class="o">=</span> <span class="nc">CrackWeiboSlide</span><span class="p">()</span>
+    <span class="n">crack</span><span class="p">.</span><span class="nf">crack</span><span class="p">()</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/11/24/selenium.html" title="Selenium">Selenium</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/11/25/splash.html" title="Splash">Splash</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ENTJ.html" title="Splash">人格八维 -- ENTJ（指挥官）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/22/reptile-db.html" title="Splash">数据库存储</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/books/2023/01/17/shanhaiching-simplified.html" title="Splash">《山海经》</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html" title="Splash">IntelliJ 快捷键</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/25/verification-code.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/25/verification-code.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

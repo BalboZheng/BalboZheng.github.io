@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Beautiful Soup | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Beautiful Soup">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="解析器">
+<meta property="og:description" content="解析器">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-20T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Beautiful Soup">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-11-20T00:00:00+00:00","datePublished":"2019-11-20T00:00:00+00:00","description":"解析器","headline":"Beautiful Soup","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Beautiful Soup</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-11-20T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 20, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 18 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#reptile">#reptile</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="解析器">解析器</h2>
+
+<p>Beautiful Soup 在解析时实际上依赖解析器，他除了支持 Python 标准库中的 HTML 解析器外，还支持一些第三方解析器。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>解析器</th>
+      <th>使用方法</th>
+      <th>优势</th>
+      <th>劣势</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Python标准库</td>
+      <td>BeautifulSoup(markup, ‘html.parser’)</td>
+      <td>Python 的内置标准库、执行速度适中、文档容错能力强</td>
+      <td>Python 2.7.3 及 Python 3.2.2 之前的版本文档容错能力差</td>
+    </tr>
+    <tr>
+      <td>lxml HTML 解析器</td>
+      <td>BeautifulSoup(markup, ‘lxml’)</td>
+      <td>速度快、文档容错能力强</td>
+      <td>需要安装 C 语言库</td>
+    </tr>
+    <tr>
+      <td>lxml XML 解析器</td>
+      <td>BeautifulSoup(markup, ‘xml’)</td>
+      <td>速度快、唯一支持 XML 的解析器</td>
+      <td>需要安装 C 语言库</td>
+    </tr>
+    <tr>
+      <td>html5lib</td>
+      <td>BeautifulSoup(markup, ‘html5lib’)</td>
+      <td>最好的容错性、以浏览器的方式解析文档、生成 HTML5 格式的文档</td>
+      <td>速度慢、不依赖外部扩展</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="基本用法">基本用法</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+
+&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse</span><span class="sh">'</span><span class="s">s story&lt;/title&gt;&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;p class=</span><span class="sh">"</span><span class="s">title</span><span class="sh">"</span><span class="s"> name=</span><span class="sh">"</span><span class="s">dromouse</span><span class="sh">"</span><span class="s">&gt;&lt;b&gt;The Dormouse</span><span class="sh">'</span><span class="s">s story&lt;/b&gt;&lt;/p&gt;
+
+&lt;p class=</span><span class="sh">"</span><span class="s">story</span><span class="sh">"</span><span class="s">&gt;Once upon a time there were three little sisters; and their names were
+
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/elsie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link1</span><span class="sh">"</span><span class="s">&gt;&lt;!-- Elsie --&gt;&lt;/a&gt;,
+
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/lacie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link2</span><span class="sh">"</span><span class="s">&gt;Lacie&lt;/a&gt; and
+
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/tillie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link3</span><span class="sh">"</span><span class="s">&gt;Tillie&lt;/a&gt;;
+
+and they lived at the bottom of a well.&lt;/p&gt;
+
+&lt;p class=</span><span class="sh">"</span><span class="s">story</span><span class="sh">"</span><span class="s">&gt;...&lt;/p&gt;
+
+</span><span class="sh">"""</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># 把解析的字符串以标准的缩进格式输出
+</span><span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">prettify</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+ <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>
+   The Dormouse's story
+  <span class="nt">&lt;/title&gt;</span>
+ <span class="nt">&lt;/head&gt;</span>
+ <span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"title"</span> <span class="na">name=</span><span class="s">"dromouse"</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;b&gt;</span>
+    The Dormouse's story
+   <span class="nt">&lt;/b&gt;</span>
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"story"</span><span class="nt">&gt;</span>
+   Once upon a time there were three little sisters; and their names were
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/elsie"</span> <span class="na">id=</span><span class="s">"link1"</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- Elsie --&gt;</span>
+   <span class="nt">&lt;/a&gt;</span>
+   ,
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/lacie"</span> <span class="na">id=</span><span class="s">"link2"</span><span class="nt">&gt;</span>
+    Lacie
+   <span class="nt">&lt;/a&gt;</span>
+   and
+   <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">"sister"</span> <span class="na">href=</span><span class="s">"http://example.com/tillie"</span> <span class="na">id=</span><span class="s">"link3"</span><span class="nt">&gt;</span>
+    Tillie
+   <span class="nt">&lt;/a&gt;</span>
+   ;
+and they lived at the bottom of a well.
+  <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">"story"</span><span class="nt">&gt;</span>
+   ...
+  <span class="nt">&lt;/p&gt;</span>
+ <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+The Dormouse's story
+</code></pre></div></div>
+
+<h2 id="节点选择器">节点选择器</h2>
+
+<h3 id="选择元素">选择元素</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;class 'bs4.element.Tag'&gt;
+The Dormouse's story
+&lt;head&gt;&lt;title&gt;The Dormouse's story&lt;/title&gt;&lt;/head&gt;
+&lt;p class="title" name="dromouse"&gt;&lt;b&gt;The Dormouse's story&lt;/b&gt;&lt;/p&gt;
+</code></pre></div></div>
+
+<h3 id="提取信息">提取信息</h3>
+
+<ol>
+  <li>
+    <p>获取名称</p>
+
+    <p>可以利用 name 属性获取节点的名称</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>title
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取属性</p>
+
+    <p>每个节点可能有多个属性，比如 id 和 class 等，选择这个节点元素后，可以调用 attrs 获取所有属性：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">attrs</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">attrs</span><span class="p">[</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">])</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>{'class': ['title'], 'name': 'dromouse'}
+dromouse
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取内容</p>
+
+    <p>可以利用 string 属性获取节点元素包含的文本内容</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>The Dormouse's story
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="嵌套选择">嵌套选择</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">head</span><span class="p">.</span><span class="n">title</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;class 'bs4.element.Tag'&gt;
+The Dormouse's story
+</code></pre></div></div>
+
+<h2 id="关联选择">关联选择</h2>
+
+<ol>
+  <li>
+    <p>子节点和子孙节点</p>
+
+    <p>选取节点元素之后，如果先要获取他的直接子节点，可以调用 contents 属性</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+   
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;The Dormouse</span><span class="sh">'</span><span class="s">s story&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class=</span><span class="sh">"</span><span class="s">story</span><span class="sh">"</span><span class="s">&gt;
+    Once upon a time there were three little sisters; and their names were
+    &lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/elsie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link1</span><span class="sh">"</span><span class="s">&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/lacie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link2</span><span class="sh">"</span><span class="s">&gt;Lacie&lt;/a&gt; 
+and
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/tillie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link3</span><span class="sh">"</span><span class="s">&gt;Tillie&lt;/a&gt;
+and they lived at the bottom of a well.
+&lt;/p&gt;
+&lt;p class=</span><span class="sh">"</span><span class="s">story</span><span class="sh">"</span><span class="s">&gt;...&lt;/p&gt;
+   
+</span><span class="sh">"""</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">contents</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>['\n    Once upon a time there were three little sisters; and their names were\n    ', &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;, '\n', &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;, ' \nand\n', &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;, '\nand they lived at the bottom of a well.\n']
+</code></pre></div>    </div>
+
+    <p>contents 得到的是直接子节点的列表</p>
+
+    <p>同样，我们可以调用 children 属性得到相应的结果</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">children</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">children</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>&lt;list_iterator object at 0x000000000B301D48&gt;
+0 
+    Once upon a time there were three little sisters; and their names were
+   
+1 &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+2 
+3 &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+4  
+and
+5 &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+6 
+and they lived at the bottom of a well.
+</code></pre></div>    </div>
+
+    <p>如果要得到所有的子孙节点，可以调用 descendants 属性：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">descendants</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">descendants</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>&lt;generator object Tag.descendants at 0x000000000B2B9548&gt;
+0 
+    Once upon a time there were three little sisters; and their names were
+   
+1 &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+2 
+3 &lt;span&gt;Elsie&lt;/span&gt;
+4 Elsie
+5 
+6 
+7 &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+8 Lacie
+9  
+and
+10 &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+11 Tillie
+12 
+and they lived at the bottom of a well.
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>父节点和祖先节点</p>
+
+    <p>如果要获取某个节点元素的父节点，可以调用 parent 属性：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parent</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>&lt;p class="story"&gt;
+    Once upon a time there were three little sisters; and their names were
+    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+and
+&lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+and they lived at the bottom of a well.
+&lt;/p&gt;
+</code></pre></div>    </div>
+
+    <p>如果想获取所有的祖先节点，可以调用parents 属性：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">p</span><span class="p">.</span><span class="n">parents</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="nf">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)))</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>&lt;class 'generator'&gt;
+[(0, &lt;p class="story"&gt;
+    Once upon a time there were three little sisters; and their names were
+    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+and
+&lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+and they lived at the bottom of a well.
+&lt;/p&gt;), (1, &lt;body&gt;
+&lt;p class="story"&gt;
+    Once upon a time there were three little sisters; and their names were
+    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+and
+&lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+and they lived at the bottom of a well.
+&lt;/p&gt;
+&lt;p class="story"&gt;...&lt;/p&gt;
+&lt;/body&gt;), (2, &lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class="story"&gt;
+    Once upon a time there were three little sisters; and their names were
+    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+and
+&lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+and they lived at the bottom of a well.
+&lt;/p&gt;
+&lt;p class="story"&gt;...&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;), (3, &lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;The Dormouse's story&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class="story"&gt;
+    Once upon a time there were three little sisters; and their names were
+    &lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt; 
+and
+&lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;
+and they lived at the bottom of a well.
+&lt;/p&gt;
+&lt;p class="story"&gt;...&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;)]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>兄弟节点</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+   
+&lt;html&gt;
+&lt;body&gt;
+&lt;p class=</span><span class="sh">"</span><span class="s">story</span><span class="sh">"</span><span class="s">&gt;
+        Once upon a time there were three little sisters; and their names were
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/elsie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link1</span><span class="sh">"</span><span class="s">&gt;
+&lt;span&gt;Elsie&lt;/span&gt;
+&lt;/a&gt;
+        Hello
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/lacie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link2</span><span class="sh">"</span><span class="s">&gt;Lacie&lt;/a&gt; 
+        and
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/tillie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link3</span><span class="sh">"</span><span class="s">&gt;Tillie&lt;/a&gt;
+        and they lived at the bottom of a well.
+&lt;/p&gt;
+</span><span class="sh">"""</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Next Sibling</span><span class="sh">'</span><span class="p">,</span> <span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Prev Sibling</span><span class="sh">'</span><span class="p">,</span> <span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">previous_sibling</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Next Siblings</span><span class="sh">'</span><span class="p">,</span> <span class="nf">list</span><span class="p">(</span><span class="nf">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_siblings</span><span class="p">)))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Prev Siblings</span><span class="sh">'</span><span class="p">,</span> <span class="nf">list</span><span class="p">(</span><span class="nf">enumerate</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">previous_siblings</span><span class="p">)))</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>Next Sibling 
+        Hello
+Prev Sibling 
+        Once upon a time there were three little sisters; and their names were
+Next Siblings [(0, '\n        Hello\n'), (1, &lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;), (2, ' \n        and\n'), (3, &lt;a class="sister" href="http://example.com/tillie" id="link3"&gt;Tillie&lt;/a&gt;), (4, '\n        and they lived at the bottom of a well.\n')]
+Prev Siblings [(0, '\n        Once upon a time there were three little sisters; and their names were\n')]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>提取信息</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+   
+<span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+&lt;html&gt;
+&lt;body&gt;
+&lt;p class=</span><span class="sh">"</span><span class="s">story</span><span class="sh">"</span><span class="s">&gt;
+        Once upon a time there were three little sisters; and their names were
+&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/elsie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link1</span><span class="sh">"</span><span class="s">&gt;Bob&lt;/a&gt;&lt;a href=</span><span class="sh">"</span><span class="s">http://example.com/lacie</span><span class="sh">"</span><span class="s"> class=</span><span class="sh">"</span><span class="s">sister</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">link2</span><span class="sh">"</span><span class="s">&gt;Lacie&lt;/a&gt; 
+   
+&lt;/p&gt;
+</span><span class="sh">"""</span>
+   
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Next Sibling:</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">next_sibling</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Parent:</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="n">a</span><span class="p">.</span><span class="n">parents</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="n">attrs</span><span class="p">[</span><span class="sh">'</span><span class="s">class</span><span class="sh">'</span><span class="p">])</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>Next Sibling:
+&lt;class 'bs4.element.Tag'&gt;
+&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+Lacie
+Parent:
+&lt;class 'generator'&gt;
+&lt;p class="story"&gt;
+        Once upon a time there were three little sisters; and their names were
+&lt;a class="sister" href="http://example.com/elsie" id="link1"&gt;Bob&lt;/a&gt;&lt;a class="sister" href="http://example.com/lacie" id="link2"&gt;Lacie&lt;/a&gt;
+&lt;/p&gt;
+['story']
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="方法选择器">方法选择器</h2>
+
+<ul>
+  <li>
+    <p>find_all()</p>
+
+    <ol>
+      <li>
+        <p>name</p>
+
+        <p>我们可以根据节点名来查询元素</p>
+
+        <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+     
+<span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+&lt;div class=</span><span class="sh">"</span><span class="s">panel</span><span class="sh">"</span><span class="s">&gt;
+&lt;div class=</span><span class="sh">"</span><span class="s">panel-heading</span><span class="sh">"</span><span class="s">&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div class=</span><span class="sh">"</span><span class="s">panel-body</span><span class="sh">"</span><span class="s">&gt;
+&lt;ul class=</span><span class="sh">"</span><span class="s">list</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">list-1</span><span class="sh">"</span><span class="s">&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Foo&lt;/li&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Bar&lt;/li&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class=</span><span class="sh">"</span><span class="s">list list-small</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">list-2</span><span class="sh">"</span><span class="s">&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Foo&lt;/li&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</span><span class="sh">"""</span>
+     
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">ul</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">type</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">ul</span><span class="sh">'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>        </div>
+
+        <p>运行结果：</p>
+
+        <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>[&lt;ul class="list" id="list-1"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;li class="element"&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;, &lt;ul class="list list-small" id="list-2"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;]
+&lt;class 'bs4.element.Tag'&gt;
+</code></pre></div>        </div>
+
+        <p>因为都是 Tag 类型，所以依然可以进行嵌套查询。</p>
+
+        <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">ul</span><span class="sh">'</span><span class="p">):</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">li</span><span class="sh">'</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">ul</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sh">'</span><span class="s">li</span><span class="sh">'</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>        </div>
+
+        <p>运行结果：</p>
+
+        <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;]
+Foo
+Bar
+Jay
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+Foo
+Bar
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>attrs</p>
+
+        <p>除了工具节点名查询，我们也可以传入一些属性来查询，        对于一些常用的属性，比如 id 和 class 等，我们可以不用 attrs 来传递</p>
+
+        <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+     
+<span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+&lt;div class=</span><span class="sh">"</span><span class="s">panel</span><span class="sh">"</span><span class="s">&gt;
+&lt;div class=</span><span class="sh">"</span><span class="s">panel-heading</span><span class="sh">"</span><span class="s">&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div class=</span><span class="sh">"</span><span class="s">panel-body</span><span class="sh">"</span><span class="s">&gt;
+&lt;ul class=</span><span class="sh">"</span><span class="s">list</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">list-1</span><span class="sh">"</span><span class="s">&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Foo&lt;/li&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Bar&lt;/li&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class=</span><span class="sh">"</span><span class="s">list list-small</span><span class="sh">"</span><span class="s"> id=</span><span class="sh">"</span><span class="s">list-2</span><span class="sh">"</span><span class="s">&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Foo&lt;/li&gt;
+&lt;li class=</span><span class="sh">"</span><span class="s">element</span><span class="sh">"</span><span class="s">&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</span><span class="sh">"""</span>
+     
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">list-1</span><span class="sh">'</span><span class="p">}))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="sh">'</span><span class="s">name</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">elements</span><span class="sh">'</span><span class="p">}))</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">-----</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="sh">'</span><span class="s">list-1</span><span class="sh">'</span><span class="p">))</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">class_</span><span class="o">=</span><span class="sh">'</span><span class="s">element</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div>        </div>
+
+        <p>运行结果：</p>
+
+        <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>[&lt;ul class="list" id="list-1"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;li class="element"&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;]
+[]
+-----
+[&lt;ul class="list" id="list-1"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;li class="element"&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;, &lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+</code></pre></div>        </div>
+      </li>
+      <li>
+        <p>text</p>
+
+        <p>text 参数可用来匹配节点的文本，传入的形式可以是字符串，可以是正则表达式对象</p>
+
+        <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">re</span>
+     
+<span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+     
+<span class="n">html</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+&lt;div class=</span><span class="sh">"</span><span class="s">panel</span><span class="sh">"</span><span class="s">&gt;
+&lt;div class=</span><span class="sh">"</span><span class="s">panel-body</span><span class="sh">"</span><span class="s">&gt;
+&lt;a&gt;Hello, this is a link&lt;/a&gt;
+&lt;a&gt;Hello, this is a link, too&lt;/a&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</span><span class="sh">"""</span>
+     
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">soup</span><span class="p">.</span><span class="nf">find_all</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">re</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span><span class="sh">'</span><span class="s">link</span><span class="sh">'</span><span class="p">)))</span>
+</code></pre></div>        </div>
+
+        <p>运行结果：</p>
+
+        <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>['Hello, this is a link', 'Hello, this is a link, too']
+</code></pre></div>        </div>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>find()
+find() 返回的是单个元素</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>html = “””</p>
+
+<div class="panel">
+<div class="panel-heading">
+<h4>Hello</h4>
+</div>
+<div class="panel-body">
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<ul class="list list-small" id="list-2">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+</ul>
+</div>
+</div>
+<p>”””</p>
+
+<p>soup = BeautifulSoup(html, ‘lxml’)
+print(soup.find(name=’ul’))
+print(type(soup.find(name=’ul’)))
+print(soup.find(class_=’list’))</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>运行结果：
+</code></pre></div></div>
+
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<p>&lt;class ‘bs4.element.Tag’&gt;</p>
+<ul class="list" id="list-1">
+<li class="element">Foo</li>
+<li class="element">Bar</li>
+<li class="element">Jay</li>
+</ul>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    - find_parents() 和 find_parent()： 前者返回所有祖先节点，后者返回直接父节点
+    - find_next_siblings() 和 find_next_sibling()： 前者返回后面所有的兄弟节点，后者返回后面第一个兄弟节点
+    - find_previous_siblings() 和 find_previous_sibling()： 前者返回前面所有的兄弟节点，后者返回前面第一个兄弟节点
+    - find_all_next() 和 find_next()： 前者返回节点后所有符合条件的节点，后者返回第一个符合条件的节点
+    - find_all_previous() 和 fing_previous()： 前者返回节点前所有符合条件的节点，后者返回第一个符合条件的节点
+
+## CSS 选择器
+
+使用 CSS 选择器时，只需要调用 select() 方法，传入相应的 CSS 选择器即可
+
+```python
+from bs4 import BeautifulSoup
+
+html = """
+&lt;div class="panel"&gt;
+&lt;div class="panel-heading"&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;
+&lt;div class="panel-body"&gt;
+&lt;ul class="list" id="list-1"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;li class="element"&gt;Jay&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul class="list list-small" id="list-2"&gt;
+&lt;li class="element"&gt;Foo&lt;/li&gt;
+&lt;li class="element"&gt;Bar&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+"""
+
+soup = BeautifulSoup(html, 'lxml')
+print(soup.select('.panel .panel-heading'))
+print(soup.select('ul li'))
+print(soup.select('#list-2 .element'))
+print(type(soup.select('ul')[0]))
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[&lt;div class="panel-heading"&gt;
+&lt;h4&gt;Hello&lt;/h4&gt;
+&lt;/div&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;, &lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+&lt;class 'bs4.element.Tag'&gt;
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>嵌套选择</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+  
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">ul</span><span class="sh">'</span><span class="p">):</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">li</span><span class="sh">'</span><span class="p">))</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;, &lt;li class="element"&gt;Jay&lt;/li&gt;]
+[&lt;li class="element"&gt;Foo&lt;/li&gt;, &lt;li class="element"&gt;Bar&lt;/li&gt;]
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取属性</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+  
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ul</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">ul</span><span class="sh">'</span><span class="p">):</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">ul</span><span class="p">[</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">])</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">ul</span><span class="p">.</span><span class="n">attrs</span><span class="p">[</span><span class="sh">'</span><span class="s">id</span><span class="sh">'</span><span class="p">])</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>list-1
+list-1
+list-2
+list-2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>获取文本</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+  
+<span class="n">soup</span> <span class="o">=</span> <span class="nc">BeautifulSoup</span><span class="p">(</span><span class="n">html</span><span class="p">,</span> <span class="sh">'</span><span class="s">lxml</span><span class="sh">'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">li</span> <span class="ow">in</span> <span class="n">soup</span><span class="p">.</span><span class="nf">select</span><span class="p">(</span><span class="sh">'</span><span class="s">li</span><span class="sh">'</span><span class="p">):</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">GET Text:</span><span class="sh">'</span><span class="p">,</span> <span class="n">li</span><span class="p">.</span><span class="nf">get_text</span><span class="p">())</span>
+<span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">String:</span><span class="sh">'</span><span class="p">,</span> <span class="n">li</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>GET Text: Foo
+String: Foo
+GET Text: Bar
+String: Bar
+GET Text: Jay
+String: Jay
+GET Text: Foo
+String: Foo
+GET Text: Bar
+String: Bar
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/11/17/xpath.html" title="XPath">XPath</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/11/21/pyquery.html" title="pyquery">pyquery</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/09/06/mybatis-pagehelper.html" title="pyquery">Mybatis-PageHelper</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/22/reptile-db.html" title="pyquery">数据库存储</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-creat.html" title="pyquery">设计模式-创建模式</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/software_designer/2021/03/14/data-structure.html" title="pyquery">数据结构基础知识</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/20/beautifulsoup.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

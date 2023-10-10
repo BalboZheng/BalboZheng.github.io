@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Thymeleaf入门 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="Thymeleaf入门">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="概述">
+<meta property="og:description" content="概述">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-05-13T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Thymeleaf入门">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-05-13T00:00:00+00:00","datePublished":"2019-05-13T00:00:00+00:00","description":"概述","headline":"Thymeleaf入门","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Thymeleaf入门</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-05-13T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 13, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#thymeleaf">#thymeleaf</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="概述">概述</h2>
+
+<p>1.是什么</p>
+
+<ul>
+  <li>简单说， Thymeleaf 是一个跟 Velocity、FreeMarker 类似的模板引擎，它可以完全替代 JSP 。</li>
+</ul>
+
+<p>2.feature</p>
+
+<ul>
+  <li>
+    <p>Thymeleaf在有网络和无网络的环境下皆可运行，即它可以让美工在浏览器查看页面的静态效果，也可以让程序员在服务器查看带数据的动态页面效果。这是由于它支持 html 原型，然后在 html 标签里增加额外的属性来达到模板+数据的展示方式。浏览器解释 html 时会忽略未定义的标签属性，所以 thymeleaf 的模板可以静态地运行；当有数据返回到页面时，Thymeleaf 标签会动态地替换掉静态内容，使页面动态显示。</p>
+  </li>
+  <li>
+    <p>Thymeleaf开箱即用的特性。它提供标准和spring标准两种方言，可以直接套用模板实现JSTL、 OGNL表达式效果，避免每天套模板、该jstl、改标签的困扰。同时开发人员也可以扩展和创建自定义的方言。</p>
+  </li>
+  <li>
+    <p>Thymeleaf 提供spring标准方言和一个与 SpringMVC 完美集成的可选模块，可以快速的实现表单绑定、属性编辑器、国际化等功能。</p>
+  </li>
+</ul>
+
+<p>3.文档</p>
+
+<p>官方教程：</p>
+
+<p>http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#what-is-thymeleaf</p>
+
+<p>推荐教程：</p>
+
+<p>http://blog.didispace.com/springbootweb/</p>
+
+<p>http://blog.csdn.net/u012706811/article/details/52185345</p>
+
+<h2 id="hellworld">HellWorld</h2>
+
+<h3 id="引入依赖">引入依赖</h3>
+
+<p>springboot直接引入：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-thymeleaf<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>非springboot项目使用如下依赖：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.thymeleaf<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>thymeleaf<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>2.1.4<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>默认的模板映射路径是：<strong><em>src/main/resources/templates</em></strong></p>
+
+<p>springboot1.4之后，可以使用thymeleaf3来提高效率，并且解决标签闭合问题，配置方式：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;properties&gt;</span>
+    <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
+    <span class="c">&lt;!-- set thymeleaf version --&gt;</span>
+    <span class="nt">&lt;thymeleaf.version&gt;</span>3.0.0.RELEASE<span class="nt">&lt;/thymeleaf.version&gt;</span>
+    <span class="nt">&lt;thymeleaf-layout-dialect.version&gt;</span>2.0.0<span class="nt">&lt;/thymeleaf-layout-dialect.version&gt;</span>
+    <span class="c">&lt;!--set java version--&gt;</span>
+    <span class="nt">&lt;java.version&gt;</span>1.8<span class="nt">&lt;/java.version&gt;</span>
+<span class="nt">&lt;/properties&gt;</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">com.learndemo.controller</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.springframework.stereotype.Controller</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.Model</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.ui.ModelMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.bind.annotation.RequestMapping</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.web.servlet.ModelAndView</span><span class="o">;</span>
+
+<span class="nd">@Controller</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/return"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LearnReturnType</span> <span class="o">{</span>
+
+    <span class="cm">/**
+    * Model本身不能设置页面跳转的url地址别名或者物理跳转地址，那么我们可以通过控制器方法的返回值来设置跳转url
+    * 地址别名或者物理跳转地址
+    *
+    * @param model
+    * 一个接口， 其实现类为ExtendedModelMap，继承了ModelMap类
+    * @return 跳转url地址别名或者物理跳转地址
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index1"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">index1</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index1"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"result"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * ModelMap对象主要用于传递控制方法处理数据到结果页面,类似于request对象的setAttribute方法的作用。 
+    * 用法等同于Model
+    *
+    * @param model
+    * @return 跳转url地址别名或者物理跳转地址
+    */</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index2"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">index2</span><span class="o">(</span><span class="nc">ModelMap</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index2"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"result"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * ModelAndView主要有两个作用 设置转向地址和传递控制方法处理结果数据到结果页面
+    * @return 返回一个模板视图对象
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index3"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">index3</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">ModelAndView</span> <span class="n">mv</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">(</span><span class="s">"result"</span><span class="o">);</span>
+    <span class="c1">// ModelAndView mv = new ModelAndView();</span>
+    <span class="c1">// mv.setViewName("result");</span>
+    <span class="n">mv</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index3"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">mv</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**
+    * map用来存储递控制方法处理结果数据，通过ModelAndView方法返回。
+    * 当然Model,ModelMap也可以通过这种方法返回
+    * @return 返回一个模板视图对象
+    */</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/index4"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">ModelAndView</span> <span class="nf">index4</span><span class="o">()</span> <span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;();</span>
+    <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="s">"后台返回index4"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">ModelAndView</span><span class="o">(</span><span class="s">"result"</span><span class="o">,</span> <span class="n">map</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="配置thymeleaf视图解析器">配置thymeleaf视图解析器</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span><span class="n">thymeleaf</span> <span class="n">start</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span><span class="o">=</span><span class="no">HTML5</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">encoding</span><span class="o">=</span><span class="no">UTF</span><span class="o">-</span><span class="mi">8</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">content</span><span class="o">-</span><span class="n">type</span><span class="o">=</span><span class="n">text</span><span class="o">/</span><span class="n">html</span>
+<span class="err">#</span><span class="n">开发时关闭缓存</span><span class="o">,</span><span class="n">不然没法看到实时页面</span>
+<span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">cache</span><span class="o">=</span><span class="kc">false</span>
+<span class="err">#</span><span class="n">thymeleaf</span> <span class="n">end</span>
+</code></pre></div></div>
+
+<p>实际项目中可能会有不太严格的HTML格式，此时设置mode=HTML5将会对非严格的报错，可以参考以下配置：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span><span class="o">=</span><span class="no">LEGACYHTML5</span>
+</code></pre></div></div>
+
+<p>你可能会发现在默认配置下，thymeleaf对.html的内容要求很严格，比如</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>如果少最后的标签封闭符号/，就会报错而转到错误页。也比如你在使用Vue.js这样的库，然后有</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">v-cloak</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>这样的html代码，也会被thymeleaf认为不符合要求而抛出错误。</p>
+
+<p>因此，建议增加下面这段：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">spring</span><span class="o">.</span><span class="na">thymeleaf</span><span class="o">.</span><span class="na">mode</span> <span class="o">=</span> <span class="no">LEGACYHTML5</span>
+</code></pre></div></div>
+
+<p>spring.thymeleaf.mode的默认值是HTML5其实是一个很严格的检查，改为LEGACYHTML5可以得到一个可能更友好亲切的格式要求。</p>
+
+<p>需要注意的是，LEGACYHTML5需要搭配一个额外的库NekoHTML才可用。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span>  
+       <span class="nt">&lt;groupId&gt;</span>net.sourceforge.nekohtml<span class="nt">&lt;/groupId&gt;</span>  
+       <span class="nt">&lt;artifactId&gt;</span>nekohtml<span class="nt">&lt;/artifactId&gt;</span>   
+       <span class="nt">&lt;version&gt;</span>1.9.22<span class="nt">&lt;/version&gt;</span>   
+<span class="nt">&lt;/dependency&gt;</span>  
+</code></pre></div></div>
+
+<p>最后重启项目就可以感受到不那么严格的thymeleaf了。</p>
+
+<p>这样，需要的配置项如下：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">#</span> <span class="n">一项是非严格的HTML检查</span><span class="err">，</span><span class="n">一项是禁用缓存来获取实时页面数据</span><span class="err">，</span><span class="n">其他采用默认项即可</span>
+<span class="nl">thymeleaf:</span>
+    <span class="nl">mode:</span> <span class="no">LEGACYHTML5</span>
+    <span class="nl">cache:</span> <span class="kc">false</span>
+</code></pre></div></div>
+
+<h3 id="编写控制器">编写控制器</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cm">/**
+* 测试demo的controller
+*
+* @author zcc ON 2018/2/8
+**/</span>
+<span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Logger</span> <span class="n">log</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">HelloController</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/hello"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">hello</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"jiangbei"</span><span class="o">;</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span> <span class="n">name</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="编写模板html">编写模板html</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>hello<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!--/*@thymesVar id="name" type="java.lang.String"*/--&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello！, ' + ${name} + '!'"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>其中，注释是通过alt+enter进行自动生成的，便于IDEA补全，如果不加，IDEA将会报错cannot reslove，</p>
+
+<p>当然也可以通过如下方式解决，解决之前推荐在maven项目中reimport一下！（据说新版本的IDEA中已经修复此问题，待更新至2017.3以后）</p>
+
+<h2 id="基础语法">基础语法</h2>
+
+<h3 id="创建html">创建HTML</h3>
+
+<p>由上文也可以知道需要在html中添加：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>这样，下文才能正确使用th:*形式的标签！</p>
+
+<h3 id="获取变量值">获取变量值${…}</h3>
+
+<p>通过${…}进行取值，这点和ONGL表达式语法一致！</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!--/*@thymesVar id="name" type="java.lang.String"*/--&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello！, ' + ${name} + '!'"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+</code></pre></div></div>
+
+<p><strong>选择变量表达式*{…}</strong></p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:object=</span><span class="s">"${session.user}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"*{firstName}"</span><span class="nt">&gt;</span>Sebastian<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Surname: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"*{lastName}"</span><span class="nt">&gt;</span>Pepper<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Nationality: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">{nationality}"</span><span class="nt">&gt;</span>Saturn<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span> 
+</code></pre></div></div>
+
+<p>等价于</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Name: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.firstName}"</span><span class="nt">&gt;</span>Sebastian<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Surname: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.lastName}"</span><span class="nt">&gt;</span>Pepper<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Nationality: <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${session.user.nationality}"</span><span class="nt">&gt;</span>Saturn<span class="nt">&lt;/span&gt;</span>.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>至于p里面的原有的值只是为了给前端开发时做展示用的.这样的话很好的做到了前后端分离。</p>
+
+<p>这也是Thymeleaf非常好的一个特性：在无网络的情况下也能运行，也就是完全可以前端先写出页面，模拟数据展现效果，后端人员再拿此模板修改即可！</p>
+
+<h3 id="链接表达式-">链接表达式: @{…}</h3>
+
+<p>用来配合link src href使用的语法，类似的标签有:th:href和th:src</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- Will produce 'http://localhost:8080/gtvg/order/details?orderId=3' (plus rewriting) --&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{http://localhost:8080/gtvg/order/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>
+view<span class="nt">&lt;/a&gt;</span> <span class="c">&lt;!-- Will produce '/gtvg/order/details?orderId=3' (plus rewriting) --&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{/order/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>view<span class="nt">&lt;/a&gt;</span>
+
+<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"details.html"</span> <span class="na">th:href=</span><span class="s">"@{order/{orderId}/details(orderId=${o.id})}"</span><span class="nt">&gt;</span>
+Content路径,默认访问static下的order文件夹<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<h3 id="文本替换">文本替换</h3>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"'Welcome to our application, ' + ${user.name} + '!'"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<p>或者下面的表达方式：（只能包含表达式变量，而不能有条件判断等！）</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"|Welcome to our application, ${user.name}!|"</span><span class="nt">&gt;</span>
+</code></pre></div></div>
+
+<h3 id="运算符">运算符</h3>
+
+<p>&lt;font color=#2E8B57 &gt;数学运算&lt;/font&gt;</p>
+
+<ul>
+  <li>二元操作：+, - , * , / , %</li>
+  <li>一元操作: - （负）</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;逻辑运算&lt;/font&gt;</p>
+
+<ul>
+  <li>一元 : and or</li>
+  <li>二元 : !,not</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;比较运算&lt;/font&gt;</p>
+
+<ul>
+  <li>比较：&gt; , &lt; , &gt;= , &lt;= ( gt , lt , ge , le )</li>
+  <li>等于：== , != ( eq , ne )</li>
+</ul>
+
+<p>&lt;font color=#2E8B57 &gt;条件运算&lt;/font&gt;</p>
+
+<ul>
+  <li>
+    <p>If-then: (if) ? (then)</p>
+  </li>
+  <li>
+    <p>If-then-else: (if) ? (then) : (else)</p>
+  </li>
+  <li>
+    <p>Default: (value) ?: (defaultvalue)</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>'User is of type ' + (${user.isAdmin()} ? 'Administrator' : (${user.type} ?: 'Unknown'))
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="条件">条件</h3>
+
+<p>&lt;font color=#2E8B57 &gt;if/unless&lt;/font&gt;</p>
+
+<p>使用th:if和th:unless属性进行条件判断，th:unless于th:if恰好相反，只有表达式中的条件不成立，才会显示其内容。</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/login}"</span> <span class="na">th:unless=</span><span class="s">${session.user</span> <span class="err">!=</span> <span class="na">null</span><span class="err">}</span><span class="nt">&gt;</span>Login<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<p>&lt;font color=#2E8B57 &gt;switch&lt;/font&gt;</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:switch=</span><span class="s">"${user.role}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"'admin'"</span><span class="nt">&gt;</span>User is an administrator<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"#{roles.manager}"</span><span class="nt">&gt;</span>User is a manager<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"*"</span><span class="nt">&gt;</span>User is some other thing<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<h3 id="循环">循环</h3>
+
+<p>&lt;font color=#2E8B57 &gt;th:each&lt;/font&gt;</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>hello<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html; charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="c">&lt;!-- 不存在则忽略，显示hello null!(可以通过默认值进行设置)--&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'Hello ' + (${name}?:'admin')"</span><span class="nt">&gt;</span>3333<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;</span>
+            <span class="nt">&lt;th&gt;</span>ID<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;th&gt;</span>NAME<span class="nt">&lt;/th&gt;</span>
+            <span class="nt">&lt;th&gt;</span>AGE<span class="nt">&lt;/th&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"emp : ${empList}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.id}"</span><span class="nt">&gt;</span>1<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.name}"</span><span class="nt">&gt;</span>海<span class="nt">&lt;/td&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${emp.age}"</span><span class="nt">&gt;</span>18<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>&lt;font color=#2E8B57 &gt;后台&lt;/font&gt;</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@GetMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/hello"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">hello</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Emp</span><span class="o">&gt;</span> <span class="n">empList</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;&gt;();</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">"校长"</span><span class="o">,</span> <span class="mi">24</span><span class="o">));</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="s">"书记"</span><span class="o">,</span> <span class="mi">28</span><span class="o">));</span>
+    <span class="n">empList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">Emp</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span> <span class="s">"小海"</span><span class="o">,</span> <span class="mi">25</span><span class="o">));</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"empList"</span><span class="o">,</span> <span class="n">empList</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"hello"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="内置对象utilites">内置对象Utilites</h3>
+
+<p>一般不推荐在前端进行这些处理，前端页面以减少逻辑为宜</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#dates :
+utility methods for java.util.Date objects: formatting, component extraction, etc. #calendars :
+ analogous to #dates , but for java.util.Calendar objects.
+
+#numbers :
+utility methods for formatting numeric objects.
+
+#strings :
+utility methods for String objects: contains, startsWith, prepending/appending, etc. #objects :
+ utility methods for objects in general.
+
+#bools :
+utility methods for boolean evaluation. #arrays :
+ utility methods for arrays.
+
+#lists :
+utility methods for lists.
+
+#sets :
+utility methods for sets.
+
+#maps :
+utility methods for maps.
+
+#aggregates :
+utility methods for creating aggregates on arrays or collections.
+
+#messages :
+utility methods for obtaining externalized messages inside variables expressions, 
+in the same way as they would be obtained using #{...} syntax.
+
+#ids :
+utility methods for dealing with id attributes that might be repeated (for example, 
+as a result of an iteration).
+</code></pre></div></div>
+
+<p>常用示例：</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+* Format date with the specified pattern
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">arrayFormat</span><span class="o">(</span><span class="n">datesArray</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">listFormat</span><span class="o">(</span><span class="n">datesList</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">setFormat</span><span class="o">(</span><span class="n">datesSet</span><span class="o">,</span> <span class="err">'</span><span class="n">dd</span><span class="o">/</span><span class="no">MMM</span><span class="o">/</span><span class="n">yyyy</span> <span class="nl">HH:</span><span class="n">mm</span><span class="err">'</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Create a date (java.util.Date) object for the current date and time
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">createNow</span><span class="o">()}</span>
+
+<span class="cm">/*
+* Create a date (java.util.Date) object for the current date (time set to 00:00)
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">dates</span><span class="o">.</span><span class="na">createToday</span><span class="o">()}</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+* Check whether a String is empty (or null). Performs a trim() operation before check
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">name</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">arrayIsEmpty</span><span class="o">(</span><span class="n">nameArr</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">listIsEmpty</span><span class="o">(</span><span class="n">nameList</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">setIsEmpty</span><span class="o">(</span><span class="n">nameSet</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Check whether a String starts or ends with a fragment
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">startsWith</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="err">'</span><span class="nc">Don</span><span class="err">'</span><span class="o">)}</span> <span class="c1">// also array*, list* and set*</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="n">name</span><span class="o">,</span><span class="n">endingFragment</span><span class="o">)}</span> <span class="c1">// also array*, list* and set*</span>
+
+<span class="cm">/*
+* Compute length
+* Also works with arrays, lists or sets
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">length</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Null-safe comparison and concatenation
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">equalsIgnoreCase</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">concat</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">concatReplaceNulls</span><span class="o">(</span><span class="n">str</span><span class="o">)}</span>
+
+<span class="cm">/*
+* Random
+*/</span>
+<span class="err">$</span><span class="o">{</span><span class="err">#</span><span class="n">strings</span><span class="o">.</span><span class="na">randomAlphanumeric</span><span class="o">(</span><span class="n">count</span><span class="o">)}</span>
+</code></pre></div></div>
+
+<h2 id="常用标签">常用标签</h2>
+
+<p><img src="http://q17k7c3by.bkt.clouddn.com/0v38kefsvyfe77u.png" alt=""></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/04/16/shiro.html" title="shiro配置">shiro配置</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/09/06/json-gson.html" title="Gson解析">Gson解析</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/15/breast_cancer.html" title="Gson解析">癌症分类预测</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/09/06/data-model.html" title="Gson解析">python数据模型</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/software_designer/2021/05/23/UML.html" title="Gson解析">UML</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/17/titanic.html" title="Gson解析">泰坦尼克号生存预测</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/05/13/thymeleaf.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

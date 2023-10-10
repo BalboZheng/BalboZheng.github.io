@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>SpringBoot页面展示Thymeleaf | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="SpringBoot页面展示Thymeleaf">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言">
+<meta property="og:description" content="开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/thymeleaf.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/thymeleaf.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-09-06T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="SpringBoot页面展示Thymeleaf">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-09-06T00:00:00+00:00","datePublished":"2019-09-06T00:00:00+00:00","description":"开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言","headline":"SpringBoot页面展示Thymeleaf","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/thymeleaf.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/thymeleaf.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">SpringBoot页面展示Thymeleaf</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-09-06T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Sep 06, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#java">#java</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#thymeleaf">#thymeleaf</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>开发传统Java WEB工程时，我们可以使用JSP页面模板语言，但是在SpringBoot中已经不推荐使用了。SpringBoot支持如下页面模板语言</p>
+
+<ul>
+  <li>Thymeleaf</li>
+  <li>FreeMarker</li>
+  <li>Velocity</li>
+  <li>Groovy</li>
+  <li>JSP</li>
+</ul>
+
+<p>上面并没有列举所有SpringBoot支持的页面模板技术。其中Thymeleaf是SpringBoot官方所推荐使用的，下面来谈谈Thymeleaf一些常用的语法规则。</p>
+
+<h2 id="添加thymeleaf依赖">添加Thymeleaf依赖</h2>
+
+<p>要想使用Thhymeleaf，首先要在pom.xml文件中单独添加Thymeleaf依赖。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&lt;</span><span class="n">dependency</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">groupId</span><span class="o">&gt;</span><span class="n">org</span><span class="o">.</span><span class="na">springframework</span><span class="o">.</span><span class="na">boot</span><span class="o">&lt;/</span><span class="n">groupId</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">artifactId</span><span class="o">&gt;</span><span class="n">spring</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">starter</span><span class="o">-</span><span class="n">thymeleaf</span><span class="o">&lt;/</span><span class="n">artifactId</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">dependency</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>Spring Boot默认存放模板页面的路径在&lt;font color=#FF0000 &gt;src/main/resources/templates&lt;/font&gt;或者&lt;font color=#FF0000 &gt;src/main/view/templates&lt;/font&gt;，这个无论是使用什么模板语言都一样，当然默认路径是可以自定义的，不过一般不推荐这样做。另外Thymeleaf默认的页面文件后缀是&lt;font color=#FF0000 &gt;.html&lt;/font&gt;。</p>
+
+<h2 id="数据显示">数据显示</h2>
+
+<p>在MVC的开发过程中，我们经常需要通过&lt;font color=#FF0000 &gt;Controller&lt;/font&gt;将数据传递到页面中，让页面进行动态展示。</p>
+
+<h3 id="显示普通文本">显示普通文本</h3>
+
+<p>创建一个Controller对象，在其中进行参数的传递</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ThymeleafController</span> <span class="o">{</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"show"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">show</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"uid"</span><span class="o">,</span><span class="s">"123456789"</span><span class="o">);</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"Jerry"</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"show"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>在SpringBoot默认的页面路径下创建show.html文件，内容如下</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SpringBoot模版渲染<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户ID：' + ${uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户名称：' + ${name}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>可以看到在&lt;font color=#FF0000 &gt;p&lt;/font&gt;标签中有&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;属性，这个就是thymeleaf的语法，它表示显示一个普通的文本信息。
+如果我们要显示的信息是存在资源文件中的，同样可以在页面中显示，例如资源文件中定义了内容&lt;font color=#FF0000 &gt;welcome.msg=欢迎{0}光临！&lt;/font&gt;。可以在页面中将其显示</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;h2</span> <span class="na">th:text=</span><span class="s">"#{welcome.msg('admin')}"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>另外，在&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;中还能做一些基础的数学运算</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'数学计算：1+2=' + (1 + 2)"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<h3 id="显示带有样式的普通文本">显示带有样式的普通文本</h3>
+
+<p>如果我们想要传递到的页面的信息，它本身是带有CSS样式的，这个时候如何在页面中将携带的样式信息也显示出来？此时我们的控制器方法这样写。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"showStyle"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">showStyle</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"uid"</span><span class="o">,</span><span class="s">"123456789"</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"name"</span><span class="o">,</span><span class="s">"&lt;span style='color:red'&gt;Jerry&lt;/span&gt;"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"show_style"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>此时页面中需要借助&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;属性进行显示</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;p</span> <span class="na">th:utext=</span><span class="s">"'用户名称：' + ${name}"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<p>通过浏览器查看页面源码可以看出&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;和&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;的区别是：&lt;font color=#FF0000 &gt;th:text&lt;/font&gt;会对&lt;font color=#FF0000 &gt;«/font&gt;和&lt;font color=#FF0000 »&lt;/font&gt;进行转义，而&lt;font color=#FF0000 &gt;th:utext&lt;/font&gt;不会转义。</p>
+
+<h3 id="显示对象">显示对象</h3>
+
+<p>我们常常需要将一个bean信息展示在前端页面当中。</p>
+
+<p>1.用于前端展示的VO类</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">User</span> <span class="kd">implements</span> <span class="nc">Serializable</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Long</span> <span class="n">uid</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Integer</span> <span class="n">age</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Date</span> <span class="n">birthday</span> <span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">Double</span> <span class="n">salary</span> <span class="o">;</span>
+    <span class="c1">//省略get/set方法</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>2.控制器方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/message/member_show"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">memberShow</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">12345678L</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"尼古拉丁.赵四"</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">59</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">1000.00</span><span class="o">);</span>
+    <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"member"</span><span class="o">,</span> <span class="n">vo</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"message/member_show"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>3.页面展示</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户编号：' + ${member.uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户姓名：' + ${member.name}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户年龄：' + ${member.age}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户工资：' + ${member.salary}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + ${member.birthday}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + ${#dates.format(member.birthday,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;hr/&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">th:object=</span><span class="s">"${member}"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户编号：' + *{uid}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户姓名：' + *{name}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户年龄：' + *{age}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'用户工资：' + *{salary}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + *{birthday}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'出生日期：' + *{#dates.format(birthday,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div></div>
+
+<p>上面给出了两种展现方式，一种是通过${属性}，另外一种是通过{属性}。
+<strong>关于“${属性}”和“{属性}”的区别？</strong>
+$访问完整信息，而访问指定对象中的属性内容， 如果访问的只是普通的内容两者没有区别</p>
+
+<h2 id="数据处理">数据处理</h2>
+
+<p>在 thymeleaf 之中提供有相应的集合的处理方法，例如：在使用 List 集合的时候可以考虑采用 get()方法获取指定索引的数据，那么在使用 Set 集合的时候会考虑使用 contains()来判断某个数据是否存在，使用 Map 集合的时候也希望可以使用 containsKey()判断某个 key 是否存在，以及使用get()根据 key 获取对应的 value，而这些功能在之前并不具备，下面来观察如何在页面中使用此类操作</p>
+
+<p>1.控制器方法向页面传递一些数据，以供操作</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/set"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">set</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Set</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">allNames</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashSet</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;()</span> <span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;</span> <span class="n">allIds</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Integer</span><span class="o">&gt;()</span> <span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="o">;</span> <span class="n">x</span> <span class="o">++)</span> <span class="o">{</span>
+        <span class="n">allNames</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"boot-"</span> <span class="o">+</span> <span class="n">x</span><span class="o">)</span> <span class="o">;</span>
+        <span class="n">allIds</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="o">;</span>
+    <span class="o">}</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"names"</span><span class="o">,</span> <span class="n">allNames</span><span class="o">)</span> <span class="o">;</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"ids"</span><span class="o">,</span> <span class="n">allIds</span><span class="o">)</span> <span class="o">;</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"mydate"</span><span class="o">,</span> <span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span><span class="o">())</span> <span class="o">;</span>
+    <span class="k">return</span> <span class="s">"user_set"</span> <span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>2.数据处理</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#dates.format(mydate,'yyyy-MM-dd')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#dates.format(mydate,'yyyy-MM-dd HH:mm:ss.SSS')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.replace('www.baidu.cn','.','$')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.toUpperCase('www.baidu.cn')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#strings.trim('www.baidu.cn')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(names,'boot-0')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(names,'boot-9')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.size(names)}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#sets.contains(ids,0)}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${ids[1]}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${names[1]}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<h2 id="路径处理">路径处理</h2>
+
+<p>在传统WEB工程开发时，路径的处理操作是有点麻烦的。SpringBoot中为我们简化了路径的处理。
+1.在”src/main/view/static/js”中创建一个js文件</p>
+
+<p>2.然后在页面中可以通过“@{路径}”来引用</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">th:src=</span><span class="s">"@{/js/main.js}"</span><span class="nt">&gt;&lt;/script&gt;</span> 
+</code></pre></div></div>
+
+<p>页面之间的跳转也能通过@{}来实现</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/show}"</span><span class="nt">&gt;</span>访问controller方法<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">"@{/static_index.html}"</span><span class="nt">&gt;</span>访问静态页面<span class="nt">&lt;/a&gt;</span>
+</code></pre></div></div>
+
+<h2 id="操作内置对象">操作内置对象</h2>
+
+<p>虽然在这种模版开发框架里面是不提倡使用内置对象的，但是很多情况下依然需要使用内置对象进行处理，所以下面来看下如何在页面中使用JSP内置对象。</p>
+
+<p>1.在控制器里面增加一个方法，这个方法将采用内置对象的形式传递属性。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/inner"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="nf">inner</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"requestMessage"</span><span class="o">,</span> <span class="s">"springboot-request"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">getSession</span><span class="o">().</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"sessionMessage"</span><span class="o">,</span> <span class="s">"springboot-session"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">getServletContext</span><span class="o">().</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"applicationMessage"</span><span class="o">,</span>
+        <span class="s">"springboot-application"</span><span class="o">);</span>
+    <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"url"</span><span class="o">,</span> <span class="s">"www.baidu.cn"</span><span class="o">);</span>
+    <span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"url2"</span><span class="o">,</span>
+        <span class="s">"&lt;span style='color:red'&gt;www.baidu.cn&lt;/span&gt;"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="s">"show_inner"</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>2.在页面之中如果要想访问不同属性范围中的内容，则可以采用如下的做法完成：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE HTML&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">"http://www.thymeleaf.org"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>SpringBoot模版渲染<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span> <span class="na">th:src=</span><span class="s">"@{/js/main.js}"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getRemoteAddr()}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getAttribute('requestMessage')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpSession.getId()}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"${#httpServletRequest.getServletContext().getRealPath('/')}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;hr/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'requestMessage = ' + ${requestMessage}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'sessionMessage = ' + ${session.sessionMessage}"</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">"'applicationMessage = ' + ${application.applicationMessage}"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>thymeleaf 考虑到了实际的开发情况，因为 request 传递属性是最为常用的，但是 session 也有可能使用</p>
+
+<p>例如：用户登录之后需要显示用户id，那么就一定要使用到session，所以现在必须增加属性范围的形式后才能够正常使用。在 thymeleaf 里面也支持有 JSP 内置对象的获取操作，不过一般很少这样使用。</p>
+
+<h2 id="逻辑处理">逻辑处理</h2>
+
+<p>所有的页面模版都存在各种基础逻辑处理，例如：判断、循环处理操作。在 Thymeleaf 之中对于逻辑可以使用如下的一些运算符来完成，例如：and、or、关系比较（&gt;、&lt;、&gt;=、&lt;=、==、!=、lt、gt、le、ge、eq、ne）。</p>
+
+<p>通过控制器传递一些属性内容到页面之中：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:if=</span><span class="s">"${member.age lt 18}"</span><span class="nt">&gt;</span>
+未成年人！
+<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">th:if=</span><span class="s">"${member.name eq '啊三'}"</span><span class="nt">&gt;</span>
+欢迎小三来访问！
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+
+<p>不满足条件的判断</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:unless=</span><span class="s">"${member.age gt 18}"</span><span class="nt">&gt;</span>
+你还不满18岁，不能够看电影！
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+
+<p>通过swith进行分支判断</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;span</span> <span class="na">th:switch=</span><span class="s">"${member.uid}"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"100"</span><span class="nt">&gt;</span>uid为101的员工来了<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"99"</span><span class="nt">&gt;</span>uid为102的员工来了<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p</span> <span class="na">th:case=</span><span class="s">"*"</span><span class="nt">&gt;</span>没有匹配成功的数据！<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/span&gt;</span>
+</code></pre></div></div>
+
+<h2 id="数据遍历">数据遍历</h2>
+
+<p>在实际开发过程中常常需要对数据进行遍历展示，一般会将数据封装成list或map传递到页面进行遍历操作。</p>
+
+<p>1.定义控制器类，向页面传递List数据和Map数据</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Controller</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/map"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">map</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">allMembers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">User</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">101L</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"赵四 - "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">99999.99</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+            <span class="n">allMembers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"mldn-"</span> <span class="o">+</span> <span class="n">x</span><span class="o">,</span> <span class="n">vo</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"allUsers"</span><span class="o">,</span> <span class="n">allMembers</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"user_map"</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/user/list"</span><span class="o">,</span> <span class="n">method</span> <span class="o">=</span> <span class="nc">RequestMethod</span><span class="o">.</span><span class="na">GET</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">list</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">List</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">allMembers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="nc">User</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">User</span><span class="o">();</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setUid</span><span class="o">(</span><span class="mi">101L</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"赵四 - "</span> <span class="o">+</span> <span class="n">x</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">9</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setSalary</span><span class="o">(</span><span class="mf">99999.99</span><span class="o">);</span>
+            <span class="n">vo</span><span class="o">.</span><span class="na">setBirthday</span><span class="o">(</span><span class="k">new</span> <span class="nc">Date</span><span class="o">());</span>
+            <span class="n">allMembers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vo</span><span class="o">)</span> <span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"allUsers"</span><span class="o">,</span> <span class="n">allMembers</span><span class="o">);</span>
+        <span class="k">return</span> <span class="s">"user_list"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>2.list类型数据遍历</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;&lt;td&gt;</span>No.<span class="nt">&lt;/td&gt;&lt;td&gt;</span>UID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>姓名<span class="nt">&lt;/td&gt;&lt;td&gt;</span>年龄<span class="nt">&lt;/td&gt;&lt;td&gt;</span>偶数<span class="nt">&lt;/td&gt;&lt;td&gt;</span>奇数<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"user,memberStat:${allUsers}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.index + 1}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.uid}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.name}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${user.age}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.even}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.odd}"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<p>3.map类型数据遍历</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;table&gt;</span>
+        <span class="nt">&lt;tr&gt;&lt;td&gt;</span>No.<span class="nt">&lt;/td&gt;&lt;td&gt;</span>KEY<span class="nt">&lt;/td&gt;&lt;td&gt;</span>UID<span class="nt">&lt;/td&gt;</span>
+        <span class="nt">&lt;td&gt;</span>姓名<span class="nt">&lt;/td&gt;&lt;td&gt;</span>年龄<span class="nt">&lt;/td&gt;&lt;td&gt;</span>偶数<span class="nt">&lt;/td&gt;&lt;td&gt;</span>奇数<span class="nt">&lt;/td&gt;&lt;/tr&gt;</span>
+        <span class="nt">&lt;tr</span> <span class="na">th:each=</span><span class="s">"memberEntry,memberStat:${allUsers}"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.index + 1}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.key}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.uid}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.name}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberEntry.value.age}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.even}"</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;td</span> <span class="na">th:text=</span><span class="s">"${memberStat.odd}"</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/tr&gt;</span>
+    <span class="nt">&lt;/table&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div></div>
+
+<h2 id="页面引入">页面引入</h2>
+
+<p>我们常常需要在一个页面当中引入另一个页面，例如，公用的导航栏以及页脚页面。thymeleaf中提供了两种方式进行页面引入。</p>
+
+<ul>
+  <li>th:replace</li>
+  <li>th:include</li>
+</ul>
+
+<p>1.新建需要被引入的页面文件，路径为”src/main/view/templates/commons/footer.html”</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">"Content-Type"</span> <span class="na">content=</span><span class="s">"text/html;charset=UTF-8"</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;footer</span> <span class="na">th:fragment=</span><span class="s">"companyInfo"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>设为首页 ©2018 SpringBoot 使用<span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">"${projectName}"</span><span class="nt">/&gt;</span>前必读
+        意见反馈 京ICP证030173号 <span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/footer&gt;</span>
+</code></pre></div></div>
+
+<p>可以看到页面当中还存在一个变量projectName，这个变量的值可以在引入页面中通过&lt;font color=#FF0000 &gt;th:with=”projectName=百度”&lt;/font&gt;传过来。</p>
+
+<p>2.引入页面中只需要添加如下代码即可</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">th:include=</span><span class="s">"@{/commons/footer} :: companyInfo"</span> <span class="na">th:with=</span><span class="s">"projectName=百度"</span><span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/09/06/mybatis-pagehelper.html" title="Mybatis-PageHelper">Mybatis-PageHelper</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/09/06/data-model.html" title="python数据模型">python数据模型</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ISFP.html" title="python数据模型">人格八维 -- ISFP（探险家）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2022/03/19/market_basket.html" title="python数据模型">市场菜篮子分析</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/books/2023/01/17/shanhaiching-simplified.html" title="python数据模型">《山海经》</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ESTJ.html" title="python数据模型">人格八维 -- ESTJ（总经理）</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/thymeleaf.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/09/06/thymeleaf.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

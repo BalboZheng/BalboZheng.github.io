@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>代理 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="代理">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="代理的设置">
+<meta property="og:description" content="代理的设置">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/28/agency.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/28/agency.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-28T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="代理">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-11-28T00:00:00+00:00","datePublished":"2019-11-28T00:00:00+00:00","description":"代理的设置","headline":"代理","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/28/agency.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/28/agency.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">代理</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-11-28T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Nov 28, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 40 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#reptile">#reptile</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="代理的设置">代理的设置</h2>
+
+<h3 id="获取代理">获取代理</h3>
+
+<p>在做测试之前，我们需要先获取一个可用代理，搜索引擎搜索“代理”关键字，就可以看到有许多代理服务网站，在网站上会有很多免费代理，比如西刺：http://www.xicidaili.com/ ，这里列出了很多免费代理，但是这些免费代理大多数情况下都是不好用的，所以比较靠谱的方法是购买付费代理，很多网站都有售卖，数量不用多，买一个稳定可用的即可，可以自行选购。</p>
+
+<p>或者如果我们本机有相关代理软件的话，软件一般会在本机创建 HTTP 或 SOCKS 代理服务，直接使用此代理也可以。</p>
+
+<h3 id="urllib">urllib</h3>
+
+<p>首先我们以最基础的 urllib 为例，来看一下代理的设置方法，代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.error</span> <span class="kn">import</span> <span class="n">URLError</span>
+<span class="kn">from</span> <span class="n">urllib.request</span> <span class="kn">import</span> <span class="n">ProxyHandler</span><span class="p">,</span> <span class="n">build_opener</span>
+
+<span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">127.0.0.1:9743</span><span class="sh">'</span>
+<span class="n">proxy_handler</span> <span class="o">=</span> <span class="nc">ProxyHandler</span><span class="p">({</span>
+    <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span>
+<span class="p">})</span>
+<span class="n">opener</span> <span class="o">=</span> <span class="nf">build_opener</span><span class="p">(</span><span class="n">proxy_handler</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">opener</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">read</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+<span class="k">except</span> <span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">reason</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "args": {}, 
+  "headers": {
+    "Accept-Encoding": "identity", 
+    "Connection": "close", 
+    "Host": "httpbin.org", 
+   "User-Agent": "Python-urllib/3.6"
+  }, 
+  "origin": "106.185.45.153", 
+  "url": "http://httpbin.org/get"
+}
+</code></pre></div></div>
+
+<p>运行输出结果是一个 Json，它有一个字段 origin，标明了客户端的 IP，此处的 IP 验证一下，确实为代理的 IP，而并不是我们真实的 IP，所以这样我们就成功设置好代理，并可以隐藏真实 IP 了。</p>
+
+<p>如果遇到需要认证的代理，我们可以用如下的方法设置：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">urllib.error</span> <span class="kn">import</span> <span class="n">URLError</span>
+<span class="kn">from</span> <span class="n">urllib.request</span> <span class="kn">import</span> <span class="n">ProxyHandler</span><span class="p">,</span> <span class="n">build_opener</span>
+
+<span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">username:password@127.0.0.1:9743</span><span class="sh">'</span>
+<span class="n">proxy_handler</span> <span class="o">=</span> <span class="nc">ProxyHandler</span><span class="p">({</span>
+    <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span>
+<span class="p">})</span>
+<span class="n">opener</span> <span class="o">=</span> <span class="nf">build_opener</span><span class="p">(</span><span class="n">proxy_handler</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">opener</span><span class="p">.</span><span class="nf">open</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">read</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+<span class="k">except</span> <span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">reason</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>如果代理是 SOCKS5 类型，那么可以用如下方式设置代理：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">socks</span>
+<span class="kn">import</span> <span class="n">socket</span>
+<span class="kn">from</span> <span class="n">urllib</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="n">urllib.error</span> <span class="kn">import</span> <span class="n">URLError</span>
+
+<span class="n">socks</span><span class="p">.</span><span class="nf">set_default_proxy</span><span class="p">(</span><span class="n">socks</span><span class="p">.</span><span class="n">SOCKS5</span><span class="p">,</span> <span class="sh">'</span><span class="s">127.0.0.1</span><span class="sh">'</span><span class="p">,</span> <span class="mi">9742</span><span class="p">)</span>
+<span class="n">socket</span><span class="p">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socks</span><span class="p">.</span><span class="n">socksocket</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="nf">urlopen</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="nf">read</span><span class="p">().</span><span class="nf">decode</span><span class="p">(</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">))</span>
+<span class="k">except</span> <span class="n">URLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">reason</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>此处需要一个 Socks 模块，可以通过如下命令安装：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 install PySocks
+</code></pre></div></div>
+
+<h3 id="requests">requests</h3>
+
+<p>对于 Requests 来说，代理设置更加简单，我们只需要传入 proxies 参数即可。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+
+<span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">127.0.0.1:9743</span><span class="sh">'</span>
+<span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "args": {}, 
+  "headers": {
+   "Accept": "*/*", 
+   "Accept-Encoding": "gzip, deflate", 
+   "Connection": "close", 
+   "Host": "httpbin.org", 
+   "User-Agent": "python-requests/2.18.1"
+  }, 
+  "origin": "106.185.45.153", 
+  "url": "http://httpbin.org/get"
+}
+</code></pre></div></div>
+
+<p>如果代理需要认证，同样在代理的前面加上用户名密码即可，代理的写法就变成：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">username:password@127.0.0.1:9743</span><span class="sh">'</span>
+</code></pre></div></div>
+
+<p>如果需要使用 SOCKS5 代理，则可以使用如下方式：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import requests
+
+proxy = '127.0.0.1:9742'
+proxies = {
+    'http': 'socks5://' + proxy,
+    'https': 'socks5://' + proxy
+}
+try:
+    response = requests.get('http://httpbin.org/get', proxies=proxies)
+    print(response.text)
+except requests.exceptions.ConnectionError as e:
+    print('Error', e.args)
+</code></pre></div></div>
+
+<p>在这里需要额外安装一个 Socks 模块，命令如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 install "requests[socks]"
+</code></pre></div></div>
+
+<p>另外还有一种设置方式，和 Urllib 中的方法相同，使用 socks 模块，也需要像上文一样安装该库，设置方法如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">socks</span>
+<span class="kn">import</span> <span class="n">socket</span>
+
+<span class="n">socks</span><span class="p">.</span><span class="nf">set_default_proxy</span><span class="p">(</span><span class="n">socks</span><span class="p">.</span><span class="n">SOCKS5</span><span class="p">,</span> <span class="sh">'</span><span class="s">127.0.0.1</span><span class="sh">'</span><span class="p">,</span> <span class="mi">9742</span><span class="p">)</span>
+<span class="n">socket</span><span class="p">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socks</span><span class="p">.</span><span class="n">socksocket</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+   <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这样也可以设置 SOCKS5 代理，运行结果完全相同，相比第一种方法，此方法是全局设置，不同情况可以选用不同的方法。</p>
+
+<h3 id="requests-1">requests</h3>
+
+<p>对于 Requests 来说，代理设置更加简单，我们只需要传入 proxies 参数即可。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+
+<span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">127.0.0.1:9743</span><span class="sh">'</span>
+<span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行结果：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{
+  "args": {}, 
+  "headers": {
+   "Accept": "*/*", 
+   "Accept-Encoding": "gzip, deflate", 
+   "Connection": "close", 
+   "Host": "httpbin.org", 
+   "User-Agent": "python-requests/2.18.1"
+  }, 
+  "origin": "106.185.45.153", 
+  "url": "http://httpbin.org/get"
+}
+</code></pre></div></div>
+
+<p>如果代理需要认证，同样在代理的前面加上用户名密码即可，代理的写法就变成：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">username:password@127.0.0.1:9743</span><span class="sh">'</span>
+</code></pre></div></div>
+
+<p>如果需要使用 SOCKS5 代理，则可以使用如下方式：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+
+<span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">127.0.0.1:9742</span><span class="sh">'</span>
+<span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">socks5://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">socks5://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span>
+<span class="p">}</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里需要额外安装一个 Socks 模块，命令如下：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip3 install "requests[socks]"
+</code></pre></div></div>
+
+<p>另外还有一种设置方式，和 Urllib 中的方法相同，使用 socks 模块，也需要像上文一样安装该库，设置方法如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">import</span> <span class="n">socks</span>
+<span class="kn">import</span> <span class="n">socket</span>
+
+<span class="n">socks</span><span class="p">.</span><span class="nf">set_default_proxy</span><span class="p">(</span><span class="n">socks</span><span class="p">.</span><span class="n">SOCKS5</span><span class="p">,</span> <span class="sh">'</span><span class="s">127.0.0.1</span><span class="sh">'</span><span class="p">,</span> <span class="mi">9742</span><span class="p">)</span>
+<span class="n">socket</span><span class="p">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socks</span><span class="p">.</span><span class="n">socksocket</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="n">exceptions</span><span class="p">.</span><span class="nb">ConnectionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+   <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这样也可以设置 SOCKS5 代理，运行结果完全相同，相比第一种方法，此方法是全局设置，不同情况可以选用不同的方法。</p>
+
+<h3 id="selenium">Selenium</h3>
+
+<ul>
+  <li>
+    <p>chrome</p>
+
+    <p>对于 Chrome 来说，用 Selenium 设置代理的方法也非常简单，设置方法如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+  
+<span class="n">proxy</span> <span class="o">=</span> <span class="sh">'</span><span class="s">127.0.0.1:9743</span><span class="sh">'</span>
+<span class="n">chrome_options</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">ChromeOptions</span><span class="p">()</span>
+<span class="n">chrome_options</span><span class="p">.</span><span class="nf">add_argument</span><span class="p">(</span><span class="sh">'</span><span class="s">--proxy-server=http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">)</span>
+<span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">Chrome</span><span class="p">(</span><span class="n">chrome_options</span><span class="o">=</span><span class="n">chrome_options</span><span class="p">)</span>
+<span class="n">browser</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>{
+"args": {}, 
+"headers": {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8", 
+   "Accept-Encoding": "gzip, deflate", 
+     "Accept-Language": "zh-CN,zh;q=0.8", 
+     "Connection": "close", 
+     "Host": "httpbin.org", 
+     "Upgrade-Insecure-Requests": "1", 
+     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+}, 
+"origin": "106.185.45.153", 
+"url": "http://httpbin.org/get"
+}
+</code></pre></div>    </div>
+
+    <p>如果代理是认证代理，则设置方法相对比较麻烦，方法如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="n">selenium.webdriver.chrome.options</span> <span class="kn">import</span> <span class="n">Options</span>
+<span class="kn">import</span> <span class="n">zipfile</span>
+  
+<span class="n">ip</span> <span class="o">=</span> <span class="sh">'</span><span class="s">127.0.0.1</span><span class="sh">'</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">9743</span>
+<span class="n">username</span> <span class="o">=</span> <span class="sh">'</span><span class="s">foo</span><span class="sh">'</span>
+<span class="n">password</span> <span class="o">=</span> <span class="sh">'</span><span class="s">bar</span><span class="sh">'</span>
+  
+<span class="n">manifest_json</span> <span class="o">=</span> <span class="sh">"""</span><span class="s">
+{
+    </span><span class="sh">"</span><span class="s">version</span><span class="sh">"</span><span class="s">: </span><span class="sh">"</span><span class="s">1.0.0</span><span class="sh">"</span><span class="s">,
+    </span><span class="sh">"</span><span class="s">manifest_version</span><span class="sh">"</span><span class="s">: 2,
+    </span><span class="sh">"</span><span class="s">name</span><span class="sh">"</span><span class="s">: </span><span class="sh">"</span><span class="s">Chrome Proxy</span><span class="sh">"</span><span class="s">,
+    </span><span class="sh">"</span><span class="s">permissions</span><span class="sh">"</span><span class="s">: [
+       </span><span class="sh">"</span><span class="s">proxy</span><span class="sh">"</span><span class="s">,
+       </span><span class="sh">"</span><span class="s">tabs</span><span class="sh">"</span><span class="s">,
+       </span><span class="sh">"</span><span class="s">unlimitedStorage</span><span class="sh">"</span><span class="s">,
+       </span><span class="sh">"</span><span class="s">storage</span><span class="sh">"</span><span class="s">,
+       </span><span class="sh">"</span><span class="s">&lt;all_urls&gt;</span><span class="sh">"</span><span class="s">,
+       </span><span class="sh">"</span><span class="s">webRequest</span><span class="sh">"</span><span class="s">,
+       </span><span class="sh">"</span><span class="s">webRequestBlocking</span><span class="sh">"</span><span class="s">
+    ],
+     </span><span class="sh">"</span><span class="s">background</span><span class="sh">"</span><span class="s">: {
+     </span><span class="sh">"</span><span class="s">scripts</span><span class="sh">"</span><span class="s">: [</span><span class="sh">"</span><span class="s">background.js</span><span class="sh">"</span><span class="s">]
+     }
+}
+  
+background_js = </span><span class="sh">"""</span>
+<span class="n">var</span> <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="sh">"</span><span class="s">fixed_servers</span><span class="sh">"</span><span class="p">,</span>
+        <span class="n">rules</span><span class="p">:</span> <span class="p">{</span>
+        <span class="n">singleProxy</span><span class="p">:</span> <span class="p">{</span>
+            <span class="n">scheme</span><span class="p">:</span> <span class="sh">"</span><span class="s">http</span><span class="sh">"</span><span class="p">,</span>
+            <span class="n">host</span><span class="p">:</span> <span class="sh">"</span><span class="s">%(ip)s</span><span class="sh">"</span><span class="p">,</span>
+            <span class="n">port</span><span class="p">:</span> <span class="o">%</span><span class="p">(</span><span class="n">port</span><span class="p">)</span><span class="n">s</span>
+        <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+  
+          <span class="n">chrome</span><span class="p">.</span><span class="n">proxy</span><span class="p">.</span><span class="n">settings</span><span class="p">.</span><span class="nf">set</span><span class="p">({</span><span class="n">value</span><span class="p">:</span> <span class="n">config</span><span class="p">,</span> <span class="n">scope</span><span class="p">:</span> <span class="sh">"</span><span class="s">regular</span><span class="sh">"</span><span class="p">},</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{});</span>
+  
+          <span class="n">function</span> <span class="nf">callbackFn</span><span class="p">(</span><span class="n">details</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="p">{</span>
+                  <span class="n">authCredentials</span><span class="p">:</span> <span class="p">{</span>
+                      <span class="n">username</span><span class="p">:</span> <span class="sh">"</span><span class="s">%(username)s</span><span class="sh">"</span><span class="p">,</span>
+                      <span class="n">password</span><span class="p">:</span> <span class="sh">"</span><span class="s">%(password)s</span><span class="sh">"</span>
+                  <span class="p">}</span>
+              <span class="p">}</span>
+          <span class="p">}</span>
+  
+          <span class="n">chrome</span><span class="p">.</span><span class="n">webRequest</span><span class="p">.</span><span class="n">onAuthRequired</span><span class="p">.</span><span class="nf">addListener</span><span class="p">(</span>
+                      <span class="n">callbackFn</span><span class="p">,</span>
+                      <span class="p">{</span><span class="n">urls</span><span class="p">:</span> <span class="p">[</span><span class="sh">"</span><span class="s">&lt;all_urls&gt;</span><span class="sh">"</span><span class="p">]},</span>
+                      <span class="p">[</span><span class="sh">'</span><span class="s">blocking</span><span class="sh">'</span><span class="p">]</span>
+          <span class="p">)</span>
+          <span class="sh">"""</span><span class="s"> % {</span><span class="sh">'</span><span class="s">ip</span><span class="sh">'</span><span class="s">: ip, </span><span class="sh">'</span><span class="s">port</span><span class="sh">'</span><span class="s">: port, </span><span class="sh">'</span><span class="s">username</span><span class="sh">'</span><span class="s">: username, </span><span class="sh">'</span><span class="s">password</span><span class="sh">'</span><span class="s">: password}
+  
+          plugin_file = </span><span class="sh">'</span><span class="s">proxy_auth_plugin.zip</span><span class="sh">'</span><span class="s">
+          with zipfile.ZipFile(plugin_file, </span><span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="s">) as zp:
+              zp.writestr(</span><span class="sh">"</span><span class="s">manifest.json</span><span class="sh">"</span><span class="s">, manifest_json)
+              zp.writestr(</span><span class="sh">"</span><span class="s">background.js</span><span class="sh">"</span><span class="s">, background_js)
+          chrome_options = Options()
+          chrome_options.add_argument(</span><span class="sh">"</span><span class="s">--start-maximized</span><span class="sh">"</span><span class="s">)
+          chrome_options.add_extension(plugin_file)
+          browser = webdriver.Chrome(chrome_options=chrome_options)
+          browser.get(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="s">)
+</span></code></pre></div>    </div>
+  </li>
+  <li>
+    <p>PhantomJS</p>
+
+    <p>对于 PhantomJS，代理设置方法可以借助于 service_args 参数，也就是命令行参数，代理设置方法如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+  
+<span class="n">service_args</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sh">'</span><span class="s">--proxy=127.0.0.1:9743</span><span class="sh">'</span><span class="p">,</span>
+    <span class="sh">'</span><span class="s">--proxy-type=http</span><span class="sh">'</span>
+<span class="p">]</span>
+<span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="nc">PhantomJS</span><span class="p">(</span><span class="n">service_args</span><span class="o">=</span><span class="n">service_args</span><span class="p">)</span>
+<span class="n">browser</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="sh">'</span><span class="s">http://httpbin.org/get</span><span class="sh">'</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">browser</span><span class="p">.</span><span class="n">page_source</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>运行结果：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>{
+    "args": {},
+    "headers": {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Encoding": "gzip, deflate",
+        "Accept-Language": "zh-CN,en,*",
+        "Connection": "close",
+        "Host": "httpbin.org",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.0 Safari/538.1"
+    },
+    "origin": "106.185.45.153",
+    "url": "http://httpbin.org/get"
+}
+</code></pre></div>    </div>
+
+    <p>如果需要认证，那么只需要再加入 –proxy-auth 选项即可，这样参数就改为：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>service_args = [
+      '--proxy=127.0.0.1:9743',
+      '--proxy-type=http',
+      '--proxy-auth=username:password'
+  ]
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="代理池的维护">代理池的维护</h2>
+
+<h3 id="代理池的目标">代理池的目标</h3>
+
+<p>代理池要做到易用、高效，我们一般需要做到下面的几个目标：</p>
+
+<ul>
+  <li>基本模块分为四块，获取模块、存储模块、检查模块、接口模块。
+    <ul>
+      <li>获取模块需要定时去各大代理网站抓取代理，代理可以是免费公开代理也可以是付费代理，代理的形式都是 IP 加端口，尽量从不同来源获取，尽量抓取高匿代理，抓取完之后将可用代理保存到数据库中。</li>
+      <li>存储模块负责存储抓取下来的代理。首先我们需要保证代理不重复，另外我们还需要标识代理的可用情况，而且需要动态实时处理每个代理，所以说，一种比较高效和方便的存储方式就是使用 Redis 的 Sorted Set，也就是有序集合。</li>
+      <li>检测模块需要定时将数据库中的代理进行检测，在这里我们需要设置一个检测链接，最好是爬取哪个网站就检测哪个网站，这样更加有针对性，如果要做一个通用型的代理，那可以设置百度等链接来检测。另外我们需要标识每一个代理的状态，如设置分数标识，100 分代表可用，分数越少代表越不可用，检测一次如果可用，我们可以将其立即设置为100 满分，也可以在原基础上加 1 分，当不可用，可以将其减 1 分，当减到一定阈值后就直接从数据库移除。通过这样的标识分数，我们就可以区分出代理的可用情况，选用的时候会更有针对性。</li>
+      <li>接口模块需要用 API 来提供对外服务的接口，其实我们可以直接连数据库来取，但是这样就需要知道数据库的连接信息，不太安全，而且需要配置连接，所以一个比较安全和方便的方式就是提供一个 Web API 接口，通过访问接口即可拿到可用代理。另外由于可用代理可能有多个，我们可以提供随机返回一个可用代理的接口，这样保证每个可用代理都可以取到，实现负载均衡。</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="代理池的架构">代理池的架构</h3>
+
+<p>代理池分为四个部分，获取模块、存储模块、检测模块、接口模块。</p>
+
+<ul>
+  <li>存储模块使用 Redis 的有序集合，用来做代理的去重和状态标识，同时他也是中心模块和基础模块，将其他模块串联起来</li>
+  <li>获取模块定时从代理网站获取代理，将获取的代理传递给存储模块，并保存到数据库</li>
+  <li>检测模块定时通过存储模块获取所有代理，并对代理进行检测，根据不同的检测结果对代理设置不同的标识</li>
+  <li>接口模块通过 Web API 提供服务接口，接口通过链接数据库并通过 Web 形式返回可用的代理</li>
+</ul>
+
+<h3 id="代理池的实现">代理池的实现</h3>
+
+<ul>
+  <li>
+    <p>存储模块</p>
+
+    <p>存储在这里我们使用 Redis 的有序集合，集合的每一个元素都是不重复的，对于代理代理池来说，集合的元素就变成了一个个代理，也就是 IP 加端口的形式，如 60.207.237.111:8888，这样的一个代理就是集合的一个元素。另外有序集合的每一个元素还都有一个分数字段，分数是可以重复的，是一个浮点数类型，也可以是整数类型。该集合会根据每一个元素的分数对集合进行排序，数值小的排在前面，数值大的排在后面，这样就可以实现集合元素的排序了。</p>
+
+    <p>对于代理池来说，这个分数可以作为我们判断一个代理可用不可用的标志，我们将 100 设为最高分，代表可用，0 设为最低分，代表不可用。从代理池中获取代理的时候会随机获取分数最高的代理，注意这里是随机，这样可以保证每个可用代理都会被调用到。</p>
+
+    <ul>
+      <li>分数 100 为可用，检测器会定时循环检测每个代理可用情况，一旦检测到有可用的代理就立即置为 100，检测到不可用就将分数减1，分数减至0后代理移除</li>
+      <li>新获取的代理的分数为10，如果测试可行，分数立即置为100，不可行则分数减1，分数减至0后代理移除</li>
+    </ul>
+
+    <p>这只是一种解决方案，当然可能还有合理的方案，之所以设置此方案有如下几个原因：</p>
+
+    <ul>
+      <li>在检测到代理可用时，分数立即置为100，这样可以保证所有可用代理有更大的机会被获取到。为什么不将分数加1而是直接设为最高100呢？有点代理是从各大免费公开代理网站获取的，常常一个代理并没有那么稳定，平均5次请求可能有2次成功，3次失败，如果按照这种分数来设置分数，那么这个代理几乎不可能达到一个高的分数，也就是说即便他有时是可用的，但是筛选的分数最高，那这样的代理几乎不可能被取到。如果想追求代理稳定性，可用用上述方法，这种方法可确保分数最高的代理一定是最稳定可用的。所以，这里我们采取“可用即设置为100”的方法，确保只要可用的代理都可以被获取</li>
+      <li>在检测到代理不可用时，分数减1，分数减至0后，代理移除。这样一个有效代理如果要被移除需要连续不断失败100次，也就是说当一个可用代理如果尝试了100次都失败了，就一直减分知道移除，一旦成功就重新置回100。尝试的机会越多，则这个代理拯救回来的机会越多，这样就不容易将曾经一个可用代理丢弃，以为代理不可用的原因可能时网络繁忙或者其他人用此代理过于频繁，所以这里设置为100</li>
+      <li>新获取的代理的分数设置为10.由于很多代理是从免费网站获取的，所以新获取的代理无效的比例非常高，可能可用的代理不足 10%。所以在这里我们将分数设置为10，检测的机会没有可用代理的100此那么多，这也可以适当减少开销</li>
+    </ul>
+
+    <p>所以我们就需要定义一个类来操作数据库的有序集合，定义一些方法来实现分数的设置，代理的获取等等。</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">MAX_SCORE</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">MIN_SCORE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">INITIAL_SCORE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">REDIS_HOST</span> <span class="o">=</span> <span class="sh">'</span><span class="s">localhost</span><span class="sh">'</span>
+<span class="n">REDIS_PORT</span> <span class="o">=</span> <span class="mi">6379</span>
+<span class="n">REDIS_PASSWORD</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">REDIS_KEY</span> <span class="o">=</span> <span class="sh">'</span><span class="s">proxies</span><span class="sh">'</span>
+  
+<span class="kn">import</span> <span class="n">redis</span>
+<span class="kn">from</span> <span class="n">random</span> <span class="kn">import</span> <span class="n">choice</span>
+</code></pre></div>    </div>
+
+    <p>class RedisClient(object):
+    def <strong>init</strong>(self, host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD):
+        “””
+        初始化
+        :param host: Redis 地址
+        :param port: Redis 端口
+        :param password: Redis密码
+        “””
+        self.db = redis.StrictRedis(host=host, port=port, password=password, decode_responses=True)</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>def add(self, proxy, score=INITIAL_SCORE):
+    """
+    添加代理，设置分数为最高
+    :param proxy: 代理
+    :param score: 分数
+    :return: 添加结果
+    """
+    if not self.db.zscore(REDIS_KEY, proxy):
+        return self.db.zadd(REDIS_KEY, score, proxy)
+
+def random(self):
+    """
+    随机获取有效代理，首先尝试获取最高分数代理，如果不存在，按照排名获取，否则异常
+    :return: 随机代理
+    """
+    result = self.db.zrangebyscore(REDIS_KEY, MAX_SCORE, MAX_SCORE)
+    if len(result):
+        return choice(result)
+    else:
+        result = self.db.zrevrange(REDIS_KEY, 0, 100)
+        if len(result):
+            return choice(result)
+        else:
+            raise PoolEmptyError
+
+def decrease(self, proxy):
+    """
+    代理值减一分，小于最小值则删除
+    :param proxy: 代理
+    :return: 修改后的代理分数
+    """
+    score = self.db.zscore(REDIS_KEY, proxy)
+    if score and score &gt; MIN_SCORE:
+        print('代理', proxy, '当前分数', score, '减1')
+        return self.db.zincrby(REDIS_KEY, proxy, -1)
+    else:
+        print('代理', proxy, '当前分数', score, '移除')
+        return self.db.zrem(REDIS_KEY, proxy)
+
+def exists(self, proxy):
+    """
+    判断是否存在
+    :param proxy: 代理
+    :return: 是否存在
+    """
+    return not self.db.zscore(REDIS_KEY, proxy) == None
+
+def max(self, proxy):
+    """
+    将代理设置为MAX_SCORE
+    :param proxy: 代理
+    :return: 设置结果
+    """
+    print('代理', proxy, '可用，设置为', MAX_SCORE)
+    return self.db.zadd(REDIS_KEY, MAX_SCORE, proxy)
+
+def count(self):
+    """
+    获取数量
+    :return: 数量
+    """
+    return self.db.zcard(REDIS_KEY)
+
+def all(self):
+    """
+    获取全部代理
+    :return: 全部代理列表
+    """
+    return self.db.zrangebyscore(REDIS_KEY, MIN_SCORE, MAX_SCORE)
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>接下来定义了一个 RedisClient 类，用以操作 Redis 的有序集合，其中定义了一些方法来对集合中的元素进行处理，主要功能如下：
+
+  - \_\_init__() 方法是初始化的方法，其参数是 Redis 的连接信息，默认的连接信息已经定义为常量，在 \_\_init__() 方法种初始化一个 StrictRedis 的类，建立 Redis 连接
+  - add() 方法向数据库添加代理并设置分数，默认的分数是 INITIAL_SCORE，也就是10，返回结果是添加代理的数量
+  - random() 方法是随机获取代理的方法，首先获取100分的代理，然后随机选择一个返回。如果不存在100分的代理，则此方法按照排名来获取，选取前100名，然后随机选择一个返回，否则抛出异常
+  - decrease() 方法是在代理检测无效的时候设置分数减1的方法，代理传入首，此方法将代理的分数减1，如果分数达到最低值，那么代理就删除
+
+- 获取模块
+
+获取模块的逻辑相对简单，首先需要定义一个 Crawler 来从各大网站抓取代理，示例如下：
+
+```python
+import json
+from .utils import get_page
+from pyquery import PyQuery as pq
+
+class ProxyMetaclass(type):
+    def __new__(cls, name, bases, attrs):
+        count = 0
+        attrs['__CrawlFunc__'] = []
+        for k, v in attrs.items():
+            if 'crawl_' in k:
+                attrs['__CrawlFunc__'].append(k)
+                count += 1
+        attrs['__CrawlFuncCount__'] = count
+        return type.__new__(cls, name, bases, attrs)
+
+class Crawler(object, metaclass=ProxyMetaclass):
+    def get_proxies(self, callback):
+        proxies = []
+        for proxy in eval("self.{}()".format(callback)):
+            print('成功获取到代理', proxy)
+            proxies.append(proxy)
+        return proxies
+
+    def crawl_daili66(self, page_count=4):
+        """
+        获取代理66
+        :param page_count: 页码
+        :return: 代理
+        """
+        start_url = 'http://www.66ip.cn/{}.html'
+        urls = [start_url.format(page) for page in range(1, page_count + 1)]
+        for url in urls:
+            print('Crawling', url)
+            html = get_page(url)
+            if html:
+                doc = pq(html)
+                trs = doc('.containerbox table tr:gt(0)').items()
+                for tr in trs:
+                    ip = tr.find('td:nth-child(1)').text()
+                    port = tr.find('td:nth-child(2)').text()
+                    yield ':'.join([ip, port])
+
+    def crawl_proxy360(self):
+        """
+        获取Proxy360
+        :return: 代理
+        """
+        start_url = 'http://www.proxy360.cn/Region/China'
+        print('Crawling', start_url)
+        html = get_page(start_url)
+        if html:
+            doc = pq(html)
+            lines = doc('div[name="list_proxy_ip"]').items()
+            for line in lines:
+                ip = line.find('.tbBottomLine:nth-child(1)').text()
+                port = line.find('.tbBottomLine:nth-child(2)').text()
+                yield ':'.join([ip, port])
+
+    def crawl_goubanjia(self):
+        """
+        获取Goubanjia
+        :return: 代理
+        """
+        start_url = 'http://www.goubanjia.com/free/gngn/index.shtml'
+        html = get_page(start_url)
+        if html:
+            doc = pq(html)
+            tds = doc('td.ip').items()
+            for td in tds:
+                td.find('p').remove()
+                yield td.text().replace(' ', '')
+</code></pre></div></div>
+
+<p>你可能会想知道是怎样获取了所有以 crawl 开头的方法名称的。其实这里借助于元类来实现，定义了一个 ProxyMetaclass，Crawl 类将它设置为元类，元类中实现了 new() 方法，这个方法有固定的几个参数，其中第四个参数 attrs 中包含了类的一些属性，这其中就包含了类中方法的一些信息，我们可以遍历 attrs 这个变量即可获取类的所有方法信息。所以在这里我们在 new() 方法中遍历了 attrs 的这个属性，就像遍历一个字典一样，键名对应的就是方法的名称，接下来判断其开头是否是 crawl，如果是，则将其加入到 CrawlFunc 属性中，这样我们就成功将所有以 crawl 开头的方法定义成了一个属性，就成功动态地获取到所有以 crawl 开头的方法列表了。</p>
+
+<p>所以说，如果要做扩展的话，我们只需要添加一个以 crawl开头的方法，例如抓取快代理，我们只需要在 Crawler 类中增加 crawl_kuaidaili() 方法，仿照其他的几个方法将其定义成生成器，抓取其网站的代理，然后通过 yield 返回代理即可，所以这样我们可以非常方便地扩展，而不用关心类其他部分的实现逻辑。</p>
+
+<p>代理网站的添加非常灵活，不仅可以添加免费代理，也可以添加付费代理，一些付费代理的提取方式其实也类似，也是通过 Web 的形式获取，然后进行解析，解析方式可能更加简单，如解析纯文本或 Json，解析之后以同样的方式返回即可，在此不再添加，可以自行扩展。</p>
+
+<p>既然定义了这个 Crawler 类，我们就要调用啊，所以在这里再定义一个 Getter 类，动态地调用所有以 crawl 开头的方法，然后获取抓取到的代理，将其加入到数据库存储起来。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">db</span> <span class="kn">import</span> <span class="n">RedisClient</span>
+<span class="kn">from</span> <span class="n">crawler</span> <span class="kn">import</span> <span class="n">Crawler</span>
+
+<span class="n">POOL_UPPER_THRESHOLD</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="k">class</span> <span class="nc">Getter</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">redis</span> <span class="o">=</span> <span class="nc">RedisClient</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">crawler</span> <span class="o">=</span> <span class="nc">Crawler</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">is_over_threshold</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        判断是否达到了代理池限制
+        </span><span class="sh">"""</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">redis</span><span class="p">.</span><span class="nf">count</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">POOL_UPPER_THRESHOLD</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">获取器开始执行</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="nf">is_over_threshold</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">callback_label</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">crawler</span><span class="p">.</span><span class="n">__CrawlFuncCount__</span><span class="p">):</span>
+                <span class="n">callback</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">crawler</span><span class="p">.</span><span class="n">__CrawlFunc__</span><span class="p">[</span><span class="n">callback_label</span><span class="p">]</span>
+                <span class="n">proxies</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">crawler</span><span class="p">.</span><span class="nf">get_proxies</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">proxy</span> <span class="ow">in</span> <span class="n">proxies</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">redis</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">proxy</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>检测模块</p>
+
+    <p>在获取模块中，我们已经成功将各个网站的代理获取下来了，然后就需要一个检测模块来对所有的代理进行一轮轮的检测，检测可用就设置为 100，不可用就分数减 1，这样就可以实时改变每个代理的可用情况，在获取有效代理的时候只需要获取分数高的代理即可。</p>
+
+    <p>由于代理的数量非常多，为了提高代理的检测效率，我们在这里使用异步请求库 Aiohttp 来进行检测。</p>
+
+    <p>Requests 作为一个同步请求库，我们在发出一个请求之后需要等待网页加载完成之后才能继续执行程序。也就是这个过程会阻塞在等待响应这个过程，如果服务器响应非常慢，比如一个请求等待十几秒，那么我们使用 Requests 完成一个请求就会需要十几秒的时间，中间其实就是一个等待响应的过程，程序也不会继续往下执行，而这十几秒的时间其实完全可以去做其他的事情，比如调度其他的请求或者进行网页解析等等。</p>
+
+    <p>异步请求库就解决了这个问题，它类似 JavaScript 中的回调，意思是说在请求发出之后，程序可以继续接下去执行去做其他的事情，当响应到达时，会通知程序再去处理这个响应，这样程序就没有被阻塞，充分把时间和资源利用起来，大大提高效率。</p>
+
+    <p>对于响应速度比较快的网站，可能 Requests 同步请求和 Aiohttp 异步请求的效果差距没那么大，可对于检测代理这种事情，一般是需要十多秒甚至几十秒的时间，这时候使用 Aiohttp 异步请求库的优势就大大体现出来了，效率可能会提高几十倍不止。</p>
+
+    <p>所以在这里我们的代理检测使用异步请求库 Aiohttp，实现示例如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">VALID_STATUS_CODES</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">]</span>
+<span class="n">TEST_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://www.baidu.com</span><span class="sh">'</span>
+<span class="n">BATCH_TEST_SIZE</span> <span class="o">=</span> <span class="mi">100</span>
+</code></pre></div>    </div>
+
+    <p>class Tester(object):
+      def <strong>init</strong>(self):
+          self.redis = RedisClient()</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>  async def test_single_proxy(self, proxy):
+      """
+      测试单个代理
+      :param proxy: 单个代理
+      :return: None
+      """
+      conn = aiohttp.TCPConnector(verify_ssl=False)
+      async with aiohttp.ClientSession(connector=conn) as session:
+          try:
+              if isinstance(proxy, bytes):
+                  proxy = proxy.decode('utf-8')
+              real_proxy = 'http://' + proxy
+              print('正在测试', proxy)
+              async with session.get(TEST_URL, proxy=real_proxy, timeout=15) as response:
+                  if response.status in VALID_STATUS_CODES:
+                      self.redis.max(proxy)
+                      print('代理可用', proxy)
+                  else:
+                      self.redis.decrease(proxy)
+                      print('请求响应码不合法', proxy)
+          except (ClientError, ClientConnectorError, TimeoutError, AttributeError):
+              self.redis.decrease(proxy)
+              print('代理请求失败', proxy)
+
+  def run(self):
+      """
+      测试主函数
+      :return: None
+      """
+      print('测试器开始运行')
+      try:
+          proxies = self.redis.all()
+          loop = asyncio.get_event_loop()
+          # 批量测试
+          for i in range(0, len(proxies), BATCH_TEST_SIZE):
+              test_proxies = proxies[i:i + BATCH_TEST_SIZE]
+              tasks = [self.test_single_proxy(proxy) for proxy in test_proxies]
+              loop.run_until_complete(asyncio.wait(tasks))
+              time.sleep(5)
+      except Exception as e:
+          print('测试器发生错误', e.args)   ```
+</code></pre></div>    </div>
+
+    <p>在这里定义了一个类 Tester，init() 方法中建立了一个 RedisClient 对象，供类中其他方法使用。接下来定义了一个 test_single_proxy() 方法，用来检测单个代理的可用情况，其参数就是被检测的代理，注意这个方法前面加了 async 关键词，代表这个方法是异步的，方法内部首先创建了 Aiohttp 的 ClientSession 对象，此对象类似于 Requests 的 Session 对象，可以直接调用该对象的 get() 方法来访问页面，在这里代理的设置方式是通过 proxy 参数传递给 get() 方法，请求方法前面也需要加上 async 关键词标明是异步请求，这也是 Aiohttp 使用时的常见写法。</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>测试的链接在这里定义常量为 TEST_URL，如果针对某个网站有抓取需求，建议将 TEST_URL 设置为目标网站的地址，因为在抓取的过程中，可能代理本身是可用的，但是该代理的 IP 已经被目标网站封掉了。例如，如要抓取知乎，可能其中某些代理是可以正常使用，比如访问百度等页面是完全没有问题的，但是可能对知乎来说可能就被封了，所以可以将 TEST_URL 设置为知乎的某个页面的链接，当请求失败时，当代理被封时，分数自然会减下来，就不会被取到了。
+
+如果想做一个通用的代理池，则不需要专门设置 TEST_URL，可以设置为一个不会封 IP 的网站，也可以设置为百度这类响应稳定的网站。
+
+另外我们还定义了 VALID_STATUS_CODES 变量，是一个列表形式，包含了正常的状态码，如可以定义成 [200]，当然对于某些检测目标网站可能会出现其他的状态码也是正常的，可以自行配置。
+
+获取 Response 后需要判断响应的状态，如果状态码在 VALID_STATUS_CODES 这个列表里，则代表代理可用，调用 RedisClient 的 max() 方法将代理分数设为 100，否则调用 decrease() 方法将代理分数减 1，如果出现异常也同样将代理分数减 1。
+
+另外在测试的时候设置了批量测试的最大值 BATCH_TEST_SIZE 为 100，也就是一批测试最多测试 100个，这可以避免当代理池过大时全部测试导致内存开销过大的问题。
+
+随后在 run() 方法里面获取了所有的代理列表，使用 Aiohttp 分配任务，启动运行，这样就可以进行异步检测了，写法可以参考 Aiohttp 的官方示例：http://aiohttp.readthedocs.io/。
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>接口模块</p>
+
+    <p>过上述三个模块我们已经可以做到代理的获取、检测和更新了，数据库中就会以有序集合的形式存储各个代理还有对应的分数，分数 100 代表可用，分数越小代表越不可用。</p>
+
+    <p>但是我们怎样来方便地获取可用代理呢？用 RedisClient 类来直接连接 Redis 然后调用 random() 方法获取当然没问题，这样做效率很高，但是有这么几个弊端：</p>
+
+    <ul>
+      <li>
+        <p>如果其他人使用这个代理池，他需要知道 Redis 连接的用户名和密码信息，这样很不安全。</p>
+      </li>
+      <li>
+        <p>如果代理池需要部署在远程服务器上运行，二远程服务器的 Redis 只允许本地连接，那么我们就不能远程直连 Redis 来获取代理</p>
+      </li>
+      <li>
+        <p>如果爬虫所在的主机没有连接 Redis 模块，或者爬虫不是由 Python 语言编写的，那么我们就无法使用 RedisClient 来获取代理</p>
+      </li>
+      <li>
+        <p>如果 RedisClient 类或者数据库结构有更新，呢吗爬虫端必须同步这些更新，这样非常麻烦</p>
+
+        <p>综上考虑，为了使得代理池可以作为一个独立服务运行，我们最好增加一个接口模块，以 Web API 的形式暴露可用代理。</p>
+
+        <p>这样获取代理只需要请求一下接口即可，以上的几个缺点弊端可以解决。</p>
+
+        <p>我们在这里使用一个比较轻量级的库 Flask 来实现这个接口模块，实现示例如下：</p>
+      </li>
+    </ul>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">g</span>
+<span class="kn">from</span> <span class="n">db</span> <span class="kn">import</span> <span class="n">RedisClient</span>
+  
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="sh">'</span><span class="s">app</span><span class="sh">'</span><span class="p">]</span>
+<span class="n">app</span> <span class="o">=</span> <span class="nc">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+</code></pre></div>    </div>
+
+    <p>def get_conn():
+      if not hasattr(g, ‘redis’):
+          g.redis = RedisClient()
+      return g.redis</p>
+
+    <p>@app.route(‘/’)
+  def index():
+      return ‘&lt;h2&gt;Welcome to Proxy Pool System&lt;/h2&gt;’</p>
+
+    <p>@app.route(‘/random’)
+  def get_proxy():
+      “””
+      获取随机可用代理
+      :return: 随机代理
+      “””
+      conn = get_conn()
+      return conn.random()</p>
+
+    <p>@app.route(‘/count’)
+  def get_counts():
+      “””
+      获取代理池总量
+      :return: 代理池总量
+      “””
+      conn = get_conn()
+      return str(conn.count())</p>
+
+    <p>if <strong>name</strong> == ‘<strong>main</strong>’:
+      app.run()
+  ```</p>
+
+    <p>运行之后 Flask 会启动一个 Web 服务，我们只需要访问对应的接口即可获取到可用代理。</p>
+  </li>
+  <li>
+    <p>调度模块</p>
+
+    <p>这个模块其实就是调用以上所定义的三个模块，将以上三个模块通过多进程的形式运行起来，示例如下：</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">TESTER_CYCLE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">GETTER_CYCLE</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">TESTER_ENABLED</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">GETTER_ENABLED</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">API_ENABLED</span> <span class="o">=</span> <span class="bp">True</span>
+  
+<span class="kn">from</span> <span class="n">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="n">api</span> <span class="kn">import</span> <span class="n">app</span>
+<span class="kn">from</span> <span class="n">getter</span> <span class="kn">import</span> <span class="n">Getter</span>
+<span class="kn">from</span> <span class="n">tester</span> <span class="kn">import</span> <span class="n">Tester</span>
+</code></pre></div>    </div>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>class Scheduler():
+    def schedule_tester(self, cycle=TESTER_CYCLE):
+        """
+        定时测试代理
+        """
+        tester = Tester()
+        while True:
+            print('测试器开始运行')
+            tester.run()
+            time.sleep(cycle)
+
+    def schedule_getter(self, cycle=GETTER_CYCLE):
+        """
+        定时获取代理
+        """
+        getter = Getter()
+        while True:
+            print('开始抓取代理')
+            getter.run()
+            time.sleep(cycle)
+
+    def schedule_api(self):
+        """
+        开启API
+        """
+        app.run(API_HOST, API_PORT)
+
+    def run(self):
+        print('代理池开始运行')
+        if TESTER_ENABLED:
+            tester_process = Process(target=self.schedule_tester)
+            tester_process.start()
+
+        if GETTER_ENABLED:
+            getter_process = Process(target=self.schedule_getter)
+            getter_process.start()
+
+        if API_ENABLED:
+            api_process = Process(target=self.schedule_api)
+            api_process.start()
+```
+
+  启动入口是 run() 方法，其分别判断了三个模块的开关，如果开启的话，就新建一个 Process 进程，设置好启动目标，然后调用 start() 方法运行，这样三个进程就可以并行执行，互不干扰。
+
+  三个调度方法结构也非常清晰，比如 schedule_tester() 方法，这是用来调度测试模块的方法，首先声明一个 Tester 对象，然后进入死循环不断循环调用其 run() 方法，执行完一轮之后就休眠一段时间，休眠结束之后重新再执行。在这里休眠时间也定义为一个常量，如 20 秒，这样就会每隔 20 秒进行一次代理检测。
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h3 id="运行">运行</h3>
+
+<p>接下来我们将代码整合一下，将代理运行起来</p>
+
+<p>以上是代理池的控制台输出，可以看到可用代理设置为 100，不可用代理分数减 1。</p>
+
+<p>接下来我们再打开浏览器，当前配置了运行在 5555 端口，所以打开：http://127.0.0.1:5555，即可看到其首页</p>
+
+<p>再访问：http://127.0.0.1:5555/random，即可获取随机可用代理</p>
+
+<p>所以后面我们只需要访问此接口即可获取一个随机可用代理，非常方便。</p>
+
+<p>获取代理的代码如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">requests</span>
+
+<span class="n">PROXY_POOL_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://localhost:5555/random</span><span class="sh">'</span>
+
+<span class="k">def</span> <span class="nf">get_proxy</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">PROXY_POOL_URL</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+    <span class="k">except</span> <span class="nb">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>有了代理池之后，我们再取出代理即可有效防止IP被封禁的情况。</p>
+
+<h2 id="使用代理爬取微信公众号文章">使用代理爬取微信公众号文章</h2>
+
+<h3 id="爬取分析">爬取分析</h3>
+
+<p>搜狗对微信公众平台的公众号和文章做了整合。我们可以通过上面的链接搜索到相关的公众号和文章，例如搜索 NBA，可以搜索到最新的文章</p>
+
+<p>点击搜索后，搜索结果的 URL 中其实有很多无关 GET 请求参数，将无关的参数去掉，只保留 type 和 query 参数，例如 http://weixin.sogou.com/weixin?type=2&query=NBA，搜索关键词为 NBA，类型为 2，2 代表搜索微信文章。</p>
+
+<p>下拉网页，点击下一页即可翻页</p>
+
+<p>注意，如果没有输入账号登录，那只能看到 10 页的内容，登录之后可以看到 100 页内容</p>
+
+<p>如果需要爬取更多内容，就需要登录并使用 Cookies 来爬取。</p>
+
+<p>搜狗微信站点的反爬虫能力很强，如连续刷新，站点就会弹出验证。</p>
+
+<p>网络请求出现了 302 跳转，返回状态码为 302，跳转的链接开头为 http://weixin.sogou.com/antispider/ ，这很明显就是一个反爬虫的验证页面。所以我们得出结论，如果服务器返回状态码为 302 而非 200，则 IP 访问次数太高，IP 被封禁，此请求就是失败了。</p>
+
+<p>如果遇到这种情况，我们可以选择识别验证码并解封，也可以使用代理直接切换 IP。在这里我们采用第二种方法，使用代理直接跳过这个验证。代理使用上一节所讲的代理池，还需要更改检测的 URL 为搜狗微信的站点。</p>
+
+<p>对于这种反爬能力很强的网站来说，如果我们遇到此种返回状态就需要重试。所以我们采用另一种爬取方式，借助数据库构造一个爬取队列，待爬取的请求都放到队列里，如果请求失败了重新放回队列，就会被重新调度爬取。</p>
+
+<p>在这里我们可以采用 Redis 的队列数据结构，新的请求就加入队列，或者有需要重试的请求也放回队列。调度的时候如果队列不为空，那就把一个个请求取出来执行，得到响应后再进行解析，提取出我们想要的结果。</p>
+
+<p>这次我们采用 MySQL 存储，借助 PyMySQL 库，将爬取结果构造为一个字典，实现动态存储。</p>
+
+<p>综上所述，我们本节实现的功能有如下几点。</p>
+
+<ul>
+  <li>修改代理池检测链接为搜狗微信站点</li>
+  <li>构造 Redis 爬取队列，用队列实现请求的存取</li>
+  <li>实现异常处理，失败的请求重新加入队列</li>
+  <li>实现翻页和提取文章列表并把对应请求加入队列</li>
+  <li>实现微信文章的信息的提取</li>
+  <li>将提取到的信息保存到 MySQL</li>
+</ul>
+
+<h3 id="请求构造">请求构造</h3>
+
+<p>既然我们要用队列来存储请求，那么肯定要实现一个请求 Request 的数据结构，这个请求需要包含一些必要信息，如请求链接、请求头、请求方式、超时时间。另外对于某个请求，我们需要实现对应的方法来处理它的响应，所以需要再加一个 Callback 回调函数。每次翻页请求需要代理来实现，所以还需要一个参数 NeedProxy。如果一个请求失败次数太多，那就不再重新请求了，所以还需要加失败次数的记录。</p>
+
+<p>这些字段都需要作为 Request 的一部分，组成一个完整的 Request 对象放入队列去调度，这样从队列获取出来的时候直接执行这个 Request 对象就好了。</p>
+
+<p>我们可以采用继承 reqeusts 库中的 Request 对象的方式来实现这个数据结构。requests 库中已经有了 Request 对象，它将请求 Request 作为一个整体对象去执行，得到响应后再返回。其实 requests 库的 get()、post() 等方法都是通过执行 Request 对象实现的。</p>
+
+<p>我们首先看看 Request 对象的源码：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Request</span><span class="p">(</span><span class="n">RequestHooksMixin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span>
+            <span class="n">method</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">hooks</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="c1"># Default empty dicts for dict params.
+</span>        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">data</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">files</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">files</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">headers</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">headers</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">params</span>
+        <span class="n">hooks</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">if</span> <span class="n">hooks</span> <span class="ow">is</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">hooks</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">hooks</span> <span class="o">=</span> <span class="nf">default_hooks</span><span class="p">()</span>
+        <span class="nf">for </span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nf">list</span><span class="p">(</span><span class="n">hooks</span><span class="p">.</span><span class="nf">items</span><span class="p">()):</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">register_hook</span><span class="p">(</span><span class="n">event</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">hook</span><span class="o">=</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">url</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">files</span> <span class="o">=</span> <span class="n">files</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">json</span> <span class="o">=</span> <span class="n">json</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">auth</span> <span class="o">=</span> <span class="n">auth</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+</code></pre></div></div>
+
+<p>这是 requests 库中 Request 对象的构造方法。这个 Request 已经包含了请求方式、请求链接、请求头这几个属性，但是相比我们需要的还差了几个。我们需要实现一个特定的数据结构，在原先基础上加入上文所提到的额外几个属性。这里我们需要继承 Request 对象重新实现一个请求，将它定义为 WeixinRequest，实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">Request</span>
+
+<span class="k">class</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">Request</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="sh">'</span><span class="s">GET</span><span class="sh">'</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">need_proxy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">fail_time</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">):</span>
+        <span class="n">Request</span><span class="p">.</span><span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">need_proxy</span> <span class="o">=</span> <span class="n">need_proxy</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">fail_time</span> <span class="o">=</span> <span class="n">fail_time</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
+</code></pre></div></div>
+
+<p>在这里我们实现了 WeixinRequest 数据结构。init() 方法先调用了 Request 的init() 方法，然后加入额外的几个参数，定义为 callback、need_proxy、fail_time、timeout，分别代表回调函数、是否需要代理爬取、失败次数、超时时间。</p>
+
+<p>我们就可以将 WeixinRequest 作为一个整体来执行，一个个 WeixinRequest 对象都是独立的，每个请求都有自己的属性。例如，我们可以调用它的 callback，就可以知道这个请求的响应应该用什么方法来处理，调用 fail_time 就可以知道这个请求失败了多少次，判断失败次数是不是到了阈值，该不该丢弃这个请求。这里我们采用了面向对象的一些思想。</p>
+
+<h3 id="实现请求队列">实现请求队列</h3>
+
+<p>存取无非就是两个操作，一个是放，一个是取，所以这里利用 Redis 的 rpush() 和 lpop() 方法即可。</p>
+
+<p>另外还需要注意，存取不能直接存 Request 对象，Redis 里面存的是字符串。所以在存 Request 对象之前我们先把它序列化，取出来的时候再将其反序列化，这个过程可以利用 pickle 模块实现。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">pickle</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
+<span class="kn">from</span> <span class="n">request</span> <span class="kn">import</span> <span class="n">WeixinRequest</span>
+
+<span class="k">class</span> <span class="nc">RedisQueue</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">初始化 Redis</span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="nc">StrictRedis</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">REDIS_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">REDIS_PORT</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">REDIS_PASSWORD</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        向队列添加序列化后的 Request
+        :param request: 请求对象
+        :param fail_time: 失败次数
+        :return: 添加结果
+        </span><span class="sh">"""</span>
+        <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">WeixinRequest</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">rpush</span><span class="p">(</span><span class="n">REDIS_KEY</span><span class="p">,</span> <span class="nf">dumps</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        取出下一个 Request 并反序列化
+        :return: Request or None
+        </span><span class="sh">"""</span>
+        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">llen</span><span class="p">(</span><span class="n">REDIS_KEY</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nf">loads</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">lpop</span><span class="p">(</span><span class="n">REDIS_KEY</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">empty</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">llen</span><span class="p">(</span><span class="n">REDIS_KEY</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>这里实现了一个 RedisQueue，它的 <strong>init</strong>() 构造方法里面初始化了一个 StrictRedis 对象。随后实现了 add() 方法，首先判断 Request 的类型，如果是 WeixinRequest，那么就把程序就会用 pickle 的 dumps() 方法序列化，然后再调用 rpush() 方法加入队列。pop() 方法则相反，调用 lpop() 方法将请求从队列取出，然后再用 pickle 的 loads() 方法将其转为 WeixinRequest 对象。另外，empty() 方法返回队列是否为空，只需要判断队列长度是否为 0 即可。</p>
+
+<p>在调度的时候，我们只需要新建一个 RedisQueue 对象，然后调用 add() 方法，传入 WeixinRequest 对象，即可将 WeixinRequest 加入队列，调用 pop() 方法，即可取出下一个 WeixinRequest 对象，非常简单易用。</p>
+
+<h3 id="修改代理池">修改代理池</h3>
+
+<p>之前代理池检测的 URL 并不是搜狗微信站点，所以我们需要将代理池检测的 URL 修改成搜狗微信站点，以便于把被搜狗微信站点封禁的代理剔除掉，留下可用代理。</p>
+
+<p>现在将代理池的设置文件中的 TEST_URL 修改一下，如 http://weixin.sogou.com/weixin?type=2&query=nba ，被本站点封的代理就会减分，正常请求的代理就会赋值为 100，最后留下的就是可用代理。</p>
+
+<p>修改之后将获取模块、检测模块、接口模块的开关都设置为 True，让代理池运行一会</p>
+
+<p>这样，数据库中留下的 100 分的代理就是针对搜狗微信的可用代理了</p>
+
+<p>同时访问代理接口，接口设置为 5555，访问 http://127.0.0.1:5555/random ，即可获取到随机可用代理</p>
+
+<p>再定义一个函数来获取随机代理：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">PROXY_POOL_URL</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://127.0.0.1:5555/random</span><span class="sh">'</span>
+
+<span class="k">def</span> <span class="nf">get_proxy</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    从代理池获取代理
+    :return:
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">PROXY_POOL_URL</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Get Proxy</span><span class="sh">'</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="nb">ConnectionError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h3 id="第一个请求">第一个请求</h3>
+
+<p>一切准备工作都做好，下面我们就可以构造第一个请求放到队列里以供调度了。定义一个 Spider 类，实现 start() 方法的代码如下:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="n">db</span> <span class="kn">import</span> <span class="n">RedisQueue</span>
+<span class="kn">from</span> <span class="n">request</span> <span class="kn">import</span> <span class="n">WeixinRequest</span>
+<span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+
+<span class="k">class</span> <span class="nc">Spider</span><span class="p">():</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://weixin.sogou.com/weixin</span><span class="sh">'</span>
+    <span class="n">keyword</span> <span class="o">=</span> <span class="sh">'</span><span class="s">NBA</span><span class="sh">'</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">Accept</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Accept-Encoding</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">gzip, deflate</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Accept-Language</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2,mt;q=0.2</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Cache-Control</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">max-age=0</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Connection</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">keep-alive</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Cookie</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">IPLOC=CN1100; SUID=6FEDCF3C541C940A000000005968CF55; SUV=1500041046435211; ABTEST=0|1500041048|v1; SNUID=CEA85AE02A2F7E6EAFF9C1FE2ABEBE6F; weixinIndexVisited=1; JSESSIONID=aaar_m7LEIW-jg_gikPZv; ld=Wkllllllll2BzGMVlllllVOo8cUlllll5G@HbZllll9lllllRklll5@@@@@@@@@@</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">weixin.sogou.com</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Upgrade-Insecure-Requests</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">1</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36</span><span class="sh">'</span>
+    <span class="p">}</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="nc">Session</span><span class="p">()</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="nc">RedisQueue</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">初始化工作</span><span class="sh">"""</span>
+        <span class="c1"># 全局更新 Headers
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">start_url</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="sh">'</span><span class="s">?</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">urlencode</span><span class="p">({</span><span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">keyword</span><span class="p">,</span> <span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+        <span class="n">weixin_request</span> <span class="o">=</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">start_url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">parse_index</span><span class="p">,</span> <span class="n">need_proxy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c1"># 调度第一个请求
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>这里定义了 Spider 类，设置了很多全局变量，比如 keyword 设置为 NBA，headers 就是请求头。在浏览器里登录账号，然后在开发者工具里将请求头复制出来，记得带上 Cookie 字段，这样才能爬取 100 页的内容。然后初始化了 Session 和 RedisQueue 对象，它们分别用来执行请求和存储请求。</p>
+
+<p>首先，start() 方法全局更新了 headers，使得所有请求都能应用 Cookies。然后构造了一个起始 URL：http://weixin.sogou.com/weixin?type=2&query=NBA ，随后用改 URL 构造了一个 WeixinRequest 对象。回调函数是 Spider 类的 parse_index() 方法，也就是当这个请求成功之后就用 parse_index() 来处理和解析。need_proxy 参数设置为 True，代表执行这个请求需要用到代理。随后我们调用了 RedisQueue 的 add() 方法，将这个请求加入队列，等待调度。</p>
+
+<h3 id="调度请求">调度请求</h3>
+
+<p>加入第一个请求之后，调度开始了。我们首先从队列中取出这个请求，将它的结果解析出来，生成新的请求加入队列，然后拿出新的请求，将结果解析，再生成新的请求加入队列，这样循环往复执行，直到队列中没有请求，则代表爬取结束。我们用代码实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">VALID_STATUSES</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    调度请求
+    :return:
+    </span><span class="sh">"""</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">empty</span><span class="p">():</span>
+        <span class="n">weixin_request</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">pop</span><span class="p">()</span>
+        <span class="n">callback</span> <span class="o">=</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">callback</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Schedule</span><span class="sh">'</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="n">VALID_STATUSES</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">callback</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">New Result</span><span class="sh">'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">WeixinRequest</span><span class="p">):</span>
+                        <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">self</span><span class="p">.</span><span class="n">mysql</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="sh">'</span><span class="s">articles</span><span class="sh">'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">self</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>在这里实现了一个 schedule() 方法，其内部是一个循环，循环的判断是队列不为空。</p>
+
+<p>当队列不为空时，调用 pop() 方法取出下一个请求，调用 request() 方法执行这个请求，request() 方法的实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">ReadTimeout</span><span class="p">,</span> <span class="nb">ConnectionError</span>
+
+<span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    执行请求
+    :param weixin_request: 请求
+    :return: 响应
+    </span><span class="sh">"""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">need_proxy</span><span class="p">:</span>
+            <span class="n">proxy</span> <span class="o">=</span> <span class="nf">get_proxy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">proxy</span><span class="p">:</span>
+                <span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+                    <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">.</span><span class="nf">prepare</span><span class="p">(),</span>
+                                         <span class="n">timeout</span><span class="o">=</span><span class="n">weixin_request</span><span class="p">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">.</span><span class="nf">prepare</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="n">weixin_request</span><span class="p">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="nf">except </span><span class="p">(</span><span class="nb">ConnectionError</span><span class="p">,</span> <span class="n">ReadTimeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<p>这里首先判断这个请求是否需要代理，如果需要代理，则调用 get_proxy() 方法获取代理，然后调用 Session 的 send() 方法执行这个请求。这里的请求调用了 prepare() 方法转化为 Prepared Request，具体的用法可以参考 http://docs.python-requests.org/en/master/user/advanced/#prepared-requests ，同时设置 allow_redirects 为 False，timeout 是该请求的超时时间，最后响应返回。</p>
+
+<p>执行 request() 方法之后会得到两种结果：一种是 False，即请求失败，连接错误；另一种是 Response 对象，还需要判断状态码，如果状态码合法，那么就进行解析，否则重新将请求加回队列。</p>
+
+<p>如果状态码合法，解析的时候就会调用 WeixinRequest 的回调函数进行解析。比如这里的回调函数是 parse_index()，其实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+
+<span class="k">def</span> <span class="nf">parse_index</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    解析索引页
+    :param response: 响应
+    :return: 新的响应
+    </span><span class="sh">"""</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="nf">pq</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">.news-box .news-list li .txt-box h3 a</span><span class="sh">'</span><span class="p">).</span><span class="nf">items</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">item</span><span class="p">.</span><span class="nf">attr</span><span class="p">(</span><span class="sh">'</span><span class="s">href</span><span class="sh">'</span><span class="p">)</span>
+        <span class="n">weixin_request</span> <span class="o">=</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">parse_detail</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">weixin_request</span>
+    <span class="nb">next</span> <span class="o">=</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#sogou_next</span><span class="sh">'</span><span class="p">).</span><span class="nf">attr</span><span class="p">(</span><span class="sh">'</span><span class="s">href</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">next</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="nb">next</span><span class="p">)</span>
+        <span class="n">weixin_request</span> <span class="o">=</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">parse_index</span><span class="p">,</span> <span class="n">need_proxy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">yield</span> <span class="n">weixin_request</span>
+</code></pre></div></div>
+
+<p>此方法做了两件事：一件事就是获取本页的所有微信文章链接，另一件事就是获取下一页的链接，再构造成 WeixinRequest 之后 yield 返回。</p>
+
+<p>然后，schedule() 方法将返回的结果进行遍历，利用 isinstance() 方法判断返回结果，如果返回结果是 WeixinRequest，就将其重新加入队列。</p>
+
+<p>至此，第一次循环结束。</p>
+
+<p>这时 while 循环会继续执行。队列已经包含第一页内容的文章详情页请求和下一页的请求，所以第二次循环得到的下一个请求就是文章详情页的请求，程序重新调用 request() 方法获取其响应，然后调用其对应的回调函数解析。这时详情页请求的回调方法就不同了，这次是 parse_detail() 方法，此方法实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">parse_detail</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">
+    解析详情页
+    :param response: 响应
+    :return: 微信公众号文章
+    </span><span class="sh">"""</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="nf">pq</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">title</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">.rich_media_title</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">content</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">.rich_media_content</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#post-date</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">nickname</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#js_profile_qrcode&gt; div &gt; strong</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+        <span class="sh">'</span><span class="s">wechat</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#js_profile_qrcode&gt; div &gt; p:nth-child(3) &gt; span</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">()}</span>
+    <span class="k">yield</span> <span class="n">data</span>
+</code></pre></div></div>
+
+<p>这个方法解析了微信文章详情页的内容，提取出它的标题、正文文本、发布日期、发布人昵称、微信公众号名称，将这些信息组合成一个字典返回。</p>
+
+<p>结果返回之后还需要判断类型，如是字典类型，程序就调用 mysql 对象的 insert() 方法将数据存入数据库。</p>
+
+<p>这样，第二次循环执行完毕。</p>
+
+<p>第三次循环、第四次循环，循环往复，每个请求都有各自的回调函数，索引页解析完毕之后会继续生成后续请求，详情页解析完毕之后会返回结果以便存储，直到爬取完毕。</p>
+
+<p>现在，整个调度就完成了。</p>
+
+<p>我们完善一下整个 Spider 代码，实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">Session</span>
+<span class="kn">from</span> <span class="n">config</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="n">db</span> <span class="kn">import</span> <span class="n">RedisQueue</span>
+<span class="kn">from</span> <span class="n">mysql</span> <span class="kn">import</span> <span class="n">MySQL</span>
+<span class="kn">from</span> <span class="n">request</span> <span class="kn">import</span> <span class="n">WeixinRequest</span>
+<span class="kn">from</span> <span class="n">urllib.parse</span> <span class="kn">import</span> <span class="n">urlencode</span>
+<span class="kn">import</span> <span class="n">requests</span>
+<span class="kn">from</span> <span class="n">pyquery</span> <span class="kn">import</span> <span class="n">PyQuery</span> <span class="k">as</span> <span class="n">pq</span>
+<span class="kn">from</span> <span class="n">requests</span> <span class="kn">import</span> <span class="n">ReadTimeout</span><span class="p">,</span> <span class="nb">ConnectionError</span>
+
+<span class="k">class</span> <span class="nc">Spider</span><span class="p">():</span>
+    <span class="n">base_url</span> <span class="o">=</span> <span class="sh">'</span><span class="s">http://weixin.sogou.com/weixin</span><span class="sh">'</span>
+    <span class="n">keyword</span> <span class="o">=</span> <span class="sh">'</span><span class="s">NBA</span><span class="sh">'</span>
+    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="sh">'</span><span class="s">Accept</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Accept-Encoding</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">gzip, deflate</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Accept-Language</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,zh-TW;q=0.2,mt;q=0.2</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Cache-Control</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">max-age=0</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Connection</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">keep-alive</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Cookie</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">IPLOC=CN1100; SUID=6FEDCF3C541C940A000000005968CF55; SUV=1500041046435211; ABTEST=0|1500041048|v1; SNUID=CEA85AE02A2F7E6EAFF9C1FE2ABEBE6F; weixinIndexVisited=1; JSESSIONID=aaar_m7LEIW-jg_gikPZv; ld=Wkllllllll2BzGMVlllllVOo8cUlllll5G@HbZllll9lllllRklll5@@@@@@@@@@</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Host</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">weixin.sogou.com</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">Upgrade-Insecure-Requests</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">1</span><span class="sh">'</span><span class="p">,</span>
+        <span class="sh">'</span><span class="s">User-Agent</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36</span><span class="sh">'</span>
+    <span class="p">}</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="nc">Session</span><span class="p">()</span>
+    <span class="n">queue</span> <span class="o">=</span> <span class="nc">RedisQueue</span><span class="p">()</span>
+    <span class="n">mysql</span> <span class="o">=</span> <span class="nc">MySQL</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_proxy</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        从代理池获取代理
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">PROXY_POOL_URL</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Get Proxy</span><span class="sh">'</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="n">text</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="p">.</span><span class="nb">ConnectionError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">初始化工作</span><span class="sh">"""</span>
+        <span class="c1"># 全局更新 Headers
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="n">headers</span><span class="p">.</span><span class="nf">update</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">headers</span><span class="p">)</span>
+        <span class="n">start_url</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="sh">'</span><span class="s">?</span><span class="sh">'</span> <span class="o">+</span> <span class="nf">urlencode</span><span class="p">({</span><span class="sh">'</span><span class="s">query</span><span class="sh">'</span><span class="p">:</span> <span class="n">self</span><span class="p">.</span><span class="n">keyword</span><span class="p">,</span> <span class="sh">'</span><span class="s">type</span><span class="sh">'</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+        <span class="n">weixin_request</span> <span class="o">=</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">start_url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">parse_index</span><span class="p">,</span> <span class="n">need_proxy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="c1"># 调度第一个请求
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">parse_index</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        解析索引页
+        :param response: 响应
+        :return: 新的响应
+        </span><span class="sh">"""</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="nf">pq</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">.news-box .news-list li .txt-box h3 a</span><span class="sh">'</span><span class="p">).</span><span class="nf">items</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">item</span><span class="p">.</span><span class="nf">attr</span><span class="p">(</span><span class="sh">'</span><span class="s">href</span><span class="sh">'</span><span class="p">)</span>
+            <span class="n">weixin_request</span> <span class="o">=</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">parse_detail</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">weixin_request</span>
+        <span class="nb">next</span> <span class="o">=</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#sogou_next</span><span class="sh">'</span><span class="p">).</span><span class="nf">attr</span><span class="p">(</span><span class="sh">'</span><span class="s">href</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">next</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">base_url</span> <span class="o">+</span> <span class="nf">str</span><span class="p">(</span><span class="nb">next</span><span class="p">)</span>
+            <span class="n">weixin_request</span> <span class="o">=</span> <span class="nc">WeixinRequest</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">parse_index</span><span class="p">,</span> <span class="n">need_proxy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">weixin_request</span>
+
+    <span class="k">def</span> <span class="nf">parse_detail</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        解析详情页
+        :param response: 响应
+        :return: 微信公众号文章
+        </span><span class="sh">"""</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="nf">pq</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="sh">'</span><span class="s">title</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">.rich_media_title</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">content</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">.rich_media_content</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">date</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#post-date</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">nickname</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#js_profile_qrcode&gt; div &gt; strong</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">(),</span>
+            <span class="sh">'</span><span class="s">wechat</span><span class="sh">'</span><span class="p">:</span> <span class="nf">doc</span><span class="p">(</span><span class="sh">'</span><span class="s">#js_profile_qrcode&gt; div &gt; p:nth-child(3) &gt; span</span><span class="sh">'</span><span class="p">).</span><span class="nf">text</span><span class="p">()}</span>
+        <span class="k">yield</span> <span class="n">data</span>
+
+    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        执行请求
+        :param weixin_request: 请求
+        :return: 响应
+        </span><span class="sh">"""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">need_proxy</span><span class="p">:</span>
+                <span class="n">proxy</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_proxy</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">proxy</span><span class="p">:</span>
+                    <span class="n">proxies</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="sh">'</span><span class="s">http</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">http://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span><span class="p">,</span>
+                        <span class="sh">'</span><span class="s">https</span><span class="sh">'</span><span class="p">:</span> <span class="sh">'</span><span class="s">https://</span><span class="sh">'</span> <span class="o">+</span> <span class="n">proxy</span>
+                    <span class="p">}</span>
+                    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">.</span><span class="nf">prepare</span><span class="p">(),</span>
+                                             <span class="n">timeout</span><span class="o">=</span><span class="n">weixin_request</span><span class="p">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">proxies</span><span class="o">=</span><span class="n">proxies</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="n">session</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">.</span><span class="nf">prepare</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="n">weixin_request</span><span class="p">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="nf">except </span><span class="p">(</span><span class="nb">ConnectionError</span><span class="p">,</span> <span class="n">ReadTimeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        错误处理
+        :param weixin_request: 请求
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="n">weixin_request</span><span class="p">.</span><span class="n">fail_time</span> <span class="o">=</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">fail_time</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Request Failed</span><span class="sh">'</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">fail_time</span><span class="p">,</span> <span class="sh">'</span><span class="s">Times</span><span class="sh">'</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">fail_time</span> <span class="o">&lt;</span> <span class="n">MAX_FAILED_TIME</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">schedule</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        调度请求
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">empty</span><span class="p">():</span>
+            <span class="n">weixin_request</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">pop</span><span class="p">()</span>
+            <span class="n">callback</span> <span class="o">=</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">callback</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">Schedule</span><span class="sh">'</span><span class="p">,</span> <span class="n">weixin_request</span><span class="p">.</span><span class="n">url</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="n">response</span><span class="p">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="n">VALID_STATUSES</span><span class="p">:</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="nf">callback</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">results</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+                        <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">New Result</span><span class="sh">'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">WeixinRequest</span><span class="p">):</span>
+                            <span class="n">self</span><span class="p">.</span><span class="n">queue</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nf">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                            <span class="n">self</span><span class="p">.</span><span class="n">mysql</span><span class="p">.</span><span class="nf">insert</span><span class="p">(</span><span class="sh">'</span><span class="s">articles</span><span class="sh">'</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">self</span><span class="p">.</span><span class="nf">error</span><span class="p">(</span><span class="n">weixin_request</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        入口
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">schedule</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="sh">'</span><span class="s">__main__</span><span class="sh">'</span><span class="p">:</span>
+    <span class="n">spider</span> <span class="o">=</span> <span class="nc">Spider</span><span class="p">()</span>
+    <span class="n">spider</span><span class="p">.</span><span class="nf">run</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="mysql-存储">MySQL 存储</h3>
+
+<p>整个调度模块完成了，上面还没提及到的就是存储模块，在这里还需要定义一个 MySQL 类供存储数据，实现如下：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">REDIS_HOST</span> <span class="o">=</span> <span class="sh">'</span><span class="s">localhost</span><span class="sh">'</span>
+<span class="n">REDIS_PORT</span> <span class="o">=</span> <span class="mi">6379</span>
+<span class="n">REDIS_PASSWORD</span> <span class="o">=</span> <span class="sh">'</span><span class="s">foobared</span><span class="sh">'</span>
+<span class="n">REDIS_KEY</span> <span class="o">=</span> <span class="sh">'</span><span class="s">weixin</span><span class="sh">'</span>
+
+<span class="kn">import</span> <span class="n">pymysql</span>
+<span class="kn">from</span> <span class="n">config</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">class</span> <span class="nc">MySQL</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">MYSQL_HOST</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">MYSQL_USER</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">MYSQL_PASSWORD</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">MYSQL_PORT</span><span class="p">,</span>
+                 <span class="n">database</span><span class="o">=</span><span class="n">MYSQL_DATABASE</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        MySQL 初始化
+        :param host:
+        :param username:
+        :param password:
+        :param port:
+        :param database:
+        </span><span class="sh">"""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">db</span> <span class="o">=</span> <span class="n">pymysql</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">database</span><span class="p">,</span> <span class="n">charset</span><span class="o">=</span><span class="sh">'</span><span class="s">utf8</span><span class="sh">'</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">cursor</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">MySQLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sh">"""</span><span class="s">
+        插入数据
+        :param table:
+        :param data:
+        :return:
+        </span><span class="sh">"""</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="sh">'</span><span class="s">, </span><span class="sh">'</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="nf">keys</span><span class="p">())</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="sh">'</span><span class="s">, </span><span class="sh">'</span><span class="p">.</span><span class="nf">join</span><span class="p">([</span><span class="sh">'</span><span class="s">% s</span><span class="sh">'</span><span class="p">]</span> <span class="o">*</span> <span class="nf">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">sql_query</span> <span class="o">=</span> <span class="sh">'</span><span class="s">insert into % s (% s) values (% s)</span><span class="sh">'</span> <span class="o">%</span> <span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">cursor</span><span class="p">.</span><span class="nf">execute</span><span class="p">(</span><span class="n">sql_query</span><span class="p">,</span> <span class="nf">tuple</span><span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="nf">values</span><span class="p">()))</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">commit</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">pymysql</span><span class="p">.</span><span class="n">MySQLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">db</span><span class="p">.</span><span class="nf">rollback</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>__init__() 方法初始化了 MySQL 连接，需要 MySQL 的用户、密码、端口、数据库名等信息。数据库名为 weixin，需要自己创建。</p>
+
+<p>insert() 方法传入表名和字典即可动态构造 SQL，在 5.2 节中也有讲到，SQL 构造之后执行即可插入数据。</p>
+
+<p>我们还需要提前建立一个数据表，表名为 articles，建表的 SQL 语句如下：vent-id，返回设备当前瞬时数据信息</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2019/11/25/splash.html" title="Splash">Splash</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/11/29/login.html" title="模拟登录">模拟登录</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/software_designer/2021/05/27/Software-process-model.html" title="模拟登录">软件过程模型</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ISFJ.html" title="模拟登录">人格八维 -- ISFJ（守卫者）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ISFP.html" title="模拟登录">人格八维 -- ISFP（探险家）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html" title="模拟登录">IntelliJ 快捷键</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/28/agency.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/11/28/agency.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --></section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

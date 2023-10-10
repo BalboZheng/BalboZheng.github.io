@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>openCV | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="openCV">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="OpenCV基础操作">
+<meta property="og:description" content="OpenCV基础操作">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/24/openCV.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/24/openCV.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2022-03-24T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="openCV">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2022-03-24T00:00:00+00:00","datePublished":"2022-03-24T00:00:00+00:00","description":"OpenCV基础操作","headline":"openCV","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/24/openCV.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/24/openCV.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">openCV</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2022-03-24T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 24, 2022
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 25 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#python">#python</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#cv2">#cv2</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#matplotlib">#matplotlib</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="opencv基础操作">OpenCV基础操作</h2>
+
+<h3 id="图像的基础操作">图像的基础操作</h3>
+
+<ol>
+  <li>
+    <p>加载图像</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># flags= {1、 0、-1}
+# 1 彩色图像
+# 0 灰度图像
+# -1 aplha通道的加载图像
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000001000.jpg</span><span class="sh">'</span><span class="p">,</span> <span class="n">flags</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>显示图像</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># opencv
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="sh">'</span><span class="s">image</span><span class="sh">'</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+<span class="n">cv2</span><span class="p">.</span><span class="nf">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+   
+<span class="c1"># matplotlib
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>保存图像</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">cv2</span><span class="p">.</span><span class="nf">imwrite</span><span class="p">(</span><span class="sh">'</span><span class="s">image.png</span><span class="sh">'</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="绘制几何图形">绘制几何图形</h4>
+
+<ol>
+  <li>
+    <p>绘制直线</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># pt1,pt2 直线起点和终点
+# thickness 线条宽度
+# lineType 线型
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">line</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="p">,</span> <span class="n">pt1</span><span class="o">=</span><span class="p">,</span> <span class="n">pt2</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>绘制圆形</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># center 圆心
+# radius 半径
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">circle</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>绘制矩形</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># pt1,pt2 直线起点和终点
+# thickness 线条宽度
+# lineType 线型
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">rectangle</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="p">,</span> <span class="n">pt1</span><span class="o">=</span><span class="p">,</span> <span class="n">pt2</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>添加文字</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># text 文本
+# org 位置
+# fontFace 字体
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">putText</span><span class="p">(</span><span class="n">img</span><span class="o">=</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="p">,</span> <span class="n">org</span><span class="o">=</span><span class="p">,</span> <span class="n">fontFace</span><span class="o">=</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="获取并修改图形像素点">获取并修改图形像素点</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 获得某个像素点的值
+</span><span class="n">px</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+<span class="c1"># 仅获取蓝色通道的值
+</span><span class="n">px</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="c1"># 修改某个位置的像素值
+</span><span class="n">img</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h4 id="图像通道的拆分合并">图像通道的拆分合并</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 通道拆分
+</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="c1"># 通道合并
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">merge</span><span class="p">((</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="色彩空间的改变">色彩空间的改变</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># flag {cv2.COLOR_BGR2GRAY, cv2.COLOR_BGR2HSY}
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="算数操作">算数操作</h3>
+
+<h4 id="加法">加法</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 读取图像
+</span><span class="n">img1</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000872.jpg</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000802.jpg</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">resize</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="p">(</span><span class="mi">621</span><span class="p">,</span> <span class="mi">640</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">INTER_CUBIC</span><span class="p">)</span>
+
+<span class="c1"># 相加
+</span><span class="n">img3</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">img2</span><span class="p">)</span>
+<span class="n">img4</span> <span class="o">=</span> <span class="n">img1</span> <span class="o">+</span> <span class="n">img2</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="nf">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">70</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img3</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">"</span><span class="s">cv加法</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img4</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nf">set_title</span><span class="p">(</span><span class="sh">"</span><span class="s">直接加法</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="混合">混合</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 读取图像
+</span><span class="n">img1</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000872.jpg</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000802.jpg</span><span class="sh">'</span><span class="p">)</span>
+
+<span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">resize</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="p">(</span><span class="mi">621</span><span class="p">,</span> <span class="mi">640</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">INTER_CUBIC</span><span class="p">)</span>
+
+<span class="c1"># 混合
+</span><span class="n">img3</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">addWeighted</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="n">img2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img3</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="opencv几何处理">OpenCV几何处理</h2>
+
+<h3 id="几何变换">几何变换</h3>
+
+<h4 id="图像缩放">图像缩放</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># dsize 绝对尺寸
+# fx, fy 相对尺寸
+# interpolation {cv2.INTER_LINEAR, cv2.INTER_NEAREST, cv2.INTER_AREA, cv2.INTER_CUBIC}
+</span><span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">resize</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="p">(</span><span class="mi">621</span><span class="p">,</span> <span class="mi">640</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">INTER_CUBIC</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="图像平移">图像平移</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># M 2*3矩阵
+</span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">float32</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]])</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">warpAffine</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="图像旋转">图像旋转</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># center 旋转中心
+# angle 旋转角度
+# scale 缩放比例
+# return 矩阵
+</span><span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">getRotationMatrix2D</span><span class="p">(</span><span class="n">center</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+<span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">warpAffine</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="仿射变换">仿射变换</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">img1</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># 创建变换矩阵
+</span><span class="n">pts1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">float32</span><span class="p">([[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">200</span><span class="p">]])</span>
+<span class="n">pts2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">float32</span><span class="p">([[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">]])</span>
+<span class="n">M</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">getAffineTransform</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">pts2</span><span class="p">)</span>
+<span class="c1"># 完成放射变换
+</span><span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">warpAffine</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="投射变换">投射变换</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span> <span class="o">=</span> <span class="n">img1</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># 创建变换矩阵
+</span><span class="n">pts1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">float32</span><span class="p">([[</span><span class="mi">56</span><span class="p">,</span> <span class="mi">65</span><span class="p">],</span> <span class="p">[</span><span class="mi">368</span><span class="p">,</span> <span class="mi">52</span><span class="p">],</span> <span class="p">[</span><span class="mi">389</span><span class="p">,</span> <span class="mi">390</span><span class="p">]])</span>
+<span class="n">pts2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">float32</span><span class="p">([[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">145</span><span class="p">],</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="p">[</span><span class="mi">80</span><span class="p">,</span> <span class="mi">290</span><span class="p">],</span> <span class="p">[</span><span class="mi">310</span><span class="p">,</span> <span class="mi">300</span><span class="p">]])</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">getPerspectiveTransform</span><span class="p">(</span><span class="n">pts1</span><span class="p">,</span> <span class="n">pts2</span><span class="p">)</span>
+<span class="c1"># 完成透射变换
+</span><span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">warpPerspective</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">cols</span><span class="p">,</span> <span class="n">rows</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="图像金字塔">图像金字塔</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 上采样
+</span><span class="n">up_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">pyrUp</span><span class="p">(</span><span class="n">img1</span><span class="p">)</span>
+<span class="c1"># 下采样
+</span><span class="n">down_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">pyrDown</span><span class="p">(</span><span class="n">img1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="形态学操作">形态学操作</h3>
+
+<h4 id="腐蚀和膨胀">腐蚀和膨胀</h4>
+
+<ol>
+  <li>
+    <p>腐蚀</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># kernel 核结构
+# iterations 腐蚀次数 默认1
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">erode</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>膨胀</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="c1"># kernel 核结构
+# iterations 膨胀次数 默认1
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">dilate</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h4 id="开闭运算不可逆">开闭运算（不可逆）</h4>
+
+<ul>
+  <li>开运算
+    <ul>
+      <li>消除噪点，去除小的干扰块</li>
+    </ul>
+  </li>
+  <li>闭运算
+    <ul>
+      <li>填充闭合区域</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="礼帽和黑帽">礼帽和黑帽</h4>
+
+<ul>
+  <li>礼帽（原图与开运算结果图之差）
+    <ul>
+      <li>开运算放大了裂缝或者局部低亮度的区域，所以，从原图中减去开运算后的图，得到的结果突出了比原图轮廓周围的区域更明亮的区域，这个操作与选择的核的大小有关。TopHat运算一般用来分离比邻近点亮一些的斑块，可以使用这个运算提取背景。</li>
+    </ul>
+  </li>
+  <li>黑帽（闭运算的结果与原图之差）
+    <ul>
+      <li>黑帽运算的结果突出了比原图轮廓周围区域更暗的区域，所以黑帽运算用来分离比邻近点暗一些的斑块。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># op {cv2.MORPH_OPEN, cv2.MORPH_CLOSE, cv2.MORPH_TOPHAT, cv2.MORPH_BLACKHAT} 
+# 分别为：开运算、闭运算、礼帽运算、黑帽运算
+# kernel 核结构
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">morphologyEx</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="图像平滑">图像平滑</h3>
+
+<h4 id="图像噪点">图像噪点</h4>
+
+<ol>
+  <li>椒盐噪点</li>
+  <li>高斯噪点</li>
+</ol>
+
+<h4 id="滤波器">滤波器</h4>
+
+<ol>
+  <li>
+    <p>均值滤波</p>
+
+    <p>均值滤波是一种线性滤波，会导致图像模糊。</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">blur</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ksize</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>高斯滤波</p>
+
+    <p>对图像进行平滑的同时，同时能够更多的保留图像的总体灰度分布特征</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">GaussianBlur</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">kszie</span><span class="p">,</span> <span class="n">sigmaX</span><span class="p">,</span> <span class="n">sigmaY</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>中值滤波</p>
+
+    <p>中值滤波器是一种非线性滤波器，常用于消除图像中的椒盐噪声。椒盐噪声是指两种噪声，一种是盐噪声=白色(255)，另一种是胡椒噪声=黑色(0)。前者是高灰度噪声，后者属于低灰度噪声。一般两种噪声同时出现，呈现在图像上就是黑白杂点。对于彩色图像，则表现为在单个像素BGR三个通道随机出现的255与0</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">medianBlur</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">kszie</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="直方图">直方图</h3>
+
+<h4 id="绘制直方图">绘制直方图</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># img 原图像，用[]中括号括起来
+# channels 如果是灰度图传入[0]，如果是彩色图传入[0], [1], [2]代表RGB
+# mask 掩膜
+# histSize BIN的数目，用[]中括号括起来 一般[256]
+# ranges 像素范围
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">calcHist</span><span class="p">([</span><span class="n">img1</span><span class="p">],</span> <span class="n">channels</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">histSize</span><span class="p">,</span> <span class="n">ranges</span><span class="p">[,</span> <span class="n">hist</span><span class="p">[,</span> <span class="n">accumulate</span><span class="p">]])</span>
+</code></pre></div></div>
+
+<h4 id="掩膜">掩膜</h4>
+
+<p>图像掩膜与其类似，用选定的图像、图形或物体，对处理的图像（全部或局部）进行遮挡，来控制图像处理的区域或处理过程。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 创建掩膜
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">zeros</span><span class="p">(</span><span class="n">img1</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">mask</span><span class="p">[</span><span class="mi">400</span><span class="p">:</span><span class="mi">650</span><span class="p">,</span> <span class="mi">200</span><span class="p">:</span><span class="mi">500</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># 图片加上掩膜
+</span><span class="n">mask_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">bitwise_and</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">img1</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+<span class="c1"># 计算
+</span><span class="n">mask_hist</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">calcHist</span><span class="p">([</span><span class="n">img1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mask</span><span class="p">,</span> <span class="p">[</span><span class="mi">256</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">])</span>
+</code></pre></div></div>
+
+<h4 id="直方图均衡化">直方图均衡化</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># img 灰度图
+# return dst（均衡化结果）
+</span><span class="n">mask_hist</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">equalizeHist</span><span class="p">(</span><span class="n">img1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="自适应直方图均衡化">自适应直方图均衡化</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># clipLimit 对比度限制 默认40
+# tileGridSize 分块大小 默认8*8
+</span><span class="n">mask_hist</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">createCLAHE</span><span class="p">(</span><span class="n">clipLimit</span><span class="p">,</span> <span class="n">tileGridSize</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="边缘检测">边缘检测</h3>
+
+<h4 id="sobel检测算子">Sobel检测算子</h4>
+
+<p>Sobel 算子是一个<strong>主要用作边缘检测的离散微分算子</strong> (discrete differentiation operator)。 它Sobel算子结合了高斯平滑和微分求导，用来计算图像灰度函数的近似梯度。在图像的任何一点使用此算子，将会产生对应的梯度矢量或是其法矢量。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># src 传入的图像
+# ddepth 图像深度
+# dx, dy 求导阶数(0, 1)
+# ksize Sobel算子大小（卷积核大小），必须为技术，默认3
+# scale 缩放导数的比例常数
+# borderType 图像的边界，默认cv2.BORDER_DEFAULT
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Sobel</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">ksize</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">borderType</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Sobel</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">ksize</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">borderType</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Sobel 函数求完导数后会有负值，还有会大于255的值，而原图像为uint8， 所以Sobel建立的图像位数不够，会有截断。因此要使用16位符号的数据类型(cv2.CV_16S)。处理完图像后，再使用cv2.convertScaleAbs()函数将其转回原来格式。</p>
+
+<p>Sobel 算子是在两个方向计算的，最后还需要将其混合起来</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Scale_absX</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">convertScaleAbs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">Scale_absY</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">convertScaleAbs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">addWeighted</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="scharr检测算子">Scharr检测算子</h4>
+
+<p>将ksize设为-1</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Sobel</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">borderType</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Sobel</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">borderType</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="laplacian检测算子">Laplacian检测算子</h4>
+
+<p>由于 Laplacian使用了图像梯度，它内部的代码其实是调用了 Sobel 算子的。</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># src 传入的图像
+# ddepth 图像深度
+# ksize Sobel算子大小（卷积核大小），必须为技术，默认3
+# scale 缩放导数的比例常数
+# borderType 图像的边界，默认cv2.BORDER_DEFAULT
+</span><span class="n">laplacian_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Laplacian</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">ddepth</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">ksize</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">borderType</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="canny边缘检测算法">canny边缘检测算法</h4>
+
+<p>Canny 的目标是找到一个最优的边缘检测算法，让我们看一下最优边缘检测的三个主要评价标准:</p>
+
+<ol>
+  <li>
+<strong>低错误率</strong>: 标识出尽可能多的实际边缘，同时尽可能的减少噪声产生的误报。</li>
+  <li>
+<strong>高定位性</strong>: 标识出的边缘要与图像中的实际边缘尽可能接近。</li>
+  <li>
+<strong>最小响应</strong>: 图像中的边缘只能标识一次，并且可能存在的图像噪声不应标识为边缘。</li>
+</ol>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># image 灰度图
+# threshold1 minval
+# threshold2 maxval
+</span><span class="n">canny_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Canny</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">threshold1</span><span class="p">,</span> <span class="n">threshold2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="模板匹配和霍夫变换">模板匹配和霍夫变换</h3>
+
+<h4 id="模板匹配">模板匹配</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># image 灰度图
+# templ 模板
+# method 方法
+# cv2.TM_SQDIFF 平方差匹配：利用模板于图像之间的平方差匹配，最好的匹配是0，匹配越差，值越大
+# cv2.TM_CCORR 相关匹配：利用模板于图像之间的乘法匹配，值越大，匹配越高
+# cv2.TM_CCOEFF 相关系数匹配：利用模板于图像之间的相关系数匹配，1是完美匹配，-1是最差匹配
+</span><span class="n">res</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">matchTemplate</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">templ</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>完成匹配后，使用cv2.minMaxLoc()方法查找最大值所在的位置。如果使用平方差匹配，则为最小值</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">min_val</span><span class="p">,</span> <span class="n">max_val</span><span class="p">,</span> <span class="n">min_loc</span><span class="p">,</span> <span class="n">max_loc</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">minMaxLoc</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="霍夫变换">霍夫变换</h4>
+
+<p>用来提取图像中的直线和圆等几何形状</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="c1"># 读取图像
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000872.jpg</span><span class="sh">'</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">edges</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">Canny</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+
+<span class="n">lines</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">HoughLines</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+    <span class="n">rho</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="n">a</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rho</span><span class="o">*</span><span class="n">b</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">))</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">y</span><span class="o">+</span><span class="mi">1000</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="p">))</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="mi">1000</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="p">.</span><span class="nf">line</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span> <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="角点特征">角点特征</h2>
+
+<h3 id="harris算法和shi-tomas算法">Harris算法和Shi-Tomas算法</h3>
+
+<ol>
+  <li>
+    <p>Harris算法</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+   
+<span class="c1"># 读取图像
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000872.jpg</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+   
+<span class="c1"># 角点检测
+</span><span class="n">gray</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">float32</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
+<span class="c1"># 最后一个参数在0.04到0.05之间
+</span><span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cornerHarris</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">)</span>
+<span class="c1"># 设置阈值，绘制角点
+</span><span class="n">img</span><span class="p">[</span><span class="n">dst</span> <span class="o">&gt;</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">dst</span><span class="p">.</span><span class="nf">max</span><span class="p">()]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span>
+   
+<span class="c1"># 图像显示
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">角点检测</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Shi-Tomas算法</p>
+
+    <div class="language-python highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+   
+<span class="c1"># 读取图像
+</span><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">imread</span><span class="p">(</span><span class="sh">'</span><span class="s">val2017/val2017/000000000872.jpg</span><span class="sh">'</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+   
+<span class="c1"># 角点检测
+# 最后一个参数在0.04到0.05之间
+</span><span class="n">corners</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">goodFeaturesToTrack</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c1"># 设置阈值，绘制角点
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="nf">ravel</span><span class="p">()</span>
+    <span class="n">cv2</span><span class="p">.</span><span class="nf">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+   
+<span class="c1"># 图像显示
+</span><span class="n">plt</span><span class="p">.</span><span class="nf">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">title</span><span class="p">(</span><span class="sh">"</span><span class="s">角点检测</span><span class="sh">"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">xticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">yticks</span><span class="p">([])</span>
+<span class="n">plt</span><span class="p">.</span><span class="nf">show</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="siftsurf算法">SIFT/SURF算法*</h3>
+
+<h3 id="fastorb算法">Fast/ORB算法*</h3>
+
+<h3 id="lbphog算法">LBP/HOG算法*</h3>
+
+<h2 id="视频操作">视频操作</h2>
+
+<h3 id="视频读写">视频读写</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="sh">""</span>
+
+<span class="c1"># 读取视频对象
+</span><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoCapture</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="c1"># 获得视频信息
+</span><span class="n">retval</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="n">propId</span><span class="p">)</span>
+
+<span class="c1"># 修改视频信息
+</span><span class="n">cap_update</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">set</span><span class="p">(</span><span class="n">propId</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+<span class="c1"># 判断图像是否读取成功
+</span><span class="n">cap_success</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">isOpened</span><span class="p">()</span>
+
+<span class="c1"># 获取视频某一帧图像
+</span><span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+
+<span class="c1"># 显示图像
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">imshow</span><span class="p">()</span>
+<span class="c1"># 持续时间，通常25ms
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">waitKey</span><span class="p">()</span>
+
+<span class="n">cap</span><span class="p">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="n">cv2</span><span class="p">.</span><span class="nf">destroyWindow</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>完整流程：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="sh">""</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoCapture</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="n">cap</span><span class="p">.</span><span class="nf">isOpened</span><span class="p">():</span>
+    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="n">cv2</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="sh">'</span><span class="s">frame</span><span class="sh">'</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">waitKey</span><span class="p">(</span><span class="mi">25</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">q</span><span class="sh">'</span><span class="p">):</span>
+            <span class="k">break</span>
+
+<span class="n">cap</span><span class="p">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="n">cv2</span><span class="p">.</span><span class="nf">destroyWindow</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><strong>VideoCapture.get()参数</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>param</th>
+      <th>define</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>视频文件的当前位置（播放）以毫秒为单位</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>基于以0开始的被捕获或解码的帧索引</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>视频文件的相对位置（播放）：0=电影开始，1=影片的结尾。</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>在视频流的帧的宽度</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>在视频流的帧的高度</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>帧速率</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>编解码的4字-字符代码</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>视频文件中的帧数</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>返回对象的格式</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>返回后端特定的值，该值指示当前捕获模式</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>图像的亮度(仅适用于照相机)</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>图像的对比度(仅适用于照相机)</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>图像的饱和度(仅适用于照相机)</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>色调图像(仅适用于照相机)</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>图像增益(仅适用于照相机)（Gain在摄影中表示白平衡提升）</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>曝光(仅适用于照相机)</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>指示是否应将图像转换为RGB布尔标志</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>× 暂时不支持</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>立体摄像机的矫正标注（目前只有DC1394 v.2.x后端支持这个功能）</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="保存视频">保存视频</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="sh">""</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoCapture</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="c1"># 获取图像的属性
+</span><span class="n">frame_width</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">cap</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">frame_height</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">cap</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># 创建写入对象
+# 视频编解器
+# Wins：DIVX(.avi)
+# OS: MJPG(.mp4)、DIVX(.avi)、X264(.kmv)
+</span><span class="n">fourcc</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoWriter_fourcc</span><span class="p">(</span><span class="sh">'</span><span class="s">D</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">I</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">V</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">X</span><span class="sh">'</span><span class="p">)</span>
+<span class="c1"># filename 保存位置
+# fourcc 指定视频编解器的4字节代码
+# fps 帧率
+# frameSize 帧大小
+</span><span class="n">out</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoWriter</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fourcc</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="p">(</span><span class="n">frame_width</span><span class="p">,</span> <span class="n">frame_height</span><span class="p">))</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="c1"># 将画面翻转
+</span>    <span class="n">frame</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="nf">flip</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="n">out</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">break</span>
+
+<span class="n">cap</span><span class="p">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="n">out</span><span class="p">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="n">cv2</span><span class="p">.</span><span class="nf">destroyWindow</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="视频追踪">视频追踪</h3>
+
+<h4 id="meanshift">meanshift</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># probImage ROI区域，目标的直方图的反向投影
+# window 初始搜索窗口
+# criteria 确定窗口搜索停止的准则：迭代次数达到设置的最大值，窗口中心的漂移值大于某个阈值
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">meanShift</span><span class="p">(</span><span class="n">probImage</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">criteria</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="sh">""</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoCapture</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="c1"># 获取第一帧图像
+</span><span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+<span class="c1"># 目标位置（行、高、列、宽）
+</span><span class="n">r</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">197</span><span class="p">,</span> <span class="mi">141</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">208</span>
+<span class="n">track_window</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+<span class="c1"># 指定目标区域
+</span><span class="n">roi</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="n">r</span><span class="p">:</span><span class="n">r</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span> <span class="o">+</span> <span class="n">w</span><span class="p">]</span>
+
+<span class="c1"># 计算直方图
+# 转换色彩空间
+</span><span class="n">hsv_roi</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">roi</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="c1"># 去除低亮度的值
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">inRange</span><span class="p">(</span><span class="n">hsv_roi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">32.</span><span class="p">)),</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="mf">180.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">)))</span>
+<span class="c1"># 计算直方图
+</span><span class="n">roi_hist</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">calcHist</span><span class="p">([</span><span class="n">hsv_roi</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">180</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">])</span>
+<span class="c1"># 归一化
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">normalize</span><span class="p">(</span><span class="n">roi_hist</span><span class="p">,</span> <span class="n">roi_hist</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">NORM_MINMAX</span><span class="p">)</span>
+
+<span class="c1"># 目标追踪
+# 设置窗口搜索终止条件，最大迭代次数，窗口中心飘逸最小值
+</span><span class="n">term_crit</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="p">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">|</span> <span class="n">cv2</span><span class="p">.</span><span class="n">TERM_CRITERIA_COUNT</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># 获取每一帧图像
+</span>    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="c1"># 计算直方图的反向投影
+</span>        <span class="n">hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+        <span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">calcBackProject</span><span class="p">([</span><span class="n">hsv</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">roi_hist</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 进行meanshift追踪
+</span>        <span class="n">ret</span><span class="p">,</span> <span class="n">track_window</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">meanShift</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">track_window</span><span class="p">,</span> <span class="n">term_crit</span><span class="p">)</span>
+
+        <span class="c1"># 将追踪的位置绘制在视频上
+</span>        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">track_window</span>
+        <span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">rectangle</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="sh">'</span><span class="s">frame</span><span class="sh">'</span><span class="p">,</span> <span class="n">img2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">waitKey</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">q</span><span class="sh">'</span><span class="p">):</span>
+            <span class="k">break</span>
+
+<span class="n">cap</span><span class="p">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="n">cv2</span><span class="p">.</span><span class="nf">destroyWindow</span><span class="p">(</span><span class="sh">'</span><span class="s">frame</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="camshift">Camshift</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">cv2</span>
+<span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">filepath</span> <span class="o">=</span> <span class="sh">""</span>
+
+<span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">VideoCapture</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="c1"># 获取第一帧图像
+</span><span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+<span class="c1"># 目标位置（行、高、列、宽）
+</span><span class="n">r</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">197</span><span class="p">,</span> <span class="mi">141</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">208</span>
+<span class="n">track_window</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+<span class="c1"># 指定目标区域
+</span><span class="n">roi</span> <span class="o">=</span> <span class="n">frame</span><span class="p">[</span><span class="n">r</span><span class="p">:</span><span class="n">r</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">c</span><span class="p">:</span><span class="n">c</span> <span class="o">+</span> <span class="n">w</span><span class="p">]</span>
+
+<span class="c1"># 计算直方图
+# 转换色彩空间
+</span><span class="n">hsv_roi</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">roi</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="c1"># 去除低亮度的值
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">inRange</span><span class="p">(</span><span class="n">hsv_roi</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">,</span> <span class="mf">32.</span><span class="p">)),</span> <span class="n">np</span><span class="p">.</span><span class="nf">array</span><span class="p">((</span><span class="mf">180.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">,</span> <span class="mf">255.</span><span class="p">)))</span>
+<span class="c1"># 计算直方图
+</span><span class="n">roi_hist</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">calcHist</span><span class="p">([</span><span class="n">hsv_roi</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">180</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">])</span>
+<span class="c1"># 归一化
+</span><span class="n">cv2</span><span class="p">.</span><span class="nf">normalize</span><span class="p">(</span><span class="n">roi_hist</span><span class="p">,</span> <span class="n">roi_hist</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">NORM_MINMAX</span><span class="p">)</span>
+
+<span class="c1"># 目标追踪
+# 设置窗口搜索终止条件，最大迭代次数，窗口中心飘逸最小值
+</span><span class="n">term_crit</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="p">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">|</span> <span class="n">cv2</span><span class="p">.</span><span class="n">TERM_CRITERIA_COUNT</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="c1"># 获取每一帧图像
+</span>    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="c1"># 计算直方图的反向投影
+</span>        <span class="n">hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+        <span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">calcBackProject</span><span class="p">([</span><span class="n">hsv</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">roi_hist</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 进行meanshift追踪
+</span>        <span class="n">ret</span><span class="p">,</span> <span class="n">track_window</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nc">CamShift</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">track_window</span><span class="p">,</span> <span class="n">term_crit</span><span class="p">)</span>
+
+        <span class="c1"># 将追踪的位置绘制在视频上
+</span>        <span class="n">pts</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">boxPoints</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nf">int0</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+        <span class="n">img2</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">polylines</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">[</span><span class="n">pts</span><span class="p">],</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="p">.</span><span class="nf">imshow</span><span class="p">(</span><span class="sh">'</span><span class="s">frame</span><span class="sh">'</span><span class="p">,</span> <span class="n">img2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cv2</span><span class="p">.</span><span class="nf">waitKey</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nf">ord</span><span class="p">(</span><span class="sh">'</span><span class="s">q</span><span class="sh">'</span><span class="p">):</span>
+            <span class="k">break</span>
+
+<span class="n">cap</span><span class="p">.</span><span class="nf">release</span><span class="p">()</span>
+<span class="n">cv2</span><span class="p">.</span><span class="nf">destroyWindow</span><span class="p">(</span><span class="sh">'</span><span class="s">frame</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2022/03/23/target_detection.html" title="目标检测">目标检测</a><a class="next" href="/jekyll-theme-yat/programming-language/2022/03/25/Face_recognition.html" title="人脸识别">人脸识别</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2018/09/09/db-conn.html" title="人脸识别">数据库连接</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/30/pyspider.html" title="人脸识别">pyspider 框架</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/10/13/hashable.html" title="人脸识别">可散列的数据类型</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/19/MBTI-Theory.html" title="人脸识别">荣格八格理论</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/24/openCV.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2022/03/24/openCV.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

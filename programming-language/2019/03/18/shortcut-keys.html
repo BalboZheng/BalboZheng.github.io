@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>IntelliJ 快捷键 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="IntelliJ 快捷键">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="IDEA">
+<meta property="og:description" content="IDEA">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-03-18T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="IntelliJ 快捷键">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2019-03-18T00:00:00+00:00","datePublished":"2019-03-18T00:00:00+00:00","description":"IDEA","headline":"IntelliJ 快捷键","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html"},"url":"https://balbocheng.com/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">IntelliJ 快捷键</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-03-18T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> Mar 18, 2019
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 9 mins</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#pycharm">#pycharm</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#idea">#idea</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="idea">IDEA</h2>
+
+<p>在使用IntelliJ Idea的时候，使用快捷键是必不可少的。掌握一些常用的快捷键能大大提高我们的开发效率。有些快捷键可以熟练的使用，但是还有另外一些快捷键虽然很好用，但是由于因为没有形成使用习惯或者没有理解快捷键的用法，甚至之前对一些快捷键根本没有概念，导致不会去使用。对于这些快捷键，如果能够用好，编辑代码的效率必能提高一个水平。所以在此梳理出来，加强自己的使用，形成习惯。
+（注：有些操作的快捷键做了更改，和IntelliJ Idea默认的快捷键不一样）</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Move Caret to Code Block End</td>
+      <td>Ctrl+]</td>
+      <td>诸如{}围起来的代码块，使用该快捷键可以快速跳转至代码块的结尾处</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Code Block Start</td>
+      <td>Ctrl+[</td>
+      <td>同上，快速跳至代码块的开始出</td>
+    </tr>
+    <tr>
+      <td>Complete Current Statement</td>
+      <td>Ctrl+Shift+Enter</td>
+      <td>将输入的if、for、函数等等补上{}或者;使代码语句完整</td>
+    </tr>
+    <tr>
+      <td>Start New Line</td>
+      <td>Shift+Enter</td>
+      <td>在当前行的下方开始新行</td>
+    </tr>
+    <tr>
+      <td>Start New Line Before Current</td>
+      <td>Ctrl+Delete</td>
+      <td>删除光标所在至单词结尾处的所有字符</td>
+    </tr>
+    <tr>
+      <td>Delete to Word Start</td>
+      <td>Ctrl+BackSpace</td>
+      <td>删除光标所在至单词开头的所有字符</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Previous Word</td>
+      <td>Ctrl+向左箭头</td>
+      <td>将光标移至前一个单词</td>
+    </tr>
+    <tr>
+      <td>Move Caret to Next Word</td>
+      <td>Ctrl+向右箭头</td>
+      <td>将光标移至后一个单词</td>
+    </tr>
+    <tr>
+      <td>Scroll Up</td>
+      <td>Ctrl+向上箭头</td>
+      <td>向上滚动一行</td>
+    </tr>
+    <tr>
+      <td>Scroll Down</td>
+      <td>Ctrl+向下箭头</td>
+      <td>向下滚动一行</td>
+    </tr>
+    <tr>
+      <td>Extend Selection</td>
+      <td>Ctrl+W</td>
+      <td>选中整个单词</td>
+    </tr>
+    <tr>
+      <td>Toggle Case</td>
+      <td>Ctrl+Shift+U</td>
+      <td>切换大小写</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="edit">Edit</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Undo</td>
+      <td>Ctrl+Z</td>
+      <td>撤销</td>
+    </tr>
+    <tr>
+      <td>Redo</td>
+      <td>Ctrl+Shift+Z</td>
+      <td>重做</td>
+    </tr>
+    <tr>
+      <td>Cut</td>
+      <td>Ctrl+X</td>
+      <td>剪切</td>
+    </tr>
+    <tr>
+      <td>Copy</td>
+      <td>Ctrl+C</td>
+      <td>复制</td>
+    </tr>
+    <tr>
+      <td>Paste</td>
+      <td>Ctrl+V</td>
+      <td>粘贴</td>
+    </tr>
+    <tr>
+      <td>Join Lines</td>
+      <td>Ctrl+Shift+J</td>
+      <td>将选中的行合并成一行</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="find">Find</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Find</td>
+      <td>Ctrl+F</td>
+      <td>在当前文件中查找</td>
+    </tr>
+    <tr>
+      <td>Replace</td>
+      <td>Ctrl+R</td>
+      <td>替换字符串</td>
+    </tr>
+    <tr>
+      <td>Find in Path</td>
+      <td>Ctrl+Shift+F</td>
+      <td>在全局文件中查找字符串</td>
+    </tr>
+    <tr>
+      <td>Replace in Path</td>
+      <td>Ctrl+Shift+R</td>
+      <td>在全局中替换字符串</td>
+    </tr>
+    <tr>
+      <td>Find Usages</td>
+      <td>Alt+F7</td>
+      <td>查找当前变量的使用，并列表显示</td>
+    </tr>
+    <tr>
+      <td>Show Usages</td>
+      <td>Ctrl+Alt+F7</td>
+      <td>查找当前变量的使用，并直接对话框显示</td>
+    </tr>
+    <tr>
+      <td>Find Usages in File</td>
+      <td>Ctrl+F7</td>
+      <td>在文件中查找符号的使用</td>
+    </tr>
+    <tr>
+      <td>Highlight Usages in File</td>
+      <td>Ctrl+Shift+F7</td>
+      <td>在文件中高亮显示变量的使用</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这里的快捷键用的频率还是很高的，但是之前用的最多的是Ctrl+F和Ctrl+Shift+F，后面相关的Find Usages基本上没有用过，后面应该多使用，有的时候相对Ctrl+F在文件内按字符串查找，还是更好用一些</p>
+
+<h3 id="navigate">Navigate</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Class…</td>
+      <td>Ctrl+N</td>
+      <td>查找类文件</td>
+    </tr>
+    <tr>
+      <td>File…</td>
+      <td>Ctrl+Shift+N</td>
+      <td>查找文件</td>
+    </tr>
+    <tr>
+      <td>Line…</td>
+      <td>Ctrl+G</td>
+      <td>定位到文件某一行</td>
+    </tr>
+    <tr>
+      <td>Back</td>
+      <td>Alt+向左箭头</td>
+      <td>返回至上次光标位置</td>
+    </tr>
+    <tr>
+      <td>Forward</td>
+      <td>Alt+向右箭头</td>
+      <td>返回至后一次光标位置</td>
+    </tr>
+    <tr>
+      <td>Last Edit Location</td>
+      <td>Ctrl+Shift+Backspace</td>
+      <td>返回上次编辑位置</td>
+    </tr>
+    <tr>
+      <td>Next Edit Location</td>
+      <td>Ctrl+Shift+反斜杠</td>
+      <td>返回后一次编辑位置</td>
+    </tr>
+    <tr>
+      <td>Declaration</td>
+      <td>Ctrl+B</td>
+      <td>定位至变量定义的位置</td>
+    </tr>
+    <tr>
+      <td>Implementation(s)</td>
+      <td>Ctrl+Alt+B</td>
+      <td>定位至选中类或方法的具体实现</td>
+    </tr>
+    <tr>
+      <td>Type Declaration</td>
+      <td>Ctrl+Shift+B</td>
+      <td>直接定位至光标所在变量的类型定义</td>
+    </tr>
+    <tr>
+      <td>Super Method</td>
+      <td>Ctrl+U</td>
+      <td>直接定位至当前方法override或者implements的方法定义处</td>
+    </tr>
+    <tr>
+      <td>File Structure</td>
+      <td>Ctrl+F12</td>
+      <td>显示当前文件的文件结构</td>
+    </tr>
+    <tr>
+      <td>File Path</td>
+      <td>Ctrl+Alt+F12</td>
+      <td>显示当前文件的路径，并可以方便的将相关父路径打开</td>
+    </tr>
+    <tr>
+      <td>Type Hierarchy</td>
+      <td>Ctrl+H</td>
+      <td>显示当前类的继承层次</td>
+    </tr>
+    <tr>
+      <td>Method Hierarchy</td>
+      <td>Ctrl+Shift+H</td>
+      <td>显示当前方法的继承层次</td>
+    </tr>
+    <tr>
+      <td>Call Hierarchy</td>
+      <td>Ctrl+Alt+H</td>
+      <td>显示当前方法的调用层次</td>
+    </tr>
+    <tr>
+      <td>Next Highlighted Error</td>
+      <td>F2</td>
+      <td>定位至下一个错误处</td>
+    </tr>
+    <tr>
+      <td>Previous Highlighted Error</td>
+      <td>Shift+F2</td>
+      <td>定位至前一个错误处</td>
+    </tr>
+    <tr>
+      <td>Previous Occurrence</td>
+      <td>Ctrl+Alt+向上箭头</td>
+      <td>查找前一个变量共现的地方</td>
+    </tr>
+    <tr>
+      <td>Next Occurrence</td>
+      <td>Ctrl+Alt+向下箭头</td>
+      <td>查找下一个变量共现的地方</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>目前还不知道Previous Occurrence 和 Next Occurrence是怎么用的，在变量上使用没有反应。不过在Edit–Find菜单下有几个菜单项：Find Next \/ Move to Next Occurrence、Find Previous \/ Move to Previous Occurrence等。当选中变量的时候，需要首先点击“Find Word at Caret”，然后再点击上述选项才有用</p>
+
+<h3 id="code">Code</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Override Methods…</td>
+      <td>Ctrl+O</td>
+      <td>重写基类的方法</td>
+    </tr>
+    <tr>
+      <td>Implement Methods…</td>
+      <td>Ctrl+I</td>
+      <td>实现基类或接口中的方法</td>
+    </tr>
+    <tr>
+      <td>Generate…</td>
+      <td>Alt+Insert</td>
+      <td>产生构造方法、getter/setter等方法</td>
+    </tr>
+    <tr>
+      <td>Surround With…</td>
+      <td>Ctrl+Alt+T</td>
+      <td>将选中的代码使用if、while、try/catch等包装</td>
+    </tr>
+    <tr>
+      <td>Unwrap/Remove…</td>
+      <td>Ctrl+Shift+Delete</td>
+      <td>去除相关的包装代码</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="completion">Completion</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Basic</td>
+      <td>Alt+/</td>
+      <td>自动完成</td>
+    </tr>
+    <tr>
+      <td>SmartType</td>
+      <td>Alt+Enter</td>
+      <td>自动提示完成</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="folding">Folding</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Expand</td>
+      <td>Ctrl+=</td>
+      <td>展开代码</td>
+    </tr>
+    <tr>
+      <td>Collapse</td>
+      <td>Ctrl+-</td>
+      <td>展开代码</td>
+    </tr>
+    <tr>
+      <td>Expand Recursively</td>
+      <td>Ctrl+Alt+=</td>
+      <td>递归展开代码</td>
+    </tr>
+    <tr>
+      <td>Collapse Recursively</td>
+      <td>Ctrl+Alt+-</td>
+      <td>递归收缩代码</td>
+    </tr>
+    <tr>
+      <td>Expand All</td>
+      <td>Ctrl+Shift+=</td>
+      <td>展开所有代码</td>
+    </tr>
+    <tr>
+      <td>Collapse All</td>
+      <td>Ctrl+Shift+-</td>
+      <td>收缩所有代码</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="refactor">Refactor</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Rename</td>
+      <td>Shift+F6</td>
+      <td>重命名</td>
+    </tr>
+    <tr>
+      <td>Change Signature</td>
+      <td>Ctrl+F6</td>
+      <td>更改函数签名</td>
+    </tr>
+    <tr>
+      <td>Change Signature</td>
+      <td>Ctrl+Shift+F6</td>
+      <td>更改函数签名</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="other">Other</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert Live Template</td>
+      <td>Ctrl+J</td>
+      <td>插入Live Template</td>
+    </tr>
+    <tr>
+      <td>Surround with Live Template</td>
+      <td>Ctrl+Alt+J</td>
+      <td>使用Live Template包装</td>
+    </tr>
+    <tr>
+      <td>Comment with Line Comment</td>
+      <td>Ctrl+/</td>
+      <td>使用//进行注释</td>
+    </tr>
+    <tr>
+      <td>Comment with Line Comment</td>
+      <td>Ctrl+Shift+/</td>
+      <td>使用/**/进行注释</td>
+    </tr>
+    <tr>
+      <td>Reformat Code</td>
+      <td>Ctrl+Alt+L</td>
+      <td>格式化代码</td>
+    </tr>
+    <tr>
+      <td>Auto-Indent Lines</td>
+      <td>Ctrl+Alt+I</td>
+      <td>自动缩进行</td>
+    </tr>
+    <tr>
+      <td>Optimize Imports</td>
+      <td>Ctrl+Alt+O</td>
+      <td>优化import</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>动作</th>
+      <th>快捷键</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Move Statement Down</td>
+      <td>Ctrl+Shift+向下箭头</td>
+      <td>将光标所在的代码块向下整体移动</td>
+    </tr>
+    <tr>
+      <td>Move Statement Up</td>
+      <td>Ctrl+Shift+向上箭头</td>
+      <td>将光标所在的代码块向上移动</td>
+    </tr>
+    <tr>
+      <td>Move Element Left</td>
+      <td>Ctrl+Alt+Shift+向左箭头</td>
+      <td>将元素向左移动</td>
+    </tr>
+    <tr>
+      <td>Move Element Right</td>
+      <td>Ctrl+Alt+Shift+向右箭头</td>
+      <td>将元素向右移动</td>
+    </tr>
+    <tr>
+      <td>Move Line Down</td>
+      <td>Alt+Shift+向下箭头</td>
+      <td>将行向下移动</td>
+    </tr>
+    <tr>
+      <td>Move Line Up</td>
+      <td>Alt+Shift+向上箭头</td>
+      <td>将行向上移动</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr>
+
+<h2 id="pycharm">PYCHARM</h2>
+
+<h3 id="编辑editing">编辑（Editing）</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ctrl + Space</td>
+      <td>基本的代码完成（类、方法、属性）</td>
+      <td>Ctrl + Alt + I</td>
+      <td>自动缩进</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + Space</td>
+      <td>快速导入任意类</td>
+      <td>Tab / Shift + Tab</td>
+      <td>缩进、不缩进当前行</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + Enter</td>
+      <td>语句完成</td>
+      <td>Ctrl+X/Shift+Delete</td>
+      <td>剪切当前行或选定的代码块到剪贴板</td>
+    </tr>
+    <tr>
+      <td>Ctrl + P</td>
+      <td>参数信息（在方法中调用参数）</td>
+      <td>Ctrl+C/Ctrl+Insert</td>
+      <td>复制当前行或选定的代码块到剪贴板</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Q</td>
+      <td>快速查看文档</td>
+      <td>Ctrl+V/Shift+Insert</td>
+      <td>从剪贴板粘贴</td>
+    </tr>
+    <tr>
+      <td>Shift + F1</td>
+      <td>外部文档</td>
+      <td>Ctrl + Shift + V</td>
+      <td>从最近的缓冲区粘贴</td>
+    </tr>
+    <tr>
+      <td>Ctrl + 鼠标</td>
+      <td>简介</td>
+      <td>Ctrl + D</td>
+      <td>复制选定的区域或行</td>
+    </tr>
+    <tr>
+      <td>Ctrl + F1</td>
+      <td>显示错误描述或警告信息</td>
+      <td>Ctrl + Y</td>
+      <td>删除选定的行</td>
+    </tr>
+    <tr>
+      <td>Alt + Insert</td>
+      <td>自动生成代码</td>
+      <td>Ctrl + Shift + J</td>
+      <td>添加智能线</td>
+    </tr>
+    <tr>
+      <td>Ctrl + O</td>
+      <td>重新方法</td>
+      <td>Ctrl + Enter</td>
+      <td>智能线切割</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + T</td>
+      <td>选中</td>
+      <td>Shift + Enter</td>
+      <td>另起一行</td>
+    </tr>
+    <tr>
+      <td>Ctrl + /</td>
+      <td>行注释</td>
+      <td>Ctrl + Shift + U</td>
+      <td>在选定的区域或代码块间切换</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + /</td>
+      <td>块注释</td>
+      <td>Ctrl + Delete</td>
+      <td>删除到字符结束</td>
+    </tr>
+    <tr>
+      <td>Ctrl + W</td>
+      <td>选中增加的代码块</td>
+      <td>Ctrl + Backspace</td>
+      <td>删除到字符开始</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + W</td>
+      <td>回到之前状态</td>
+      <td>Ctrl + Numpad+/-</td>
+      <td>展开折叠代码块</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + ]/[</td>
+      <td>选定代码块结束、开始</td>
+      <td>Ctrl + Numpad+</td>
+      <td>全部展开</td>
+    </tr>
+    <tr>
+      <td>Alt + Enter</td>
+      <td>快速修正</td>
+      <td>Ctrl + Numpad-</td>
+      <td>全部折叠</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + L</td>
+      <td>代码格式化</td>
+      <td>Ctrl + F4</td>
+      <td>关闭运行的选项卡</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + O</td>
+      <td>优化导入</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="查找替换searchreplace">查找/替换(Search/Replace)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>F3</td>
+      <td>下一个</td>
+      <td>Ctrl + Shift + F</td>
+      <td>全局查找</td>
+    </tr>
+    <tr>
+      <td>Shift + F3</td>
+      <td>前一个</td>
+      <td>Ctrl + Shift + R</td>
+      <td>全局替换</td>
+    </tr>
+    <tr>
+      <td>Ctrl + R</td>
+      <td>替换</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="运行running">运行(Running)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Alt + Shift + F10</td>
+      <td>运行模式配置</td>
+      <td>Shift + F9</td>
+      <td>调试</td>
+    </tr>
+    <tr>
+      <td>Alt + Shift + F9</td>
+      <td>调试模式配置</td>
+      <td>Ctrl + Shift + F10</td>
+      <td>运行编辑器配置</td>
+    </tr>
+    <tr>
+      <td>Shift + F10</td>
+      <td>运行</td>
+      <td>Ctrl + Alt + R</td>
+      <td>运行manage.py任务</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="调试debugging">调试(Debugging)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>F8</td>
+      <td>跳过</td>
+      <td>Ctrl + Alt + F8</td>
+      <td>快速验证表达式</td>
+    </tr>
+    <tr>
+      <td>F7</td>
+      <td>进入</td>
+      <td>F9</td>
+      <td>恢复程序</td>
+    </tr>
+    <tr>
+      <td>Shift + F8</td>
+      <td>退出</td>
+      <td>Ctrl + F8</td>
+      <td>断点开关</td>
+    </tr>
+    <tr>
+      <td>Alt + F9</td>
+      <td>运行游标</td>
+      <td>Ctrl + Shift + F8</td>
+      <td>查看断点</td>
+    </tr>
+    <tr>
+      <td>Alt + F8</td>
+      <td>验证表达式</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="导航navigation">导航(Navigation)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ctrl + N</td>
+      <td>跳转到类</td>
+      <td>Ctrl + Shift + B</td>
+      <td>跳转到类型声明</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + N</td>
+      <td>跳转到符号</td>
+      <td>Ctrl + U</td>
+      <td>跳转到父方法、父类</td>
+    </tr>
+    <tr>
+      <td>Alt + Right/Left</td>
+      <td>跳转到下一个、前一个编辑的选项卡</td>
+      <td>Alt + Up/Down</td>
+      <td>跳转到上一个、下一个方法</td>
+    </tr>
+    <tr>
+      <td>F12</td>
+      <td>回到先前的工具窗口</td>
+      <td>Ctrl + ]/[</td>
+      <td>跳转到代码块结束、开始</td>
+    </tr>
+    <tr>
+      <td>Esc</td>
+      <td>从工具窗口回到编辑窗口</td>
+      <td>Ctrl + F12</td>
+      <td>弹出文件结构</td>
+    </tr>
+    <tr>
+      <td>Shift + Esc</td>
+      <td>隐藏运行的、最近运行的窗口</td>
+      <td>Ctrl + H</td>
+      <td>类型层次结构</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + F4</td>
+      <td>关闭主动运行的选项卡</td>
+      <td>Ctrl + Shift + H</td>
+      <td>方法层次结构</td>
+    </tr>
+    <tr>
+      <td>Ctrl + G</td>
+      <td>查看当前行号、字符号</td>
+      <td>Ctrl + Alt + H</td>
+      <td>调用层次结构</td>
+    </tr>
+    <tr>
+      <td>Ctrl + E</td>
+      <td>当前文件弹出</td>
+      <td>F2 / Shift + F2</td>
+      <td>下一条、前一条高亮的错误</td>
+    </tr>
+    <tr>
+      <td>Ctrl+Alt+Left/Right</td>
+      <td>后退、前进</td>
+      <td>F4 / Ctrl + Enter</td>
+      <td>编辑资源、查看资源</td>
+    </tr>
+    <tr>
+      <td>Ctrl+Shift+Backspace</td>
+      <td>导航到最近编辑区域</td>
+      <td>Alt + Home</td>
+      <td>显示导航条F11书签开关</td>
+    </tr>
+    <tr>
+      <td>Alt + F1</td>
+      <td>查找当前文件或标识</td>
+      <td>Ctrl + Shift + F11</td>
+      <td>书签助记开关</td>
+    </tr>
+    <tr>
+      <td>Ctrl+B / Ctrl+Click</td>
+      <td>跳转到声明</td>
+      <td>Ctrl + #[0-9]</td>
+      <td>跳转到标识的书签</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + B</td>
+      <td>跳转到实现</td>
+      <td>Shift + F11</td>
+      <td>显示书签</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + I</td>
+      <td>查看快速定义</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="搜索相关usage-search">搜索相关(Usage Search)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Alt + F7/Ctrl + F7</td>
+      <td>文件中查询用法</td>
+      <td>Ctrl + Alt + F7</td>
+      <td>显示用法</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + F7</td>
+      <td>文件中用法高亮显示</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="重构refactoring">重构(Refactoring)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>F5</td>
+      <td>复制</td>
+      <td>Ctrl + Alt + M</td>
+      <td>提取方法</td>
+    </tr>
+    <tr>
+      <td>F6</td>
+      <td>剪切</td>
+      <td>Ctrl + Alt + V</td>
+      <td>提取属性</td>
+    </tr>
+    <tr>
+      <td>Alt + Delete</td>
+      <td>安全删除</td>
+      <td>Ctrl + Alt + F</td>
+      <td>提取字段</td>
+    </tr>
+    <tr>
+      <td>Shift + F6</td>
+      <td>重命名</td>
+      <td>Ctrl + Alt + C</td>
+      <td>提取常量</td>
+    </tr>
+    <tr>
+      <td>Ctrl + F6</td>
+      <td>更改签名</td>
+      <td>Ctrl + Alt + P</td>
+      <td>提取参数</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + N</td>
+      <td>内联</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="控制vcslocal-history">控制VCS/Local History</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ctrl + K</td>
+      <td>提交项目</td>
+      <td>Alt + Shift + C</td>
+      <td>查看最近的变化</td>
+    </tr>
+    <tr>
+      <td>Ctrl + T</td>
+      <td>更新项目</td>
+      <td>Alt + BackQuote(’)VCS</td>
+      <td>快速弹出</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="模版live-templates">模版(Live Templates)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ctrl + Alt + J</td>
+      <td>当前行使用模版</td>
+      <td>Ctrl +Ｊ</td>
+      <td>插入模版</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="基本general">基本(General)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>命令</th>
+      <th>表述</th>
+      <th>命令</th>
+      <th>表述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Alt + #[0-9]</td>
+      <td>打开相应的工具窗口</td>
+      <td>Ctrl + BackQuote(’)</td>
+      <td>快速切换当前计划</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Alt + Y</td>
+      <td>同步</td>
+      <td>Ctrl + Alt + S</td>
+      <td>打开设置页</td>
+    </tr>
+    <tr>
+      <td>Ctrl + Shift + F12</td>
+      <td>最大化编辑开关</td>
+      <td>Ctrl + Shift + A</td>
+      <td>查找编辑器里所有的动作</td>
+    </tr>
+    <tr>
+      <td>Alt + Shift + F</td>
+      <td>添加到最喜欢</td>
+      <td>Ctrl + Tab</td>
+      <td>在窗口间进行切换</td>
+    </tr>
+    <tr>
+      <td>Alt + Shift + I</td>
+      <td>根据配置检查当前文件</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="一些常用设置">一些常用设置：</h3>
+
+<ol>
+  <li>
+    <p>pycharm默认是自动保存的，习惯自己按ctrl + s 的可以进行如下设置：</p>
+
+    <ol>
+      <li>file -&gt; Setting -&gt; General -&gt; Synchronization -&gt; Save files on frame deactivation 和 Save files automatically if application is idle for .. sec 的勾去掉</li>
+      <li>file -&gt;Setting -&gt; Editor -&gt; Editor Tabs -&gt; Mark modified tabs with asterisk 打上勾</li>
+    </ol>
+  </li>
+  <li>
+    <p>Alt + Enter: 自动添加包</p>
+  </li>
+  <li>
+    <p>对于常用的快捷键，可以设置为visual studio(eclipse…)一样的：file -&gt; Setting -&gt; Keymap -&gt; Keymaps -&gt; vuisual studio -&gt; Apply</p>
+  </li>
+  <li>
+    <p>Pycharm中默认是不能用Ctrl+滚轮改变字体大小的，可以在file -&gt; Setting -&gt;Editor-〉Mouse中设置</p>
+  </li>
+  <li>
+    <p>要设置Pycharm的字体，要先在file -&gt; Setting -&gt;Editor-〉Editor中选择一种风格并保存，然后才可以改变</p>
+  </li>
+  <li>
+    <p>在setting中搜索theme可以改变主题，所有配色统一改变</p>
+  </li>
+</ol>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/programming-language/2018/09/09/db-conn.html" title="数据库连接">数据库连接</a><a class="next" href="/jekyll-theme-yat/programming-language/2019/03/18/spider.html" title="python爬虫项目">python爬虫项目</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/17/maoyan.html" title="python爬虫项目">抓取猫眼电影排行</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-structure.html" title="python爬虫项目">设计模式-结构模式</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ESFP.html" title="python爬虫项目">人格八维 -- ESFP（表演者）</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/09/06/mybatis-pagehelper.html" title="python爬虫项目">Mybatis-PageHelper</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/programming-language/2019/03/18/shortcut-keys.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

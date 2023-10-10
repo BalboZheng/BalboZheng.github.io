@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>设计模式-行为模式 | Balbo’s Blog</title>
+<meta name="generator" content="Jekyll v4.3.2">
+<meta property="og:title" content="设计模式-行为模式">
+<meta name="author" content="Balbo Cheng">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="策略模式">
+<meta property="og:description" content="策略模式">
+<link rel="canonical" href="https://balbocheng.com/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-behavior.html">
+<meta property="og:url" content="https://balbocheng.com/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-behavior.html">
+<meta property="og:site_name" content="Balbo’s Blog">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-05-23T00:00:00+00:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="设计模式-行为模式">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Balbo Cheng"},"dateModified":"2021-05-23T00:00:00+00:00","datePublished":"2021-05-23T00:00:00+00:00","description":"策略模式","headline":"设计模式-行为模式","mainEntityOfPage":{"@type":"WebPage","@id":"https://balbocheng.com/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-behavior.html"},"url":"https://balbocheng.com/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-behavior.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="assets/images/banners/favicon.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://balbocheng.com/jekyll-theme-yat/feed.xml" title="Balbo's Blog">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #ff4e00;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: uppercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" title="Balbo's Blog" src="assets/images/banners/favicon.ico" onerror="this.style.display='none'">
+  Balbo's Blog
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/">HOME</a><a class="page-link" href="/jekyll-theme-yat/archives.html">ARCHIVES</a><a class="page-link" href="/jekyll-theme-yat/categories.html">CATEGORIES</a><a class="page-link" href="/jekyll-theme-yat/tags.html">TAGS</a>
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://cdn.countryflags.com/thumbs/france/flag-400.png" title="French">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://cdn.countryflags.com/thumbs/china/flag-400.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://cdn.countryflags.com/thumbs/japan/flag-400.png" title="Japanese">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://cdn.countryflags.com/thumbs/russia/flag-400.png" title="Russian">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  // Links to cross-origin destinations are unsafe
+  var gll = document.getElementsByClassName('goog-logo-link')[0];
+  if (gll) {
+    gll.setAttribute('rel', 'noopener');
+  }
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('auto' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = hours >= 19 || hours <=7;
+
+      if (nightShift) {
+        if (hours > 7) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(7);
+      } else {
+        toggleAt.setHours(19);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">设计模式-行为模式</h1>
+  <h2 class="post-subtitle"></h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2021-05-23T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> May 23, 2021
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 27 mins</span>
+  </p></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="策略模式">策略模式</h2>
+
+<h3 id="策略模式的定义与特点">策略模式的定义与特点</h3>
+
+<p>策略（Strategy）模式的定义：该模式定义了一系列算法，并将每个算法封装起来，使它们可以相互替换，且算法的变化不会影响使用算法的客户。策略模式属于对象行为模式，它通过对算法进行封装，把使用算法的责任和算法的实现分割开来，并委派给不同的对象对这些算法进行管理。</p>
+
+<p>策略模式的<strong>主要优点</strong>如下。</p>
+
+<ol>
+  <li>多重条件语句不易维护，而使用策略模式可以避免使用多重条件语句，如 if…else 语句、switch…case 语句。</li>
+  <li>策略模式提供了一系列的可供重用的算法族，恰当使用继承可以把算法族的公共代码转移到父类里面，从而避免重复的代码。</li>
+  <li>策略模式可以提供相同行为的不同实现，客户可以根据不同时间或空间要求选择不同的。</li>
+  <li>策略模式提供了对开闭原则的完美支持，可以在不修改原代码的情况下，灵活增加新算法。</li>
+  <li>策略模式把算法的使用放到环境类中，而算法的实现移到具体策略类中，实现了二者的分离。</li>
+</ol>
+
+<p><strong>其主要缺点如下。</strong></p>
+
+<ol>
+  <li>客户端必须理解所有策略算法的区别，以便适时选择恰当的算法类。</li>
+  <li>策略模式造成很多的策略类，增加维护难度。</li>
+</ol>
+
+<h3 id="策略模式的结构与实现">策略模式的结构与实现</h3>
+
+<p>策略模式是准备一组算法，并将这组算法封装到一系列的策略类里面，作为一个抽象策略类的子类。策略模式的重心不是如何实现算法，而是如何组织这些算法，从而让程序结构更加灵活，具有更好的维护性和扩展性，现在我们来分析其基本结构和实现方法。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>策略模式的主要角色如下。</p>
+
+    <ol>
+      <li>抽象策略（Strategy）类：定义了一个公共接口，各种不同的算法以不同的方式实现这个接口，环境角色使用这个接口调用不同的算法，一般使用接口或抽象类实现。</li>
+      <li>具体策略（Concrete Strategy）类：实现了抽象策略定义的接口，提供具体的算法实现。</li>
+      <li>环境（Context）类：持有一个策略类的引用，最终给客户端调用。</li>
+    </ol>
+
+    <p>其结构图如图 1 所示。   <img src="https://i.loli.net/2021/05/25/rBQGaz4c5bNjt7H.png" alt="Strategy.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 策略模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>策略模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StrategyPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Context</span> <span class="n">c</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Context</span><span class="o">();</span>
+        <span class="nc">Strategy</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteStrategyA</span><span class="o">();</span>
+        <span class="n">c</span><span class="o">.</span><span class="na">setStrategy</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="n">c</span><span class="o">.</span><span class="na">strategyMethod</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"-----------------"</span><span class="o">);</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteStrategyB</span><span class="o">();</span>
+        <span class="n">c</span><span class="o">.</span><span class="na">setStrategy</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+        <span class="n">c</span><span class="o">.</span><span class="na">strategyMethod</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象策略类</span>
+<span class="kd">interface</span> <span class="nc">Strategy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">strategyMethod</span><span class="o">();</span>    <span class="c1">//策略方法</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体策略类A</span>
+<span class="kd">class</span> <span class="nc">ConcreteStrategyA</span> <span class="kd">implements</span> <span class="nc">Strategy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">strategyMethod</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体策略A的策略方法被访问！"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体策略类B</span>
+<span class="kd">class</span> <span class="nc">ConcreteStrategyB</span> <span class="kd">implements</span> <span class="nc">Strategy</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">strategyMethod</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体策略B的策略方法被访问！"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//环境类</span>
+<span class="kd">class</span> <span class="nc">Context</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Strategy</span> <span class="n">strategy</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="nc">Strategy</span> <span class="nf">getStrategy</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">strategy</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setStrategy</span><span class="o">(</span><span class="nc">Strategy</span> <span class="n">strategy</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">strategy</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">strategyMethod</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">strategy</span><span class="o">.</span><span class="na">strategyMethod</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序运行结果如下：</p>
+
+    <div class="language-tex highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>具体策略A的策略方法被访问！
+-----------------
+具体策略B的策略方法被访问！
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="模板方法模式">模板方法模式</h2>
+
+<h3 id="模式的定义与特点">模式的定义与特点</h3>
+
+<p>模板方法（Template Method）模式的定义如下：定义一个操作中的算法骨架，而将算法的一些步骤延迟到子类中，使得子类可以不改变该算法结构的情况下重定义该算法的某些特定步骤。它是一种类行为型模式。</p>
+
+<p>该模式的<strong>主要优点</strong>如下。</p>
+
+<ol>
+  <li>它封装了不变部分，扩展可变部分。它把认为是不变部分的算法封装到父类中实现，而把可变部分算法由子类继承实现，便于子类继续扩展。</li>
+  <li>它在父类中提取了公共的部分代码，便于代码复用。</li>
+  <li>部分方法是由子类实现的，因此子类可以通过扩展方式增加相应的功能，符合开闭原则。</li>
+</ol>
+
+<p><strong>该模式的主要缺点如下。</strong></p>
+
+<ol>
+  <li>对每个不同的实现都需要定义一个子类，这会导致类的个数增加，系统更加庞大，设计也更加抽象，间接地增加了系统实现的复杂度。</li>
+  <li>父类中的抽象方法由子类实现，子类执行的结果会影响父类的结果，这导致一种反向的控制结构，它提高了代码阅读的难度。</li>
+  <li>由于继承关系自身的缺点，如果父类添加新的抽象方法，则所有子类都要改一遍。</li>
+</ol>
+
+<h3 id="模式的结构与实现">模式的结构与实现</h3>
+
+<p>模板方法模式需要注意抽象类与具体子类之间的协作。它用到了虚函数的多态性技术以及“不用调用我，让我来调用你”的反向控制技术。现在来介绍它们的基本结构。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>模板方法模式包含以下主要角色。</p>
+
+    <p>1）抽象类/抽象模板（Abstract Class）</p>
+
+    <p>抽象模板类，负责给出一个算法的轮廓和骨架。它由一个模板方法和若干个基本方法构成。这些方法的定义如下。</p>
+
+    <p>① 模板方法：定义了算法的骨架，按某种顺序调用其包含的基本方法。</p>
+
+    <p>② 基本方法：是整个算法中的一个步骤，包含以下几种类型。</p>
+
+    <ul>
+      <li>抽象方法：在抽象类中声明，由具体子类实现。</li>
+      <li>具体方法：在抽象类中已经实现，在具体子类中可以继承或重写它。</li>
+      <li>钩子方法：在抽象类中已经实现，包括用于判断的逻辑方法和需要子类重写的空方法两种。</li>
+    </ul>
+
+    <p>2）具体子类/具体实现（Concrete Class）</p>
+
+    <p>具体实现类，实现抽象类中所定义的抽象方法和钩子方法，它们是一个顶级逻辑的一个组成步骤。</p>
+
+    <p>模板方法模式的结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/i2RWZTzqw1I8EC7.png" alt="Template.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 模板方法模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>模板方法模式的代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TemplateMethodPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">AbstractClass</span> <span class="n">tm</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteClass</span><span class="o">();</span>
+        <span class="n">tm</span><span class="o">.</span><span class="na">TemplateMethod</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象类</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">AbstractClass</span> <span class="o">{</span>
+    <span class="c1">//模板方法</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">TemplateMethod</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">SpecificMethod</span><span class="o">();</span>
+        <span class="n">abstractMethod1</span><span class="o">();</span>
+        <span class="n">abstractMethod2</span><span class="o">();</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//具体方法</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">SpecificMethod</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"抽象类中的具体方法被调用..."</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//抽象方法1</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">abstractMethod1</span><span class="o">();</span>
+   
+    <span class="c1">//抽象方法2</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">abstractMethod2</span><span class="o">();</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体子类</span>
+<span class="kd">class</span> <span class="nc">ConcreteClass</span> <span class="kd">extends</span> <span class="nc">AbstractClass</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">abstractMethod1</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"抽象方法1的实现被调用..."</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">abstractMethod2</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"抽象方法2的实现被调用..."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序的运行结果如下：</p>
+
+    <div class="language-tex highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>抽象类中的具体方法被调用...
+抽象方法1的实现被调用...
+抽象方法2的实现被调用...
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="观察者模式">观察者模式</h2>
+
+<h3 id="模式的定义与特点-1">模式的定义与特点</h3>
+
+<p>观察者（Observer）模式的定义：指多个对象间存在一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。这种模式有时又称作发布-订阅模式、模型-视图模式，它是对象行为型模式。</p>
+
+<p>观察者模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>降低了目标与观察者之间的耦合关系，两者之间是抽象耦合关系。符合依赖倒置原则。</li>
+  <li>目标与观察者之间建立了一套触发机制。</li>
+</ol>
+
+<p><strong>它的主要缺点如下。</strong></p>
+
+<ol>
+  <li>目标与观察者之间的依赖关系并没有完全解除，而且有可能出现循环引用。</li>
+  <li>当观察者对象很多时，通知的发布会花费很多时间，影响程序的效率。</li>
+</ol>
+
+<h3 id="模式的结构与实现-1">模式的结构与实现</h3>
+
+<p>实现观察者模式时要注意具体目标对象和具体观察者对象之间不能直接调用，否则将使两者之间紧密耦合起来，这违反了面向对象的设计原则。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>观察者模式的主要角色如下。</p>
+
+    <ol>
+      <li>抽象主题（Subject）角色：也叫抽象目标类，它提供了一个用于保存观察者对象的聚集类和增加、删除观察者对象的方法，以及通知所有观察者的抽象方法。</li>
+      <li>具体主题（Concrete Subject）角色：也叫具体目标类，它实现抽象目标中的通知方法，当具体主题的内部状态发生改变时，通知所有注册过的观察者对象。</li>
+      <li>抽象观察者（Observer）角色：它是一个抽象类或接口，它包含了一个更新自己的抽象方法，当接到具体主题的更改通知时被调用。</li>
+      <li>具体观察者（Concrete Observer）角色：实现抽象观察者中定义的抽象方法，以便在得到目标的更改通知时更新自身的状态。</li>
+    </ol>
+
+    <p>观察者模式的结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/dEBcjQgzwfSsWLa.png" alt="Observer.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 观察者模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>观察者模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">net.biancheng.c.observer</span><span class="o">;</span>
+   
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ObserverPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Subject</span> <span class="n">subject</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteSubject</span><span class="o">();</span>
+        <span class="nc">Observer</span> <span class="n">obs1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteObserver1</span><span class="o">();</span>
+        <span class="nc">Observer</span> <span class="n">obs2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteObserver2</span><span class="o">();</span>
+        <span class="n">subject</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">obs1</span><span class="o">);</span>
+        <span class="n">subject</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">obs2</span><span class="o">);</span>
+        <span class="n">subject</span><span class="o">.</span><span class="na">notifyObserver</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象目标</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Subject</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Observer</span><span class="o">&gt;</span> <span class="n">observers</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Observer</span><span class="o">&gt;();</span>
+   
+    <span class="c1">//增加观察者方法</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">Observer</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">observers</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">observer</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//删除观察者方法</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(</span><span class="nc">Observer</span> <span class="n">observer</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">observers</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">observer</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">notifyObserver</span><span class="o">();</span> <span class="c1">//通知观察者方法</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体目标</span>
+<span class="kd">class</span> <span class="nc">ConcreteSubject</span> <span class="kd">extends</span> <span class="nc">Subject</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">notifyObserver</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体目标发生改变..."</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"--------------"</span><span class="o">);</span>
+   
+        <span class="k">for</span> <span class="o">(</span><span class="nc">Object</span> <span class="n">obs</span> <span class="o">:</span> <span class="n">observers</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">((</span><span class="nc">Observer</span><span class="o">)</span> <span class="n">obs</span><span class="o">).</span><span class="na">response</span><span class="o">();</span>
+        <span class="o">}</span>
+   
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象观察者</span>
+<span class="kd">interface</span> <span class="nc">Observer</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">response</span><span class="o">();</span> <span class="c1">//反应</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体观察者1</span>
+<span class="kd">class</span> <span class="nc">ConcreteObserver1</span> <span class="kd">implements</span> <span class="nc">Observer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">response</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体观察者1作出反应！"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体观察者1</span>
+<span class="kd">class</span> <span class="nc">ConcreteObserver2</span> <span class="kd">implements</span> <span class="nc">Observer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">response</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体观察者2作出反应！"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>具体目标发生改变...
+--------------
+具体观察者1作出反应！
+具体观察者2作出反应！
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="迭代器模式">迭代器模式</h2>
+
+<h3 id="模式的定义与特点-2">模式的定义与特点</h3>
+
+<p>迭代器（Iterator）模式的定义：提供一个对象来顺序访问聚合对象中的一系列数据，而不暴露聚合对象的内部表示。迭代器模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>访问一个聚合对象的内容而无须暴露它的内部表示。</li>
+  <li>遍历任务交由迭代器完成，这简化了聚合类。</li>
+  <li>它支持以不同方式遍历一个聚合，甚至可以自定义迭代器的子类以支持新的遍历。</li>
+  <li>增加新的聚合类和迭代器类都很方便，无须修改原有代码。</li>
+  <li>封装性良好，为遍历不同的聚合结构提供一个统一的接口。</li>
+</ol>
+
+<p><strong>其主要缺点是：</strong>增加了类的个数，这在一定程度上增加了系统的复杂性。</p>
+
+<p>在日常开发中，我们几乎不会自己写迭代器。除非需要定制一个自己实现的数据结构对应的迭代器，否则，开源框架提供的 API 完全够用。</p>
+
+<h3 id="模式的结构与实现-2">模式的结构与实现</h3>
+
+<p>迭代器模式是通过将聚合对象的遍历行为分离出来，抽象成迭代器类来实现的，其目的是在不暴露聚合对象的内部结构的情况下，让外部代码透明地访问聚合的内部数据。现在我们来分析其基本结构与实现方法。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>迭代器模式主要包含以下角色。</p>
+
+    <ol>
+      <li>抽象聚合（Aggregate）角色：定义存储、添加、删除聚合对象以及创建迭代器对象的接口。</li>
+      <li>具体聚合（ConcreteAggregate）角色：实现抽象聚合类，返回一个具体迭代器的实例。</li>
+      <li>抽象迭代器（Iterator）角色：定义访问和遍历聚合元素的接口，通常包含 hasNext()、first()、next() 等方法。</li>
+      <li>具体迭代器（Concretelterator）角色：实现抽象迭代器接口中所定义的方法，完成对聚合对象的遍历，记录遍历的当前位置。</li>
+    </ol>
+
+    <p>其结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/MQxhizICBVAEvo4.png" alt="Iterator.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 迭代器模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>迭代器模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">net.biancheng.c.iterator</span><span class="o">;</span>
+   
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IteratorPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Aggregate</span> <span class="n">ag</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteAggregate</span><span class="o">();</span>
+        <span class="n">ag</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"中山大学"</span><span class="o">);</span>
+        <span class="n">ag</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"华南理工"</span><span class="o">);</span>
+        <span class="n">ag</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">"韶关学院"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"聚合的内容有："</span><span class="o">);</span>
+        <span class="nc">Iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ag</span><span class="o">.</span><span class="na">getIterator</span><span class="o">();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">it</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="nc">Object</span> <span class="n">ob</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">ob</span><span class="o">.</span><span class="na">toString</span><span class="o">()</span> <span class="o">+</span> <span class="s">"\t"</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="nc">Object</span> <span class="n">ob</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">first</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"\nFirst："</span> <span class="o">+</span> <span class="n">ob</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象聚合</span>
+<span class="kd">interface</span> <span class="nc">Aggregate</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">);</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">);</span>
+   
+    <span class="kd">public</span> <span class="nc">Iterator</span> <span class="nf">getIterator</span><span class="o">();</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体聚合</span>
+<span class="kd">class</span> <span class="nc">ConcreteAggregate</span> <span class="kd">implements</span> <span class="nc">Aggregate</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;();</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">obj</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(</span><span class="nc">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">obj</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">Iterator</span> <span class="nf">getIterator</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="k">new</span> <span class="nc">ConcreteIterator</span><span class="o">(</span><span class="n">list</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象迭代器</span>
+<span class="kd">interface</span> <span class="nc">Iterator</span> <span class="o">{</span>
+    <span class="nc">Object</span> <span class="nf">first</span><span class="o">();</span>
+   
+    <span class="nc">Object</span> <span class="nf">next</span><span class="o">();</span>
+   
+    <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">();</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体迭代器</span>
+<span class="kd">class</span> <span class="nc">ConcreteIterator</span> <span class="kd">implements</span> <span class="nc">Iterator</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="nf">ConcreteIterator</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">list</span> <span class="o">=</span> <span class="n">list</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">hasNext</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="n">list</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">-</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">first</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="nc">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">index</span><span class="o">);</span>
+        <span class="o">;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">Object</span> <span class="nf">next</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">Object</span> <span class="n">obj</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">get</span><span class="o">(++</span><span class="n">index</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>聚合的内容有：中山大学    华南理工    韶关学院   
+First：中山大学
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="责任链模式">责任链模式</h2>
+
+<h3 id="模式的定义与特点-3">模式的定义与特点</h3>
+
+<p>责任链（Chain of Responsibility）模式的定义：为了避免请求发送者与多个请求处理者耦合在一起，于是将所有请求的处理者通过前一对象记住其下一个对象的引用而连成一条链；当有请求发生时，可将请求沿着这条链传递，直到有对象处理它为止。</p>
+
+<p>注意：责任链模式也叫职责链模式。</p>
+
+<p>在责任链模式中，客户只需要将请求发送到责任链上即可，无须关心请求的处理细节和请求的传递过程，请求会自动进行传递。所以责任链将请求的发送者和请求的处理者解耦了。</p>
+
+<p>责任链模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>降低了对象之间的耦合度。该模式使得一个对象无须知道到底是哪一个对象处理其请求以及链的结构，发送者和接收者也无须拥有对方的明确信息。</li>
+  <li>增强了系统的可扩展性。可以根据需要增加新的请求处理类，满足开闭原则。</li>
+  <li>增强了给对象指派职责的灵活性。当工作流程发生变化，可以动态地改变链内的成员或者调动它们的次序，也可动态地新增或者删除责任。</li>
+  <li>责任链简化了对象之间的连接。每个对象只需保持一个指向其后继者的引用，不需保持其他所有处理者的引用，这避免了使用众多的 if 或者 if···else 语句。</li>
+  <li>责任分担。每个类只需要处理自己该处理的工作，不该处理的传递给下一个对象完成，明确各类的责任范围，符合类的单一职责原则。</li>
+</ol>
+
+<p><strong>其主要缺点如下。</strong></p>
+
+<ol>
+  <li>不能保证每个请求一定被处理。由于一个请求没有明确的接收者，所以不能保证它一定会被处理，该请求可能一直传到链的末端都得不到处理。</li>
+  <li>对比较长的职责链，请求的处理可能涉及多个处理对象，系统性能将受到一定影响。</li>
+  <li>职责链建立的合理性要靠客户端来保证，增加了客户端的复杂性，可能会由于职责链的错误设置而导致系统出错，如可能会造成循环调用。</li>
+</ol>
+
+<h3 id="模式的结构与实现-3">模式的结构与实现</h3>
+
+<p>通常情况下，可以通过数据链表来实现职责链模式的数据结构。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>职责链模式主要包含以下角色。</p>
+
+    <ol>
+      <li>抽象处理者（Handler）角色：定义一个处理请求的接口，包含抽象处理方法和一个后继连接。</li>
+      <li>具体处理者（Concrete Handler）角色：实现抽象处理者的处理方法，判断能否处理本次请求，如果可以处理请求则处理，否则将该请求转给它的后继者。</li>
+      <li>客户类（Client）角色：创建处理链，并向链头的具体处理者对象提交请求，它不关心处理细节和请求的传递过程。</li>
+    </ol>
+
+    <p>责任链模式的本质是解耦请求与处理，让请求在处理链中能进行传递与被处理；理解责任链模式应当理解其模式，而不是其具体实现。责任链模式的独到之处是将其节点处理者组合成了链式结构，并允许节点自身决定是否进行请求处理或转发，相当于让请求流动起来。</p>
+
+    <p>其结构图如图 1 所示。客户端可按图 2 所示设置责任链。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/R34Bu7qHJVtzcIP.png" alt="Chain of Responsibility1.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 责任链模式的结构图</center>
+
+<p><img src="https://i.loli.net/2021/05/25/2oGITb7PiYsVnqc.png" alt="Chain of Responsibility2.jpg"></p>
+
+<center>图2 责任链</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>职责链模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">chainOfResponsibility</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ChainOfResponsibilityPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//组装责任链</span>
+        <span class="nc">Handler</span> <span class="n">handler1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteHandler1</span><span class="o">();</span>
+        <span class="nc">Handler</span> <span class="n">handler2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteHandler2</span><span class="o">();</span>
+        <span class="n">handler1</span><span class="o">.</span><span class="na">setNext</span><span class="o">(</span><span class="n">handler2</span><span class="o">);</span>
+        <span class="c1">//提交请求</span>
+        <span class="n">handler1</span><span class="o">.</span><span class="na">handleRequest</span><span class="o">(</span><span class="s">"two"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象处理者角色</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Handler</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Handler</span> <span class="n">next</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setNext</span><span class="o">(</span><span class="nc">Handler</span> <span class="n">next</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">Handler</span> <span class="nf">getNext</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">next</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//处理请求的方法</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">handleRequest</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">);</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体处理者角色1</span>
+<span class="kd">class</span> <span class="nc">ConcreteHandler1</span> <span class="kd">extends</span> <span class="nc">Handler</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleRequest</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"one"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体处理者1负责处理该请求！"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getNext</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">getNext</span><span class="o">().</span><span class="na">handleRequest</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"没有人处理该请求！"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体处理者角色2</span>
+<span class="kd">class</span> <span class="nc">ConcreteHandler2</span> <span class="kd">extends</span> <span class="nc">Handler</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleRequest</span><span class="o">(</span><span class="nc">String</span> <span class="n">request</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"two"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体处理者2负责处理该请求！"</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">getNext</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">getNext</span><span class="o">().</span><span class="na">handleRequest</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"没有人处理该请求！"</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>具体处理者2负责处理该请求！
+</code></pre></div>    </div>
+
+    <p>在上面代码中，我们把消息硬编码为 String 类型，而在真实业务中，消息是具备多样性的，可以是 int、String 或者自定义类型。因此，在上面代码的基础上，可以对消息类型进行抽象 Request，增强了消息的兼容性。</p>
+  </li>
+</ol>
+
+<h2 id="命令模式">命令模式</h2>
+
+<h3 id="命令模式的定义与特点">命令模式的定义与特点</h3>
+
+<p>命令（Command）模式的定义如下：将一个请求封装为一个对象，使发出请求的责任和执行请求的责任分割开。这样两者之间通过命令对象进行沟通，这样方便将命令对象进行储存、传递、调用、增加与管理。</p>
+
+<p><strong>命令模式的主要优点如下。</strong></p>
+
+<ol>
+  <li>通过引入中间件（抽象接口）降低系统的耦合度。</li>
+  <li>扩展性良好，增加或删除命令非常方便。采用命令模式增加与删除命令不会影响其他类，且满足“开闭原则”。</li>
+  <li>可以实现宏命令。命令模式可以与<a href="http://c.biancheng.net/view/1373.html">组合模式</a>结合，将多个命令装配成一个组合命令，即宏命令。</li>
+  <li>方便实现 Undo 和 Redo 操作。命令模式可以与后面介绍的<a href="http://c.biancheng.net/view/1400.html">备忘录模式</a>结合，实现命令的撤销与恢复。</li>
+  <li>可以在现有命令的基础上，增加额外功能。比如日志记录，结合装饰器模式会更加灵活。</li>
+</ol>
+
+<p><strong>其缺点是：</strong></p>
+
+<ol>
+  <li>可能产生大量具体的命令类。因为每一个具体操作都需要设计一个具体命令类，这会增加系统的复杂性。</li>
+  <li>命令模式的结果其实就是接收方的执行结果，但是为了以命令的形式进行架构、解耦请求与实现，引入了额外类型结构（引入了请求方与抽象命令接口），增加了理解上的困难。不过这也是<a href="http://c.biancheng.net/design_pattern/">设计模式</a>的通病，抽象必然会额外增加类的数量，代码抽离肯定比代码聚合更加难理解。</li>
+</ol>
+
+<h3 id="命令模式的结构与实现">命令模式的结构与实现</h3>
+
+<p>可以将系统中的相关操作抽象成命令，使调用者与实现者相关分离，其结构如下。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>命令模式包含以下主要角色。</p>
+
+    <ol>
+      <li>抽象命令类（Command）角色：声明执行命令的接口，拥有执行命令的抽象方法 execute()。</li>
+      <li>具体命令类（Concrete Command）角色：是抽象命令类的具体实现类，它拥有接收者对象，并通过调用接收者的功能来完成命令要执行的操作。</li>
+      <li>实现者/接收者（Receiver）角色：执行命令功能的相关操作，是具体命令对象业务的真正实现者。</li>
+      <li>调用者/请求者（Invoker）角色：是请求的发送者，它通常拥有很多的命令对象，并通过访问命令对象来执行相关请求，它不直接访问接收者。</li>
+    </ol>
+
+    <p>其结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/yvgqzDZsiHIVUna.png" alt="Command.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 命令模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>命令模式的代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">command</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">CommandPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Command</span> <span class="n">cmd</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteCommand</span><span class="o">();</span>
+        <span class="nc">Invoker</span> <span class="n">ir</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Invoker</span><span class="o">(</span><span class="n">cmd</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"客户访问调用者的call()方法..."</span><span class="o">);</span>
+        <span class="n">ir</span><span class="o">.</span><span class="na">call</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//调用者</span>
+<span class="kd">class</span> <span class="nc">Invoker</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Command</span> <span class="n">command</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="nf">Invoker</span><span class="o">(</span><span class="nc">Command</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">command</span> <span class="o">=</span> <span class="n">command</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setCommand</span><span class="o">(</span><span class="nc">Command</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">command</span> <span class="o">=</span> <span class="n">command</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">call</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"调用者执行命令command..."</span><span class="o">);</span>
+        <span class="n">command</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象命令</span>
+<span class="kd">interface</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">();</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体命令</span>
+<span class="kd">class</span> <span class="nc">ConcreteCommand</span> <span class="kd">implements</span> <span class="nc">Command</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Receiver</span> <span class="n">receiver</span><span class="o">;</span>
+   
+    <span class="nc">ConcreteCommand</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">receiver</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Receiver</span><span class="o">();</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">receiver</span><span class="o">.</span><span class="na">action</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//接收者</span>
+<span class="kd">class</span> <span class="nc">Receiver</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">action</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"接收者的action()方法被调用..."</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序的运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>客户访问调用者的call()方法...
+调用者执行命令command...
+接收者的action()方法被调用...
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="备忘录模式">备忘录模式</h2>
+
+<h3 id="模式的定义与特点-4">模式的定义与特点</h3>
+
+<p>备忘录（Memento）模式的定义：在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态，以便以后当需要时能将该对象恢复到原先保存的状态。该模式又叫快照模式。</p>
+
+<p>备忘录模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ul>
+  <li>提供了一种可以恢复状态的机制。当用户需要时能够比较方便地将数据恢复到某个历史的状态。</li>
+  <li>实现了内部状态的封装。除了创建它的发起人之外，其他对象都不能够访问这些状态信息。</li>
+  <li>简化了发起人类。发起人不需要管理和保存其内部状态的各个备份，所有状态信息都保存在备忘录中，并由管理者进行管理，这符合单一职责原则。</li>
+</ul>
+
+<p><strong>其主要缺点是：</strong>资源消耗大。如果要保存的内部状态信息过多或者特别频繁，将会占用比较大的内存资源。</p>
+
+<h3 id="模式的结构与实现-4">模式的结构与实现</h3>
+
+<p>备忘录模式的核心是设计备忘录类以及用于管理备忘录的管理者类，现在我们来学习其结构与实现。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>备忘录模式的主要角色如下。</p>
+
+    <ol>
+      <li>发起人（Originator）角色：记录当前时刻的内部状态信息，提供创建备忘录和恢复备忘录数据的功能，实现其他业务功能，它可以访问备忘录里的所有信息。</li>
+      <li>备忘录（Memento）角色：负责存储发起人的内部状态，在需要的时候提供这些内部状态给发起人。</li>
+      <li>管理者（Caretaker）角色：对备忘录进行管理，提供保存与获取备忘录的功能，但其不能对备忘录的内容进行访问与修改。</li>
+    </ol>
+
+    <p>备忘录模式的结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/LeJEn1zupNMO9Qx.png" alt="Memento.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 备忘录模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>备忘录模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">net.biancheng.c.memento</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MementoPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Originator</span> <span class="n">or</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Originator</span><span class="o">();</span>
+        <span class="nc">Caretaker</span> <span class="n">cr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Caretaker</span><span class="o">();</span>
+        <span class="n">or</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="s">"S0"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"初始状态:"</span> <span class="o">+</span> <span class="n">or</span><span class="o">.</span><span class="na">getState</span><span class="o">());</span>
+        <span class="n">cr</span><span class="o">.</span><span class="na">setMemento</span><span class="o">(</span><span class="n">or</span><span class="o">.</span><span class="na">createMemento</span><span class="o">());</span> <span class="c1">//保存状态</span>
+        <span class="n">or</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="s">"S1"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"新的状态:"</span> <span class="o">+</span> <span class="n">or</span><span class="o">.</span><span class="na">getState</span><span class="o">());</span>
+        <span class="n">or</span><span class="o">.</span><span class="na">restoreMemento</span><span class="o">(</span><span class="n">cr</span><span class="o">.</span><span class="na">getMemento</span><span class="o">());</span> <span class="c1">//恢复状态</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"恢复状态:"</span> <span class="o">+</span> <span class="n">or</span><span class="o">.</span><span class="na">getState</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//备忘录</span>
+<span class="kd">class</span> <span class="nc">Memento</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">state</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="nf">Memento</span><span class="o">(</span><span class="nc">String</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setState</span><span class="o">(</span><span class="nc">String</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getState</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">state</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//发起人</span>
+<span class="kd">class</span> <span class="nc">Originator</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">state</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setState</span><span class="o">(</span><span class="nc">String</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getState</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">state</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">Memento</span> <span class="nf">createMemento</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">Memento</span><span class="o">(</span><span class="n">state</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">restoreMemento</span><span class="o">(</span><span class="nc">Memento</span> <span class="n">m</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="n">m</span><span class="o">.</span><span class="na">getState</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//管理者</span>
+<span class="kd">class</span> <span class="nc">Caretaker</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">Memento</span> <span class="n">memento</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMemento</span><span class="o">(</span><span class="nc">Memento</span> <span class="n">m</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">memento</span> <span class="o">=</span> <span class="n">m</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">Memento</span> <span class="nf">getMemento</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">memento</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序运行的结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>初始状态:S0
+新的状态:S1
+恢复状态:S0
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="状态模式">状态模式</h2>
+
+<h3 id="状态模式的定义与特点">状态模式的定义与特点</h3>
+
+<p>状态（State）模式的定义：对有状态的对象，把复杂的“判断逻辑”提取到不同的状态对象中，允许状态对象在其内部状态发生改变时改变其行为。</p>
+
+<p>状态模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>结构清晰，状态模式将与特定状态相关的行为局部化到一个状态中，并且将不同状态的行为分割开来，满足“单一职责原则”。</li>
+  <li>将状态转换显示化，减少对象间的相互依赖。将不同的状态引入独立的对象中会使得状态转换变得更加明确，且减少对象间的相互依赖。</li>
+  <li>状态类职责明确，有利于程序的扩展。通过定义新的子类很容易地增加新的状态和转换。</li>
+</ol>
+
+<p>状态模式的<strong>主要缺点</strong>如下。</p>
+
+<ol>
+  <li>状态模式的使用必然会增加系统的类与对象的个数。</li>
+  <li>状态模式的结构与实现都较为复杂，如果使用不当会导致程序结构和代码的混乱。</li>
+  <li>状态模式对开闭原则的支持并不太好，对于可以切换状态的状态模式，增加新的状态类需要修改那些负责状态转换的源码，否则无法切换到新增状态，而且修改某个状态类的行为也需要修改对应类的源码。</li>
+</ol>
+
+<h3 id="状态模式的结构与实现">状态模式的结构与实现</h3>
+
+<p>状态模式把受环境改变的对象行为包装在不同的状态对象里，其意图是让一个对象在其内部状态改变的时候，其行为也随之改变。现在我们来分析其基本结构和实现方法。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>状态模式包含以下主要角色。</p>
+
+    <ol>
+      <li>环境类（Context）角色：也称为上下文，它定义了客户端需要的接口，内部维护一个当前状态，并负责具体状态的切换。</li>
+      <li>抽象状态（State）角色：定义一个接口，用以封装环境对象中的特定状态所对应的行为，可以有一个或多个行为。</li>
+      <li>具体状态（Concrete State）角色：实现抽象状态所对应的行为，并且在需要的情况下进行状态切换。</li>
+    </ol>
+
+    <p>其结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/5n2y46ieZfUQA9N.png" alt="State.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 状态模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>状态模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StatePatternClient</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Context</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Context</span><span class="o">();</span>    <span class="c1">//创建环境      </span>
+        <span class="n">context</span><span class="o">.</span><span class="na">Handle</span><span class="o">();</span>    <span class="c1">//处理请求</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">Handle</span><span class="o">();</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">Handle</span><span class="o">();</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">Handle</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//环境类</span>
+<span class="kd">class</span> <span class="nc">Context</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">State</span> <span class="n">state</span><span class="o">;</span>
+   
+    <span class="c1">//定义环境类的初始状态</span>
+    <span class="kd">public</span> <span class="nf">Context</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteStateA</span><span class="o">();</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//设置新状态</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setState</span><span class="o">(</span><span class="nc">State</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//读取状态</span>
+    <span class="kd">public</span> <span class="nc">State</span> <span class="nf">getState</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="o">(</span><span class="n">state</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="c1">//对请求做处理</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Handle</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">state</span><span class="o">.</span><span class="na">Handle</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象状态类</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">State</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">Handle</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">);</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体状态A类</span>
+<span class="kd">class</span> <span class="nc">ConcreteStateA</span> <span class="kd">extends</span> <span class="nc">State</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Handle</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"当前状态是 A."</span><span class="o">);</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConcreteStateB</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体状态B类</span>
+<span class="kd">class</span> <span class="nc">ConcreteStateB</span> <span class="kd">extends</span> <span class="nc">State</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">Handle</span><span class="o">(</span><span class="nc">Context</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"当前状态是 B."</span><span class="o">);</span>
+        <span class="n">context</span><span class="o">.</span><span class="na">setState</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConcreteStateA</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序运行结果如下：</p>
+  </li>
+</ol>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>当前状态是 A.
+当前状态是 B.
+当前状态是 A.
+当前状态是 B.
+</code></pre></div></div>
+
+<h2 id="访问者模式">访问者模式</h2>
+
+<h3 id="模式的定义与特点-5">模式的定义与特点</h3>
+
+<p>访问者（Visitor）模式的定义：将作用于某种数据结构中的各元素的操作分离出来封装成独立的类，使其在不改变数据结构的前提下可以添加作用于这些元素的新的操作，为数据结构中的每个元素提供多种访问方式。它将对数据的操作与数据结构进行分离，是行为类模式中最复杂的一种模式。</p>
+
+<p>访问者（Visitor）模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>扩展性好。能够在不修改对象结构中的元素的情况下，为对象结构中的元素添加新的功能。</li>
+  <li>复用性好。可以通过访问者来定义整个对象结构通用的功能，从而提高系统的复用程度。</li>
+  <li>灵活性好。访问者模式将数据结构与作用于结构上的操作解耦，使得操作集合可相对自由地演化而不影响系统的数据结构。</li>
+  <li>符合单一职责原则。访问者模式把相关的行为封装在一起，构成一个访问者，使每一个访问者的功能都比较单一。</li>
+</ol>
+
+<p>访问者（Visitor）模式的<strong>主要缺点</strong>如下。</p>
+
+<ol>
+  <li>增加新的元素类很困难。在访问者模式中，每增加一个新的元素类，都要在每一个具体访问者类中增加相应的具体操作，这违背了“开闭原则”。</li>
+  <li>破坏封装。访问者模式中具体元素对访问者公布细节，这破坏了对象的封装性。</li>
+  <li>违反了依赖倒置原则。访问者模式依赖了具体类，而没有依赖抽象类。</li>
+</ol>
+
+<h3 id="模式的结构与实现-5">模式的结构与实现</h3>
+
+<p>访问者（Visitor）模式实现的关键是如何将作用于元素的操作分离出来封装成独立的类，其基本结构与实现方法如下。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>访问者模式包含以下主要角色。</p>
+
+    <ol>
+      <li>抽象访问者（Visitor）角色：定义一个访问具体元素的接口，为每个具体元素类对应一个访问操作 visit() ，该操作中的参数类型标识了被访问的具体元素。</li>
+      <li>具体访问者（ConcreteVisitor）角色：实现抽象访问者角色中声明的各个访问操作，确定访问者访问一个元素时该做什么。</li>
+      <li>抽象元素（Element）角色：声明一个包含接受操作 accept() 的接口，被接受的访问者对象作为 accept() 方法的参数。</li>
+      <li>具体元素（ConcreteElement）角色：实现抽象元素角色提供的 accept() 操作，其方法体通常都是 visitor.visit(this) ，另外具体元素中可能还包含本身业务逻辑的相关操作。</li>
+      <li>对象结构（Object Structure）角色：是一个包含元素角色的容器，提供让访问者对象遍历容器中的所有元素的方法，通常由 List、Set、Map 等聚合类实现。</li>
+    </ol>
+
+    <p>其结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/5N3qfAlj1wad6Mc.png" alt="Visitor.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 访问者（Visitor）模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>访问者模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">net.biancheng.c.visitor</span><span class="o">;</span>
+   
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">VisitorPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">ObjectStructure</span> <span class="n">os</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectStructure</span><span class="o">();</span>
+        <span class="n">os</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConcreteElementA</span><span class="o">());</span>
+        <span class="n">os</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nc">ConcreteElementB</span><span class="o">());</span>
+        <span class="nc">Visitor</span> <span class="n">visitor</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteVisitorA</span><span class="o">();</span>
+        <span class="n">os</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">visitor</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"------------------------"</span><span class="o">);</span>
+        <span class="n">visitor</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteVisitorB</span><span class="o">();</span>
+        <span class="n">os</span><span class="o">.</span><span class="na">accept</span><span class="o">(</span><span class="n">visitor</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象访问者</span>
+<span class="kd">interface</span> <span class="nc">Visitor</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">ConcreteElementA</span> <span class="n">element</span><span class="o">);</span>
+   
+    <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">ConcreteElementB</span> <span class="n">element</span><span class="o">);</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体访问者A类</span>
+<span class="kd">class</span> <span class="nc">ConcreteVisitorA</span> <span class="kd">implements</span> <span class="nc">Visitor</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">ConcreteElementA</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体访问者A访问--&gt;"</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="na">operationA</span><span class="o">());</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">ConcreteElementB</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体访问者A访问--&gt;"</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="na">operationB</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体访问者B类</span>
+<span class="kd">class</span> <span class="nc">ConcreteVisitorB</span> <span class="kd">implements</span> <span class="nc">Visitor</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">ConcreteElementA</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体访问者B访问--&gt;"</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="na">operationA</span><span class="o">());</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">visit</span><span class="o">(</span><span class="nc">ConcreteElementB</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体访问者B访问--&gt;"</span> <span class="o">+</span> <span class="n">element</span><span class="o">.</span><span class="na">operationB</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象元素类</span>
+<span class="kd">interface</span> <span class="nc">Element</span> <span class="o">{</span>
+    <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">);</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体元素A类</span>
+<span class="kd">class</span> <span class="nc">ConcreteElementA</span> <span class="kd">implements</span> <span class="nc">Element</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">operationA</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"具体元素A的操作。"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体元素B类</span>
+<span class="kd">class</span> <span class="nc">ConcreteElementB</span> <span class="kd">implements</span> <span class="nc">Element</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="na">visit</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">operationB</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">"具体元素B的操作。"</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//对象结构角色</span>
+<span class="kd">class</span> <span class="nc">ObjectStructure</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Element</span><span class="o">&gt;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Element</span><span class="o">&gt;();</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">accept</span><span class="o">(</span><span class="nc">Visitor</span> <span class="n">visitor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Iterator</span><span class="o">&lt;</span><span class="nc">Element</span><span class="o">&gt;</span> <span class="n">i</span> <span class="o">=</span> <span class="n">list</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span>
+        <span class="k">while</span> <span class="o">(</span><span class="n">i</span><span class="o">.</span><span class="na">hasNext</span><span class="o">())</span> <span class="o">{</span>
+            <span class="o">((</span><span class="nc">Element</span><span class="o">)</span> <span class="n">i</span><span class="o">.</span><span class="na">next</span><span class="o">()).</span><span class="na">accept</span><span class="o">(</span><span class="n">visitor</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">add</span><span class="o">(</span><span class="nc">Element</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">element</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">remove</span><span class="o">(</span><span class="nc">Element</span> <span class="n">element</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">list</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">element</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序的运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>具体访问者A访问--&gt;具体元素A的操作。
+具体访问者A访问--&gt;具体元素B的操作。
+------------------------
+具体访问者B访问--&gt;具体元素A的操作。
+具体访问者B访问--&gt;具体元素B的操作。
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="中介者模式">中介者模式</h2>
+
+<h3 id="模式的定义与特点-6">模式的定义与特点</h3>
+
+<p>中介者（Mediator）模式的定义：定义一个中介对象来封装一系列对象之间的交互，使原有对象之间的耦合松散，且可以独立地改变它们之间的交互。中介者模式又叫调停模式，它是迪米特法则的典型应用。</p>
+
+<p>中介者模式是一种对象行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>类之间各司其职，符合迪米特法则。</li>
+  <li>降低了对象之间的耦合性，使得对象易于独立地被复用。</li>
+  <li>将对象间的一对多关联转变为一对一的关联，提高系统的灵活性，使得系统易于维护和扩展。</li>
+</ol>
+
+<p><strong>其主要缺点是：</strong>中介者模式将原本多个对象直接的相互依赖变成了中介者和多个同事类的依赖关系。当同事类越多时，中介者就会越臃肿，变得复杂且难以维护。</p>
+
+<h3 id="模式的结构与实现-6">模式的结构与实现</h3>
+
+<p>中介者模式实现的关键是找出“中介者”，下面对它的结构和实现进行分析。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>中介者模式包含以下主要角色。</p>
+
+    <ol>
+      <li>抽象中介者（Mediator）角色：它是中介者的接口，提供了同事对象注册与转发同事对象信息的抽象方法。</li>
+      <li>具体中介者（Concrete Mediator）角色：实现中介者接口，定义一个 List 来管理同事对象，协调各个同事角色之间的交互关系，因此它依赖于同事角色。</li>
+      <li>抽象同事类（Colleague）角色：定义同事类的接口，保存中介者对象，提供同事对象交互的抽象方法，实现所有相互影响的同事类的公共功能。</li>
+      <li>具体同事类（Concrete Colleague）角色：是抽象同事类的实现者，当需要与其他同事对象交互时，由中介者对象负责后续的交互。</li>
+    </ol>
+
+    <p>中介者模式的结构图如图 1 所示。</p>
+
+    <p><img src="https://i.loli.net/2021/05/25/TpylciXG1CQEOV5.png" alt="Mediator.jpg"></p>
+  </li>
+</ol>
+
+<center>图1 中介者模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>中介者模式的实现代码如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">net.biancheng.c.mediator</span><span class="o">;</span>
+   
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+   
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MediatorPattern</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Mediator</span> <span class="n">md</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteMediator</span><span class="o">();</span>
+        <span class="nc">Colleague</span> <span class="n">c1</span><span class="o">,</span> <span class="n">c2</span><span class="o">;</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteColleague1</span><span class="o">();</span>
+        <span class="n">c2</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ConcreteColleague2</span><span class="o">();</span>
+        <span class="n">md</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">c1</span><span class="o">);</span>
+        <span class="n">md</span><span class="o">.</span><span class="na">register</span><span class="o">(</span><span class="n">c2</span><span class="o">);</span>
+        <span class="n">c1</span><span class="o">.</span><span class="na">send</span><span class="o">();</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"-------------"</span><span class="o">);</span>
+        <span class="n">c2</span><span class="o">.</span><span class="na">send</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象中介者</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Mediator</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">register</span><span class="o">(</span><span class="nc">Colleague</span> <span class="n">colleague</span><span class="o">);</span>
+   
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">relay</span><span class="o">(</span><span class="nc">Colleague</span> <span class="n">cl</span><span class="o">);</span> <span class="c1">//转发</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体中介者</span>
+<span class="kd">class</span> <span class="nc">ConcreteMediator</span> <span class="kd">extends</span> <span class="nc">Mediator</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Colleague</span><span class="o">&gt;</span> <span class="n">colleagues</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">Colleague</span><span class="o">&gt;();</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">register</span><span class="o">(</span><span class="nc">Colleague</span> <span class="n">colleague</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(!</span><span class="n">colleagues</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="n">colleague</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">colleagues</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">colleague</span><span class="o">);</span>
+            <span class="n">colleague</span><span class="o">.</span><span class="na">setMedium</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">relay</span><span class="o">(</span><span class="nc">Colleague</span> <span class="n">cl</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">for</span> <span class="o">(</span><span class="nc">Colleague</span> <span class="n">ob</span> <span class="o">:</span> <span class="n">colleagues</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(!</span><span class="n">ob</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">cl</span><span class="o">))</span> <span class="o">{</span>
+                <span class="o">((</span><span class="nc">Colleague</span><span class="o">)</span> <span class="n">ob</span><span class="o">).</span><span class="na">receive</span><span class="o">();</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//抽象同事类</span>
+<span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Colleague</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="nc">Mediator</span> <span class="n">mediator</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMedium</span><span class="o">(</span><span class="nc">Mediator</span> <span class="n">mediator</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">mediator</span> <span class="o">=</span> <span class="n">mediator</span><span class="o">;</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">receive</span><span class="o">();</span>
+   
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">send</span><span class="o">();</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体同事类</span>
+<span class="kd">class</span> <span class="nc">ConcreteColleague1</span> <span class="kd">extends</span> <span class="nc">Colleague</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">receive</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体同事类1收到请求。"</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">send</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体同事类1发出请求。"</span><span class="o">);</span>
+        <span class="n">mediator</span><span class="o">.</span><span class="na">relay</span><span class="o">(</span><span class="k">this</span><span class="o">);</span> <span class="c1">//请中介者转发</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//具体同事类</span>
+<span class="kd">class</span> <span class="nc">ConcreteColleague2</span> <span class="kd">extends</span> <span class="nc">Colleague</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">receive</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体同事类2收到请求。"</span><span class="o">);</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">send</span><span class="o">()</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"具体同事类2发出请求。"</span><span class="o">);</span>
+        <span class="n">mediator</span><span class="o">.</span><span class="na">relay</span><span class="o">(</span><span class="k">this</span><span class="o">);</span> <span class="c1">//请中介者转发</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+
+    <p>程序的运行结果如下：</p>
+
+    <div class="language-plaintext highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>具体同事类1发出请求。
+具体同事类2收到请求。
+-------------
+具体同事类2发出请求。
+具体同事类1收到请求。
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="解释器模式">解释器模式</h2>
+
+<h3 id="模式的定义与特点-7">模式的定义与特点</h3>
+
+<p>解释器（Interpreter）模式的定义：给分析对象定义一个语言，并定义该语言的文法表示，再设计一个解析器来解释语言中的句子。也就是说，用编译语言的方式来分析应用中的实例。这种模式实现了文法表达式处理的接口，该接口解释一个特定的上下文。</p>
+
+<p>这里提到的文法和句子的概念同编译原理中的描述相同，“文法”指语言的语法规则，而“句子”是语言集中的元素。例如，汉语中的句子有很多，“我是中国人”是其中的一个句子，可以用一棵语法树来直观地描述语言中的句子。</p>
+
+<p>解释器模式是一种类行为型模式，<strong>其主要优点如下。</strong></p>
+
+<ol>
+  <li>扩展性好。由于在解释器模式中使用类来表示语言的文法规则，因此可以通过继承等机制来改变或扩展文法。</li>
+  <li>容易实现。在语法树中的每个表达式节点类都是相似的，所以实现其文法较为容易。</li>
+</ol>
+
+<p>解释器模式的<strong>主要缺点</strong>如下。</p>
+
+<ol>
+  <li>执行效率较低。解释器模式中通常使用大量的循环和递归调用，当要解释的句子较复杂时，其运行速度很慢，且代码的调试过程也比较麻烦。</li>
+  <li>会引起类膨胀。解释器模式中的每条规则至少需要定义一个类，当包含的文法规则很多时，类的个数将急剧增加，导致系统难以管理与维护。</li>
+  <li>可应用的场景比较少。在软件开发中，需要定义语言文法的应用实例非常少，所以这种模式很少被使用到。</li>
+</ol>
+
+<h3 id="模式的结构与实现-7">模式的结构与实现</h3>
+
+<p>解释器模式常用于对简单语言的编译或分析实例中，为了掌握好它的结构与实现，必须先了解编译原理中的“文法、句子、语法树”等相关概念。</p>
+
+<h4 id="1-文法">1) 文法</h4>
+
+<p>文法是用于描述语言的语法结构的形式规则。没有规矩不成方圆，例如，有些人认为完美爱情的准则是“相互吸引、感情专一、任何一方都没有恋爱经历”，虽然最后一条准则较苛刻，但任何事情都要有规则，语言也一样，不管它是机器语言还是自然语言，都有它自己的文法规则。例如，中文中的“句子”的文法如下。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>〈句子〉::=〈主语〉〈谓语〉〈宾语〉
+〈主语〉::=〈代词〉|〈名词〉
+〈谓语〉::=〈动词〉
+〈宾语〉::=〈代词〉|〈名词〉
+〈代词〉你|我|他
+〈名词〉7大学生I筱霞I英语
+〈动词〉::=是|学习
+</code></pre></div></div>
+
+<p>注：这里的符号“::=”表示“定义为”的意思，用“〈”和“〉”括住的是非终结符，没有括住的是终结符。</p>
+
+<h4 id="2-句子">2) 句子</h4>
+
+<p>句子是语言的基本单位，是语言集中的一个元素，它由终结符构成，能由“文法”推导出。例如，上述文法可以推出“我是大学生”，所以它是句子。</p>
+
+<h4 id="3-语法树">3) 语法树</h4>
+
+<p>语法树是句子结构的一种树型表示，它代表了句子的推导结果，它有利于理解句子语法结构的层次。图 1 所示是“我是大学生”的语法树。</p>
+
+<p><img src="https://i.loli.net/2021/05/25/cj9ovBCAiIGHMxp.png" alt="Grammar.jpg"></p>
+
+<center>图1 句子“我是学生”的语法树</center>
+
+<p>有了以上基础知识，现在来介绍解释器模式的结构就简单了。解释器模式的结构与<a href="http://c.biancheng.net/view/1373.html">组合模式</a>相似，不过其包含的组成元素比组合模式多，而且组合模式是对象结构型模式，而解释器模式是类行为型模式。</p>
+
+<ol>
+  <li>
+    <p>模式的结构</p>
+
+    <p>解释器模式包含以下主要角色。</p>
+
+    <ol>
+      <li>抽象表达式（Abstract Expression）角色：定义解释器的接口，约定解释器的解释操作，主要包含解释方法 interpret()。</li>
+      <li>终结符表达式（Terminal Expression）角色：是抽象表达式的子类，用来实现文法中与终结符相关的操作，文法中的每一个终结符都有一个具体终结表达式与之相对应。</li>
+      <li>非终结符表达式（Nonterminal Expression）角色：也是抽象表达式的子类，用来实现文法中与非终结符相关的操作，文法中的每条规则都对应于一个非终结符表达式。</li>
+      <li>环境（Context）角色：通常包含各个解释器需要的数据或是公共的功能，一般用来传递被所有解释器共享的数据，后面的解释器可以从这里获取这些值。</li>
+      <li>客户端（Client）：主要任务是将需要分析的句子或表达式转换成使用解释器对象描述的抽象语法树，然后调用解释器的解释方法，当然也可以通过环境角色间接访问解释器的解释方法。</li>
+    </ol>
+
+    <p>解释器模式的结构图如图 2 所示。</p>
+  </li>
+</ol>
+
+<p><img src="https://i.loli.net/2021/05/25/3CynW6wYUvD9cJH.png" alt="Interpreter.jpg"></p>
+
+<center>图2 解释器模式的结构图</center>
+
+<ol>
+  <li>
+    <p>模式的实现</p>
+
+    <p>解释器模式实现的关键是定义文法规则、设计终结符类与非终结符类、画出结构图，必要时构建语法树，其代码结构如下：</p>
+
+    <div class="language-java highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">net.biancheng.c.interpreter</span><span class="o">;</span>
+   
+<span class="c1">//抽象表达式类</span>
+<span class="kd">interface</span> <span class="nc">AbstractExpression</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">interpret</span><span class="o">(</span><span class="nc">String</span> <span class="n">info</span><span class="o">);</span>    <span class="c1">//解释方法</span>
+<span class="o">}</span>
+   
+<span class="c1">//终结符表达式类</span>
+<span class="kd">class</span> <span class="nc">TerminalExpression</span> <span class="kd">implements</span> <span class="nc">AbstractExpression</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">interpret</span><span class="o">(</span><span class="nc">String</span> <span class="n">info</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//对终结符表达式的处理</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//非终结符表达式类</span>
+<span class="kd">class</span> <span class="nc">NonterminalExpression</span> <span class="kd">implements</span> <span class="nc">AbstractExpression</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">AbstractExpression</span> <span class="n">exp1</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="nc">AbstractExpression</span> <span class="n">exp2</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">interpret</span><span class="o">(</span><span class="nc">String</span> <span class="n">info</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//非对终结符表达式的处理</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+   
+<span class="c1">//环境类</span>
+<span class="kd">class</span> <span class="nc">Context</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">AbstractExpression</span> <span class="n">exp</span><span class="o">;</span>
+   
+    <span class="kd">public</span> <span class="nf">Context</span><span class="o">()</span> <span class="o">{</span>
+        <span class="c1">//数据初始化</span>
+    <span class="o">}</span>
+   
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">operation</span><span class="o">(</span><span class="nc">String</span> <span class="n">info</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//调用相关表达式类的解释方法</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/software_designer/2021/03/14/data-structure.html" title="数据结构基础知识">数据结构基础知识</a><a class="next" href="/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-creat.html" title="设计模式-创建模式">设计模式-创建模式</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/jekyll-theme-yat/programming-language/2023/01/28/neo4j-operation.html" title="设计模式-创建模式">neo4j base operation</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/15/robot.html" title="设计模式-创建模式">Robots 协议</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/programming-language/2019/11/29/login.html" title="设计模式-创建模式">模拟登录</a></li>
+<li><a class="post-link" href="/jekyll-theme-yat/mbti/2023/04/18/ISTJ.html" title="设计模式-创建模式">人格八维 -- ISTJ（物流师）</a></li>
+</ul>
+    </div>
+<div class="post-comments">  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://balbocheng.com/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-behavior.html';
+      this.page.identifier = 'https://balbocheng.com/jekyll-theme-yat/software_designer/2021/05/23/Design-pattern-behavior.html';
+    };
+
+    (function() {
+      var d = document, s = d.createElement('script');
+
+      s.src = 'https://Balbo.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+</div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>Copyright © 2018-2023 Balbo Cheng</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/jekyll-theme-yat/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
